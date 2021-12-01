@@ -1,7 +1,7 @@
-package Film;
+package model.Film;
 
-import Genre.Genre;
-import Genres.Genres;
+import model.Genre.Genre;
+import model.Genres.Genres;
 
 import java.util.Date;
 

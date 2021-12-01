@@ -1,13 +1,17 @@
-package Films;
+package model.Films;
 
-import Film.Film;
-import Genre.Genre;
+import model.Film.Film;
+import model.Genre.Genre;
 
 import java.util.LinkedList;
 
 public class Films {
 
     LinkedList<Film> films;
+
+    public LinkedList<Film> getFilms() {
+        return films;
+    }
 
     public Films() {
         films = new LinkedList<Film>();

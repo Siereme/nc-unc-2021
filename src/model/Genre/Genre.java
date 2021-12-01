@@ -1,4 +1,4 @@
-package Genre;
+package model.Genre;
 
 import java.util.Objects;
 

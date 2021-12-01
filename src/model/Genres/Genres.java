@@ -1,6 +1,6 @@
-package Genres;
+package model.Genres;
 
-import Genre.Genre;
+import model.Genre.Genre;
 
 import java.util.Collections;
 import java.util.LinkedList;

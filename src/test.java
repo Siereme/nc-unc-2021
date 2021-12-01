@@ -1,6 +1,6 @@
-import Film.Film;
-import Films.Films;
-import Genres.Genres;
+import model.Film.Film;
+import model.Films.Films;
+import model.Genres.Genres;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -8,9 +8,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 
-// TODO вывод фильмов по жанрам, добавление фильмов пользователем(админом)
-// TODO Добавить функцию проверки ввода
-// TODO проверить работу функции readDate
+
+// TODO добавить поле первичный ключ
+// TODO жанры...
+// TODO контролеры, вью
 public class test {
     static private void pressAnyKeyToContinue() {
         System.out.println("Press Enter key to continue...");
@@ -61,7 +62,7 @@ public class test {
         Genres res = new Genres();
         while (true) {
             System.out.println(copy);
-            int ind = readInt(-1, copy.size() - 1, "Select Genre or -1 to exit ", in);
+            int ind = readInt(-1, copy.size() - 1, "Select model.Genre or -1 to exit ", in);
             if (ind == -1) {
                 return res;
             } else {
@@ -82,7 +83,7 @@ public class test {
             while (true) {
                 cls();
                 Scanner in = new Scanner(System.in);
-                int num = readInt(0, 3, "Select genre - 1\nAdd new Film - 2\nCheck all films - 3\nexit - 0\n", in);
+                int num = readInt(0, 3, "Select genre - 1\nAdd new model.Film - 2\nCheck all films - 3\nexit - 0\n", in);
                 if (num == 0) {
                     return;
                 } else if (num == 1) {
@@ -91,9 +92,9 @@ public class test {
                         System.out.println(genres);
                         int right = genres.size();
                         int genreInd = readInt(0, right - 1, "Select genre", in);
-                        Films filmsByGenre = films.getFilmsByGenre(genres.get(genreInd));
+                        // Films filmsByGenre = films.getFilmsByGenre(genres.get(genreInd));
                         cls();
-                        System.out.println(filmsByGenre);
+                        // System.out.println(filmsByGenre);
                         pressAnyKeyToContinue();
                     } else {
                         System.out.println("There are no genres available");
