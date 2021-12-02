@@ -4,9 +4,11 @@ import model.Genre.Genre;
 import model.Genres.Genres;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class Film {
 
+    private String id;
     private String tittle;
     private Date date;
     private Genres genres;
@@ -29,16 +31,20 @@ public class Film {
     }
 
     public Film(String newTittle, Date newDate, Genres newGenres) {
+        id = UUID.randomUUID().toString();
         tittle = newTittle;
         date = newDate;
         genres = newGenres;
     }
 
     public Film(String newTittle, Date newDate, Genre... newGenres) {
+        id = UUID.randomUUID().toString();
         tittle = newTittle;
         date = newDate;
         genres = new Genres(newGenres);
     }
+
+    public String getId(){return this.id;}
 
     public String getTittle() {
         return tittle;

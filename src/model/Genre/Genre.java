@@ -1,14 +1,19 @@
 package model.Genre;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class Genre {
 
-    String tittle;
+    private String id;
+    private String tittle;
 
     public Genre(String newGener) {
+        id = UUID.randomUUID().toString();
         tittle = newGener;
     }
+
+    public String getId(){return this.id;}
 
     public String getTittle() {
         return tittle;
