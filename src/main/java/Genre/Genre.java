@@ -1,12 +1,18 @@
 package Genre;
 
+import java.util.UUID;
+
 public class Genre {
 
-    String tittle;
+    private String id;
+    private String tittle;
 
     Genre(String newGener){
+        this.id = UUID.randomUUID().toString();
         tittle = newGener;
     }
+
+    public String getId(){return this.id;}
 
     public String getTittle() {
         return tittle;
