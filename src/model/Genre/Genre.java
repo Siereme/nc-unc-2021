@@ -23,12 +23,6 @@ public class Genre {
         this.tittle = tittle;
     }
 
-    // нужна ли эта гениальная реализация...
-    @Override
-    public String toString() {
-        return tittle;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {

@@ -54,15 +54,6 @@ public class Actor {
 
     public Film getFilm(int index){return this.films.get(index);}
 
-    public void addFilm(Film film){this.films.add(film);}
-
-    public void setFilm(int index, Film film){
-        this.films.add(index, film);
-        this.films.remove(index + 1);
-    }
-
-    public void deleteFilm(int index){this.films.remove(index);}
-
     @Override
     public String toString(){
         Formatter info = new Formatter();

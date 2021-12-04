@@ -1,17 +1,7 @@
-import model.Actor.Actor;
-import model.Actors.Actors;
-import model.Director.Director;
-import model.Directors.Directors;
-import model.Film.Film;
-import model.Films.Films;
-import model.Genres.Genres;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 
@@ -61,7 +51,7 @@ public class test {
         }
     }
 
-    static private Genres readGenres(Genres availableGenres, Scanner in) {
+/*    static private Genres readGenres(Genres availableGenres, Scanner in) {
         // копия жанров, будет изменяться, например когда пользователь выберет жанр, мы его удалим из списка
         // для ликвидации возможных ошибок при следующем выборе
         Genres copy = (Genres) availableGenres.clone();
@@ -76,7 +66,7 @@ public class test {
                 res.addGenre(copy.remove(ind));
             }
         }
-    }
+    }*/
 
     static private Boolean check(int number, int size){
         if(number < 0 | number > size){
@@ -131,7 +121,7 @@ public class test {
 //            System.out.println("Sorry but films are out of stock");
 //            pressAnyKeyToContinue();
 //        }
-        Actor actor1 = new Actor("Actor1", "1987");
+/*        Actor actor1 = new Actor("Actor1", "1987");
         actor1.addFilm(new Film("Film1", new Date()));
         actor1.addFilm(new Film("Film2", new Date()));
         actor1.addFilm(new Film("Film3", new Date()));
@@ -170,7 +160,7 @@ public class test {
         } else {
             System.out.println("Sorry but films are out of stock");
             pressAnyKeyToContinue();
-        }
+        }*/
 
 //        Director director1 = new Director("Director1", "1987");
 //        director1.addFilm(new Film("Film1", new Date()));
