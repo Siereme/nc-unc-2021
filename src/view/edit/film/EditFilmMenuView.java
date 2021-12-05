@@ -1,9 +1,6 @@
 package view.edit.film;
 
 import controller.FilmController;
-import model.Actor.Actor;
-import model.Director.Director;
-import model.Genre.Genre;
 import repository.ActorRepository;
 import repository.DirectorRepository;
 import repository.GenreRepository;
@@ -33,7 +30,8 @@ public class EditFilmMenuView extends View implements IView {
                     int filmInd = option;
                     boolean show1 = true;
                     while (show1) {
-                        System.out.println(filmController.getRepository().findAll().get(filmInd));
+                        System.out.println(
+                                filmController.filmToString(filmController.getRepository().findAll().get(filmInd)));
                         System.out.println("1. Change Tittle");
                         System.out.println("2. Change date");
                         System.out.println("3. Change genres");
@@ -93,7 +91,7 @@ public class EditFilmMenuView extends View implements IView {
 
     private void setGenres(int filmInd) {
         GenreRepository genreRepository = new GenreRepository();
-        LinkedList<Genre> newGenres = new LinkedList<>();
+        LinkedList<String> newGenres = new LinkedList<>();
         boolean show = true;
         while (show) {
             System.out.println("Select Genre to add");
@@ -106,8 +104,10 @@ public class EditFilmMenuView extends View implements IView {
             if (option < 0 || option >= genreRepository.findAll().size()) {
                 continue;
             }
-            if (!newGenres.contains(genreRepository.findAll().get(option))) {
-                newGenres.add(genreRepository.findAll().get(option));
+            if (!newGenres.contains(genreRepository.findAll().get(option).getId())) {
+                newGenres.add(genreRepository.findAll().get(option).getId());
+                System.out.println(genreRepository.findAll().get(option).getId());
+                System.out.println(newGenres.get(0));
             }
         }
         filmController.setGenres(filmInd, newGenres);
@@ -115,7 +115,7 @@ public class EditFilmMenuView extends View implements IView {
 
     private void setDirectors(int filmInd) {
         DirectorRepository directorRepository = new DirectorRepository();
-        LinkedList<Director> newDirectors = new LinkedList<Director>();
+        LinkedList<String> newDirectors = new LinkedList<String>();
         while (true) {
             System.out.println("Select Director to add");
             System.out.println("-1. Exit");
@@ -127,8 +127,8 @@ public class EditFilmMenuView extends View implements IView {
             if (option < 0 || option >= directorRepository.findAll().size()) {
                 continue;
             }
-            if (!newDirectors.contains(directorRepository.findAll().get(option))) {
-                newDirectors.add(directorRepository.findAll().get(option));
+            if (!newDirectors.contains(directorRepository.findAll().get(option).getId())) {
+                newDirectors.add(directorRepository.findAll().get(option).getId());
             }
         }
         filmController.setDirectors(filmInd, newDirectors);
@@ -136,7 +136,7 @@ public class EditFilmMenuView extends View implements IView {
 
     private void setActors(int filmInd) {
         ActorRepository actorRepository = new ActorRepository();
-        LinkedList<Actor> newActors = new LinkedList<Actor>();
+        LinkedList<String> newActors = new LinkedList<String>();
         while (true) {
             System.out.println("Select Actor to add");
             System.out.println("-1. Exit");
@@ -148,8 +148,8 @@ public class EditFilmMenuView extends View implements IView {
             if (option < 0 || option >= actorRepository.findAll().size()) {
                 continue;
             }
-            if (!newActors.contains(actorRepository.findAll().get(option))) {
-                newActors.add(actorRepository.findAll().get(option));
+            if (!newActors.contains(actorRepository.findAll().get(option).getId())) {
+                newActors.add(actorRepository.findAll().get(option).getId());
             }
         }
         filmController.setActors(filmInd, newActors);

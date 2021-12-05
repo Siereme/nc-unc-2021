@@ -1,10 +1,10 @@
 package controller;
 
 import model.Actor.Actor;
-import model.Film.Film;
 import repository.ActorRepository;
 
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class ActorController {
     public ActorRepository getActorRepository() {
@@ -21,16 +21,7 @@ public class ActorController {
         actorRepository = newActorRepository;
     }
 
-/*    public void addFilm(Film film){this.actorRepository.findAll().add(film);}
-
-    public void setFilm(int index, Film film){
-        this.films.add(index, film);
-        this.films.remove(index + 1);
-    }
-
-    public void deleteFilm(int index){this.films.remove(index);}*/
-
-    public void setFilms(int ind, LinkedList<Film> newFilms) {
+    public void setFilms(int ind, LinkedList<String> newFilms) {
         actorRepository.findAll().get(ind).setFilms(newFilms);
     }
 
@@ -44,5 +35,41 @@ public class ActorController {
         return new String(sb);
     }
 
+    Actor actorById(String id) {
+        return (Actor) actorRepository.findAll().stream().filter(a -> Objects.equals(a.getId(), id));
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        int ind = 0;
+        for (Actor actor : actorRepository.findAll()) {
+            sb.append(++ind).append(". ").append(actorToString(actor)).append("\n");
+        }
+        return new String(sb);
+    }
+
+    public String actorToString(Actor actor) {
+        StringBuffer sb = new StringBuffer();
+        sb.append("Id: ").append(actor.getId()).append("\n");
+        sb.append("Name: ").append(actor.getName()).append("\n");
+        sb.append("Year: ").append(actor.getYear()).append("\n");
+        if (actor.getFilms().isEmpty()) {
+            sb.append("Films is empty");
+        } else {
+            FilmController filmController = new FilmController();
+            sb.append(filmController.filmsById(actor.getFilms())).append("\n");
+        }
+        return new String(sb);
+    }
+
+    public String actorsById(LinkedList<String> actors) {
+        StringBuffer sb = new StringBuffer();
+        int ind = 0;
+        for (String a : actors) {
+            sb.append(ind++).append(". ").append(actorToString(actorById(a))).append("\n");
+        }
+        return new String(sb);
+    }
 
 }

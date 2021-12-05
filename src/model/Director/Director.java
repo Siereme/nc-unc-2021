@@ -1,11 +1,7 @@
 package model.Director;
 
-import model.Film.Film;
-
 import java.util.LinkedList;
 import java.util.UUID;
-
-import static controller.FilmController.tittlesToString;
 
 public class Director {
 
@@ -17,35 +13,34 @@ public class Director {
 
     private String name;
     private String year;
+    private LinkedList<String> films;
 
-    public void setFilms(LinkedList<Film> films) {
+    public void setFilms(LinkedList<String> films) {
         this.films = films;
     }
-
-    private LinkedList<Film> films;
 
     public Director(String name) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.year = "Unknown";
-        this.films = new LinkedList<Film>();
+        this.films = new LinkedList<String>();
     }
 
     public Director(String name, String year) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.year = year;
-        this.films = new LinkedList<Film>();
+        this.films = new LinkedList<String>();
     }
 
-    public Director(String name, LinkedList<Film> films) {
+    public Director(String name, LinkedList<String> films) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.year = "Unknown";
         this.films = films;
     }
 
-    public Director(String name, String year, LinkedList<Film> films) {
+    public Director(String name, String year, LinkedList<String> films) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.year = year;
@@ -64,32 +59,8 @@ public class Director {
         return this.year;
     }
 
-    public int getCountFilms() {
-        return this.films.size();
-    }
-
-    public LinkedList<Film> getFilms() {
+    public LinkedList<String> getFilms() {
         return this.films;
     }
 
-    public Film getFilm(int index) {
-        return this.films.get(index);
-    }
-
-    public void setFilm(int index, Film film) {
-        films.set(index, film);
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("Id: ").append(id).append("\n");
-        sb.append("Name: ").append(name).append("\n");
-        if (!films.isEmpty()) {
-            sb.append(tittlesToString(films)).append("\n");
-        } else {
-            sb.append("Films is empty\n");
-        }
-        return new String(sb);
-    }
 }

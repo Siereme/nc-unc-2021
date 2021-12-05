@@ -1,7 +1,6 @@
 package view.edit.director;
 
 import controller.DirectorController;
-import model.Film.Film;
 import repository.FilmsRepository;
 import view.IView;
 import view.View;
@@ -54,7 +53,7 @@ public class EditDirectorMenuView extends View implements IView {
 
     private void setFilms(int directorInd) {
         FilmsRepository filmsRepository = new FilmsRepository();
-        LinkedList<Film> newFilms = new LinkedList<>();
+        LinkedList<String> newFilms = new LinkedList<>();
         while (true) {
             System.out.println("Select Film to add");
             System.out.println("-1. Exit");
@@ -66,8 +65,8 @@ public class EditDirectorMenuView extends View implements IView {
             if (option < 0 || option >= filmsRepository.findAll().size()) {
                 continue;
             }
-            if (!newFilms.contains(filmsRepository.findAll().get(option))) {
-                newFilms.add(filmsRepository.findAll().get(option));
+            if (!newFilms.contains(filmsRepository.findAll().get(option).getId())) {
+                newFilms.add(filmsRepository.findAll().get(option).getId());
             }
         }
         directorController.setFilms(directorInd, newFilms);
