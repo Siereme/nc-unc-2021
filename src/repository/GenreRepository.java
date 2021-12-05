@@ -15,7 +15,8 @@ public class GenreRepository implements IRepository<Genre> {
 
     //todo serrialization
     private void init() {
-
+        genres.add(new Genre("genre1"));
+        genres.add(new Genre("genre2"));
     }
 
     @Override
@@ -47,5 +48,16 @@ public class GenreRepository implements IRepository<Genre> {
     @Override
     public void clear() {
         genres.clear();
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        int ind = 0;
+        for (Genre genre : genres) {
+            sb.append(ind).append(". ").append(genre).append("\n");
+            ++ind;
+        }
+        return new String(sb);
     }
 }

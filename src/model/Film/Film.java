@@ -8,6 +8,10 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.UUID;
 
+import static controller.DirectorController.tittlesToString;
+import static controller.GenreController.tittlesToString;
+import static controller.ActorController.tittlesToString;
+
 public class Film {
 
     private String id;
@@ -41,8 +45,7 @@ public class Film {
         this.genres = genres;
     }
 
-    public
-    Film(String newTittle, Date newDate, LinkedList<Genre> newGenres, LinkedList<Director> newDirectors,
+    public Film(String newTittle, Date newDate, LinkedList<Genre> newGenres, LinkedList<Director> newDirectors,
                 LinkedList<Actor> newActors) {
         id = UUID.randomUUID().toString();
         tittle = newTittle;
@@ -51,7 +54,6 @@ public class Film {
         directors = newDirectors;
         actors = newActors;
     }
-
 
     public String getId() {
         return this.id;
@@ -77,9 +79,23 @@ public class Film {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append("Id: ").append(id).append("\n").append("Tittle: ").append(tittle).append("\n")
-                .append("Date of release: ").append(date).append("\n").append("Genres\n").append(genres.toString())
-                .append("Directors\n").append(directors.toString()).append("\n").append("Actors:\n")
-                .append(actors.toString());
+                .append("Date of release: ").append(date).append("\n");
+        if (!genres.isEmpty()) {
+            sb.append("Genres\n");
+            sb.append(tittlesToString(genres));
+        } else {
+            sb.append("Genres is empty\n");
+        }
+        if (!directors.isEmpty()) {
+            sb.append("Directors\n").append(tittlesToString(directors)).append("\n");
+        } else {
+            sb.append("Directors is empty\n");
+        }
+        if (!actors.isEmpty()) {
+            sb.append("Actors:\n").append(tittlesToString(actors)).append("\n");
+        } else {
+            sb.append("Actors is empty\n");
+        }
         return new String(sb);
     }
 

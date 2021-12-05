@@ -2,15 +2,26 @@ package model.Director;
 
 import model.Film.Film;
 
-import java.util.Formatter;
 import java.util.LinkedList;
 import java.util.UUID;
+
+import static controller.FilmController.tittlesToString;
 
 public class Director {
 
     private String id;
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     private String name;
     private String year;
+
+    public void setFilms(LinkedList<Film> films) {
+        this.films = films;
+    }
+
     private LinkedList<Film> films;
 
     public Director(String name) {
@@ -71,8 +82,14 @@ public class Director {
 
     @Override
     public String toString() {
-        Formatter info = new Formatter();
-        info.format("Name: %s \n Year: %s", getName(), getYear());
-        return info.toString();
+        StringBuffer sb = new StringBuffer();
+        sb.append("Id: ").append(id).append("\n");
+        sb.append("Name: ").append(name).append("\n");
+        if (!films.isEmpty()) {
+            sb.append(tittlesToString(films)).append("\n");
+        } else {
+            sb.append("Films is empty\n");
+        }
+        return new String(sb);
     }
 }

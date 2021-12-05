@@ -26,9 +26,11 @@ public class EditView extends View implements IView {
             int option = getOption();
             switch (option) {
                 case 1:
+                    // готово
                     editFilmMenuView.display();
                     break;
                 case 2:
+                    // готово
                     editGenreView.display();
                     break;
                 case 3:

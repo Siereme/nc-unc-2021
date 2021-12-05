@@ -9,15 +9,15 @@ import java.util.Objects;
 public class DirectorRepository implements IRepository<Director> {
     private final List<Director> directors = new ArrayList<>();
 
-    public DirectorRepository(){
+    public DirectorRepository() {
         init();
     }
 
     //todo serrialization
     private void init() {
-
+        directors.add(new Director("director1", "15"));
+        directors.add(new Director("director2", "25"));
     }
-
 
     @Override
     public List<Director> findAll() {
@@ -48,5 +48,16 @@ public class DirectorRepository implements IRepository<Director> {
     @Override
     public void clear() {
         directors.clear();
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        int ind = 0;
+        for (Director director : directors) {
+            sb.append(ind).append(". ").append(director).append("\n");
+            ++ind;
+        }
+        return new String(sb);
     }
 }

@@ -7,7 +7,6 @@ import model.Genre.Genre;
 import repository.FilmsRepository;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class FilmController {
 
@@ -21,8 +20,8 @@ public class FilmController {
         repository = newRepository;
     }
 
-    public List<Film> getFilms() {
-        return repository.findAll();
+    public FilmsRepository getRepository() {
+        return repository;
     }
 
     public void deleteById(Integer id) {
@@ -59,5 +58,16 @@ public class FilmController {
     public void setActors(int filmInd, LinkedList<Actor> newActors) {
         repository.findAll().get(filmInd).setActors(newActors);
     }
+
+    public static String tittlesToString(LinkedList<Film> films) {
+        StringBuffer sb = new StringBuffer();
+        int ind = 0;
+        for (Film film : films) {
+            sb.append(ind).append(". ").append(film.getTittle()).append("\n");
+            ind++;
+        }
+        return new String(sb);
+    }
+
 
 }

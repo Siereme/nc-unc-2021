@@ -4,6 +4,8 @@ import model.Film.Film;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -15,13 +17,14 @@ public class FilmsRepository implements IRepository<Film> {
         films.addAll(Arrays.asList(newFilms));
     }
 
-    public FilmsRepository(){
+    public FilmsRepository() {
         init();
     }
 
     //todo serrialization
     private void init() {
-
+        films.add(new Film("film1", new Date(), new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
+        films.add(new Film("film2", new Date(), new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
     }
 
     public List<Film> findAll() {
@@ -53,6 +56,17 @@ public class FilmsRepository implements IRepository<Film> {
     @Override
     public void clear() {
         films.clear();
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        int ind = 0;
+        for (Film film : films) {
+            sb.append(ind).append(". ").append(film.getTittle()).append("\n");
+            ++ind;
+        }
+        return new String(sb);
     }
 
 }

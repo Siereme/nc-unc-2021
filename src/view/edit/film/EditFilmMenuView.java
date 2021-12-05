@@ -23,40 +23,45 @@ public class EditFilmMenuView extends View implements IView {
         boolean show = true;
         while (show) {
             System.out.println("------Select Film To Edit------");
-            System.out.println(filmController.getFilms().toString());
-            System.out.println("0. Exit");
+            System.out.println(filmController.getRepository().toString());
+            System.out.println("-1. Exit");
             int option = getOption();
-            if (option == 0) {
-                break;
+            if (option == -1) {
+                show = false;
             } else {
-                if (option < filmController.getFilms().size()) {
+                if (option >= 0 && option < filmController.getRepository().findAll().size()) {
                     int filmInd = option;
-                    System.out.println(filmController.getFilms().get(option));
-                    System.out.println("1. Change Tittle");
-                    System.out.println("2. Change date");
-                    System.out.println("3. Change genres");
-                    System.out.println("4. Change directors");
-                    System.out.println("5. Change actors");
-                    System.out.println("6. Exit");
-                    option = getOption();
-                    switch (option) {
-                        case 1:
-                            setTittle(filmInd);
-                            break;
-                        case 2:
-                            setDate(filmInd);
-                            break;
-                        case 3:
-                            setGenres(filmInd);
-                            break;
-                        case 4:
-                            setDirectors(filmInd);
-                            break;
-                        case 5:
-                            setActors(filmInd);
-                            break;
-                        case 6:
-                            break;
+                    boolean show1 = true;
+                    while (show1) {
+                        System.out.println(filmController.getRepository().findAll().get(filmInd));
+                        System.out.println("1. Change Tittle");
+                        System.out.println("2. Change date");
+                        System.out.println("3. Change genres");
+                        System.out.println("4. Change directors");
+                        System.out.println("5. Change actors");
+                        System.out.println("6. Exit");
+                        option = getOption();
+                        switch (option) {
+                            case 1:
+                                setTittle(filmInd);
+                                break;
+                            case 2:
+                                setDate(filmInd);
+                                break;
+                            case 3:
+                                setGenres(filmInd);
+                                break;
+                            case 4:
+                                setDirectors(filmInd);
+                                break;
+                            case 5:
+                                setActors(filmInd);
+                                break;
+                            case 6:
+                                show1 = false;
+                            default:
+                                break;
+                        }
                     }
                 }
             }
@@ -66,7 +71,7 @@ public class EditFilmMenuView extends View implements IView {
     private void setTittle(int filmInd) {
         System.out.println("Enter tittle: ");
         String tittle = input.next();
-        filmController.getFilms().get(filmInd).setTittle(tittle);
+        filmController.getRepository().findAll().get(filmInd).setTittle(tittle);
     }
 
     private void setDate(int filmInd) {
@@ -81,7 +86,7 @@ public class EditFilmMenuView extends View implements IView {
                 System.out.println(e.toString());
                 continue;
             }
-            filmController.getFilms().get(filmInd).setDate(date);
+            filmController.getRepository().findAll().get(filmInd).setDate(date);
             break;
         }
     }
@@ -89,13 +94,14 @@ public class EditFilmMenuView extends View implements IView {
     private void setGenres(int filmInd) {
         GenreRepository genreRepository = new GenreRepository();
         LinkedList<Genre> newGenres = new LinkedList<>();
-        while (true) {
+        boolean show = true;
+        while (show) {
             System.out.println("Select Genre to add");
             System.out.println("-1. Exit");
             System.out.println(genreRepository);
             int option = getOption();
             if (option == -1) {
-                break;
+                show = false;
             }
             if (option < 0 || option >= genreRepository.findAll().size()) {
                 continue;

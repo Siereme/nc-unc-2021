@@ -13,7 +13,9 @@ public class Genre {
         tittle = newGener;
     }
 
-    public String getId(){return this.id;}
+    public String getId() {
+        return this.id;
+    }
 
     public String getTittle() {
         return tittle;
@@ -38,5 +40,13 @@ public class Genre {
     @Override
     public int hashCode() {
         return Objects.hash(tittle);
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("ID: ").append(id).append("\n");
+        sb.append("Tittle: ").append(tittle).append("\n");
+        return new String(sb);
     }
 }
