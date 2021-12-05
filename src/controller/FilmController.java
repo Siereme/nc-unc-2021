@@ -1,9 +1,12 @@
 package controller;
 
+import model.Actor.Actor;
+import model.Director.Director;
 import model.Film.Film;
 import model.Genre.Genre;
 import repository.FilmsRepository;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class FilmController {
@@ -27,7 +30,7 @@ public class FilmController {
     }
 
     public boolean isContainsGenre(Genre genreToFind, Film film) {
-        for (Genre genre : film.getGenres().findAll()) {
+        for (Genre genre : film.getGenres()) {
             if (genre.equals(genreToFind)) {
                 return true;
             }
@@ -45,5 +48,16 @@ public class FilmController {
         return filmsByGenre;
     }
 
+    public void setGenres(int filmInd, LinkedList<Genre> newGenres) {
+        repository.findAll().get(filmInd).setGenres(newGenres);
+    }
+
+    public void setDirectors(int filmInd, LinkedList<Director> newDirectors) {
+        repository.findAll().get(filmInd).setDirectors(newDirectors);
+    }
+
+    public void setActors(int filmInd, LinkedList<Actor> newActors) {
+        repository.findAll().get(filmInd).setActors(newActors);
+    }
 
 }

@@ -1,9 +1,9 @@
-package view.edit;
+package view.edit.genre;
 
 import view.IView;
 import view.View;
 
-public class EditGenreView extends View implements IView {
+public class EditGenreMenuView extends View implements IView {
     @Override
     public void display() {
 

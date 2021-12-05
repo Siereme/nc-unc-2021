@@ -1,9 +1,9 @@
-package view.edit;
+package view.edit.director;
 
 import view.IView;
 import view.View;
 
-public class EditDirectorView extends View implements IView {
+public class EditDirectorMenuView extends View implements IView {
     @Override
     public void display() {
 

@@ -2,12 +2,16 @@ package view.edit;
 
 import view.IView;
 import view.View;
+import view.edit.actor.EditActorMenuView;
+import view.edit.director.EditDirectorMenuView;
+import view.edit.film.EditFilmMenuView;
+import view.edit.genre.EditGenreMenuView;
 
 public class EditView extends View implements IView {
-    private final EditFilmView editFilmView = new EditFilmView();
-    private final EditActorView editActorView = new EditActorView();
-    private final EditGenreView editGenreView = new EditGenreView();
-    private final EditDirectorView editDirectorView = new EditDirectorView();
+    private final EditFilmMenuView editFilmMenuView = new EditFilmMenuView();
+    private final EditActorMenuView editActorView = new EditActorMenuView();
+    private final EditGenreMenuView editGenreView = new EditGenreMenuView();
+    private final EditDirectorMenuView editDirectorView = new EditDirectorMenuView();
 
     @Override
     public void display() {
@@ -22,7 +26,7 @@ public class EditView extends View implements IView {
             int option = getOption();
             switch (option) {
                 case 1:
-                    editFilmView.display();
+                    editFilmMenuView.display();
                     break;
                 case 2:
                     editGenreView.display();

@@ -1,10 +1,11 @@
 package model.Film;
 
-import repository.ActorRepository;
-import repository.DirectorRepository;
-import repository.GenreRepository;
+import model.Actor.Actor;
+import model.Director.Director;
+import model.Genre.Genre;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.UUID;
 
 public class Film {
@@ -12,43 +13,43 @@ public class Film {
     private String id;
     private String tittle;
     private Date date;
-    private GenreRepository genres;
-    private DirectorRepository directors;
-    private ActorRepository actors;
+    private LinkedList<Genre> genres;
+    private LinkedList<Director> directors;
+    private LinkedList<Actor> actors;
 
-    public ActorRepository getActors() {
+    public LinkedList<Actor> getActors() {
         return actors;
     }
 
-    public void setActors(ActorRepository actors) {
+    public void setActors(LinkedList<Actor> actors) {
         this.actors = actors;
     }
 
-    public DirectorRepository getDirectors() {
+    public LinkedList<Director> getDirectors() {
         return directors;
     }
 
-    public void setDirectors(DirectorRepository directors) {
+    public void setDirectors(LinkedList<Director> directors) {
         this.directors = directors;
     }
 
-    public GenreRepository getGenres() {
+    public LinkedList<Genre> getGenres() {
         return genres;
     }
 
-    public void setGenres(GenreRepository genres) {
+    public void setGenres(LinkedList<Genre> genres) {
         this.genres = genres;
     }
 
     public
-    Film(String newTittle, Date newDate, GenreRepository newGenres, DirectorRepository directorRepository,
-                ActorRepository actorRepository) {
+    Film(String newTittle, Date newDate, LinkedList<Genre> newGenres, LinkedList<Director> newDirectors,
+                LinkedList<Actor> newActors) {
         id = UUID.randomUUID().toString();
         tittle = newTittle;
         date = newDate;
         genres = newGenres;
-        directors = directorRepository;
-        actors = actorRepository;
+        directors = newDirectors;
+        actors = newActors;
     }
 
 
