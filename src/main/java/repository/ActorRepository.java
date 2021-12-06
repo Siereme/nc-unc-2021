@@ -1,13 +1,25 @@
 package repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Actor.Actor;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class ActorRepository implements IRepository<Actor> {
+    private final String filePath = "src/main/resources/Actors.json";
     private final List<Actor> actors = new ArrayList<>();
+
+    public ActorRepository(Actor... actors) {
+        this.actors.addAll(Arrays.asList(actors));
+    }
 
     public ActorRepository() {
         init();
@@ -17,6 +29,11 @@ public class ActorRepository implements IRepository<Actor> {
     private void init() {
         actors.add(new Actor("actor1", "10"));
         actors.add(new Actor("actor2", "20"));
+        try {
+            serialize(new ObjectMapper());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -59,5 +76,15 @@ public class ActorRepository implements IRepository<Actor> {
             ++ind;
         }
         return new String(sb);
+    }
+
+    public void serialize(ObjectMapper objectMapper) throws IOException {
+        String file = new File(this.filePath).getAbsolutePath();
+        objectMapper.writeValue(new FileWriter(file), this.actors);
+    }
+
+    public List<Actor> deserialize(ObjectMapper objectMapper) throws IOException {
+        String file = new File(this.filePath).getAbsolutePath();
+        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Actor>>() {});
     }
 }

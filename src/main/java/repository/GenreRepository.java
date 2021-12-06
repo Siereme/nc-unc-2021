@@ -1,13 +1,25 @@
 package repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Genre.Genre;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public class GenreRepository implements IRepository<Genre> {
+    private final String filePath = "src/main/resources/Genres.json";
     private final List<Genre> genres = new ArrayList<>();
+
+    public GenreRepository(Genre... genres) {
+        this.genres.addAll(Arrays.asList(genres));
+    }
 
     public GenreRepository() {
         init();
@@ -17,6 +29,11 @@ public class GenreRepository implements IRepository<Genre> {
     private void init() {
         genres.add(new Genre("genre1"));
         genres.add(new Genre("genre2"));
+        try {
+            serialize(new ObjectMapper());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -59,5 +76,15 @@ public class GenreRepository implements IRepository<Genre> {
             ++ind;
         }
         return new String(sb);
+    }
+
+    public void serialize(ObjectMapper objectMapper) throws IOException {
+        String file = new File(this.filePath).getAbsolutePath();
+        objectMapper.writeValue(new FileWriter(file), this.genres);
+    }
+
+    public List<Genre> deserialize(ObjectMapper objectMapper) throws IOException {
+        String file = new File(this.filePath).getAbsolutePath();
+        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Genre>>() {});
     }
 }

@@ -24,6 +24,13 @@ public class Director {
         this.films = films;
     }
 
+    public Director(){
+        this.id = UUID.randomUUID().toString();
+        this.name = "Unknown";
+        this.year = "Unknown";
+        this.films = new LinkedList<String>();
+    }
+
     public Director(String name) {
         this.id = UUID.randomUUID().toString();
         this.name = name;

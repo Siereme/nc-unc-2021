@@ -39,9 +39,22 @@ public class Film {
         System.out.println(this.genres);
     }
 
+    public Film(){
+        id = UUID.randomUUID().toString();
+        tittle = "Unknown";
+        date = new Date();
+        genres = new LinkedList<>();
+        directors = new LinkedList<>();
+        actors = new LinkedList<>();
+    }
+
     public Film(String newTittle){
         id = UUID.randomUUID().toString();
         tittle = newTittle;
+        date = new Date();
+        genres = new LinkedList<>();
+        directors = new LinkedList<>();
+        actors = new LinkedList<>();
     }
 
 

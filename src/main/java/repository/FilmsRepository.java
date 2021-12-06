@@ -1,16 +1,18 @@
 package repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Film.Film;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.*;
 
 //TODO will be replaced by DB later
 public class FilmsRepository implements IRepository<Film> {
+    private final String filePath = "src/main/resources/Films.json";
     private final List<Film> films = new ArrayList<>();
 
     public FilmsRepository(Film... newFilms) {
@@ -25,6 +27,11 @@ public class FilmsRepository implements IRepository<Film> {
     private void init() {
         films.add(new Film("film1", new Date(), new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
         films.add(new Film("film2", new Date(), new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
+        try {
+            serialize(new ObjectMapper());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public List<Film> findAll() {
@@ -69,4 +76,13 @@ public class FilmsRepository implements IRepository<Film> {
         return new String(sb);
     }
 
+    public void serialize(ObjectMapper objectMapper) throws IOException {
+        String file = new File(this.filePath).getAbsolutePath();
+        objectMapper.writeValue(new FileWriter(file), this.films);
+    }
+
+    public List<Film> deserialize(ObjectMapper objectMapper) throws IOException {
+        String file = new File(this.filePath).getAbsolutePath();
+        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Film>>() {});
+    }
 }

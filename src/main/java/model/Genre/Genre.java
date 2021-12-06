@@ -8,6 +8,11 @@ public class Genre {
     private String id;
     private String tittle;
 
+    public Genre(){
+        id = UUID.randomUUID().toString();
+        tittle = "Unknown";
+    }
+
     public Genre(String newGener) {
         id = UUID.randomUUID().toString();
         tittle = newGener;

@@ -1,13 +1,25 @@
 package repository;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Director.Director;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class DirectorRepository implements IRepository<Director> {
+public class DirectorRepository implements repository.IRepository<Director> {
+    private final String filePath = "src/main/resources/Directors.json";
     private final List<Director> directors = new ArrayList<>();
+
+    public DirectorRepository(Director... directors) {
+        this.directors.addAll(Arrays.asList(directors));
+    }
 
     public DirectorRepository() {
         init();
@@ -17,6 +29,11 @@ public class DirectorRepository implements IRepository<Director> {
     private void init() {
         directors.add(new Director("director1", "15"));
         directors.add(new Director("director2", "25"));
+        try {
+            serialize(new ObjectMapper());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -59,5 +76,15 @@ public class DirectorRepository implements IRepository<Director> {
             ++ind;
         }
         return new String(sb);
+    }
+
+    public void serialize(ObjectMapper objectMapper) throws IOException {
+        String file = new File(this.filePath).getAbsolutePath();
+        objectMapper.writeValue(new FileWriter(file), this.directors);
+    }
+
+    public List<Director> deserialize(ObjectMapper objectMapper) throws IOException {
+        String file = new File(this.filePath).getAbsolutePath();
+        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Director>>() {});
     }
 }

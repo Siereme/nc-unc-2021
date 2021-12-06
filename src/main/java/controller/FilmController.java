@@ -120,9 +120,9 @@ public class FilmController {
         for (String s : films) {
             sb.append(ind).append(". ").append(filmToString(findById(s))).append("\n");
         }
-        if (sb.isEmpty()) {
-            return "Films is empty!\n";
-        }
+//        if (sb.isEmpty()) {
+//            return "Films is empty!\n";
+//        }
         return new String(sb);
     }
 

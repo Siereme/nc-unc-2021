@@ -1,5 +1,7 @@
 package model.Actor;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.LinkedList;
 import java.util.UUID;
 
@@ -21,6 +23,13 @@ public class Actor {
 
     public void setFilms(LinkedList<String> filmsId) {
         this.filmsId = filmsId;
+    }
+
+    public Actor(){
+        this.id = UUID.randomUUID().toString();
+        this.name = "Unknown";
+        this.year = "Unknown";
+        this.filmsId = new LinkedList<String>();
     }
 
     public Actor(String name) {
@@ -63,6 +72,7 @@ public class Actor {
         return this.year;
     }
 
+    @JsonIgnore
     public int getCountFilms() {
         return this.filmsId.size();
     }
