@@ -27,10 +27,10 @@ public class GenreRepository implements IRepository<Genre> {
 
     //todo serrialization
     private void init() {
-        genres.add(new Genre("genre1"));
-        genres.add(new Genre("genre2"));
+/*        genres.add(new Genre("genre1"));
+        genres.add(new Genre("genre2"));*/
         try {
-            serialize(new ObjectMapper());
+           genres.addAll(deserialize(new ObjectMapper()));
         } catch (IOException e) {
             e.printStackTrace();
         }

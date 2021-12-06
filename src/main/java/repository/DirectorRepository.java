@@ -27,10 +27,10 @@ public class DirectorRepository implements repository.IRepository<Director> {
 
     //todo serrialization
     private void init() {
-        directors.add(new Director("director1", "15"));
-        directors.add(new Director("director2", "25"));
+/*        directors.add(new Director("director1", "15"));
+        directors.add(new Director("director2", "25"));*/
         try {
-            serialize(new ObjectMapper());
+            directors.addAll(deserialize(new ObjectMapper()));
         } catch (IOException e) {
             e.printStackTrace();
         }

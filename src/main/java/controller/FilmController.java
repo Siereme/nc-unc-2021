@@ -45,12 +45,11 @@ public class FilmController {
     }*/
 
     public void setGenres(int filmInd, LinkedList<String> newGenres) {
-        filmsRepository.findAll().get(filmInd).setGenres(newGenres); // выбрасывает ошибку, странно копируется(
-        // repository.findAll().get(filmInd).getGenres().removeAll(newGenres);
+        filmsRepository.findAll().get(filmInd).setGenres(newGenres);
     }
 
     public void setDirectors(int filmInd, LinkedList<String> newDirectors) {
-        // repository.findAll().get(filmInd).setDirectors(newDirectors);
+        filmsRepository.findAll().get(filmInd).setDirectors(newDirectors);
     }
 
     public void setActors(int filmInd, LinkedList<String> newActors) {
@@ -81,7 +80,6 @@ public class FilmController {
         sb.append("Id: ").append(film.getId()).append("\n").append("Tittle: ").append(film.getTittle()).append("\n")
                 .append("Date of release: ").append(film.getDate()).append("\n");
         if (!film.getGenres().isEmpty()) {
-            System.out.println(film.getGenres());
             sb.append("Genres\n");
             GenreController genreController = new GenreController();
             sb.append(genreController.genresByIdToString(film.getGenres())).append("\n");
@@ -89,12 +87,14 @@ public class FilmController {
             sb.append("Genres is empty\n");
         }
         if (!film.getDirectors().isEmpty()) {
+            sb.append("Directors\n");
             DirectorController directorController = new DirectorController();
             sb.append(directorController.directorsByIdToString(film.getDirectors())).append("\n");
         } else {
             sb.append("Directors is empty\n");
         }
         if (!film.getActors().isEmpty()) {
+            sb.append("Actors\n");
             ActorController actorController = new ActorController();
             sb.append(actorController.actorsByIdToString(film.getActors())).append("\n");
         } else {
@@ -120,9 +120,6 @@ public class FilmController {
         for (String s : films) {
             sb.append(ind).append(". ").append(filmToString(findById(s))).append("\n");
         }
-//        if (sb.isEmpty()) {
-//            return "Films is empty!\n";
-//        }
         return new String(sb);
     }
 

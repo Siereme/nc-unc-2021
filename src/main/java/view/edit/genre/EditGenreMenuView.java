@@ -38,9 +38,7 @@ public class EditGenreMenuView extends View implements IView {
     }
 
     private void setTittle(int genreInd) {
-        System.out.println("Enter tittle: ");
-        String tittle = input.next();
-        genreController.getGenreRepository().findAll().get(genreInd).setTittle(tittle);
+        genreController.getGenreRepository().findAll().get(genreInd).setTittle(getStr("Enter a new Tittle\n"));
     }
 
     @Override

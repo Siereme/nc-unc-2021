@@ -12,7 +12,7 @@ public class EditActorMenuView extends View implements IView {
         boolean show = true;
         while (show) {
             System.out.println("------Select Actor To Edit------");
-            System.out.println(actorController.getActorRepository());
+            System.out.println(actorController);
             System.out.println("-1. Exit");
             int option = getOption();
             if (option == -1) {
@@ -20,7 +20,8 @@ public class EditActorMenuView extends View implements IView {
             } else {
                 if (option >= 0 && option < actorController.getActorRepository().findAll().size()) {
                     int actorInd = option;
-                    System.out.println(actorController.getActorRepository().findAll().get(option));
+                    System.out.println(actorController.actorToString(
+                            actorController.getActorRepository().findAll().get(actorInd)));
                     System.out.println("1. Change name");
                     System.out.println("2. Change films");
                     System.out.println("3. Exit");

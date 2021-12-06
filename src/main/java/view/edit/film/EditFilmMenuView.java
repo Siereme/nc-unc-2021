@@ -1,11 +1,8 @@
 package view.edit.film;
 
 import controller.FilmController;
-import repository.GenreRepository;
 import view.IView;
 import view.View;
-
-import java.util.LinkedList;
 
 public class EditFilmMenuView extends View implements IView {
     private final FilmController filmController = new FilmController();
@@ -71,27 +68,7 @@ public class EditFilmMenuView extends View implements IView {
     }
 
     private void setGenres(int filmInd) {
-        GenreRepository genreRepository = new GenreRepository();
-        LinkedList<String> newGenres = new LinkedList<>();
-        boolean show = true;
-        while (show) {
-            System.out.println("Select Genre to add");
-            System.out.println("-1. Exit");
-            System.out.println(genreRepository);
-            int option = getOption();
-            if (option == -1) {
-                show = false;
-            }
-            if (option < 0 || option >= genreRepository.findAll().size()) {
-                continue;
-            }
-            if (!newGenres.contains(genreRepository.findAll().get(option).getId())) {
-                newGenres.add(genreRepository.findAll().get(option).getId());
-                System.out.println(genreRepository.findAll().get(option).getId());
-                System.out.println(newGenres.get(0));
-            }
-        }
-        filmController.setGenres(filmInd, newGenres);
+        filmController.setGenres(filmInd, getGenresId());
     }
 
     private void setDirectors(int filmInd) {

@@ -27,10 +27,10 @@ public class ActorRepository implements IRepository<Actor> {
 
     //todo serrialization
     private void init() {
-        actors.add(new Actor("actor1", "10"));
-        actors.add(new Actor("actor2", "20"));
+/*      actors.add(new Actor("actor1", "10"));
+        actors.add(new Actor("actor2", "20"));*/
         try {
-            serialize(new ObjectMapper());
+            actors.addAll(deserialize(new ObjectMapper()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -85,6 +85,7 @@ public class ActorRepository implements IRepository<Actor> {
 
     public List<Actor> deserialize(ObjectMapper objectMapper) throws IOException {
         String file = new File(this.filePath).getAbsolutePath();
-        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Actor>>() {});
+        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Actor>>() {
+        });
     }
 }

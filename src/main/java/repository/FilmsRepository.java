@@ -25,10 +25,8 @@ public class FilmsRepository implements IRepository<Film> {
 
     //todo serrialization
     private void init() {
-        films.add(new Film("film1", new Date(), new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
-        films.add(new Film("film2", new Date(), new LinkedList<>(), new LinkedList<>(), new LinkedList<>()));
         try {
-            serialize(new ObjectMapper());
+            films.addAll(deserialize(new ObjectMapper()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -83,6 +81,7 @@ public class FilmsRepository implements IRepository<Film> {
 
     public List<Film> deserialize(ObjectMapper objectMapper) throws IOException {
         String file = new File(this.filePath).getAbsolutePath();
-        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Film>>() {});
+        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Film>>() {
+        });
     }
 }
