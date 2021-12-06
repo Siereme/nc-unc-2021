@@ -1,6 +1,5 @@
 import view.MainMenuView;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,22 +9,6 @@ import java.util.Scanner;
 // TODO жанры...
 // TODO контролеры, вью
 public class test {
-    static private void pressAnyKeyToContinue() {
-        System.out.println("Press Enter key to continue...");
-        try {
-            System.in.read();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    static private void cls() {
-        try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
     static private int readInt(int left, int right, String message, Scanner in) {
         while (true) {
@@ -69,13 +52,13 @@ public class test {
         }
     }*/
 
-    static private Boolean check(int number, int size) {
+/*    static private Boolean check(int number, int size) {
         if (number < 0 | number > size) {
             cls();
             return false;
         }
         return true;
-    }
+    }*/
 
     public static void main(String[] argv) {
         //        Films films = new Films();

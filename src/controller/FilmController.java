@@ -1,6 +1,9 @@
 package controller;
 
+import model.Actor.Actor;
+import model.Director.Director;
 import model.Film.Film;
+import model.Genre.Genre;
 import repository.FilmsRepository;
 
 import java.util.LinkedList;
@@ -8,32 +11,28 @@ import java.util.Objects;
 
 public class FilmController {
 
-    private FilmsRepository repository = new FilmsRepository();
+    private FilmsRepository filmsRepository = new FilmsRepository();
+
+/*    // возможно этих полей не будет, после того как будет реализована сериализация/десериализация
+    private ActorController actorController = new ActorController();
+    private GenreController genreController = new GenreController();
+    private DirectorController directorController = new DirectorController();*/
 
     public FilmController() {
-        repository = new FilmsRepository();
+        filmsRepository = new FilmsRepository();
     }
 
     public FilmController(FilmsRepository newRepository) {
-        repository = newRepository;
+        filmsRepository = newRepository;
     }
 
-    public FilmsRepository getRepository() {
-        return repository;
+    public FilmsRepository getFilmsRepository() {
+        return filmsRepository;
     }
 
     public void deleteById(Integer id) {
-        repository.deleteById(id);
+        filmsRepository.deleteById(id);
     }
-
-/*    public boolean isContainsGenre(Genre genreToFind, Film film) {
-        for (Genre genre : film.getGenres()) {
-            if (genre.equals(genreToFind)) {
-                return true;
-            }
-        }
-        return false;
-    }*/
 
 /*    public FilmsRepository getFilmsByGenre(Genre genre) {
         FilmsRepository filmsByGenre = new FilmsRepository();
@@ -46,7 +45,7 @@ public class FilmController {
     }*/
 
     public void setGenres(int filmInd, LinkedList<String> newGenres) {
-        repository.findAll().get(filmInd).setGenres(newGenres); // выбрасывает ошибку, странно копируется(
+        filmsRepository.findAll().get(filmInd).setGenres(newGenres); // выбрасывает ошибку, странно копируется(
         // repository.findAll().get(filmInd).getGenres().removeAll(newGenres);
     }
 
@@ -55,7 +54,7 @@ public class FilmController {
     }
 
     public void setActors(int filmInd, LinkedList<String> newActors) {
-        repository.findAll().get(filmInd).setActors(newActors);
+        filmsRepository.findAll().get(filmInd).setActors(newActors);
     }
 
     public static String tittlesToString(LinkedList<Film> films) {
@@ -69,7 +68,12 @@ public class FilmController {
     }
 
     public Film findById(String id) {
-        return (Film) repository.findAll().stream().dropWhile(f -> Objects.equals(f.getId(), id));
+        for (Film film : filmsRepository.findAll()) {
+            if (Objects.equals(film.getId(), id)) {
+                return film;
+            }
+        }
+        return null;
     }
 
     public String filmToString(Film film) {
@@ -80,19 +84,19 @@ public class FilmController {
             System.out.println(film.getGenres());
             sb.append("Genres\n");
             GenreController genreController = new GenreController();
-            sb.append(genreController.genresById(film.getGenres())).append("\n");
+            sb.append(genreController.genresByIdToString(film.getGenres())).append("\n");
         } else {
             sb.append("Genres is empty\n");
         }
         if (!film.getDirectors().isEmpty()) {
             DirectorController directorController = new DirectorController();
-            sb.append(directorController.directorsById(film.getDirectors())).append("\n");
+            sb.append(directorController.directorsByIdToString(film.getDirectors())).append("\n");
         } else {
             sb.append("Directors is empty\n");
         }
         if (!film.getActors().isEmpty()) {
             ActorController actorController = new ActorController();
-            sb.append(actorController.actorsById(film.getActors())).append("\n");
+            sb.append(actorController.actorsByIdToString(film.getActors())).append("\n");
         } else {
             sb.append("Actors is empty\n");
         }
@@ -101,19 +105,82 @@ public class FilmController {
 
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < repository.findAll().size(); ++i) {
-            sb.append(i).append(". ").append(filmToString(repository.findAll().get(i))).append("\n");
+        for (int i = 0; i < filmsRepository.findAll().size(); ++i) {
+            sb.append(i).append(". ").append(filmToString(filmsRepository.findAll().get(i))).append("\n");
         }
         return new String(sb);
     }
 
-    public String filmsById(LinkedList<String> films) {
+    public String filmsByIdToString(LinkedList<String> films) {
+        if (films.isEmpty()) {
+            return "Films is empty!\n";
+        }
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (String s : films) {
             sb.append(ind).append(". ").append(filmToString(findById(s))).append("\n");
         }
+        if (sb.isEmpty()) {
+            return "Films is empty!\n";
+        }
         return new String(sb);
+    }
+
+    public static boolean isContainsActor(Film film, Actor actor) {
+        for (String actorID : film.getActors()) {
+            if (Objects.equals(actorID, actor.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public LinkedList<String> getFilmsByActor(Actor actor) {
+        LinkedList<String> filmsId = new LinkedList<>();
+        for (Film film : filmsRepository.findAll()) {
+            if (isContainsActor(film, actor)) {
+                filmsId.add(film.getId());
+            }
+        }
+        return filmsId;
+    }
+
+    public static boolean isContainsDirector(Film film, Director director) {
+        for (String dirId : film.getDirectors()) {
+            if (Objects.equals(dirId, film.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public LinkedList<String> getFilmsByDirector(Director director) {
+        LinkedList<String> filmsId = new LinkedList<>();
+        for (Film film : filmsRepository.findAll()) {
+            if (isContainsDirector(film, director)) {
+                filmsId.add(film.getId());
+            }
+        }
+        return filmsId;
+    }
+
+    public boolean isContainsGenre(Film film, Genre genre) {
+        for (String genreId : film.getGenres()) {
+            if (Objects.equals(genreId, genre.getId())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public LinkedList<String> getFilmsByGenre(Genre genre) {
+        LinkedList<String> filmsId = new LinkedList<>();
+        for (Film film : filmsRepository.findAll()) {
+            if (isContainsGenre(film, genre)) {
+                filmsId.add(film.getId());
+            }
+        }
+        return filmsId;
     }
 
 }

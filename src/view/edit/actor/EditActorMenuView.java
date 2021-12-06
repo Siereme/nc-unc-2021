@@ -1,11 +1,8 @@
 package view.edit.actor;
 
 import controller.ActorController;
-import repository.FilmsRepository;
 import view.IView;
 import view.View;
-
-import java.util.LinkedList;
 
 public class EditActorMenuView extends View implements IView {
     ActorController actorController = new ActorController();
@@ -21,7 +18,7 @@ public class EditActorMenuView extends View implements IView {
             if (option == -1) {
                 show = false;
             } else {
-                if (option>= 0 && option < actorController.getActorRepository().findAll().size()) {
+                if (option >= 0 && option < actorController.getActorRepository().findAll().size()) {
                     int actorInd = option;
                     System.out.println(actorController.getActorRepository().findAll().get(option));
                     System.out.println("1. Change name");
@@ -45,31 +42,12 @@ public class EditActorMenuView extends View implements IView {
         }
     }
 
-    private void setName(int actorInd) {
-        System.out.println("Enter new name");
-        String newName = input.next();
-        actorController.getActorRepository().findAll().get(actorInd).setName(newName);
+    public void setName(int actorInd) {
+        actorController.getActorRepository().findAll().get(actorInd).setName(getStr("Enter new name\n"));
     }
 
-    private void setFilms(int actorInd) {
-        FilmsRepository filmsRepository = new FilmsRepository();
-        LinkedList<String> newFilms = new LinkedList<>();
-        while (true) {
-            System.out.println("Select Film to add");
-            System.out.println("-1. Exit");
-            System.out.println(filmsRepository);
-            int option = getOption();
-            if (option == -1) {
-                break;
-            }
-            if (option < 0 || option >= filmsRepository.findAll().size()) {
-                continue;
-            }
-            if (!newFilms.contains(filmsRepository.findAll().get(option).getId())) {
-                newFilms.add(filmsRepository.findAll().get(option).getId());
-            }
-        }
-        actorController.setFilms(actorInd, newFilms);
+    public void setFilms(int actorInd) {
+        actorController.setFilms(actorInd, getFilmsId());
     }
 
     @Override

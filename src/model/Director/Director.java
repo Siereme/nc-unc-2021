@@ -12,6 +12,11 @@ public class Director {
     }
 
     private String name;
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
     private String year;
     private LinkedList<String> films;
 

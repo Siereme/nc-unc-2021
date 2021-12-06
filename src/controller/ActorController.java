@@ -36,7 +36,12 @@ public class ActorController {
     }
 
     Actor actorById(String id) {
-        return (Actor) actorRepository.findAll().stream().filter(a -> Objects.equals(a.getId(), id));
+        for (Actor actor : actorRepository.findAll()) {
+            if (Objects.equals(actor.getId(), id)) {
+                return actor;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -44,7 +49,7 @@ public class ActorController {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (Actor actor : actorRepository.findAll()) {
-            sb.append(++ind).append(". ").append(actorToString(actor)).append("\n");
+            sb.append(ind++).append(". ").append(actorToString(actor)).append("\n");
         }
         return new String(sb);
     }
@@ -58,12 +63,12 @@ public class ActorController {
             sb.append("Films is empty");
         } else {
             FilmController filmController = new FilmController();
-            sb.append(filmController.filmsById(actor.getFilms())).append("\n");
+            sb.append(filmController.filmsByIdToString(actor.getFilms())).append("\n");
         }
         return new String(sb);
     }
 
-    public String actorsById(LinkedList<String> actors) {
+    public String actorsByIdToString(LinkedList<String> actors) {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (String a : actors) {

@@ -1,11 +1,8 @@
 package view.edit.director;
 
 import controller.DirectorController;
-import repository.FilmsRepository;
 import view.IView;
 import view.View;
-
-import java.util.LinkedList;
 
 public class EditDirectorMenuView extends View implements IView {
     DirectorController directorController = new DirectorController();
@@ -46,30 +43,12 @@ public class EditDirectorMenuView extends View implements IView {
     }
 
     private void setName(int directorInd) {
-        System.out.println("Enter new name");
-        String newName = input.next();
-        directorController.getDirectorRepository().findAll().get(directorInd).setName(newName);
+        directorController.getDirectorRepository().findAll().get(directorInd)
+                .setName(getStr("Enter a new Director name:\n"));
     }
 
     private void setFilms(int directorInd) {
-        FilmsRepository filmsRepository = new FilmsRepository();
-        LinkedList<String> newFilms = new LinkedList<>();
-        while (true) {
-            System.out.println("Select Film to add");
-            System.out.println("-1. Exit");
-            System.out.println(filmsRepository);
-            int option = getOption();
-            if (option == -1) {
-                break;
-            }
-            if (option < 0 || option >= filmsRepository.findAll().size()) {
-                continue;
-            }
-            if (!newFilms.contains(filmsRepository.findAll().get(option).getId())) {
-                newFilms.add(filmsRepository.findAll().get(option).getId());
-            }
-        }
-        directorController.setFilms(directorInd, newFilms);
+        directorController.setFilms(directorInd, getFilmsId());
     }
 
     @Override

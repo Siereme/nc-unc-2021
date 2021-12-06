@@ -50,7 +50,12 @@ public class DirectorController {
     }*/
 
     public Director directorById(String id) {
-        return (Director) directorRepository.findAll().stream().filter(d -> Objects.equals(d.getId(), id));
+        for (Director director : directorRepository.findAll()) {
+            if (Objects.equals(director.getId(), id)) {
+                return director;
+            }
+        }
+        return null;
     }
 
     public String directorToString(Director director) {
@@ -62,7 +67,7 @@ public class DirectorController {
             sb.append("Films is empty\n");
         } else {
             FilmController filmController = new FilmController();
-            sb.append(filmController.filmsById(director.getFilms())).append("\n");
+            sb.append(filmController.filmsByIdToString(director.getFilms())).append("\n");
         }
         return new String(sb);
 
@@ -72,12 +77,12 @@ public class DirectorController {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (Director director : directorRepository.findAll()) {
-            sb.append(++ind).append(". ").append(directorToString(director)).append("\n");
+            sb.append(ind++).append(". ").append(directorToString(director)).append("\n");
         }
         return new String(sb);
     }
 
-    public String directorsById(LinkedList<String> directors) {
+    public String directorsByIdToString(LinkedList<String> directors) {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (String d : directors) {

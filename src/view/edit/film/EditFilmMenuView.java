@@ -1,15 +1,10 @@
 package view.edit.film;
 
 import controller.FilmController;
-import repository.ActorRepository;
-import repository.DirectorRepository;
 import repository.GenreRepository;
 import view.IView;
 import view.View;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
 
 public class EditFilmMenuView extends View implements IView {
@@ -20,18 +15,18 @@ public class EditFilmMenuView extends View implements IView {
         boolean show = true;
         while (show) {
             System.out.println("------Select Film To Edit------");
-            System.out.println(filmController.getRepository().toString());
+            System.out.println(filmController.getFilmsRepository().toString());
             System.out.println("-1. Exit");
             int option = getOption();
             if (option == -1) {
                 show = false;
             } else {
-                if (option >= 0 && option < filmController.getRepository().findAll().size()) {
+                if (option >= 0 && option < filmController.getFilmsRepository().findAll().size()) {
                     int filmInd = option;
                     boolean show1 = true;
                     while (show1) {
-                        System.out.println(
-                                filmController.filmToString(filmController.getRepository().findAll().get(filmInd)));
+                        System.out.println(filmController.filmToString(
+                                filmController.getFilmsRepository().findAll().get(filmInd)));
                         System.out.println("1. Change Tittle");
                         System.out.println("2. Change date");
                         System.out.println("3. Change genres");
@@ -67,26 +62,12 @@ public class EditFilmMenuView extends View implements IView {
     }
 
     private void setTittle(int filmInd) {
-        System.out.println("Enter tittle: ");
-        String tittle = input.next();
-        filmController.getRepository().findAll().get(filmInd).setTittle(tittle);
+        String tittle = getStr("Enter a tittle\n");
+        filmController.getFilmsRepository().findAll().get(filmInd).setTittle(tittle);
     }
 
     private void setDate(int filmInd) {
-        Date date = null;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        while (true) {
-            System.out.println("Enter date in format " + dateFormat.toPattern() + "\n");
-            String dateStr = input.next();
-            try {
-                date = dateFormat.parse(dateStr);
-            } catch (ParseException e) {
-                System.out.println(e.toString());
-                continue;
-            }
-            filmController.getRepository().findAll().get(filmInd).setDate(date);
-            break;
-        }
+        filmController.getFilmsRepository().findAll().get(filmInd).setDate(getDate());
     }
 
     private void setGenres(int filmInd) {
@@ -114,45 +95,11 @@ public class EditFilmMenuView extends View implements IView {
     }
 
     private void setDirectors(int filmInd) {
-        DirectorRepository directorRepository = new DirectorRepository();
-        LinkedList<String> newDirectors = new LinkedList<String>();
-        while (true) {
-            System.out.println("Select Director to add");
-            System.out.println("-1. Exit");
-            System.out.println(directorRepository);
-            int option = getOption();
-            if (option == -1) {
-                break;
-            }
-            if (option < 0 || option >= directorRepository.findAll().size()) {
-                continue;
-            }
-            if (!newDirectors.contains(directorRepository.findAll().get(option).getId())) {
-                newDirectors.add(directorRepository.findAll().get(option).getId());
-            }
-        }
-        filmController.setDirectors(filmInd, newDirectors);
+        filmController.setDirectors(filmInd, getDirectorsId());
     }
 
     private void setActors(int filmInd) {
-        ActorRepository actorRepository = new ActorRepository();
-        LinkedList<String> newActors = new LinkedList<String>();
-        while (true) {
-            System.out.println("Select Actor to add");
-            System.out.println("-1. Exit");
-            System.out.println(actorRepository);
-            int option = getOption();
-            if (option == -1) {
-                break;
-            }
-            if (option < 0 || option >= actorRepository.findAll().size()) {
-                continue;
-            }
-            if (!newActors.contains(actorRepository.findAll().get(option).getId())) {
-                newActors.add(actorRepository.findAll().get(option).getId());
-            }
-        }
-        filmController.setActors(filmInd, newActors);
+        filmController.setActors(filmInd, getActorsId());
     }
 
     @Override

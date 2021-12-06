@@ -54,7 +54,7 @@ public class GenreController {
         return new String(sb);
     }
 
-    public String genresById(LinkedList<String> genres) {
+    public String genresByIdToString(LinkedList<String> genres) {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (String s : genres) {
