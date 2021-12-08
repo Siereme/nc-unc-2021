@@ -5,6 +5,7 @@ import view.IView;
 import view.View;
 
 public class EditFilmMenuView extends View implements IView {
+    private final String name = "Edit Film";
     private final FilmController filmController = new FilmController();
 
     @Override
@@ -56,6 +57,10 @@ public class EditFilmMenuView extends View implements IView {
                 }
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     private void setTittle(int filmInd) {

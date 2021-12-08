@@ -6,6 +6,7 @@ import view.IView;
 import view.View;
 
 public class AddFilmView extends View implements IView {
+    public String name = "Add Film";
     FilmController filmController = new FilmController();
 
     @Override
@@ -29,6 +30,10 @@ public class AddFilmView extends View implements IView {
                 setDirectors(ind);
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     public void setTittle(int filmInd) {

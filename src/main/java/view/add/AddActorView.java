@@ -6,6 +6,7 @@ import view.IView;
 import view.View;
 
 public class AddActorView extends View implements IView {
+    public String name = "Add Actor";
     ActorController actorController = new ActorController();
 
     @Override
@@ -28,6 +29,10 @@ public class AddActorView extends View implements IView {
                 setFilms(ind);
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     public void setFilms(int actorInd) {

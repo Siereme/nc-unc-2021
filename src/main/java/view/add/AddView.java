@@ -1,7 +1,12 @@
 package view.add;
 
+import controller.commands.add.AddCommands;
+import controller.commands.add.AddUserCommands;
 import view.IView;
 import view.View;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class AddView extends View implements IView {
     AddFilmView addFilmView = new AddFilmView();
@@ -11,33 +16,37 @@ public class AddView extends View implements IView {
 
     @Override
     public void display() {
+        AddUserCommands commands = new AddUserCommands();
+
+        List<View> userCommands = commands.commands.entrySet().stream()
+                .filter(e ->  e.getValue() == true)
+                .map(x-> {
+                    try {
+                        return x.getKey().newInstance();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                })
+                .collect(Collectors.toList());
+
         boolean show = true;
         while (show) {
             System.out.println("------Add Menu------");
-            System.out.println("1. Add Film");
-            System.out.println("2. Add Genre");
-            System.out.println("3. Add Actor");
-            System.out.println("4. Add Director");
-            System.out.println("5. Exit");
-            int option = getOption();
-            switch (option) {
-                case 1:
-                    addFilmView.display();
-                    break;
-                case 2:
-                    addGenreView.display();
-                    break;
-                case 3:
-                    addActorView.display();
-                    break;
-                case 4:
-                    addDirectorView.display();
-                    break;
-                case 5:
-                    show = false;
-                default:
-                    break;
+            for(int i = 0; i < userCommands.size(); i++){
+                System.out.println((i + 1) + ". " + userCommands.get(i).getName());
             }
+            System.out.println((userCommands.size() + 1) + ". Exit");
+
+            int option = getOption();
+
+            if(option < 1 || option > userCommands.size()){
+                break;
+            }
+
+            new AddCommands(userCommands.get(option - 1)).execute();
         }
     }
 

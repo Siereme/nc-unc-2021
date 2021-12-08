@@ -5,6 +5,7 @@ import view.IView;
 import view.View;
 
 public class EditGenreMenuView extends View implements IView {
+    private final String name = "Edit Genre";
     private final GenreController genreController = new GenreController();
 
     @Override
@@ -35,6 +36,10 @@ public class EditGenreMenuView extends View implements IView {
             }
 
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     private void setTittle(int genreInd) {

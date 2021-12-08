@@ -6,6 +6,7 @@ import view.IView;
 import view.View;
 
 public class AddGenreView extends View implements IView {
+    public String name = "Add Genre";
     private GenreController genreController = new GenreController();
 
     @Override
@@ -26,6 +27,10 @@ public class AddGenreView extends View implements IView {
                 setTittle(ind);
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     void setTittle(int genreInd) {

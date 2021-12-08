@@ -5,6 +5,7 @@ import view.IView;
 import view.View;
 
 public class EditActorMenuView extends View implements IView {
+    private final String name = "Edit Actor";
     ActorController actorController = new ActorController();
 
     @Override
@@ -41,6 +42,10 @@ public class EditActorMenuView extends View implements IView {
                 }
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     public void setName(int actorInd) {

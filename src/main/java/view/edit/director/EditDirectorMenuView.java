@@ -5,6 +5,7 @@ import view.IView;
 import view.View;
 
 public class EditDirectorMenuView extends View implements IView {
+    private final String name = "Edit Director";
     DirectorController directorController = new DirectorController();
 
     @Override
@@ -41,6 +42,10 @@ public class EditDirectorMenuView extends View implements IView {
                 }
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     private void setName(int directorInd) {

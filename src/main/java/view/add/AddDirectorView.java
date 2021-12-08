@@ -6,6 +6,7 @@ import view.IView;
 import view.View;
 
 public class AddDirectorView extends View implements IView {
+    private String name = "Add Director";
     DirectorController directorController = new DirectorController();
 
     @Override
@@ -28,6 +29,10 @@ public class AddDirectorView extends View implements IView {
                 setFilms(ind);
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     void setName(int dirInd) {
