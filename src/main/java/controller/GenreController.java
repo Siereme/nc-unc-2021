@@ -18,17 +18,7 @@ public class GenreController {
         genreRepository = new GenreRepository();
     }
 
-/*    public static String tittlesToString(LinkedList<Genre> genres) {
-        StringBuffer sb = new StringBuffer();
-        int ind = 0;
-        for (Genre genre : genres) {
-            sb.append(ind).append(". ").append(genre.getTittle()).append("\n");
-            ind++;
-        }
-        return new String(sb);
-    }*/
-
-    Genre genreById(String id) {
+    Genre getGenreById(String id) {
         for (Genre genre : genreRepository.findAll()) {
             if (Objects.equals(genre.getId(), id)) {
                 return genre;
@@ -58,9 +48,25 @@ public class GenreController {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (String s : genres) {
-            sb.append(ind++).append(". ").append(genreToString(genreById(s))).append("\n");
+            sb.append(ind++).append(". ").append(genreToString(getGenreById(s))).append("\n");
         }
         return new String(sb);
+    }
+
+    public int size() {
+        return genreRepository.size();
+    }
+
+    public Genre getGenre(int ind) {
+        return genreRepository.findAll().get(ind);
+    }
+
+    public void addGenre() {
+        genreRepository.findAll().add(new Genre());
+    }
+
+    public void updateRepository() {
+        genreRepository.init();
     }
 
 }

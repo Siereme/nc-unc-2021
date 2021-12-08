@@ -11,6 +11,8 @@ public class AddGenreView extends View implements IView {
     @Override
     public void display() {
         boolean show = true;
+        // флаг того, что данные изменились
+        boolean isChange = false;
         while (show) {
             System.out.println("------Adding Genre menu------");
             System.out.println("1. Add Genre");
@@ -21,15 +23,21 @@ public class AddGenreView extends View implements IView {
             }
             if (option == 1) {
                 // добавляем нового актера, а потом его редактируем
-                genreController.getGenreRepository().findAll().add(new Genre("no name"));
-                int ind = genreController.getGenreRepository().findAll().size() - 1;
+                genreController.addGenre();
+                int ind = genreController.size() - 1;
                 setTittle(ind);
+                isChange = true;
             }
+        }
+        if (isChange) {
+            genreController.updateRepository();
         }
     }
 
     void setTittle(int genreInd) {
-        genreController.getGenreRepository().findAll().get(genreInd).setTittle(getStr("Enter a tittle\n"));
+        Genre genre = genreController.getGenre(genreInd);
+        String newTittle = getStr("Enter a tittle\n");
+        genre.setTittle(newTittle);
     }
 
     @Override

@@ -31,13 +31,13 @@ public class DirectorController {
 
     // directorInd - индекс директора, к которому добавляем фильм
     // filmInd - индекс фильма, который заменяем на новый
-    public void removeFilm(int directorInd, int filmInd) {
+/*    public void removeFilm(int directorInd, int filmInd) {
         directorRepository.findAll().get(directorInd).getFilms().remove(filmInd);
     }
 
     public void setFilms(int ind, LinkedList<String> newFilms) {
         directorRepository.findAll().get(ind).setFilms(newFilms);
-    }
+    }*/
 
 /*    public static String tittlesToString(LinkedList<Director> directors) {
         StringBuffer sb = new StringBuffer();
@@ -49,7 +49,7 @@ public class DirectorController {
         return new String(sb);
     }*/
 
-    public Director directorById(String id) {
+    public Director getDirectorById(String id) {
         for (Director director : directorRepository.findAll()) {
             if (Objects.equals(director.getId(), id)) {
                 return director;
@@ -86,9 +86,25 @@ public class DirectorController {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (String d : directors) {
-            sb.append(ind++).append(". ").append(directorToString(directorById(d))).append("\n");
+            sb.append(ind++).append(". ").append(directorToString(getDirectorById(d))).append("\n");
         }
         return new String(sb);
+    }
+
+    public int size() {
+        return directorRepository.size();
+    }
+
+    public Director getDirector(int ind) {
+        return directorRepository.findAll().get(ind);
+    }
+
+    public void addDirector() {
+        directorRepository.findAll().add(new Director());
+    }
+
+    public void updateRepository() {
+        directorRepository.init();
     }
 
 }

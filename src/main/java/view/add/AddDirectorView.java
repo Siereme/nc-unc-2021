@@ -5,12 +5,16 @@ import model.Director.Director;
 import view.IView;
 import view.View;
 
+import java.util.LinkedList;
+
 public class AddDirectorView extends View implements IView {
     DirectorController directorController = new DirectorController();
 
     @Override
     public void display() {
         boolean show = true;
+        // флаг того, что данные изменились
+        boolean isChange = false;
         while (show) {
             System.out.println("------Adding Director menu------");
             System.out.println("1. Add director");
@@ -21,25 +25,35 @@ public class AddDirectorView extends View implements IView {
             }
             if (option == 1) {
                 // добавляем нового актера, а потом его редактируем
-                directorController.getDirectorRepository().findAll().add(new Director("no name"));
-                int ind = directorController.getDirectorRepository().findAll().size() - 1;
+                directorController.addDirector();
+                int ind = directorController.size() - 1;
                 setName(ind);
                 setYear(ind);
                 setFilms(ind);
+                isChange = true;
             }
+        }
+        if(isChange){
+            directorController.updateRepository();
         }
     }
 
     void setName(int dirInd) {
-        directorController.getDirectorRepository().findAll().get(dirInd).setName(getStr("Enter Director Name\n"));
+        Director director = directorController.getDirector(dirInd);
+        String newName = getStr("Enter Director Name\n");
+        director.setName(newName);
     }
 
     void setYear(int dirInd) {
-        directorController.getDirectorRepository().findAll().get(dirInd).setYear(getStr("Enter Director Age"));
+        Director director = directorController.getDirector(dirInd);
+        String newAge = getStr("Enter Director Age\n");
+        director.setYear(newAge);
     }
 
     void setFilms(int dirInd) {
-        directorController.getDirectorRepository().findAll().get(dirInd).setFilms(getFilmsId());
+        Director director = directorController.getDirector(dirInd);
+        LinkedList<String> newFilmsId = getFilmsId();
+        director.setFilms(newFilmsId);
     }
 
     @Override

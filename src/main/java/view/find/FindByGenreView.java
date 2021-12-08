@@ -22,8 +22,8 @@ public class FindByGenreView extends View implements IView {
             int option = getOption();
             if (option == -1) {
                 show = false;
-            } else if (option < genreController.getGenreRepository().findAll().size() && option >= 0) {
-                Genre genre = genreController.getGenreRepository().findAll().get(option);
+            } else if (option < genreController.size() && option >= 0) {
+                Genre genre = genreController.getGenre(option);
                 FilmController filmController = new FilmController();
                 LinkedList<String> filmsId = filmController.getFilmsByGenre(genre);
                 System.out.println(filmController.filmsByIdToString(filmsId));

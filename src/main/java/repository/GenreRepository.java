@@ -25,12 +25,9 @@ public class GenreRepository implements IRepository<Genre> {
         init();
     }
 
-    //todo serrialization
-    private void init() {
-/*        genres.add(new Genre("genre1"));
-        genres.add(new Genre("genre2"));*/
+    public void init() {
         try {
-           genres.addAll(deserialize(new ObjectMapper()));
+            genres.addAll(deserialize(new ObjectMapper()));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -85,6 +82,12 @@ public class GenreRepository implements IRepository<Genre> {
 
     public List<Genre> deserialize(ObjectMapper objectMapper) throws IOException {
         String file = new File(this.filePath).getAbsolutePath();
-        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Genre>>() {});
+        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Genre>>() {
+        });
     }
+
+    public int size() {
+        return genres.size();
+    }
+
 }

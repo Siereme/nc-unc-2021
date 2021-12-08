@@ -25,10 +25,7 @@ public class ActorRepository implements IRepository<Actor> {
         init();
     }
 
-    //todo serrialization
-    private void init() {
-/*      actors.add(new Actor("actor1", "10"));
-        actors.add(new Actor("actor2", "20"));*/
+    public void init() {
         try {
             actors.addAll(deserialize(new ObjectMapper()));
         } catch (IOException e) {
@@ -88,4 +85,9 @@ public class ActorRepository implements IRepository<Actor> {
         return objectMapper.readValue(new FileReader(file), new TypeReference<List<Actor>>() {
         });
     }
+
+    public int size() {
+        return actors.size();
+    }
+
 }

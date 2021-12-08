@@ -5,12 +5,17 @@ import model.Film.Film;
 import view.IView;
 import view.View;
 
+import java.util.Date;
+import java.util.LinkedList;
+
 public class AddFilmView extends View implements IView {
     FilmController filmController = new FilmController();
 
     @Override
     public void display() {
         boolean show = true;
+        // флаг того, что данные изменились
+        boolean isChange = false;
         while (show) {
             System.out.println("------Adding Genre menu------");
             System.out.println("1. Add Genre");
@@ -21,30 +26,42 @@ public class AddFilmView extends View implements IView {
             }
             if (option == 1) {
                 // добавляем нового актера, а потом его редактируем
-                filmController.getFilmsRepository().findAll().add(new Film("no name"));
-                int ind = filmController.getFilmsRepository().findAll().size() - 1;
+                filmController.addFilm();
+                int ind = filmController.size() - 1;
                 setTittle(ind);
                 setDate(ind);
                 setActors(ind);
                 setDirectors(ind);
+                isChange = true;
             }
+        }
+        if (isChange) {
+            filmController.updateRepository();
         }
     }
 
     public void setTittle(int filmInd) {
-        filmController.getFilmsRepository().findAll().get(filmInd).setTittle(getStr("Enter a tittle\n"));
+        Film film = filmController.getFilm(filmInd);
+        String newTittle = getStr("Enter a tittle\n");
+        film.setTittle(newTittle);
     }
 
     public void setDate(int filmInd) {
-        filmController.getFilmsRepository().findAll().get(filmInd).setDate(getDate());
+        Film film = filmController.getFilm(filmInd);
+        Date newDate = getDate();
+        film.setDate(newDate);
     }
 
     public void setActors(int filmInd) {
-
+        Film film = filmController.getFilm(filmInd);
+        LinkedList<String> newActorsId = getActorsId();
+        film.setActors(newActorsId);
     }
 
     public void setDirectors(int filmInd) {
-
+        Film film = filmController.getFilm(filmInd);
+        LinkedList<String> newDirectorsId = getDirectorsId();
+        film.setDirectors(newDirectorsId);
     }
 
     @Override

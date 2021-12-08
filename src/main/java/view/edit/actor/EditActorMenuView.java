@@ -1,8 +1,11 @@
 package view.edit.actor;
 
 import controller.ActorController;
+import model.Actor.Actor;
 import view.IView;
 import view.View;
+
+import java.util.LinkedList;
 
 public class EditActorMenuView extends View implements IView {
     ActorController actorController = new ActorController();
@@ -10,6 +13,8 @@ public class EditActorMenuView extends View implements IView {
     @Override
     public void display() {
         boolean show = true;
+        // флаг того, что данные изменились
+        boolean isChange = false;
         while (show) {
             System.out.println("------Select Actor To Edit------");
             System.out.println(actorController);
@@ -18,10 +23,10 @@ public class EditActorMenuView extends View implements IView {
             if (option == -1) {
                 show = false;
             } else {
-                if (option >= 0 && option < actorController.getActorRepository().findAll().size()) {
+                if (option >= 0 && option < actorController.size()) {
                     int actorInd = option;
-                    System.out.println(actorController.actorToString(
-                            actorController.getActorRepository().findAll().get(actorInd)));
+                    Actor actor = actorController.getActor(actorInd);
+                    System.out.println(actorController.actorToString(actor));
                     System.out.println("1. Change name");
                     System.out.println("2. Change films");
                     System.out.println("3. Exit");
@@ -29,9 +34,11 @@ public class EditActorMenuView extends View implements IView {
                     switch (option) {
                         case 1:
                             setName(actorInd);
+                            isChange = true;
                             break;
                         case 2:
                             setFilms(actorInd);
+                            isChange = true;
                             break;
                         case 3:
                             show = false;
@@ -41,14 +48,21 @@ public class EditActorMenuView extends View implements IView {
                 }
             }
         }
+        if (isChange) {
+            actorController.updateRepository();
+        }
     }
 
     public void setName(int actorInd) {
-        actorController.getActorRepository().findAll().get(actorInd).setName(getStr("Enter new name\n"));
+        Actor actor = actorController.getActor(actorInd);
+        final String newName = getStr("Enter a new name\n");
+        actor.setName(newName);
     }
 
     public void setFilms(int actorInd) {
-        actorController.setFilms(actorInd, getFilmsId());
+        Actor actor = actorController.getActor(actorInd);
+        final LinkedList<String> newFilmsId = getFilmsId();
+        actor.setFilms(newFilmsId);
     }
 
     @Override

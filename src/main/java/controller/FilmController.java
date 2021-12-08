@@ -45,28 +45,21 @@ public class FilmController {
     }*/
 
     public void setGenres(int filmInd, LinkedList<String> newGenres) {
-        filmsRepository.findAll().get(filmInd).setGenres(newGenres);
+        Film film = getFilm(filmInd);
+        film.setGenres(newGenres);
     }
 
     public void setDirectors(int filmInd, LinkedList<String> newDirectors) {
-        filmsRepository.findAll().get(filmInd).setDirectors(newDirectors);
+        Film film = getFilm(filmInd);
+        film.setDirectors(newDirectors);
     }
 
     public void setActors(int filmInd, LinkedList<String> newActors) {
-        filmsRepository.findAll().get(filmInd).setActors(newActors);
+        Film film = getFilm(filmInd);
+        film.setActors(newActors);
     }
 
-    public static String tittlesToString(LinkedList<Film> films) {
-        StringBuffer sb = new StringBuffer();
-        int ind = 0;
-        for (Film film : films) {
-            sb.append(ind).append(". ").append(film.getTittle()).append("\n");
-            ind++;
-        }
-        return new String(sb);
-    }
-
-    public Film findById(String id) {
+    public Film getFilmById(String id) {
         for (Film film : filmsRepository.findAll()) {
             if (Objects.equals(film.getId(), id)) {
                 return film;
@@ -118,7 +111,7 @@ public class FilmController {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (String s : films) {
-            sb.append(ind).append(". ").append(filmToString(findById(s))).append("\n");
+            sb.append(ind).append(". ").append(filmToString(getFilmById(s))).append("\n");
         }
         return new String(sb);
     }
@@ -178,6 +171,22 @@ public class FilmController {
             }
         }
         return filmsId;
+    }
+
+    public int size() {
+        return filmsRepository.size();
+    }
+
+    public Film getFilm(int ind) {
+        return filmsRepository.findAll().get(ind);
+    }
+
+    public void addFilm(){
+        filmsRepository.findAll().add(new Film());
+    }
+
+    public void updateRepository() {
+        filmsRepository.init();
     }
 
 }

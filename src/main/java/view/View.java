@@ -2,8 +2,12 @@ package view;
 
 import controller.ActorController;
 import controller.DirectorController;
+import controller.FilmController;
 import controller.GenreController;
-import repository.FilmsRepository;
+import model.Actor.Actor;
+import model.Director.Director;
+import model.Film.Film;
+import model.Genre.Genre;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -65,21 +69,22 @@ public abstract class View implements IView {
     }
 
     protected LinkedList<String> getFilmsId() {
-        FilmsRepository filmsRepository = new FilmsRepository();
+        FilmController filmController = new FilmController();
         LinkedList<String> newFilms = new LinkedList<>();
         while (true) {
             System.out.println("Select Film to add");
             System.out.println("-1. Exit");
-            System.out.println(filmsRepository);
+            System.out.println(filmController);
             int option = getOption();
             if (option == -1) {
                 break;
             }
-            if (option < 0 || option >= filmsRepository.findAll().size()) {
+            if (option < 0 || option >= filmController.size()) {
                 continue;
             }
-            if (!newFilms.contains(filmsRepository.findAll().get(option).getId())) {
-                newFilms.add(filmsRepository.findAll().get(option).getId());
+            Film film = filmController.getFilm(option);
+            if (!newFilms.contains(film.getId())) {
+                newFilms.add(film.getId());
             }
         }
         return newFilms;
@@ -96,11 +101,12 @@ public abstract class View implements IView {
             if (option == -1) {
                 break;
             }
-            if (option < 0 || option >= actorController.getActorRepository().findAll().size()) {
+            if (option < 0 || option >= actorController.size()) {
                 continue;
             }
-            if (!newActors.contains(actorController.getActorRepository().findAll().get(option).getId())) {
-                newActors.add(actorController.getActorRepository().findAll().get(option).getId());
+            Actor actor = actorController.getActor(option);
+            if (!newActors.contains(actor.getId())) {
+                newActors.add(actor.getId());
             }
         }
         return newActors;
@@ -117,11 +123,12 @@ public abstract class View implements IView {
             if (option == -1) {
                 break;
             }
-            if (option < 0 || option >= directorController.getDirectorRepository().findAll().size()) {
+            if (option < 0 || option >= directorController.size()) {
                 continue;
             }
-            if (!newDirectors.contains(directorController.getDirectorRepository().findAll().get(option).getId())) {
-                newDirectors.add(directorController.getDirectorRepository().findAll().get(option).getId());
+            Director director = directorController.getDirector(option);
+            if (!newDirectors.contains(director.getId())) {
+                newDirectors.add(director.getId());
             }
         }
         return newDirectors;
@@ -139,11 +146,12 @@ public abstract class View implements IView {
             if (option == -1) {
                 show = false;
             }
-            if (option < 0 || option >= genreController.getGenreRepository().findAll().size()) {
+            if (option < 0 || option >= genreController.size()) {
                 continue;
             }
-            if (!newGenres.contains(genreController.getGenreRepository().findAll().get(option).getId())) {
-                newGenres.add(genreController.getGenreRepository().findAll().get(option).getId());
+            Genre genre = genreController.getGenre(option);
+            if (!newGenres.contains(genre.getId())) {
+                newGenres.add(genre.getId());
             }
         }
         return newGenres;

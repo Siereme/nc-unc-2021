@@ -23,8 +23,7 @@ public class FilmsRepository implements IRepository<Film> {
         init();
     }
 
-    //todo serrialization
-    private void init() {
+    public void init() {
         try {
             films.addAll(deserialize(new ObjectMapper()));
         } catch (IOException e) {
@@ -84,4 +83,9 @@ public class FilmsRepository implements IRepository<Film> {
         return objectMapper.readValue(new FileReader(file), new TypeReference<List<Film>>() {
         });
     }
+
+    public int size() {
+        return films.size();
+    }
+
 }

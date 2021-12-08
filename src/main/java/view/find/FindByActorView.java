@@ -22,8 +22,8 @@ public class FindByActorView extends View implements IView {
             int option = getOption();
             if (option == -1) {
                 show = false;
-            } else if (option < actorController.getActorRepository().findAll().size() && option >= 0) {
-                Actor actor = actorController.getActorRepository().findAll().get(option);
+            } else if (option < actorController.size() && option >= 0) {
+                Actor actor = actorController.getActor(option);
                 FilmController filmController = new FilmController();
                 LinkedList<String> filmsId = filmController.getFilmsByActor(actor);
                 System.out.println(filmController.filmsByIdToString(filmsId));

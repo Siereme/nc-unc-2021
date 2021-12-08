@@ -25,10 +25,7 @@ public class DirectorRepository implements repository.IRepository<Director> {
         init();
     }
 
-    //todo serrialization
-    private void init() {
-/*        directors.add(new Director("director1", "15"));
-        directors.add(new Director("director2", "25"));*/
+    public void init() {
         try {
             directors.addAll(deserialize(new ObjectMapper()));
         } catch (IOException e) {
@@ -85,6 +82,13 @@ public class DirectorRepository implements repository.IRepository<Director> {
 
     public List<Director> deserialize(ObjectMapper objectMapper) throws IOException {
         String file = new File(this.filePath).getAbsolutePath();
-        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Director>>() {});
+        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Director>>() {
+        });
     }
+
+    public int size() {
+        return directors.size();
+    }
+
+
 }
