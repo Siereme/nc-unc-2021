@@ -8,6 +8,7 @@ import view.View;
 import java.util.LinkedList;
 
 public class AddDirectorView extends View implements IView {
+    private String name = "Add Director";
     DirectorController directorController = new DirectorController();
 
     @Override
@@ -36,6 +37,10 @@ public class AddDirectorView extends View implements IView {
         if(isChange){
             directorController.updateRepository();
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     void setName(int dirInd) {

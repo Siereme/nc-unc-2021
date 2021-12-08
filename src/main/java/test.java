@@ -1,4 +1,12 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+import model.Actor.Actor;
+import model.Director.Director;
+import model.Film.Film;
+import model.Genre.Genre;
+import repository.*;
 import view.MainMenuView;
+
+import java.io.IOException;
 
 public class test {
     // TODO добавление удаление поиск просмотр
@@ -50,7 +58,7 @@ public class test {
         //        MainMenuView mainMenuView = new MainMenuView();
         //        mainMenuView.display();
 
-/*        FilmsRepository filmsRepository = new FilmsRepository(
+        FilmsRepository filmsRepository = new FilmsRepository(
                 new Film("Film1"),
                 new Film("Film2"),
                 new Film("Film3"),
@@ -124,7 +132,16 @@ public class test {
             System.out.println(genreRepository.deserialize(new ObjectMapper()).get(0).getTittle());
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
+
+        UserRepository userRepository = new UserRepository();
+        try {
+            System.out.println(userRepository.deserialize(new ObjectMapper()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         MainMenuView mainMenuView = new MainMenuView();
         mainMenuView.display();
 

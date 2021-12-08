@@ -1,11 +1,16 @@
 package view.edit;
 
+import controller.commands.edit.EditCommands;
+import controller.commands.edit.EditUserCommands;
 import view.IView;
 import view.View;
 import view.edit.actor.EditActorMenuView;
 import view.edit.director.EditDirectorMenuView;
 import view.edit.film.EditFilmMenuView;
 import view.edit.genre.EditGenreMenuView;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class EditView extends View implements IView {
     private final EditFilmMenuView editFilmMenuView = new EditFilmMenuView();
@@ -15,35 +20,37 @@ public class EditView extends View implements IView {
 
     @Override
     public void display() {
+        EditUserCommands commands = new EditUserCommands();
+
+        List<View> userCommands = commands.commands.entrySet().stream()
+                .filter(e ->  e.getValue() == true)
+                .map(x-> {
+                    try {
+                        return x.getKey().newInstance();
+                    } catch (InstantiationException e) {
+                        e.printStackTrace();
+                    } catch (IllegalAccessException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                })
+                .collect(Collectors.toList());
+
         boolean show = true;
         while (show) {
-            System.out.println("------Edit Menu------");
-            System.out.println("1. Edit Film");
-            System.out.println("2. Edit Genre");
-            System.out.println("3. Edit Actor");
-            System.out.println("4. Edit Director");
-            System.out.println("5. Exit");
-            int option = getOption();
-            switch (option) {
-                case 1:
-                    // готово
-                    editFilmMenuView.display();
-                    break;
-                case 2:
-                    // готово
-                    editGenreView.display();
-                    break;
-                case 3:
-                    editActorView.display();
-                    break;
-                case 4:
-                    editDirectorView.display();
-                    break;
-                case 5:
-                    show = false;
-                default:
-                    break;
+            System.out.println("------Add Menu------");
+            for (int i = 0; i < userCommands.size(); i++) {
+                System.out.println((i + 1) + ". " + userCommands.get(i).getName());
             }
+            System.out.println((userCommands.size() + 1) + ". Exit");
+
+            int option = getOption();
+
+            if(option < 1 || option > userCommands.size()){
+                break;
+            }
+
+            new EditCommands(userCommands.get(option)).execute();
         }
     }
 

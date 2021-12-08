@@ -157,4 +157,8 @@ public abstract class View implements IView {
         return newGenres;
     }
 
+    public String getName() {
+        return null;
+    }
+
 }

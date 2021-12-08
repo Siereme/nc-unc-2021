@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.LinkedList;
 
 public class EditFilmMenuView extends View implements IView {
+    private final String name = "Edit Film";
     private final FilmController filmController = new FilmController();
 
     @Override
@@ -70,6 +71,10 @@ public class EditFilmMenuView extends View implements IView {
         if (isChange) {
             filmController.updateRepository();
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     private void setTittle(int filmInd) {

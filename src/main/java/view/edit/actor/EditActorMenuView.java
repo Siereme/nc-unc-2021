@@ -8,6 +8,7 @@ import view.View;
 import java.util.LinkedList;
 
 public class EditActorMenuView extends View implements IView {
+    private final String name = "Edit Actor";
     ActorController actorController = new ActorController();
 
     @Override
@@ -51,6 +52,10 @@ public class EditActorMenuView extends View implements IView {
         if (isChange) {
             actorController.updateRepository();
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     public void setName(int actorInd) {

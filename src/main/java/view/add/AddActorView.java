@@ -8,6 +8,7 @@ import view.View;
 import java.util.LinkedList;
 
 public class AddActorView extends View implements IView {
+    public String name = "Add Actor";
     ActorController actorController = new ActorController();
 
     @Override
@@ -36,6 +37,10 @@ public class AddActorView extends View implements IView {
         if (isChange) {
             actorController.updateRepository();
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     public void setFilms(int actorInd) {
