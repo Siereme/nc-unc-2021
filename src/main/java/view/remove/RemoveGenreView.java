@@ -19,7 +19,7 @@ public class RemoveGenreView extends View implements IView {
                 show = false;
             } else if (option >= 0 && option < genreController.size()) {
                 if (getConfirm()) {
-                    genreController.remove(option);
+                    genreController.removeEntity(option);
                     genreController.updateRepository();
                 }
             }

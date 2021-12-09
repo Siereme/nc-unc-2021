@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class FilmController {
+public class FilmController implements IController<Film> {
 
     private FilmsRepository filmsRepository;
 
@@ -32,21 +32,21 @@ public class FilmController {
     }
 
     public void setGenres(int filmInd, LinkedList<String> newGenres) {
-        Film film = getFilm(filmInd);
+        Film film = getEntity(filmInd);
         film.setGenres(newGenres);
     }
 
     public void setDirectors(int filmInd, LinkedList<String> newDirectors) {
-        Film film = getFilm(filmInd);
+        Film film = getEntity(filmInd);
         film.setDirectors(newDirectors);
     }
 
     public void setActors(int filmInd, LinkedList<String> newActors) {
-        Film film = getFilm(filmInd);
+        Film film = getEntity(filmInd);
         film.setActors(newActors);
     }
 
-    public Film getFilmById(String id) {
+    public Film getEntityById(String id) {
         for (Film film : filmsRepository.findAll()) {
             if (Objects.equals(film.getId(), id)) {
                 return film;
@@ -55,28 +55,28 @@ public class FilmController {
         return null;
     }
 
-    public String filmToString(Film film) {
+    public String entityToString(Film film) {
         StringBuffer sb = new StringBuffer();
         sb.append("Id: ").append(film.getId()).append("\n").append("Tittle: ").append(film.getTittle()).append("\n")
                 .append("Date of release: ").append(film.getDate()).append("\n");
         if (!film.getGenres().isEmpty()) {
             sb.append("Genres\n");
             GenreController genreController = new GenreController();
-            sb.append(genreController.genresByIdToString(film.getGenres())).append("\n");
+            sb.append(genreController.entitiesByIDsToString(film.getGenres())).append("\n");
         } else {
             sb.append("Genres is empty\n");
         }
         if (!film.getDirectors().isEmpty()) {
             sb.append("Directors\n");
             DirectorController directorController = new DirectorController();
-            sb.append(directorController.directorsByIdToString(film.getDirectors())).append("\n");
+            sb.append(directorController.entitiesByIDsToString(film.getDirectors())).append("\n");
         } else {
             sb.append("Directors is empty\n");
         }
         if (!film.getActors().isEmpty()) {
             sb.append("Actors\n");
             ActorController actorController = new ActorController();
-            sb.append(actorController.actorsByIdToString(film.getActors())).append("\n");
+            sb.append(actorController.entitiesByIDsToString(film.getActors())).append("\n");
         } else {
             sb.append("Actors is empty\n");
         }
@@ -86,19 +86,19 @@ public class FilmController {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < filmsRepository.findAll().size(); ++i) {
-            sb.append(i).append(". ").append(filmToString(filmsRepository.findAll().get(i))).append("\n");
+            sb.append(i).append(". ").append(entityToString(filmsRepository.findAll().get(i))).append("\n");
         }
         return new String(sb);
     }
 
-    public String filmsByIdToString(LinkedList<String> films) {
+    public String entitiesByIDsToString(LinkedList<String> films) {
         if (films.isEmpty()) {
             return "Films is empty!\n";
         }
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (String s : films) {
-            sb.append(ind).append(". ").append(filmToString(getFilmById(s))).append("\n");
+            sb.append(ind).append(". ").append(entityToString(getEntityById(s))).append("\n");
         }
         return new String(sb);
     }
@@ -164,11 +164,11 @@ public class FilmController {
         return filmsRepository.size();
     }
 
-    public Film getFilm(int ind) {
+    public Film getEntity(int ind) {
         return filmsRepository.findAll().get(ind);
     }
 
-    public void addFilm() {
+    public void addEntity() {
         filmsRepository.findAll().add(new Film());
     }
 
@@ -180,7 +180,7 @@ public class FilmController {
         }
     }
 
-    public void remove(int ind) {
+    public void removeEntity(int ind) {
         filmsRepository.findAll().remove(ind);
     }
 

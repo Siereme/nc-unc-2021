@@ -24,7 +24,7 @@ public class AddActorView extends View implements IView {
             }
             if (option == 1) {
                 // добавляем нового актера(все поля пустые), а потом его редактируем
-                actorController.addActor();
+                actorController.addEntity();
                 int actorInd = actorController.size() - 1;
                 setName(actorInd);
                 setYear(actorInd);
@@ -39,19 +39,19 @@ public class AddActorView extends View implements IView {
     }
 
     public void setFilms(int actorInd) {
-        Actor actor = actorController.getActor(actorInd);
+        Actor actor = actorController.getEntity(actorInd);
         LinkedList<String> newFilmsId = getFilmsId();
         actor.setFilms(newFilmsId);
     }
 
     public void setYear(int actorInd) {
-        Actor actor = actorController.getActor(actorInd);
+        Actor actor = actorController.getEntity(actorInd);
         String newAge = getStr("Enter age\n");
         actor.setYear(newAge);
     }
 
     public void setName(int actorInd) {
-        Actor actor = actorController.getActor(actorInd);
+        Actor actor = actorController.getEntity(actorInd);
         String newName = getStr("Enter name\n");
         actor.setName(newName);
     }

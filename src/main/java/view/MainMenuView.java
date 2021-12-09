@@ -23,6 +23,9 @@ public class MainMenuView extends View {
     /** Поле меню удаления данных */
     private final RemoveView removeView = new RemoveView();
 
+    /**
+     * @see View
+     * */
     public void display() {
         boolean show = true;
         while (show) {
@@ -56,6 +59,9 @@ public class MainMenuView extends View {
         }
     }
 
+    /**
+     * @see View
+     * */
     @Override
     public void showMessage(String messsage) {
 

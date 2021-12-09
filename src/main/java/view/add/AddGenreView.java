@@ -22,7 +22,7 @@ public class AddGenreView extends View implements IView {
             }
             if (option == 1) {
                 // добавляем нового актера, а потом его редактируем
-                genreController.addGenre();
+                genreController.addEntity();
                 int ind = genreController.size() - 1;
                 setTittle(ind);
                 genreController.updateRepository();
@@ -35,7 +35,7 @@ public class AddGenreView extends View implements IView {
     }
 
     void setTittle(int genreInd) {
-        Genre genre = genreController.getGenre(genreInd);
+        Genre genre = genreController.getEntity(genreInd);
         String newTittle = getStr("Enter a tittle\n");
         genre.setTittle(newTittle);
     }

@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class GenreController {
+public class GenreController implements IController<Genre> {
 
     public GenreRepository getGenreRepository() {
         return genreRepository;
@@ -20,7 +20,7 @@ public class GenreController {
         genreRepository = new GenreRepository();
     }
 
-    Genre getGenreById(String id) {
+    public Genre getEntityById(String id) {
         for (Genre genre : genreRepository.findAll()) {
             if (Objects.equals(genre.getId(), id)) {
                 return genre;
@@ -29,7 +29,7 @@ public class GenreController {
         return null;
     }
 
-    public String genreToString(Genre genre) {
+    public String entityToString(Genre genre) {
         StringBuffer sb = new StringBuffer();
         sb.append("Id: ").append(genre.getId()).append("\n");
         sb.append("Tittle: ").append(genre.getTittle()).append("\n");
@@ -40,17 +40,17 @@ public class GenreController {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (Genre genre : genreRepository.findAll()) {
-            sb.append(ind).append(". ").append(genreToString(genre)).append("\n");
+            sb.append(ind).append(". ").append(entityToString(genre)).append("\n");
             ++ind;
         }
         return new String(sb);
     }
 
-    public String genresByIdToString(LinkedList<String> genres) {
+    public String entitiesByIDsToString(LinkedList<String> genres) {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (String s : genres) {
-            sb.append(ind++).append(". ").append(genreToString(getGenreById(s))).append("\n");
+            sb.append(ind++).append(". ").append(entityToString(getEntityById(s))).append("\n");
         }
         return new String(sb);
     }
@@ -59,11 +59,11 @@ public class GenreController {
         return genreRepository.size();
     }
 
-    public Genre getGenre(int ind) {
+    public Genre getEntity(int ind) {
         return genreRepository.findAll().get(ind);
     }
 
-    public void addGenre() {
+    public void addEntity() {
         genreRepository.findAll().add(new Genre());
     }
 
@@ -75,7 +75,7 @@ public class GenreController {
         }
     }
 
-    public void remove(int ind) {
+    public void removeEntity(int ind) {
         genreRepository.findAll().remove(ind);
     }
 

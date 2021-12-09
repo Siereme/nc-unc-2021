@@ -22,8 +22,8 @@ public class EditGenreMenuView extends View implements IView {
             }
             if (option >= 0 && option < genreController.size()) {
                 int genreInd = option;
-                Genre genre = genreController.getGenre(genreInd);
-                System.out.println(genreController.genreToString(genre));
+                Genre genre = genreController.getEntity(genreInd);
+                System.out.println(genreController.entityToString(genre));
                 System.out.println("1. Change Tittle");
                 System.out.println("2. Exit");
                 option = getOption();
@@ -46,7 +46,7 @@ public class EditGenreMenuView extends View implements IView {
     }
 
     private void setTittle(int genreInd) {
-        Genre genre = genreController.getGenre(genreInd);
+        Genre genre = genreController.getEntity(genreInd);
         String newTittle = getStr("Enter a new Tittle\n");
         genre.setTittle(newTittle);
     }

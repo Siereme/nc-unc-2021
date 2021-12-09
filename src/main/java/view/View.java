@@ -110,7 +110,7 @@ public abstract class View implements IView {
             if (option < 0 || option >= filmController.size()) {
                 continue;
             }
-            Film film = filmController.getFilm(option);
+            Film film = filmController.getEntity(option);
             if (!newFilms.contains(film.getId())) {
                 newFilms.add(film.getId());
             }
@@ -137,7 +137,7 @@ public abstract class View implements IView {
             if (option < 0 || option >= actorController.size()) {
                 continue;
             }
-            Actor actor = actorController.getActor(option);
+            Actor actor = actorController.getEntity(option);
             if (!newActors.contains(actor.getId())) {
                 newActors.add(actor.getId());
             }
@@ -164,7 +164,7 @@ public abstract class View implements IView {
             if (option < 0 || option >= directorController.size()) {
                 continue;
             }
-            Director director = directorController.getDirector(option);
+            Director director = directorController.getEntity(option);
             if (!newDirectors.contains(director.getId())) {
                 newDirectors.add(director.getId());
             }
@@ -192,7 +192,7 @@ public abstract class View implements IView {
             if (option < 0 || option >= genreController.size()) {
                 continue;
             }
-            Genre genre = genreController.getGenre(option);
+            Genre genre = genreController.getEntity(option);
             if (!newGenres.contains(genre.getId())) {
                 newGenres.add(genre.getId());
             }
@@ -200,13 +200,21 @@ public abstract class View implements IView {
         return newGenres;
     }
 
-    /** Функция получает подтвердение от п*/
+    /** Функция получает подтверждение от пользователя
+     * Пользователю выводится сообщение "Confirm deletion (yes/no): "
+     * если пользователь отвечает "yes" возвращается значение true
+     * если пользователь отвечает "no" возвращается значение false
+     * @return true, если пользователь отвечает "yes" или "y", false если пользователь отвечает "no" или "n"
+     * */
     protected boolean getConfirm() {
-        String confirm = getStr("Confirm deletion (yes/no): ");
-        if (Objects.equals(confirm, "y") || Objects.equals(confirm, "yes")) {
-            return true;
+        while (true) {
+            String confirm = getStr("Confirm deletion (yes/no): ");
+            if (Objects.equals(confirm, "y") || Objects.equals(confirm, "yes")) {
+                return true;
+            } else if (Objects.equals(confirm, "no") || Objects.equals(confirm, "n")) {
+                return false;
+            }
         }
-        return false;
     }
 
     public String getName() {

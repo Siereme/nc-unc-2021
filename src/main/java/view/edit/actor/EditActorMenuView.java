@@ -24,8 +24,8 @@ public class EditActorMenuView extends View implements IView {
             } else {
                 if (option >= 0 && option < actorController.size()) {
                     int actorInd = option;
-                    Actor actor = actorController.getActor(actorInd);
-                    System.out.println(actorController.actorToString(actor));
+                    Actor actor = actorController.getEntity(actorInd);
+                    System.out.println(actorController.entityToString(actor));
                     System.out.println("1. Change name");
                     System.out.println("2. Change films");
                     System.out.println("3. Exit");
@@ -54,13 +54,13 @@ public class EditActorMenuView extends View implements IView {
     }
 
     public void setName(int actorInd) {
-        Actor actor = actorController.getActor(actorInd);
+        Actor actor = actorController.getEntity(actorInd);
         final String newName = getStr("Enter a new name\n");
         actor.setName(newName);
     }
 
     public void setFilms(int actorInd) {
-        Actor actor = actorController.getActor(actorInd);
+        Actor actor = actorController.getEntity(actorInd);
         final LinkedList<String> newFilmsId = getFilmsId();
         actor.setFilms(newFilmsId);
     }

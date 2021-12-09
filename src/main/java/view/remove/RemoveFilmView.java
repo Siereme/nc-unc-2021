@@ -19,7 +19,7 @@ public class RemoveFilmView extends View implements IView {
                 show = false;
             } else if (option >= 0 && option < filmController.size()) {
                 if (getConfirm()) {
-                    filmController.remove(option);
+                    filmController.removeEntity(option);
                     filmController.updateRepository();
                 }
             }

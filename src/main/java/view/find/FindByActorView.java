@@ -23,10 +23,10 @@ public class FindByActorView extends View implements IView {
             if (option == -1) {
                 show = false;
             } else if (option < actorController.size() && option >= 0) {
-                Actor actor = actorController.getActor(option);
+                Actor actor = actorController.getEntity(option);
                 FilmController filmController = new FilmController();
                 LinkedList<String> filmsId = filmController.getFilmsByActor(actor);
-                System.out.println(filmController.filmsByIdToString(filmsId));
+                System.out.println(filmController.entitiesByIDsToString(filmsId));
                 pressAnyKeyToContinue();
             }
         }

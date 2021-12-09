@@ -24,7 +24,7 @@ public class AddDirectorView extends View implements IView {
             }
             if (option == 1) {
                 // добавляем нового актера, а потом его редактируем
-                directorController.addDirector();
+                directorController.addEntity();
                 int ind = directorController.size() - 1;
                 setName(ind);
                 setYear(ind);
@@ -40,19 +40,19 @@ public class AddDirectorView extends View implements IView {
     }
 
     void setName(int dirInd) {
-        Director director = directorController.getDirector(dirInd);
+        Director director = directorController.getEntity(dirInd);
         String newName = getStr("Enter Director Name\n");
         director.setName(newName);
     }
 
     void setYear(int dirInd) {
-        Director director = directorController.getDirector(dirInd);
+        Director director = directorController.getEntity(dirInd);
         String newAge = getStr("Enter Director Age\n");
         director.setYear(newAge);
     }
 
     void setFilms(int dirInd) {
-        Director director = directorController.getDirector(dirInd);
+        Director director = directorController.getEntity(dirInd);
         LinkedList<String> newFilmsId = getFilmsId();
         director.setFilms(newFilmsId);
     }

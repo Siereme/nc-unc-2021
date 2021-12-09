@@ -27,8 +27,8 @@ public class EditFilmMenuView extends View implements IView {
                     int filmInd = option;
                     boolean show1 = true;
                     while (show1) {
-                        Film film = filmController.getFilm(filmInd);
-                        System.out.println(filmController.filmToString(film));
+                        Film film = filmController.getEntity(filmInd);
+                        System.out.println(filmController.entityToString(film));
                         System.out.println("1. Change Tittle");
                         System.out.println("2. Change date");
                         System.out.println("3. Change genres");
@@ -73,31 +73,31 @@ public class EditFilmMenuView extends View implements IView {
     }
 
     private void setTittle(int filmInd) {
-        Film film = filmController.getFilm(filmInd);
+        Film film = filmController.getEntity(filmInd);
         String newTittle = getStr("Enter a tittle\n");
         film.setTittle(newTittle);
     }
 
     private void setDate(int filmInd) {
-        Film film = filmController.getFilm(filmInd);
+        Film film = filmController.getEntity(filmInd);
         Date newDate = getDate();
         film.setDate(newDate);
     }
 
     private void setGenres(int filmInd) {
-        Film film = filmController.getFilm(filmInd);
+        Film film = filmController.getEntity(filmInd);
         LinkedList<String> newGenresId = getGenresId();
         film.setGenres(newGenresId);
     }
 
     private void setDirectors(int filmInd) {
-        Film film = filmController.getFilm(filmInd);
+        Film film = filmController.getEntity(filmInd);
         LinkedList<String> newDirectorsId = getDirectorsId();
         film.setDirectors(newDirectorsId);
     }
 
     private void setActors(int filmInd) {
-        Film film = filmController.getFilm(filmInd);
+        Film film = filmController.getEntity(filmInd);
         LinkedList<String> newActorsId = getActorsId();
         film.setActors(newActorsId);
     }

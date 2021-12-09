@@ -8,15 +8,15 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class ActorController {
+public class ActorController implements IController<Actor> {
     public ActorRepository getActorRepository() {
         return actorRepository;
     }
 
-    private ActorRepository actorRepository = new ActorRepository();
+    private ActorRepository actorRepository;
 
-    public ActorController() {
-
+    public ActorController(){
+        actorRepository = new ActorRepository();
     }
 
     public ActorController(ActorRepository newActorRepository) {
@@ -24,11 +24,33 @@ public class ActorController {
     }
 
     public void setFilms(int ind, LinkedList<String> newFilms) {
-        Actor actor = getActor(ind);
+        Actor actor = getEntity(ind);
         actor.setFilms(newFilms);
     }
 
-    Actor getActorById(String id) {
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        int ind = 0;
+        for (Actor actor : actorRepository.findAll()) {
+            sb.append(ind++).append(". ").append(entityToString(actor)).append("\n");
+        }
+        return new String(sb);
+    }
+
+
+
+    public String entitiesByIDsToString(LinkedList<String> actors) {
+        StringBuffer sb = new StringBuffer();
+        int ind = 0;
+        for (String a : actors) {
+            sb.append(ind++).append(". ").append(entityToString(getEntityById(a))).append("\n");
+        }
+        return new String(sb);
+    }
+
+    @Override
+    public Actor getEntityById(String id) {
         for (Actor actor : actorRepository.findAll()) {
             if (Objects.equals(actor.getId(), id)) {
                 return actor;
@@ -38,16 +60,7 @@ public class ActorController {
     }
 
     @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        int ind = 0;
-        for (Actor actor : actorRepository.findAll()) {
-            sb.append(ind++).append(". ").append(actorToString(actor)).append("\n");
-        }
-        return new String(sb);
-    }
-
-    public String actorToString(Actor actor) {
+    public String entityToString(Actor actor) {
         StringBuffer sb = new StringBuffer();
         sb.append("Id: ").append(actor.getId()).append("\n");
         sb.append("Name: ").append(actor.getName()).append("\n");
@@ -56,29 +69,23 @@ public class ActorController {
             sb.append("Films is empty");
         } else {
             FilmController filmController = new FilmController();
-            sb.append(filmController.filmsByIdToString(actor.getFilms())).append("\n");
+            sb.append(filmController.entitiesByIDsToString(actor.getFilms())).append("\n");
         }
         return new String(sb);
     }
 
-    public String actorsByIdToString(LinkedList<String> actors) {
-        StringBuffer sb = new StringBuffer();
-        int ind = 0;
-        for (String a : actors) {
-            sb.append(ind++).append(". ").append(actorToString(getActorById(a))).append("\n");
-        }
-        return new String(sb);
-    }
+
 
     public int size() {
         return actorRepository.size();
     }
 
-    public Actor getActor(int ind) {
+
+    public Actor getEntity(int ind) {
         return actorRepository.findAll().get(ind);
     }
 
-    public void addActor() {
+    public void addEntity() {
         actorRepository.findAll().add(new Actor());
     }
 
@@ -90,7 +97,7 @@ public class ActorController {
         }
     }
 
-    public void remove(int ind) {
+    public void removeEntity(int ind) {
         actorRepository.findAll().remove(ind);
     }
 

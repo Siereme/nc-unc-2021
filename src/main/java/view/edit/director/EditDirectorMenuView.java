@@ -24,8 +24,8 @@ public class EditDirectorMenuView extends View implements IView {
             } else {
                 if (option >= 0 && option < directorController.size()) {
                     int directorInd = option;
-                    Director director = directorController.getDirector(directorInd);
-                    System.out.println(directorController.directorToString(director));
+                    Director director = directorController.getEntity(directorInd);
+                    System.out.println(directorController.entityToString(director));
                     System.out.println("1. Change name");
                     System.out.println("2. Change films");
                     System.out.println("3. Exit");
@@ -55,13 +55,13 @@ public class EditDirectorMenuView extends View implements IView {
     }
 
     private void setName(int directorInd) {
-        Director director = directorController.getDirector(directorInd);
+        Director director = directorController.getEntity(directorInd);
         String newName = getStr("Enter a new Director name:\n");
         director.setName(newName);
     }
 
     private void setFilms(int directorInd) {
-        Director director = directorController.getDirector(directorInd);
+        Director director = directorController.getEntity(directorInd);
         LinkedList<String> newFilmsId = getFilmsId();
         director.setFilms(newFilmsId);
     }

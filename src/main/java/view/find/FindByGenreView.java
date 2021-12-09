@@ -23,10 +23,10 @@ public class FindByGenreView extends View implements IView {
             if (option == -1) {
                 show = false;
             } else if (option < genreController.size() && option >= 0) {
-                Genre genre = genreController.getGenre(option);
+                Genre genre = genreController.getEntity(option);
                 FilmController filmController = new FilmController();
                 LinkedList<String> filmsId = filmController.getFilmsByGenre(genre);
-                System.out.println(filmController.filmsByIdToString(filmsId));
+                System.out.println(filmController.entitiesByIDsToString(filmsId));
                 pressAnyKeyToContinue();
             }
         }

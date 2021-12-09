@@ -25,7 +25,7 @@ public class AddFilmView extends View implements IView {
             }
             if (option == 1) {
                 // добавляем нового актера, а потом его редактируем
-                filmController.addFilm();
+                filmController.addEntity();
                 int ind = filmController.size() - 1;
                 setTittle(ind);
                 setDate(ind);
@@ -41,25 +41,25 @@ public class AddFilmView extends View implements IView {
     }
 
     public void setTittle(int filmInd) {
-        Film film = filmController.getFilm(filmInd);
+        Film film = filmController.getEntity(filmInd);
         String newTittle = getStr("Enter a tittle\n");
         film.setTittle(newTittle);
     }
 
     public void setDate(int filmInd) {
-        Film film = filmController.getFilm(filmInd);
+        Film film = filmController.getEntity(filmInd);
         Date newDate = getDate();
         film.setDate(newDate);
     }
 
     public void setActors(int filmInd) {
-        Film film = filmController.getFilm(filmInd);
+        Film film = filmController.getEntity(filmInd);
         LinkedList<String> newActorsId = getActorsId();
         film.setActors(newActorsId);
     }
 
     public void setDirectors(int filmInd) {
-        Film film = filmController.getFilm(filmInd);
+        Film film = filmController.getEntity(filmInd);
         LinkedList<String> newDirectorsId = getDirectorsId();
         film.setDirectors(newDirectorsId);
     }

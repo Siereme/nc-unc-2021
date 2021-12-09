@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
 
-public class DirectorController {
+public class DirectorController implements IController<Director> {
 
     public DirectorRepository getDirectorRepository() {
         return directorRepository;
@@ -20,38 +20,7 @@ public class DirectorController {
 
     private DirectorRepository directorRepository = new DirectorRepository();
 
-    // directorInd - индекс директора, к которому добавляем фильм
-/*    public void addFilm(Film film, int directorInd) {
-        directorRepository.findAll().get(directorInd).getFilms().add(film);
-    }*/
-
-    // directorInd - индекс директора, к которому добавляем фильм
-    // filmInd - индекс фильма, который заменяем на новый
-/*    public void setFilm(int directorInd, int filmInd, Film film) {
-        directorRepository.findAll().get(directorInd).getFilms().set(filmInd, film);
-    }*/
-
-    // directorInd - индекс директора, к которому добавляем фильм
-    // filmInd - индекс фильма, который заменяем на новый
-/*    public void removeFilm(int directorInd, int filmInd) {
-        directorRepository.findAll().get(directorInd).getFilms().remove(filmInd);
-    }
-
-    public void setFilms(int ind, LinkedList<String> newFilms) {
-        directorRepository.findAll().get(ind).setFilms(newFilms);
-    }*/
-
-/*    public static String tittlesToString(LinkedList<Director> directors) {
-        StringBuffer sb = new StringBuffer();
-        int ind = 0;
-        for (Director director : directors) {
-            sb.append(ind).append(". ").append(director.getName()).append("\n");
-            ind++;
-        }
-        return new String(sb);
-    }*/
-
-    public Director getDirectorById(String id) {
+    public Director getEntityById(String id) {
         for (Director director : directorRepository.findAll()) {
             if (Objects.equals(director.getId(), id)) {
                 return director;
@@ -60,7 +29,7 @@ public class DirectorController {
         return null;
     }
 
-    public String directorToString(Director director) {
+    public String entityToString(Director director) {
         StringBuffer sb = new StringBuffer();
         sb.append("Id: ").append(director.getId()).append("\n");
         sb.append("Name: ").append(director.getName()).append("\n");
@@ -69,7 +38,7 @@ public class DirectorController {
             sb.append("Films is empty\n");
         } else {
             FilmController filmController = new FilmController();
-            sb.append(filmController.filmsByIdToString(director.getFilms())).append("\n");
+            sb.append(filmController.entitiesByIDsToString(director.getFilms())).append("\n");
         }
         return new String(sb);
 
@@ -79,16 +48,16 @@ public class DirectorController {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (Director director : directorRepository.findAll()) {
-            sb.append(ind++).append(". ").append(directorToString(director)).append("\n");
+            sb.append(ind++).append(". ").append(entityToString(director)).append("\n");
         }
         return new String(sb);
     }
 
-    public String directorsByIdToString(LinkedList<String> directors) {
+    public String entitiesByIDsToString(LinkedList<String> directors) {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
         for (String d : directors) {
-            sb.append(ind++).append(". ").append(directorToString(getDirectorById(d))).append("\n");
+            sb.append(ind++).append(". ").append(entityToString(getEntityById(d))).append("\n");
         }
         return new String(sb);
     }
@@ -97,11 +66,11 @@ public class DirectorController {
         return directorRepository.size();
     }
 
-    public Director getDirector(int ind) {
+    public Director getEntity(int ind) {
         return directorRepository.findAll().get(ind);
     }
 
-    public void addDirector() {
+    public void addEntity() {
         directorRepository.findAll().add(new Director());
     }
 
@@ -113,7 +82,7 @@ public class DirectorController {
         }
     }
 
-    public void remove(int ind){
+    public void removeEntity(int ind){
         directorRepository.findAll().remove(ind);
     }
 
