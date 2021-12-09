@@ -1,6 +1,6 @@
 package view.edit;
 
-import controller.commands.edit.EditCommands;
+import controller.commands.Commands;
 import controller.commands.edit.EditUserCommands;
 import view.IView;
 import view.View;
@@ -9,6 +9,7 @@ import view.edit.director.EditDirectorMenuView;
 import view.edit.film.EditFilmMenuView;
 import view.edit.genre.EditGenreMenuView;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,10 +27,8 @@ public class EditView extends View implements IView {
                 .filter(e ->  e.getValue() == true)
                 .map(x-> {
                     try {
-                        return x.getKey().newInstance();
-                    } catch (InstantiationException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
+                        return x.getKey().getDeclaredConstructor().newInstance();
+                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                         e.printStackTrace();
                     }
                     return null;
@@ -38,7 +37,7 @@ public class EditView extends View implements IView {
 
         boolean show = true;
         while (show) {
-            System.out.println("------Add Menu------");
+            System.out.println("------Edit Menu------");
             for (int i = 0; i < userCommands.size(); i++) {
                 System.out.println((i + 1) + ". " + userCommands.get(i).getName());
             }
@@ -50,7 +49,7 @@ public class EditView extends View implements IView {
                 break;
             }
 
-            new EditCommands(userCommands.get(option)).execute();
+            new Commands(userCommands.get(option - 1)).execute();
         }
     }
 

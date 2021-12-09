@@ -5,6 +5,7 @@ import view.IView;
 import view.View;
 
 public class RemoveActorView extends View implements IView {
+    private final String name = "Delete Actor";
     ActorController actorController = new ActorController();
 
     @Override
@@ -24,6 +25,10 @@ public class RemoveActorView extends View implements IView {
                 }
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     @Override
