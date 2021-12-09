@@ -1,10 +1,11 @@
 package view.add;
 
-import controller.commands.add.AddCommands;
+import controller.commands.Commands;
 import controller.commands.add.AddUserCommands;
 import view.IView;
 import view.View;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,10 +23,8 @@ public class AddView extends View implements IView {
                 .filter(e ->  e.getValue() == true)
                 .map(x-> {
                     try {
-                        return x.getKey().newInstance();
-                    } catch (InstantiationException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
+                        return x.getKey().getDeclaredConstructor().newInstance();
+                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
                         e.printStackTrace();
                     }
                     return null;
@@ -46,7 +45,7 @@ public class AddView extends View implements IView {
                 break;
             }
 
-            new AddCommands(userCommands.get(option - 1)).execute();
+            new Commands(userCommands.get(option - 1)).execute();
         }
     }
 

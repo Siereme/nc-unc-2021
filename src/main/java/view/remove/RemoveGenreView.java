@@ -5,6 +5,7 @@ import view.IView;
 import view.View;
 
 public class RemoveGenreView extends View implements IView {
+    private final String name = "Delete Genre";
     GenreController genreController = new GenreController();
 
     @Override
@@ -24,6 +25,10 @@ public class RemoveGenreView extends View implements IView {
                 }
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     @Override

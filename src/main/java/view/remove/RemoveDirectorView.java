@@ -5,6 +5,7 @@ import view.IView;
 import view.View;
 
 public class RemoveDirectorView extends View implements IView {
+    private final String name = "Delete Director";
     DirectorController directorController = new DirectorController();
 
     @Override
@@ -25,6 +26,10 @@ public class RemoveDirectorView extends View implements IView {
                 }
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     @Override

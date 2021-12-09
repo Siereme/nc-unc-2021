@@ -1,13 +1,12 @@
-package controller.commands.edit;
+package controller.commands;
 
-import controller.commands.Command;
 import view.View;
 
-public class EditCommands implements Command {
+public class Commands implements Command {
     private final String name;
     private final View view;
 
-    public EditCommands(View view) {
+    public Commands(View view) {
         this.name = view.getName();
         this.view = view;
     }

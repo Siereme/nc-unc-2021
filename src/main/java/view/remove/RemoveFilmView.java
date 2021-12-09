@@ -5,6 +5,7 @@ import view.IView;
 import view.View;
 
 public class RemoveFilmView extends View implements IView {
+    private final String name = "Delete Film";
     FilmController filmController = new FilmController();
 
     @Override
@@ -24,6 +25,10 @@ public class RemoveFilmView extends View implements IView {
                 }
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
 
