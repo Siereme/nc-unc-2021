@@ -5,11 +5,22 @@ import view.edit.EditView;
 import view.find.FindView;
 import view.remove.RemoveView;
 
-// TODO append from file
+/**
+ * Класс главное меню
+ * @author vasily
+ * @version 1.0
+ * */
 public class MainMenuView extends View {
+    /** Поле меню изменения данных */
     private final EditView editView = new EditView();
+
+    /** Поле меню поиска фильмов */
     private final FindView findView = new FindView();
+
+    /** Поле меню добавления данных х */
     private final AddView addView = new AddView();
+
+    /** Поле меню удаления данных */
     private final RemoveView removeView = new RemoveView();
 
     public void display() {

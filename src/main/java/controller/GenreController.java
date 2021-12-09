@@ -1,8 +1,10 @@
 package controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Genre.Genre;
 import repository.GenreRepository;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -66,7 +68,11 @@ public class GenreController {
     }
 
     public void updateRepository() {
-        genreRepository.init();
+        try {
+            genreRepository.serialize(new ObjectMapper());
+        } catch (IOException e) {
+            System.out.println("Serialize corrupted... " + e);
+        }
     }
 
     public void remove(int ind) {

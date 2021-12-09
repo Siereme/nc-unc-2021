@@ -1,11 +1,13 @@
 package controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Actor.Actor;
 import model.Director.Director;
 import model.Film.Film;
 import model.Genre.Genre;
 import repository.FilmsRepository;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -171,7 +173,11 @@ public class FilmController {
     }
 
     public void updateRepository() {
-        filmsRepository.init();
+        try {
+            filmsRepository.serialize(new ObjectMapper());
+        } catch (IOException e) {
+            System.out.println("Serialize corrupted... " + e);
+        }
     }
 
     public void remove(int ind) {

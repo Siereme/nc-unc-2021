@@ -17,10 +17,20 @@ import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * Класс представление, от которого будут наследованы все остальные классы-представления
+ * @author vasiliy
+ * @version 1.0
+ * */
+
 public abstract class View implements IView {
 
+    /** Поле сканер, для считывания данных с клавиатуры */
     protected final Scanner input = new Scanner(System.in);
 
+    /** Функция для взаимодействия с пользователем, пользователь должен ввести какое-либо число
+     * @return возвращает число, введенное пользователем
+     * */
     protected int getOption() {
         try {
             return Integer.parseInt(input.nextLine());
@@ -30,6 +40,9 @@ public abstract class View implements IView {
         return 0;
     }
 
+    /** Функция показывает сообщение пользователю Press Enter key to continue... и блокирует дальнейшее выполнение программы
+     * пока пользователь не нажмет какую-либо клавишу на клавиатуре
+     * */
     protected void pressAnyKeyToContinue() {
         System.out.println("Press Enter key to continue...");
         try {
@@ -39,6 +52,7 @@ public abstract class View implements IView {
         }
     }
 
+    /** Функция очищает консоль */
     protected void cls() {
         try {
             new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
@@ -47,6 +61,9 @@ public abstract class View implements IView {
         }
     }
 
+    /** Функция предназначена для получения даты, введенной пользователем
+     * @return возвращает дату, которую ввел пользователь
+     * */
     protected Date getDate() {
         Date date = null;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
@@ -64,11 +81,21 @@ public abstract class View implements IView {
         return date;
     }
 
+    /** Функция предназначена для получения строки, которую ввел пользователь
+     * при этом пользователю выводится определенное сообщение, согласно которому он вводит данные
+     * @param message - строка(сообщение), которая будет выведена пользователю
+     * @return возвращает строку(сообщение), которую ввел пользователь
+     * */
     protected String getStr(String message) {
         System.out.println(message);
         return input.nextLine();
     }
 
+    /** Функция получает список ID фильмов, которые выбирает пользователь
+     * пользователю предлагается выбрать фильмы, которые есть в базе
+     * взаимодействует с контроллером фильмов
+     * @return возвращает список ID фильмов, которые выбрал пользователь
+     * */
     protected LinkedList<String> getFilmsId() {
         FilmController filmController = new FilmController();
         LinkedList<String> newFilms = new LinkedList<>();
@@ -91,6 +118,11 @@ public abstract class View implements IView {
         return newFilms;
     }
 
+    /** Функция получает список ID актеров, которые выбирает пользователь
+     * пользователю предлагают выбрать акеров, которые есть в базе
+     * взаимодействует с контроллером актеров
+     * @return возвращает список ID актеров, которые выбрал пользователь
+     * */
     protected LinkedList<String> getActorsId() {
         ActorController actorController = new ActorController();
         LinkedList<String> newActors = new LinkedList<String>();
@@ -113,6 +145,11 @@ public abstract class View implements IView {
         return newActors;
     }
 
+    /** Функция получает список ID директоров, которые выбирает пользователь
+     * взаимодействует с контроллером директоров
+     * пользователю предлагают выбрать список директоров, которые есть в базе
+     * @return возвращает список ID директоров, которые выбрал пользователь
+     * */
     protected LinkedList<String> getDirectorsId() {
         DirectorController directorController = new DirectorController();
         LinkedList<String> newDirectors = new LinkedList<String>();
@@ -135,6 +172,11 @@ public abstract class View implements IView {
         return newDirectors;
     }
 
+    /** Функция получает список ID жанров, которые выбирает пользователь
+     * взаимодействует с контроллером жанров
+     * пользователю предлагают выбрать список жанров, которые есть в базе
+     * @return возвращает список ID жанров, которые выбрал пользователь
+     * */
     protected LinkedList<String> getGenresId() {
         GenreController genreController = new GenreController();
         LinkedList<String> newGenres = new LinkedList<>();
@@ -158,6 +200,7 @@ public abstract class View implements IView {
         return newGenres;
     }
 
+    /** Функция получает подтвердение от п*/
     protected boolean getConfirm() {
         String confirm = getStr("Confirm deletion (yes/no): ");
         if (Objects.equals(confirm, "y") || Objects.equals(confirm, "yes")) {

@@ -1,8 +1,10 @@
 package controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Actor.Actor;
 import repository.ActorRepository;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -81,7 +83,11 @@ public class ActorController {
     }
 
     public void updateRepository() {
-        actorRepository.init();
+        try {
+            actorRepository.serialize(new ObjectMapper());
+        } catch (IOException e) {
+            System.out.println("Serialize corrupted... " + e);
+        }
     }
 
     public void remove(int ind) {

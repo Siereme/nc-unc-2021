@@ -1,8 +1,10 @@
 package controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.Director.Director;
 import repository.DirectorRepository;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -104,7 +106,11 @@ public class DirectorController {
     }
 
     public void updateRepository() {
-        directorRepository.init();
+        try {
+            directorRepository.serialize(new ObjectMapper());
+        } catch (IOException e) {
+            System.out.println("Serialize corrupted... " + e);
+        }
     }
 
     public void remove(int ind){
