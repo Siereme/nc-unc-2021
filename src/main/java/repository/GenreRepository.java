@@ -8,13 +8,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class GenreRepository implements IRepository<Genre> {
-    private final String filePath = "src/main/resources/Genres.json";
+    private final String filePath = new File("src/main/resources/Genres.json").getAbsolutePath();
     private final List<Genre> genres = new ArrayList<>();
 
     public GenreRepository(Genre... genres) {
@@ -76,13 +77,11 @@ public class GenreRepository implements IRepository<Genre> {
     }
 
     public void serialize(ObjectMapper objectMapper) throws IOException {
-        String file = new File(this.filePath).getAbsolutePath();
-        objectMapper.writeValue(new FileWriter(file), this.genres);
+        objectMapper.writeValue(new FileWriter(this.filePath), this.genres);
     }
 
     public List<Genre> deserialize(ObjectMapper objectMapper) throws IOException {
-        String file = new File(this.filePath).getAbsolutePath();
-        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Genre>>() {
+        return objectMapper.readValue(new FileReader(this.filePath), new TypeReference<List<Genre>>() {
         });
     }
 
@@ -90,4 +89,25 @@ public class GenreRepository implements IRepository<Genre> {
         return genres.size();
     }
 
+    public static <T> Predicate<T> distinctByKey(
+            Function<? super T, ?> keyExtractor) {
+
+        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
+
+    public void mergeFiles(String file1, String file2){
+        List<Genre> genres = new LinkedList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            genres.addAll(mapper.readValue(new File(file1), new TypeReference<List<Genre>>() {}));
+            genres.addAll(mapper.readValue(new File(file2), new TypeReference<List<Genre>>() {}));
+            mapper.writeValue(new File(this.filePath),
+                    genres.stream()
+                            .filter(distinctByKey(p -> p.getId()))
+                            .collect(Collectors.toList()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

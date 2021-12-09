@@ -8,13 +8,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ActorRepository implements IRepository<Actor> {
-    private final String filePath = "src/main/resources/Actors.json";
+    private final String filePath = new File("src/main/resources/Actors.json").getAbsolutePath();
     private final List<Actor> actors = new ArrayList<>();
 
     public ActorRepository(Actor... actors) {
@@ -76,13 +77,11 @@ public class ActorRepository implements IRepository<Actor> {
     }
 
     public void serialize(ObjectMapper objectMapper) throws IOException {
-        String file = new File(this.filePath).getAbsolutePath();
-        objectMapper.writeValue(new FileWriter(file), this.actors);
+        objectMapper.writeValue(new FileWriter(this.filePath), this.actors);
     }
 
     public List<Actor> deserialize(ObjectMapper objectMapper) throws IOException {
-        String file = new File(this.filePath).getAbsolutePath();
-        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Actor>>() {
+        return objectMapper.readValue(new FileReader(this.filePath), new TypeReference<List<Actor>>() {
         });
     }
 
@@ -90,4 +89,25 @@ public class ActorRepository implements IRepository<Actor> {
         return actors.size();
     }
 
+    public static <T> Predicate<T> distinctByKey(
+            Function<? super T, ?> keyExtractor) {
+
+        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
+
+    public void mergeFiles(String file1, String file2){
+        List<Actor> actors = new LinkedList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            actors.addAll(mapper.readValue(new File(file1), new TypeReference<List<Actor>>() {}));
+            actors.addAll(mapper.readValue(new File(file2), new TypeReference<List<Actor>>() {}));
+            mapper.writeValue(new File(this.filePath),
+                    actors.stream()
+                            .filter(distinctByKey(p -> p.getId()))
+                            .collect(Collectors.toList()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

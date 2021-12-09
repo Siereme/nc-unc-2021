@@ -8,13 +8,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class DirectorRepository implements repository.IRepository<Director> {
-    private final String filePath = "src/main/resources/Directors.json";
+    private final String filePath = new File("src/main/resources/Directors.json").getAbsolutePath();
     private final List<Director> directors = new ArrayList<>();
 
     public DirectorRepository(Director... directors) {
@@ -76,13 +77,11 @@ public class DirectorRepository implements repository.IRepository<Director> {
     }
 
     public void serialize(ObjectMapper objectMapper) throws IOException {
-        String file = new File(this.filePath).getAbsolutePath();
-        objectMapper.writeValue(new FileWriter(file), this.directors);
+        objectMapper.writeValue(new FileWriter(this.filePath), this.directors);
     }
 
     public List<Director> deserialize(ObjectMapper objectMapper) throws IOException {
-        String file = new File(this.filePath).getAbsolutePath();
-        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Director>>() {
+        return objectMapper.readValue(new FileReader(this.filePath), new TypeReference<List<Director>>() {
         });
     }
 
@@ -90,5 +89,25 @@ public class DirectorRepository implements repository.IRepository<Director> {
         return directors.size();
     }
 
+    public static <T> Predicate<T> distinctByKey(
+            Function<? super T, ?> keyExtractor) {
 
+        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
+
+    public void mergeFiles(String file1, String file2){
+        List<Director> directors = new LinkedList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            directors.addAll(mapper.readValue(new File(file1), new TypeReference<List<Director>>() {}));
+            directors.addAll(mapper.readValue(new File(file2), new TypeReference<List<Director>>() {}));
+            mapper.writeValue(new File(this.filePath),
+                    directors.stream()
+                            .filter(distinctByKey(p -> p.getId()))
+                            .collect(Collectors.toList()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

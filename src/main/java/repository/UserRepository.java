@@ -2,37 +2,38 @@ package repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.User.Admin.Admin;
 import model.User.IUser;
-import model.User.Visitor.Visitor;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class UserRepository implements IRepository<IUser> {
-    private final String filePath = "src/main/resources/Users.json";
+    private final String filePath = new File("src/main/resources/Users.json").getAbsolutePath();
     private LinkedList<IUser> users = new LinkedList<>();
 
     public UserRepository(){
-        users.add(new Admin("admin1", "123"));
-        users.add(new Admin("admin2", "123"));
-        users.add(new Visitor("visitor1", "123"));
-        users.add(new Visitor("visitor1", "123"));
+//        users.add(new Admin("admin1", "123"));
+//        users.add(new Admin("admin2", "123"));
+//        users.add(new Visitor("visitor1", "123"));
+//        users.add(new Visitor("visitor1", "123"));
         init();
     }
 
     private void init() {
         try {
-            serialize(new ObjectMapper());
+            this.users.addAll(deserialize(new ObjectMapper()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        this.users.addAll(new AdminRepository().findAll());
-//        this.users.addAll(new VisitorRepository().findAll());
     }
 
     public UserRepository(LinkedList<IUser> users) {
@@ -71,12 +72,32 @@ public class UserRepository implements IRepository<IUser> {
     }
 
     public void serialize(ObjectMapper objectMapper) throws IOException {
-        String file = new File(this.filePath).getAbsolutePath();
-        objectMapper.writerFor(new TypeReference<List<IUser>>() {}).writeValue(new File(file), this.users);
+        objectMapper.writerFor(new TypeReference<List<IUser>>() {}).writeValue(new File(this.filePath), this.users);
     }
 
     public List<IUser> deserialize(ObjectMapper objectMapper) throws IOException {
-        String file = new File(this.filePath).getAbsolutePath();
-        return objectMapper.readerFor(new TypeReference<List<IUser>>() {}).readValue(new FileReader(file));
+        return objectMapper.readerFor(new TypeReference<List<IUser>>() {}).readValue(new FileReader(this.filePath));
+    }
+
+    public static <T> Predicate<T> distinctByKey(
+            Function<? super T, ?> keyExtractor) {
+
+        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
+
+    public void mergeFiles(String file1, String file2){
+        List<IUser> users = new LinkedList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            users.addAll(mapper.readerFor(new TypeReference<List<IUser>>() {}).readValue(new File(file1)));
+            users.addAll(mapper.readerFor(new TypeReference<List<IUser>>() {}).readValue(new File(file2)));
+            List<IUser> result = users.stream()
+                    .filter(distinctByKey(p -> p.getId()))
+                    .collect(Collectors.toList());
+            mapper.writeValue(new File(this.filePath), result);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

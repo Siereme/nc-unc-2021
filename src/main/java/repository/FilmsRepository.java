@@ -9,10 +9,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 //TODO will be replaced by DB later
 public class FilmsRepository implements IRepository<Film> {
-    private final String filePath = "src/main/resources/Films.json";
+    private final String filePath = new File("src/main/resources/Films.json").getAbsolutePath();
     private final List<Film> films = new ArrayList<>();
 
     public FilmsRepository(Film... newFilms) {
@@ -74,13 +78,11 @@ public class FilmsRepository implements IRepository<Film> {
     }
 
     public void serialize(ObjectMapper objectMapper) throws IOException {
-        String file = new File(this.filePath).getAbsolutePath();
-        objectMapper.writeValue(new FileWriter(file), this.films);
+        objectMapper.writeValue(new FileWriter(this.filePath), this.films);
     }
 
     public List<Film> deserialize(ObjectMapper objectMapper) throws IOException {
-        String file = new File(this.filePath).getAbsolutePath();
-        return objectMapper.readValue(new FileReader(file), new TypeReference<List<Film>>() {
+        return objectMapper.readValue(new FileReader(this.filePath), new TypeReference<List<Film>>() {
         });
     }
 
@@ -88,4 +90,26 @@ public class FilmsRepository implements IRepository<Film> {
         return films.size();
     }
 
+
+    public static <T> Predicate<T> distinctByKey(
+            Function<? super T, ?> keyExtractor) {
+
+        Map<Object, Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
+    }
+
+    public void mergeFiles(String file1, String file2){
+        List<Film> films = new LinkedList<>();
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            films.addAll(mapper.readValue(new File(file1), new TypeReference<List<Film>>() {}));
+            films.addAll(mapper.readValue(new File(file2), new TypeReference<List<Film>>() {}));
+            mapper.writeValue(new File(this.filePath),
+                    films.stream()
+                            .filter(distinctByKey(p -> p.getId()))
+                            .collect(Collectors.toList()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
