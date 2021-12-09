@@ -8,14 +8,12 @@ import view.View;
 import java.util.LinkedList;
 
 public class AddDirectorView extends View implements IView {
-    private String name = "Add Director";
+    public String name = "Add Director";
     DirectorController directorController = new DirectorController();
 
     @Override
     public void display() {
         boolean show = true;
-        // флаг того, что данные изменились
-        boolean isChange = false;
         while (show) {
             System.out.println("------Adding Director menu------");
             System.out.println("1. Add director");
@@ -31,15 +29,13 @@ public class AddDirectorView extends View implements IView {
                 setName(ind);
                 setYear(ind);
                 setFilms(ind);
-                isChange = true;
+                directorController.updateRepository();
             }
         }
-        if(isChange){
-            directorController.updateRepository();
-        }
+
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 

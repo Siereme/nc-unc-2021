@@ -12,8 +12,6 @@ public class AddGenreView extends View implements IView {
     @Override
     public void display() {
         boolean show = true;
-        // флаг того, что данные изменились
-        boolean isChange = false;
         while (show) {
             System.out.println("------Adding Genre menu------");
             System.out.println("1. Add Genre");
@@ -27,15 +25,12 @@ public class AddGenreView extends View implements IView {
                 genreController.addGenre();
                 int ind = genreController.size() - 1;
                 setTittle(ind);
-                isChange = true;
+                genreController.updateRepository();
             }
-        }
-        if (isChange) {
-            genreController.updateRepository();
         }
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 

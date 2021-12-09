@@ -14,8 +14,6 @@ public class EditActorMenuView extends View implements IView {
     @Override
     public void display() {
         boolean show = true;
-        // флаг того, что данные изменились
-        boolean isChange = false;
         while (show) {
             System.out.println("------Select Actor To Edit------");
             System.out.println(actorController);
@@ -35,11 +33,11 @@ public class EditActorMenuView extends View implements IView {
                     switch (option) {
                         case 1:
                             setName(actorInd);
-                            isChange = true;
+                            actorController.updateRepository();
                             break;
                         case 2:
                             setFilms(actorInd);
-                            isChange = true;
+                            actorController.updateRepository();
                             break;
                         case 3:
                             show = false;
@@ -48,9 +46,6 @@ public class EditActorMenuView extends View implements IView {
                     }
                 }
             }
-        }
-        if (isChange) {
-            actorController.updateRepository();
         }
     }
 

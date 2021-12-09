@@ -15,8 +15,6 @@ public class EditFilmMenuView extends View implements IView {
     @Override
     public void display() {
         boolean show = true;
-        // флаг того, что данные изменились
-        boolean isChange = false;
         while (show) {
             System.out.println("------Select Film To Edit------");
             System.out.println(filmController);
@@ -41,23 +39,23 @@ public class EditFilmMenuView extends View implements IView {
                         switch (option) {
                             case 1:
                                 setTittle(filmInd);
-                                isChange = true;
+                                filmController.updateRepository();
                                 break;
                             case 2:
                                 setDate(filmInd);
-                                isChange = true;
+                                filmController.updateRepository();
                                 break;
                             case 3:
                                 setGenres(filmInd);
-                                isChange = true;
+                                filmController.updateRepository();
                                 break;
                             case 4:
                                 setDirectors(filmInd);
-                                isChange = true;
+                                filmController.updateRepository();
                                 break;
                             case 5:
                                 setActors(filmInd);
-                                isChange = true;
+                                filmController.updateRepository();
                                 break;
                             case 6:
                                 show1 = false;
@@ -67,9 +65,6 @@ public class EditFilmMenuView extends View implements IView {
                     }
                 }
             }
-        }
-        if (isChange) {
-            filmController.updateRepository();
         }
     }
 

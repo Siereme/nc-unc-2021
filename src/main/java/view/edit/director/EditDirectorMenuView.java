@@ -14,8 +14,6 @@ public class EditDirectorMenuView extends View implements IView {
     @Override
     public void display() {
         boolean show = true;
-        // флаг того, что данные изменились
-        boolean isChange = false;
         while (show) {
             System.out.println("------Select Director To Edit------");
             System.out.println(directorController);
@@ -35,11 +33,11 @@ public class EditDirectorMenuView extends View implements IView {
                     switch (option) {
                         case 1:
                             setName(directorInd);
-                            isChange = true;
+                            directorController.updateRepository();
                             break;
                         case 2:
                             setFilms(directorInd);
-                            isChange = true;
+                            directorController.updateRepository();
                             break;
                         case 3:
                             show = false;
@@ -49,9 +47,7 @@ public class EditDirectorMenuView extends View implements IView {
                 }
             }
         }
-        if (isChange) {
-            directorController.updateRepository();
-        }
+
     }
 
     public String getName(){

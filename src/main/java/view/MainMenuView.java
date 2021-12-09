@@ -3,12 +3,14 @@ package view;
 import view.add.AddView;
 import view.edit.EditView;
 import view.find.FindView;
+import view.remove.RemoveView;
 
 // TODO append from file
 public class MainMenuView extends View {
     private final EditView editView = new EditView();
     private final FindView findView = new FindView();
     private final AddView addView = new AddView();
+    private final RemoveView removeView = new RemoveView();
 
     public void display() {
         boolean show = true;
@@ -27,14 +29,14 @@ public class MainMenuView extends View {
                     editView.display();
                     break;
                 case 2:
-                    // пока некорректно работает(надо
                     findView.display();
                     break;
                 case 3:
-                    // пока не провено работает ли вообще
                     addView.display();
+                    break;
                 case 4:
-                    System.out.println("not implemented\n");
+                    removeView.display();
+                    break;
                 case 5:
                     show = false;
                 default:

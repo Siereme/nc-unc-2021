@@ -107,4 +107,8 @@ public class DirectorController {
         directorRepository.init();
     }
 
+    public void remove(int ind){
+        directorRepository.findAll().remove(ind);
+    }
+
 }

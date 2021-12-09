@@ -11,12 +11,7 @@ import java.util.Objects;
 
 public class FilmController {
 
-    private FilmsRepository filmsRepository = new FilmsRepository();
-
-/*    // возможно этих полей не будет, после того как будет реализована сериализация/десериализация
-    private ActorController actorController = new ActorController();
-    private GenreController genreController = new GenreController();
-    private DirectorController directorController = new DirectorController();*/
+    private FilmsRepository filmsRepository;
 
     public FilmController() {
         filmsRepository = new FilmsRepository();
@@ -33,16 +28,6 @@ public class FilmController {
     public void deleteById(Integer id) {
         filmsRepository.deleteById(id);
     }
-
-/*    public FilmsRepository getFilmsByGenre(Genre genre) {
-        FilmsRepository filmsByGenre = new FilmsRepository();
-        for (Film film : repository.findAll()) {
-            if (isContainsGenre(genre, film)) {
-                filmsByGenre.create(film);
-            }
-        }
-        return filmsByGenre;
-    }*/
 
     public void setGenres(int filmInd, LinkedList<String> newGenres) {
         Film film = getFilm(filmInd);
@@ -181,12 +166,16 @@ public class FilmController {
         return filmsRepository.findAll().get(ind);
     }
 
-    public void addFilm(){
+    public void addFilm() {
         filmsRepository.findAll().add(new Film());
     }
 
     public void updateRepository() {
         filmsRepository.init();
+    }
+
+    public void remove(int ind) {
+        filmsRepository.findAll().remove(ind);
     }
 
 }

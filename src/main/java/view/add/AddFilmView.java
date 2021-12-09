@@ -15,8 +15,6 @@ public class AddFilmView extends View implements IView {
     @Override
     public void display() {
         boolean show = true;
-        // флаг того, что данные изменились
-        boolean isChange = false;
         while (show) {
             System.out.println("------Adding Genre menu------");
             System.out.println("1. Add Genre");
@@ -33,11 +31,8 @@ public class AddFilmView extends View implements IView {
                 setDate(ind);
                 setActors(ind);
                 setDirectors(ind);
-                isChange = true;
+                filmController.updateRepository();
             }
-        }
-        if (isChange) {
-            filmController.updateRepository();
         }
     }
 

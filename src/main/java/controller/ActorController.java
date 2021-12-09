@@ -84,4 +84,8 @@ public class ActorController {
         actorRepository.init();
     }
 
+    public void remove(int ind) {
+        actorRepository.findAll().remove(ind);
+    }
+
 }

@@ -14,8 +14,6 @@ public class AddActorView extends View implements IView {
     @Override
     public void display() {
         boolean show = true;
-        // флаг того, что данные изменились
-        boolean isChange = false;
         while (show) {
             System.out.println("------Adding actor menu------");
             System.out.println("1. Add actor");
@@ -31,11 +29,8 @@ public class AddActorView extends View implements IView {
                 setName(actorInd);
                 setYear(actorInd);
                 setFilms(actorInd);
-                isChange = true;
+                actorController.updateRepository();
             }
-        }
-        if (isChange) {
-            actorController.updateRepository();
         }
     }
 

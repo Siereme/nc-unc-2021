@@ -22,20 +22,16 @@ public class RemoveView extends View implements IView {
             int option = getOption();
             switch (option) {
                 case 1:
-                    System.out.println("not implemented");
-                    // removeFilmView.display();
+                    removeFilmView.display();
                     break;
                 case 2:
-                    System.out.println("not implemented");
-                    // removeGenreView.display();
+                    removeGenreView.display();
                     break;
                 case 3:
-                    System.out.println("not implemented");
-                    // removeActorView.display();
+                    removeActorView.display();
                     break;
                 case 4:
-                    System.out.println("not implemented");
-                    // removeDirectorView.display();
+                    removeDirectorView.display();
                     break;
                 case 5:
                     show = false;

@@ -12,15 +12,13 @@ public class EditGenreMenuView extends View implements IView {
     @Override
     public void display() {
         boolean show = true;
-        // флаг того, что данные изменились
-        boolean isChange = false;
         while (show) {
             System.out.println("Select Genre to Edit");
             System.out.println("-1. Exit");
             System.out.println(genreController);
             int option = getOption();
             if (option == -1) {
-                break;
+                show = false;
             }
             if (option >= 0 && option < genreController.size()) {
                 int genreInd = option;
@@ -32,7 +30,7 @@ public class EditGenreMenuView extends View implements IView {
                 switch (option) {
                     case 1:
                         setTittle(genreInd);
-                        isChange = true;
+                        genreController.updateRepository();
                         break;
                     case 2:
                         break;
@@ -40,9 +38,6 @@ public class EditGenreMenuView extends View implements IView {
 
             }
 
-        }
-        if (isChange) {
-            genreController.updateRepository();
         }
     }
 

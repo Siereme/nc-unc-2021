@@ -69,4 +69,8 @@ public class GenreController {
         genreRepository.init();
     }
 
+    public void remove(int ind) {
+        genreRepository.findAll().remove(ind);
+    }
+
 }

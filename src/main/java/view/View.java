@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Scanner;
 
 public abstract class View implements IView {
@@ -155,6 +156,14 @@ public abstract class View implements IView {
             }
         }
         return newGenres;
+    }
+
+    protected boolean getConfirm() {
+        String confirm = getStr("Confirm deletion (yes/no): ");
+        if (Objects.equals(confirm, "y") || Objects.equals(confirm, "yes")) {
+            return true;
+        }
+        return false;
     }
 
     public String getName() {
