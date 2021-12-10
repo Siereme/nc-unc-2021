@@ -13,6 +13,9 @@ import java.util.LinkedList;
  * @version 1.0
  * */
 public class FindByActorView extends View implements IView {
+    /** Поле название команды */
+    public String name = "Find By Actor";
+
     /** Поле контроллер для актеров */
     ActorController actorController = new ActorController();
 

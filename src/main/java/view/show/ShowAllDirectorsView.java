@@ -4,6 +4,9 @@ import controller.DirectorController;
 import view.View;
 
 public class ShowAllDirectorsView extends View {
+    /** Поле название команды */
+    public String name = "Show All Directors";
+
     DirectorController directorController = new DirectorController();
 
     @Override

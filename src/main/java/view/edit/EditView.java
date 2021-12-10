@@ -19,33 +19,30 @@ public class EditView extends View implements IView {
     public void display() {
         EditUserCommands commands = new EditUserCommands();
 
-        List<View> userCommands = commands.commands.entrySet().stream()
-                .filter(e ->  e.getValue() == true)
-                .map(x-> {
-                    try {
-                        return x.getKey().getDeclaredConstructor().newInstance();
-                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                })
-                .collect(Collectors.toList());
+        List<View> userCommands = commands.commands.entrySet().stream().filter(e -> e.getValue()).map(x -> {
+            try {
+                return x.getKey().getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }).collect(Collectors.toList());
 
-        boolean show = true;
-        while (show) {
+        while (true) {
             System.out.println("------Edit Menu------");
             for (int i = 0; i < userCommands.size(); i++) {
-                System.out.println((i + 1) + ". " + userCommands.get(i).getName());
+                System.out.println((i) + ". " + userCommands.get(i).getName());
             }
-            System.out.println((userCommands.size() + 1) + ". Exit");
+            System.out.println("-1. Exit");
 
             int option = getOption();
 
-            if(option < 1 || option > userCommands.size()){
+            if (option == -1) {
                 break;
             }
-
-            new Commands(userCommands.get(option - 1)).execute();
+            if (option >= 0 && option < userCommands.size()) {
+                new Commands(userCommands.get(option)).execute();
+            }
         }
     }
 

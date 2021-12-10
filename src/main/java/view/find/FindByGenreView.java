@@ -13,6 +13,9 @@ import java.util.LinkedList;
  * @version 1.0
  * */
 public class FindByGenreView extends View implements IView {
+    /** Поле название команды */
+    public String name = "Find By Genre";
+
     /** Поле контроллер для жанров */
     GenreController genreController = new GenreController();
 

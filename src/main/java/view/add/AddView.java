@@ -19,33 +19,30 @@ public class AddView extends View implements IView {
     public void display() {
         AddUserCommands commands = new AddUserCommands();
 
-        List<View> userCommands = commands.commands.entrySet().stream()
-                .filter(e ->  e.getValue() == true)
-                .map(x-> {
-                    try {
-                        return x.getKey().getDeclaredConstructor().newInstance();
-                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                        e.printStackTrace();
-                    }
-                    return null;
-                })
-                .collect(Collectors.toList());
-
-        boolean show = true;
-        while (show) {
-            System.out.println("------Add Menu------");
-            for(int i = 0; i < userCommands.size(); i++){
-                System.out.println((i + 1) + ". " + userCommands.get(i).getName());
+        List<View> userCommands = commands.commands.entrySet().stream().filter(e -> e.getValue()).map(x -> {
+            try {
+                return x.getKey().getDeclaredConstructor().newInstance();
+            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                e.printStackTrace();
             }
-            System.out.println((userCommands.size() + 1) + ". Exit");
+            return null;
+        }).collect(Collectors.toList());
+
+        while (true) {
+            System.out.println("------Add Menu------");
+            for (int i = 0; i < userCommands.size(); i++) {
+                System.out.println((i) + ". " + userCommands.get(i).getName());
+            }
+            System.out.println("-1. Exit");
 
             int option = getOption();
 
-            if(option < 1 || option > userCommands.size()){
+            if (option == -1) {
                 break;
             }
-
-            new Commands(userCommands.get(option - 1)).execute();
+            if (option >= 0 && option < userCommands.size()) {
+                new Commands(userCommands.get(option)).execute();
+            }
         }
     }
 

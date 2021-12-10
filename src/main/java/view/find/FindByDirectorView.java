@@ -13,6 +13,9 @@ import java.util.LinkedList;
  * @version 1.0
  * */
 public class FindByDirectorView extends View implements IView {
+    /** Поле название команды */
+    public String name = "Find By Director";
+
     /** Поле контроллер для режиссеров */
     DirectorController directorController = new DirectorController();
 

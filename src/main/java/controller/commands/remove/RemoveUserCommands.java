@@ -17,8 +17,8 @@ public class RemoveUserCommands {
     public HashMap<Class<? extends View>, Boolean> commands = new HashMap<Class<? extends View>, Boolean>()
         {{
             put(RemoveFilmView.class, false);
-            put(RemoveGenreView.class, true);
-            put(RemoveActorView.class, true);
-            put(RemoveDirectorView.class, true);
+            put(RemoveGenreView.class, false);
+            put(RemoveActorView.class, false);
+            put(RemoveDirectorView.class, false);
         }};
 }
