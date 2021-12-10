@@ -14,9 +14,17 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-//TODO will be replaced by DB later
+/** Класс репозиторий фильмов
+ * @see IRepository
+ * @see Film
+ * @author Vasiliy, Sergey
+ * @version 1.0
+ * */
 public class FilmsRepository implements IRepository<Film> {
+    /** Путь для сериализации\десериализации */
     private final String filePath = new File("src/main/resources/Films.json").getAbsolutePath();
+
+    /** список хранимых фильмов */
     private final List<Film> films = new ArrayList<>();
 
     public FilmsRepository(Film... newFilms) {

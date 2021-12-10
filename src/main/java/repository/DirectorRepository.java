@@ -14,8 +14,17 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/** Репозиторий режиссеров, хранит список режиссеров
+ * @see IRepository
+ * @see Director
+ * @author Vasiliy,Sergey
+ * @version 1.0
+ * */
 public class DirectorRepository implements repository.IRepository<Director> {
+    /** Путь для сериализации\десериализации */
     private final String filePath = new File("src/main/resources/Directors.json").getAbsolutePath();
+
+    /** Список хранимых режиссеров */
     private final List<Director> directors = new ArrayList<>();
 
     public DirectorRepository(Director... directors) {

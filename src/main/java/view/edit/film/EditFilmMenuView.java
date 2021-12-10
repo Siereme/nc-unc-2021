@@ -8,8 +8,15 @@ import view.View;
 import java.util.Date;
 import java.util.LinkedList;
 
+/** Класс команда изменения фильмов
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class EditFilmMenuView extends View implements IView {
+    /** Поле название команды */
     private final String name = "Edit Film";
+
+    /** Поле контроллер для фильмов */
     private final FilmController filmController = new FilmController();
 
     @Override

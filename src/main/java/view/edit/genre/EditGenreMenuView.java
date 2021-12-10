@@ -5,8 +5,15 @@ import model.Genre.Genre;
 import view.IView;
 import view.View;
 
+/** Класс команда изменения жанров
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class EditGenreMenuView extends View implements IView {
+    /** Поле название команды */
     private final String name = "Edit Genre";
+
+    /** Поле контроллер для жанров */
     private final GenreController genreController = new GenreController();
 
     @Override

@@ -7,8 +7,13 @@ import view.View;
 
 import java.util.LinkedList;
 
+/** Команда добавления актера */
 public class AddActorView extends View implements IView {
+
+    /** Название команды*/
     public String name = "Add Actor";
+
+    /** Контроллер для актеров */
     ActorController actorController = new ActorController();
 
     @Override

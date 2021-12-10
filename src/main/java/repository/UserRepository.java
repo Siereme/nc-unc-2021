@@ -16,8 +16,16 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/** Класс репозиторий пользователей
+ * @see IRepository
+ * @author Sergey
+ * @version 1.0
+ * */
 public class UserRepository implements IRepository<IUser> {
+    /** Путь для сериализации\десериализации */
     private final String filePath = new File("src/main/resources/Users.json").getAbsolutePath();
+
+    /** Список хранимых пользователей */
     private LinkedList<IUser> users = new LinkedList<>();
 
     public UserRepository(){
@@ -77,6 +85,11 @@ public class UserRepository implements IRepository<IUser> {
 
     public List<IUser> deserialize(ObjectMapper objectMapper) throws IOException {
         return objectMapper.readerFor(new TypeReference<List<IUser>>() {}).readValue(new FileReader(this.filePath));
+    }
+
+    @Override
+    public int size() {
+        return users.size();
     }
 
     public static <T> Predicate<T> distinctByKey(

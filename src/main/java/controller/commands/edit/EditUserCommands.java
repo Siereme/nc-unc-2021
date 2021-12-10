@@ -8,6 +8,11 @@ import view.edit.genre.EditGenreMenuView;
 
 import java.util.HashMap;
 
+/** Класс команд редактирования, включает в себя 1) Редактирование Фильмов 2) Редактирование Жанров 3) Редактирование Актеров
+ * 4) Редактирование Режиссеров
+ * @author Sergey
+ * @version 1.0
+ * */
 public class EditUserCommands {
     public HashMap<Class<? extends View>, Boolean> commands = new HashMap<Class<? extends View>, Boolean>()
     {{

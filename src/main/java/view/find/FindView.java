@@ -3,9 +3,18 @@ package view.find;
 import view.IView;
 import view.View;
 
+/** Класс меню команд поиска
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class FindView extends View implements IView {
+    /** Поле команды поиска фильмов по актерам */
     private final FindByActorView findByActorView = new FindByActorView();
+
+    /** Поле команды поиска фильмов по режиссерам */
     private final FindByDirectorView findByDirectorView = new FindByDirectorView();
+
+    /** Поле команды поиска фильмов по жанрам */
     private final FindByGenreView findByGenreView = new FindByGenreView();
 
     @Override

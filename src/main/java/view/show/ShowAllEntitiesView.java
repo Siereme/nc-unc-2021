@@ -1,7 +1,7 @@
-package view.add;
+package view.show;
 
 import controller.commands.Commands;
-import controller.commands.add.AddUserCommands;
+import controller.commands.show.ShowUserCommands;
 import view.IView;
 import view.View;
 
@@ -9,18 +9,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/** Меню команд добавления данных
- * @author Sergey, Vasiliy
- * @version 1.0
- * */
-public class AddView extends View implements IView {
+public class ShowAllEntitiesView extends View implements IView {
 
     @Override
     public void display() {
-        AddUserCommands commands = new AddUserCommands();
+        ShowUserCommands commands = new ShowUserCommands();
 
         List<View> userCommands = commands.commands.entrySet().stream()
-                .filter(e ->  e.getValue() == true)
+                .filter(e -> e.getValue())
                 .map(x-> {
                     try {
                         return x.getKey().getDeclaredConstructor().newInstance();
@@ -33,8 +29,8 @@ public class AddView extends View implements IView {
 
         boolean show = true;
         while (show) {
-            System.out.println("------Add Menu------");
-            for(int i = 0; i < userCommands.size(); i++){
+            System.out.println("------Show Menu------");
+            for (int i = 0; i < userCommands.size(); i++) {
                 System.out.println((i + 1) + ". " + userCommands.get(i).getName());
             }
             System.out.println((userCommands.size() + 1) + ". Exit");

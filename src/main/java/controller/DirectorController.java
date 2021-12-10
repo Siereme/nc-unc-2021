@@ -8,6 +8,13 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
 
+/** Контроллер для сущности режиссер
+ * @see IController
+ * @see Director
+ * @see DirectorRepository
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class DirectorController implements IController<Director> {
 
     public DirectorRepository getDirectorRepository() {

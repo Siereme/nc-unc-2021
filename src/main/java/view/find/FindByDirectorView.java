@@ -8,7 +8,12 @@ import view.View;
 
 import java.util.LinkedList;
 
+/** Команда поиска фильмов по режиссерам
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class FindByDirectorView extends View implements IView {
+    /** Поле контроллер для режиссеров */
     DirectorController directorController = new DirectorController();
 
     @Override

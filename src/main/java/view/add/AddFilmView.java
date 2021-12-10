@@ -8,8 +8,15 @@ import view.View;
 import java.util.Date;
 import java.util.LinkedList;
 
+/** Команда добавления фильма
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class AddFilmView extends View implements IView {
+    /** Поле название команды */
     public String name = "Add Film";
+
+    /** Поле контроллер для фильмов */
     FilmController filmController = new FilmController();
 
     @Override

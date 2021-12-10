@@ -5,11 +5,22 @@ import model.User.IUser;
 
 import java.util.UUID;
 
+/** Класс пользователь(привилегий меньше чем у админа)
+ * @author Sergey
+ * @version 1.0
+ * */
 @JsonTypeName("visitor")
 public class Visitor implements IUser {
+    /** Поле первичный ключ - id пользователя */
     private String id;
+
+    /** Поле имя пользователя */
     private String name;
+
+    /** Поле пароль пользователя */
     private String password;
+
+    /** Поле роль пользователя */
     private final Boolean role = false;
 
     public Visitor() {

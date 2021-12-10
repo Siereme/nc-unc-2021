@@ -7,8 +7,15 @@ import view.View;
 
 import java.util.LinkedList;
 
+/** Команда добавления режиссера
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class AddDirectorView extends View implements IView {
+    /** Поле название команды */
     public String name = "Add Director";
+
+    /** Поле контроллер для режиссеров */
     DirectorController directorController = new DirectorController();
 
     @Override

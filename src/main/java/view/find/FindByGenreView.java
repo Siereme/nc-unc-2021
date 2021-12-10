@@ -8,7 +8,12 @@ import view.View;
 
 import java.util.LinkedList;
 
+/** Команда поиска фильмов по жанрам
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class FindByGenreView extends View implements IView {
+    /** Поле контроллер для жанров */
     GenreController genreController = new GenreController();
 
     @Override

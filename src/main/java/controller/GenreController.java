@@ -8,6 +8,13 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
 
+/** Контроллер для сущности жанр
+ * @see Genre
+ * @see IController
+ * @see GenreRepository
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class GenreController implements IController<Genre> {
 
     public GenreRepository getGenreRepository() {

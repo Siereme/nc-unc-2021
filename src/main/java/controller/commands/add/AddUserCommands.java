@@ -8,6 +8,11 @@ import view.add.AddGenreView;
 
 import java.util.HashMap;
 
+/** Класс команд добавления сущностей, включает в себя 1) Добавление фильмов 2) Добавление жанров
+ * 3) Добавление Актеров 4) Добавление Режисеров
+ * @author Sergey
+ * @version 1.0
+ * */
 public class AddUserCommands {
     public HashMap<Class<? extends View>, Boolean> commands = new HashMap<Class<? extends View>, Boolean>()
         {{

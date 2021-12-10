@@ -2,6 +2,10 @@ package controller.commands;
 
 import view.View;
 
+/** Класс Команды
+ * @author Sergey
+ * @version 1.0
+ * */
 public class Commands implements Command {
     private final String name;
     private final View view;

@@ -14,8 +14,17 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/** Репозиторий жанров
+ * @see IRepository
+ * @see Genre
+ * @author Vasiliy,Sergey
+ * @version 1.0
+ * */
 public class GenreRepository implements IRepository<Genre> {
+    /** Путь для сериализации\десериализации */
     private final String filePath = new File("src/main/resources/Genres.json").getAbsolutePath();
+
+    /** Список хранимых жанров */
     private final List<Genre> genres = new ArrayList<>();
 
     public GenreRepository(Genre... genres) {

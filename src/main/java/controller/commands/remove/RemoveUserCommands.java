@@ -8,6 +8,11 @@ import view.remove.RemoveGenreView;
 
 import java.util.HashMap;
 
+/** Класс команд удаления сущностей, включает в себя 1) Удаление фильмов 2) Удаление жанров
+ * 3) Удаление Актеров 4) Удаление Режиссеров
+ * @author Sergey
+ * @version 1.0
+ * */
 public class RemoveUserCommands {
     public HashMap<Class<? extends View>, Boolean> commands = new HashMap<Class<? extends View>, Boolean>()
         {{

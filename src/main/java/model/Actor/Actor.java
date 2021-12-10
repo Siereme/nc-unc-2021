@@ -5,12 +5,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.LinkedList;
 import java.util.UUID;
 
-
+/** Сущность актер, хранит id, имя, возраст, список фильмов, в которых данный актер принимал участие
+ * @author Vasiliy, Sergey
+ * @version 1.0
+ * */
 public class Actor {
 
+    /** Поле первичный ключ сущности */
     private String id;
+
+    /** Поле имя актера */
     private String name;
+
+    /** Поле возраст актера */
     private String year;
+
+    /** Поле список фильмов актера */
     private LinkedList<String> filmsId;
 
     public void setName(String name) {

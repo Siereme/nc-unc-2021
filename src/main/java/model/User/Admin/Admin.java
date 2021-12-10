@@ -5,12 +5,22 @@ import model.User.IUser;
 
 import java.util.UUID;
 
-
+/** Класс Администратор
+ * @author Sergey
+ * @version 1.0
+ * */
 @JsonTypeName("admin")
 public class Admin implements IUser {
+    /** Поле первичный ключ id администратора*/
     private String id;
+
+    /** Поле имя администратора */
     private String name;
+
+    /** Поле пароль администратора */
     private String password;
+
+    /** Поле роль администратора */
     private final Boolean role = true;
 
     public Admin() {

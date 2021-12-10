@@ -14,8 +14,17 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/** Класс репозиторий, хранящий всех актеров
+ * @see IRepository
+ * @see Actor
+ * @author Vasiliy,Sergey
+ * @version 1.0
+ * */
 public class ActorRepository implements IRepository<Actor> {
+    /** Поле путь файла, из которого будет десериализован/сериализован репозиторий */
     private final String filePath = new File("src/main/resources/Actors.json").getAbsolutePath();
+
+    /** Поле - список актеров, которые будут храниться в репозитории */
     private final List<Actor> actors = new ArrayList<>();
 
     public ActorRepository(Actor... actors) {

@@ -9,11 +9,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/** Класс команд удаления сущностей
+ * @author Sergey, Vasiliy
+ * @version 1.0
+ * */
 public class RemoveView extends View implements IView {
-    RemoveActorView removeActorView = new RemoveActorView();
-    RemoveFilmView removeFilmView = new RemoveFilmView();
-    RemoveGenreView removeGenreView = new RemoveGenreView();
-    RemoveDirectorView removeDirectorView = new RemoveDirectorView();
 
     @Override
     public void display() {

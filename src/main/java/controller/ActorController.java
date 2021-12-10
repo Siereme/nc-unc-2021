@@ -8,6 +8,13 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
 
+/** Контроллер для сущности актер
+ * @see controller.IController
+ * @see Actor
+ * @see ActorRepository
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class ActorController implements IController<Actor> {
     public ActorRepository getActorRepository() {
         return actorRepository;

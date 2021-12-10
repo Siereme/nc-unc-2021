@@ -6,6 +6,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import model.User.Admin.Admin;
 import model.User.Visitor.Visitor;
 
+/** Интерфейс пользователя
+ * @author Sergey
+ * @version 1.0
+ * */
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -15,10 +19,31 @@ import model.User.Visitor.Visitor;
         @JsonSubTypes.Type(value = Visitor.class, name = "visitor") }
 )
 public interface IUser {
+    /** Метод получения id пользователя
+     * @return возвращает id пользователя
+     * */
     String getId();
+
+    /** Метод получения имени пользователя
+     * @return возвращает строку - имя пользователя
+     * */
     String getName();
+
+    /** Метод установки нового имени пользователя
+     * @param name - новое имя пользователя
+     * */
     void setName(String name);
+
+    /** Метод получения пароля пользователя
+     * @return возвращает пароль пользователя
+     * */
     String getPassword();
+
+    /** Метод установки нового пароля пользователю
+     * @param password - новый пароль пользователя
+     * */
     void setPassword(String password);
+
+    /** Метод не используется, информация не известна */
     Boolean getRole();
 }

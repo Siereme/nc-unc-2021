@@ -7,8 +7,15 @@ import view.View;
 
 import java.util.LinkedList;
 
+/** Класс команда изменения актера
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class EditActorMenuView extends View implements IView {
+    /** Поле название команды */
     private final String name = "Edit Actor";
+
+    /** Поле контроллер для актеров */
     ActorController actorController = new ActorController();
 
     @Override

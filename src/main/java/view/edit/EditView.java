@@ -4,20 +4,16 @@ import controller.commands.Commands;
 import controller.commands.edit.EditUserCommands;
 import view.IView;
 import view.View;
-import view.edit.actor.EditActorMenuView;
-import view.edit.director.EditDirectorMenuView;
-import view.edit.film.EditFilmMenuView;
-import view.edit.genre.EditGenreMenuView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/** Класс Меню команд редактирования сущностей
+ * @author Sergey, Vasiliy
+ * @version 1.0
+ * */
 public class EditView extends View implements IView {
-    private final EditFilmMenuView editFilmMenuView = new EditFilmMenuView();
-    private final EditActorMenuView editActorView = new EditActorMenuView();
-    private final EditGenreMenuView editGenreView = new EditGenreMenuView();
-    private final EditDirectorMenuView editDirectorView = new EditDirectorMenuView();
 
     @Override
     public void display() {

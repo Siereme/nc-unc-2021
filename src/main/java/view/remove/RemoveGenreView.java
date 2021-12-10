@@ -4,8 +4,15 @@ import controller.GenreController;
 import view.IView;
 import view.View;
 
+/** Класс команда удаления жанра
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class RemoveGenreView extends View implements IView {
+    /** Поле название команды */
     private final String name = "Delete Genre";
+
+    /** Поле контроллер для жанров */
     GenreController genreController = new GenreController();
 
     @Override

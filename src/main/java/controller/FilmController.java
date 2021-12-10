@@ -11,6 +11,13 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
 
+/** Контроллер для сущности фильм
+ * @see Film
+ * @see IController
+ * @see FilmsRepository
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class FilmController implements IController<Film> {
 
     private FilmsRepository filmsRepository;
@@ -103,6 +110,11 @@ public class FilmController implements IController<Film> {
         return new String(sb);
     }
 
+    /** Метод проверки, содержится ли автор в фильме
+     * @param film - фильм для которого будет проверяться, содержится ли в нем определенный актер
+     * @param actor - актер, которого будет искать метод в фильме film
+     * @return true - если в фильме film был найден актер @actor, false - иначе
+     * */
     public static boolean isContainsActor(Film film, Actor actor) {
         for (String actorID : film.getActors()) {
             if (Objects.equals(actorID, actor.getId())) {
@@ -112,6 +124,10 @@ public class FilmController implements IController<Film> {
         return false;
     }
 
+    /** Метод получает список id фильмов, в которых участвует актер @actor
+     * @param actor - актер, по которому будут найдены все фильмы с его участием
+     * @return список id фильмов, в которых участвует заданный актер @actor
+     * */
     public LinkedList<String> getFilmsByActor(Actor actor) {
         LinkedList<String> filmsId = new LinkedList<>();
         for (Film film : filmsRepository.findAll()) {
@@ -122,15 +138,24 @@ public class FilmController implements IController<Film> {
         return filmsId;
     }
 
+    /** Метод проверки, содержится ли автор в фильме
+     * @param film - фильм для которого будет проверяться, содержится ли в нем определенный режиссер
+     * @param director - режиссер, которого будет искать метод в фильме film
+     * @return true - если в фильме film был найден актер @director, false - иначе
+     * */
     public static boolean isContainsDirector(Film film, Director director) {
         for (String dirId : film.getDirectors()) {
-            if (Objects.equals(dirId, film.getId())) {
+            if (Objects.equals(dirId, director.getId())) {
                 return true;
             }
         }
         return false;
     }
 
+    /** Метод получает список id фильмов, в которых участвует актер @actor
+     * @param director - режиссер, по которому будут найдены все фильмы с его участием
+     * @return список id фильмов, в которых участвует заданный режиссер @director
+     * */
     public LinkedList<String> getFilmsByDirector(Director director) {
         LinkedList<String> filmsId = new LinkedList<>();
         for (Film film : filmsRepository.findAll()) {
@@ -141,6 +166,11 @@ public class FilmController implements IController<Film> {
         return filmsId;
     }
 
+    /** Метод проверки, содержится ли жанр в фильме
+     * @param film - фильм для которого будет проверяться, содержится ли в нем определенный жанр
+     * @param genre - жанр, по которому будет проверяться фильм @film
+     * @return true - если в фильме film был найден жанр @genre, false - иначе
+     * */
     public boolean isContainsGenre(Film film, Genre genre) {
         for (String genreId : film.getGenres()) {
             if (Objects.equals(genreId, genre.getId())) {
@@ -150,6 +180,10 @@ public class FilmController implements IController<Film> {
         return false;
     }
 
+    /** Метод получает список id фильмов, у которых список жанров содержит жанр @genre
+     * @param genre - жанр, по которому будут найдены все фильмы
+     * @return список id фильмов, у которых список жанров содержит жанр @genre
+     * */
     public LinkedList<String> getFilmsByGenre(Genre genre) {
         LinkedList<String> filmsId = new LinkedList<>();
         for (Film film : filmsRepository.findAll()) {

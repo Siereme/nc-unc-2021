@@ -4,13 +4,28 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.UUID;
 
+/** Сущность фильм, хранит первичный ключ - id, название фильма, дату создания, список жанров, список режиссеров, список актеров
+ * @author Vasiliy, Sergey
+ * @version 1.0
+ * */
 public class Film {
 
+    /** Поле первичный ключ - id фильма */
     private String id;
+
+    /** Поле название фильма */
     private String tittle;
+
+    /** Поле дата создания фильма */
     private Date date;
+
+    /** Поле список жанров фильма */
     private LinkedList<String> genres;
+
+    /** Поле список режиссеров фильма */
     private LinkedList<String> directors;
+
+    /** Поле список актеров фильма */
     private LinkedList<String> actors;
 
     public LinkedList<String> getActors() {

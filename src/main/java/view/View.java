@@ -217,6 +217,7 @@ public abstract class View implements IView {
         }
     }
 
+    /** В данный момент функция не используется */
     public String getName() {
         return null;
     }

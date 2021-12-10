@@ -8,7 +8,12 @@ import view.View;
 
 import java.util.LinkedList;
 
+/** Команда поиска фильмов по актерам
+ * @author Vasiliy
+ * @version 1.0
+ * */
 public class FindByActorView extends View implements IView {
+    /** Поле контроллер для актеров */
     ActorController actorController = new ActorController();
 
     @Override
