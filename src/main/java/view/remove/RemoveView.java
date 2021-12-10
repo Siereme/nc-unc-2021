@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * */
 public class RemoveView extends View implements IView {
-
+    private String name = "Delete anything ...";
     @Override
     public void display() {
 
@@ -45,6 +45,10 @@ public class RemoveView extends View implements IView {
                 new Commands(userCommands.get(option)).execute();
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     @Override

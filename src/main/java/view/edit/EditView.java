@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * */
 public class EditView extends View implements IView {
-
+    private String name = "Edit anything ...";
     @Override
     public void display() {
         EditUserCommands commands = new EditUserCommands();
@@ -44,6 +44,10 @@ public class EditView extends View implements IView {
                 new Commands(userCommands.get(option)).execute();
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     @Override

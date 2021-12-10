@@ -16,6 +16,10 @@ public class ShowAllActorsView extends View implements IView {
         pressAnyKeyToContinue();
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     @Override
     public void showMessage(String messsage) {
 

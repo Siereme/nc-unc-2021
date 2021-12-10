@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * */
 public class FindView extends View implements IView {
-
+    private String name = "Find film by ...";
     @Override
     public void display() {
         FindUserCommands commands = new FindUserCommands();
@@ -44,6 +44,10 @@ public class FindView extends View implements IView {
                 new Commands(userCommands.get(option)).execute();
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     @Override

@@ -40,6 +40,10 @@ public class FindByGenreView extends View implements IView {
         }
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     @Override
     public void showMessage(String messsage) {
 

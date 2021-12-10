@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ShowAllEntitiesView extends View implements IView {
-
+    private final String name = "Show all entities";
     @Override
     public void display() {
         ShowUserCommands commands = new ShowUserCommands();
@@ -42,6 +42,10 @@ public class ShowAllEntitiesView extends View implements IView {
                 new Commands(userCommands.get(option - 1)).execute();
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     @Override

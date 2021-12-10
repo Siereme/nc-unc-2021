@@ -15,6 +15,10 @@ public class ShowAllGenresView extends View {
         pressAnyKeyToContinue();
     }
 
+    public String getName(){
+        return this.name;
+    }
+
     @Override
     public void showMessage(String messsage) {
 

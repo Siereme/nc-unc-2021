@@ -1,25 +1,21 @@
-package view;
+package view.show;
 
 import controller.commands.Commands;
-import controller.commands.main.MainUserCommands;
+import controller.commands.show.ShowUserCommands;
+import view.IView;
+import view.View;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * Класс главное меню
- * @author vasily
- * @version 1.0
- * */
-public class MainMenuView extends View {
+public class ShowAllView extends View implements IView {
 
-    /**
-     * @see View
-     * */
+    private final String name = "Show all film by ...";
+
+    @Override
     public void display() {
-        MainUserCommands commands = new MainUserCommands();
-
+        ShowUserCommands commands = new ShowUserCommands();
         List<View> userCommands = commands.commands.entrySet().stream()
                 .filter(e ->  e.getValue() == true)
                 .map(x-> {
@@ -34,8 +30,8 @@ public class MainMenuView extends View {
 
         boolean show = true;
         while (show) {
-            System.out.println("------Main Menu------");
-            for (int i = 0; i < userCommands.size(); i++) {
+            System.out.println("------Show all menu------");
+            for(int i = 0; i < userCommands.size(); i++){
                 System.out.println((i + 1) + ". " + userCommands.get(i).getName());
             }
             System.out.println((userCommands.size() + 1) + ". Exit");
@@ -50,12 +46,12 @@ public class MainMenuView extends View {
         }
     }
 
-    /**
-     * @see View
-     * */
+    public String getName(){
+        return this.name;
+    }
+
     @Override
     public void showMessage(String messsage) {
 
     }
-
 }

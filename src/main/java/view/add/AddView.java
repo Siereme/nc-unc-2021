@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * */
 public class AddView extends View implements IView {
+    private String name = "Add anything ...";
 
     @Override
     public void display() {
@@ -44,6 +45,10 @@ public class AddView extends View implements IView {
                 new Commands(userCommands.get(option)).execute();
             }
         }
+    }
+
+    public String getName(){
+        return this.name;
     }
 
     @Override
