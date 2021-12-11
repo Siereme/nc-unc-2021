@@ -2,6 +2,7 @@ package repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import model.Director.Director;
 
 import java.io.File;
@@ -90,8 +91,12 @@ public class DirectorRepository implements repository.IRepository<Director> {
     }
 
     public List<Director> deserialize(ObjectMapper objectMapper) throws IOException {
-        return objectMapper.readValue(new FileReader(this.filePath), new TypeReference<List<Director>>() {
-        });
+        try{
+            return objectMapper.readValue(new FileReader(this.filePath), new TypeReference<List<Director>>() {});
+        }catch (MismatchedInputException e){
+            System.out.println("File is empty");
+            return this.directors;
+        }
     }
 
     public int size() {

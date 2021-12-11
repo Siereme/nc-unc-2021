@@ -7,15 +7,18 @@ import view.find.FindView;
 import view.remove.RemoveView;
 import view.show.ShowAllView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class MainUserCommands {
-    public HashMap<Class<? extends View>, Boolean> commands = new HashMap<Class<? extends View>, Boolean>()
+    public HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>()
     {{
-        put(AddView.class, true);
-        put(EditView.class, true);
-        put(FindView.class, true);
-        put(RemoveView.class, true);
-        put(ShowAllView.class, true);
+        put(AddView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
+        put(EditView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
+        put(FindView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
+        put(RemoveView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
+        put(ShowAllView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
     }};
 }

@@ -5,12 +5,15 @@ import view.find.FindByActorView;
 import view.find.FindByDirectorView;
 import view.find.FindByGenreView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class FindUserCommands {
-    public HashMap<Class<? extends View>, Boolean> commands = new HashMap<Class<? extends View>, Boolean>() {{
-        put(FindByActorView.class, true);
-        put(FindByGenreView.class, true);
-        put(FindByDirectorView.class, true);
+    public HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>() {{
+        put(FindByActorView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
+        put(FindByGenreView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
+        put(FindByDirectorView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
     }};
 }

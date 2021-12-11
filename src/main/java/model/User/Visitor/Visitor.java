@@ -1,5 +1,6 @@
 package model.User.Visitor;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import model.User.IUser;
 
@@ -21,7 +22,8 @@ public class Visitor implements IUser {
     private String password;
 
     /** Поле роль пользователя */
-    private final Boolean role = false;
+    @JsonProperty("isAdmin")
+    private final Boolean isAdmin = false;
 
     public Visitor() {
         this.id = UUID.randomUUID().toString();
@@ -61,7 +63,8 @@ public class Visitor implements IUser {
     }
 
     @Override
-    public Boolean getRole(){
-        return this.role;
+    @JsonProperty("isAdmin")
+    public Boolean isAdmin(){
+        return this.isAdmin;
     }
 }

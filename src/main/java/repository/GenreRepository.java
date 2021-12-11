@@ -2,6 +2,7 @@ package repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import model.Genre.Genre;
 
 import java.io.File;
@@ -90,8 +91,12 @@ public class GenreRepository implements IRepository<Genre> {
     }
 
     public List<Genre> deserialize(ObjectMapper objectMapper) throws IOException {
-        return objectMapper.readValue(new FileReader(this.filePath), new TypeReference<List<Genre>>() {
-        });
+        try{
+            return objectMapper.readValue(new FileReader(this.filePath), new TypeReference<List<Genre>>() {});
+        }catch (MismatchedInputException e){
+            System.out.println("File is empty");
+            return this.genres;
+        }
     }
 
     public int size() {
@@ -111,10 +116,10 @@ public class GenreRepository implements IRepository<Genre> {
         try {
             genres.addAll(mapper.readValue(new File(file1), new TypeReference<List<Genre>>() {}));
             genres.addAll(mapper.readValue(new File(file2), new TypeReference<List<Genre>>() {}));
-            mapper.writeValue(new File(this.filePath),
-                    genres.stream()
-                            .filter(distinctByKey(p -> p.getId()))
-                            .collect(Collectors.toList()));
+            List<Genre> result = genres.stream()
+                    .filter(distinctByKey(p -> p.getId()))
+                    .collect(Collectors.toList());
+            mapper.writeValue(new File(this.filePath), result);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -1,7 +1,7 @@
 package view.edit;
 
-import controller.commands.Commands;
 import controller.commands.edit.EditUserCommands;
+import model.User.IUser;
 import view.IView;
 import view.View;
 
@@ -15,18 +15,26 @@ import java.util.stream.Collectors;
  * */
 public class EditView extends View implements IView {
     private String name = "Edit anything ...";
+    private final IUser currentUser;
+
+    public EditView(IUser currentUser) {
+        this.currentUser = currentUser;
+    }
+
     @Override
     public void display() {
         EditUserCommands commands = new EditUserCommands();
 
-        List<View> userCommands = commands.commands.entrySet().stream().filter(e -> e.getValue()).map(x -> {
-            try {
-                return x.getKey().getDeclaredConstructor().newInstance();
-            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }).collect(Collectors.toList());
+        List<View> userCommands = commands.commands.entrySet().stream()
+                .filter(e -> e.getValue().contains(this.currentUser.isAdmin()))
+                .map(x -> {
+                    try {
+                        return x.getKey().getDeclaredConstructor().newInstance();
+                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }).collect(Collectors.toList());
 
         while (true) {
             System.out.println("------Edit Menu------");
@@ -41,7 +49,7 @@ public class EditView extends View implements IView {
                 break;
             }
             if (option >= 0 && option < userCommands.size()) {
-                new Commands(userCommands.get(option)).execute();
+                userCommands.get(option).display();
             }
         }
     }

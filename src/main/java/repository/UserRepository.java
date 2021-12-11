@@ -2,6 +2,7 @@ package repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import model.User.IUser;
 
 import java.io.File;
@@ -26,7 +27,7 @@ public class UserRepository implements IRepository<IUser> {
     private final String filePath = new File("src/main/resources/Users.json").getAbsolutePath();
 
     /** Список хранимых пользователей */
-    private LinkedList<IUser> users = new LinkedList<>();
+    private final List<IUser> users = new LinkedList<>();
 
     public UserRepository(){
 //        users.add(new Admin("admin1", "123"));
@@ -36,20 +37,21 @@ public class UserRepository implements IRepository<IUser> {
         init();
     }
 
+    public UserRepository(List<IUser> users) {
+        this.users.addAll(users);
+    }
+
     private void init() {
         try {
             this.users.addAll(deserialize(new ObjectMapper()));
+//            serialize(new ObjectMapper());
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public UserRepository(LinkedList<IUser> users) {
-        this.users = users;
-    }
-
     @Override
-    public List findAll() {
+    public List<IUser> findAll() {
         return this.users;
     }
 
@@ -57,7 +59,6 @@ public class UserRepository implements IRepository<IUser> {
     public boolean deleteById(Integer id) {
         for (IUser user : users) {
             if (user.getId().equals(id.toString())) {
-                // предикат, надеюсь не ошибся в использовании.
                 return users.removeIf(f -> Objects.equals(f.getId(), id.toString()));
             }
         }
@@ -84,7 +85,13 @@ public class UserRepository implements IRepository<IUser> {
     }
 
     public List<IUser> deserialize(ObjectMapper objectMapper) throws IOException {
-        return objectMapper.readerFor(new TypeReference<List<IUser>>() {}).readValue(new FileReader(this.filePath));
+        try {
+            return objectMapper.readerFor(new TypeReference<List<IUser>>() {}).readValue(new FileReader(this.filePath));
+        }catch (MismatchedInputException e){
+            System.out.println(e);
+            System.out.println("File is empty");
+            return this.users;
+        }
     }
 
     @Override
@@ -103,12 +110,12 @@ public class UserRepository implements IRepository<IUser> {
         List<IUser> users = new LinkedList<>();
         ObjectMapper mapper = new ObjectMapper();
         try {
-            users.addAll(mapper.readerFor(new TypeReference<List<IUser>>() {}).readValue(new File(file1)));
-            users.addAll(mapper.readerFor(new TypeReference<List<IUser>>() {}).readValue(new File(file2)));
+            users.addAll(mapper.readerFor(new TypeReference<List<IUser>>() {}).readValue(new FileReader(file1)));
+            users.addAll(mapper.readerFor(new TypeReference<List<IUser>>() {}).readValue(new FileReader(file2)));
             List<IUser> result = users.stream()
                     .filter(distinctByKey(p -> p.getId()))
                     .collect(Collectors.toList());
-            mapper.writeValue(new File(this.filePath), result);
+            mapper.writerFor(new TypeReference<List<IUser>>() {}).writeValue(new File(this.filePath), result);
         } catch (IOException e) {
             e.printStackTrace();
         }
