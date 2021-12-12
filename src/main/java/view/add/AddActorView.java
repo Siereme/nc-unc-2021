@@ -1,7 +1,8 @@
 package view.add;
 
 import controller.ActorController;
-import model.Actor.Actor;
+import controller.FilmController;
+import model.actor.Actor;
 import view.IView;
 import view.View;
 
@@ -28,35 +29,36 @@ public class AddActorView extends View implements IView {
                 show = false;
             }
             if (option == 1) {
-                // добавляем нового актера(все поля пустые), а потом его редактируем
-                actorController.addEntity();
-                int actorInd = actorController.size() - 1;
-                setName(actorInd);
-                setYear(actorInd);
-                setFilms(actorInd);
+                Actor actor = new Actor();
+                setName(actor);
+                setYear(actor);
+                setFilms(actor);
+                actorController.addEntity(actor);
                 actorController.updateRepository();
             }
         }
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
-    public void setFilms(int actorInd) {
-        Actor actor = actorController.getEntity(actorInd);
-        LinkedList<String> newFilmsId = getFilmsId();
+    public void setFilms(Actor actor) {
+        FilmController filmController = new FilmController();
+        LinkedList<String> newFilmsId = getEntitiesId(filmController, "Select films to add\n");
+        // adding new films to actor
         actor.setFilms(newFilmsId);
+        // adding actor to new films
+        filmController.addActorToFilms(actor, newFilmsId);
+        filmController.updateRepository();
     }
 
-    public void setYear(int actorInd) {
-        Actor actor = actorController.getEntity(actorInd);
+    public void setYear(Actor actor) {
         String newAge = getStr("Enter age\n");
         actor.setYear(newAge);
     }
 
-    public void setName(int actorInd) {
-        Actor actor = actorController.getEntity(actorInd);
+    public void setName(Actor actor) {
         String newName = getStr("Enter name\n");
         actor.setName(newName);
     }

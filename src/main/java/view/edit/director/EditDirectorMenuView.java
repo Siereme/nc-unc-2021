@@ -1,7 +1,8 @@
 package view.edit.director;
 
 import controller.DirectorController;
-import model.Director.Director;
+import controller.FilmController;
+import model.director.Director;
 import view.IView;
 import view.View;
 
@@ -57,7 +58,7 @@ public class EditDirectorMenuView extends View implements IView {
 
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
@@ -69,8 +70,12 @@ public class EditDirectorMenuView extends View implements IView {
 
     private void setFilms(int directorInd) {
         Director director = directorController.getEntity(directorInd);
-        LinkedList<String> newFilmsId = getFilmsId();
+        FilmController filmController = new FilmController();
+        LinkedList<String> newFilmsId = getEntitiesId(filmController, "Select Films\n");
         director.setFilms(newFilmsId);
+        filmController.removeDirectorFromAllFilms(director);
+        filmController.addDirectorToFilms(director, newFilmsId);
+        filmController.updateRepository();
     }
 
     @Override

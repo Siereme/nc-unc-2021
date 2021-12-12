@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class ShowAllView extends View implements IView {
 
-    private final String name = "Show all film by ...";
+    private final String name = "Show all ...";
 
     @Override
     public void display() {

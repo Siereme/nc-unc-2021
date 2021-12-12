@@ -2,7 +2,7 @@ package view.find;
 
 import controller.FilmController;
 import controller.GenreController;
-import model.Genre.Genre;
+import model.genre.Genre;
 import view.IView;
 import view.View;
 

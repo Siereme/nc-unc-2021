@@ -1,7 +1,8 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.Genre.Genre;
+import model.IEntity;
+import model.genre.Genre;
 import repository.GenreRepository;
 
 import java.io.IOException;
@@ -10,12 +11,12 @@ import java.util.Objects;
 
 /** Контроллер для сущности жанр
  * @see Genre
- * @see IController
+ * @see IEntityController
  * @see GenreRepository
  * @author Vasiliy
  * @version 1.0
  * */
-public class GenreController implements IController<Genre> {
+public class GenreController implements IEntityController<Genre> {
 
     public GenreRepository getGenreRepository() {
         return genreRepository;
@@ -70,8 +71,8 @@ public class GenreController implements IController<Genre> {
         return genreRepository.findAll().get(ind);
     }
 
-    public void addEntity() {
-        genreRepository.findAll().add(new Genre());
+    public void addEntity(IEntity entity) {
+        genreRepository.findAll().add((Genre) entity);
     }
 
     public void updateRepository() {
@@ -84,6 +85,15 @@ public class GenreController implements IController<Genre> {
 
     public void removeEntity(int ind) {
         genreRepository.findAll().remove(ind);
+    }
+
+    @Override
+    public LinkedList<String> getEntities() {
+        LinkedList<String> ids = new LinkedList<>();
+        for (Genre genre : genreRepository.findAll()) {
+            ids.add(genre.getId());
+        }
+        return ids;
     }
 
 }

@@ -1,10 +1,10 @@
-package model.User;
+package model.user;
 
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import model.User.Admin.Admin;
-import model.User.Visitor.Visitor;
+import model.user.Admin.Admin;
+import model.user.Visitor.Visitor;
 
 /** Интерфейс пользователя
  * @author Sergey

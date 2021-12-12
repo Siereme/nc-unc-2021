@@ -1,13 +1,7 @@
 package view;
 
-import controller.ActorController;
-import controller.DirectorController;
-import controller.FilmController;
-import controller.GenreController;
-import model.Actor.Actor;
-import model.Director.Director;
-import model.Film.Film;
-import model.Genre.Genre;
+import controller.IEntityController;
+import model.IEntity;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -65,7 +59,7 @@ public abstract class View implements IView {
      * @return возвращает дату, которую ввел пользователь
      * */
     protected Date getDate() {
-        Date date = null;
+        Date date;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         while (true) {
             System.out.println("Enter date in format " + dateFormat.toPattern() + "\n");
@@ -73,7 +67,7 @@ public abstract class View implements IView {
             try {
                 date = dateFormat.parse(dateStr);
             } catch (ParseException e) {
-                System.out.println(e.toString());
+                e.printStackTrace();
                 continue;
             }
             break;
@@ -91,113 +85,26 @@ public abstract class View implements IView {
         return input.nextLine();
     }
 
-    /** Функция получает список ID фильмов, которые выбирает пользователь
-     * пользователю предлагается выбрать фильмы, которые есть в базе
-     * взаимодействует с контроллером фильмов
-     * @return возвращает список ID фильмов, которые выбрал пользователь
-     * */
-    protected LinkedList<String> getFilmsId() {
-        FilmController filmController = new FilmController();
-        LinkedList<String> newFilms = new LinkedList<>();
+
+    protected LinkedList<String> getEntitiesId(IEntityController<? extends IEntity> entityController, String message) {
+        LinkedList<String> entities = entityController.getEntities();
         while (true) {
-            System.out.println("Select Film to add");
+            System.out.println(message);
             System.out.println("-1. Exit");
-            System.out.println(filmController);
+            System.out.println(entityController);
             int option = getOption();
             if (option == -1) {
                 break;
             }
-            if (option < 0 || option >= filmController.size()) {
+            if (option < 0 || option >= entityController.size()) {
                 continue;
             }
-            Film film = filmController.getEntity(option);
-            if (!newFilms.contains(film.getId())) {
-                newFilms.add(film.getId());
+            IEntity entity = entityController.getEntity(option);
+            if (!entities.contains(entity.getId())) {
+                entities.add(entity.getId());
             }
         }
-        return newFilms;
-    }
-
-    /** Функция получает список ID актеров, которые выбирает пользователь
-     * пользователю предлагают выбрать акеров, которые есть в базе
-     * взаимодействует с контроллером актеров
-     * @return возвращает список ID актеров, которые выбрал пользователь
-     * */
-    protected LinkedList<String> getActorsId() {
-        ActorController actorController = new ActorController();
-        LinkedList<String> newActors = new LinkedList<String>();
-        while (true) {
-            System.out.println("Select Actor to add");
-            System.out.println("-1. Exit");
-            System.out.println(actorController);
-            int option = getOption();
-            if (option == -1) {
-                break;
-            }
-            if (option < 0 || option >= actorController.size()) {
-                continue;
-            }
-            Actor actor = actorController.getEntity(option);
-            if (!newActors.contains(actor.getId())) {
-                newActors.add(actor.getId());
-            }
-        }
-        return newActors;
-    }
-
-    /** Функция получает список ID директоров, которые выбирает пользователь
-     * взаимодействует с контроллером директоров
-     * пользователю предлагают выбрать список директоров, которые есть в базе
-     * @return возвращает список ID директоров, которые выбрал пользователь
-     * */
-    protected LinkedList<String> getDirectorsId() {
-        DirectorController directorController = new DirectorController();
-        LinkedList<String> newDirectors = new LinkedList<String>();
-        while (true) {
-            System.out.println("Select Director to add");
-            System.out.println("-1. Exit");
-            System.out.println(directorController);
-            int option = getOption();
-            if (option == -1) {
-                break;
-            }
-            if (option < 0 || option >= directorController.size()) {
-                continue;
-            }
-            Director director = directorController.getEntity(option);
-            if (!newDirectors.contains(director.getId())) {
-                newDirectors.add(director.getId());
-            }
-        }
-        return newDirectors;
-    }
-
-    /** Функция получает список ID жанров, которые выбирает пользователь
-     * взаимодействует с контроллером жанров
-     * пользователю предлагают выбрать список жанров, которые есть в базе
-     * @return возвращает список ID жанров, которые выбрал пользователь
-     * */
-    protected LinkedList<String> getGenresId() {
-        GenreController genreController = new GenreController();
-        LinkedList<String> newGenres = new LinkedList<>();
-        boolean show = true;
-        while (show) {
-            System.out.println("Select Genre to add");
-            System.out.println("-1. Exit");
-            System.out.println(genreController);
-            int option = getOption();
-            if (option == -1) {
-                show = false;
-            }
-            if (option < 0 || option >= genreController.size()) {
-                continue;
-            }
-            Genre genre = genreController.getEntity(option);
-            if (!newGenres.contains(genre.getId())) {
-                newGenres.add(genre.getId());
-            }
-        }
-        return newGenres;
+        return entities;
     }
 
     /** Функция получает подтверждение от пользователя

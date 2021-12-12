@@ -21,6 +21,7 @@ public class RemoveGenreView extends View implements IView {
         while (show) {
             System.out.println("------Remove Genre Menu------");
             System.out.println("Select Genre to Delete");
+            System.out.println(genreController);
             System.out.println("-1. Exit");
             int option = getOption();
             if (option == -1) {

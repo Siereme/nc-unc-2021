@@ -1,4 +1,6 @@
-package model.Film;
+package model.film;
+
+import model.IEntity;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -8,7 +10,7 @@ import java.util.UUID;
  * @author Vasiliy, Sergey
  * @version 1.0
  * */
-public class Film {
+public class Film implements IEntity {
 
     /** Поле первичный ключ - id фильма */
     private String id;

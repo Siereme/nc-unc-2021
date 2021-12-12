@@ -1,6 +1,7 @@
-package model.Actor;
+package model.actor;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import model.IEntity;
 
 import java.util.LinkedList;
 import java.util.UUID;
@@ -9,7 +10,7 @@ import java.util.UUID;
  * @author Vasiliy, Sergey
  * @version 1.0
  * */
-public class Actor {
+public class Actor implements IEntity {
 
     /** Поле первичный ключ сущности */
     private String id;

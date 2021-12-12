@@ -2,7 +2,7 @@ package repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.User.IUser;
+import model.user.IUser;
 
 import java.io.File;
 import java.io.FileReader;

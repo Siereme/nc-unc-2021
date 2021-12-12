@@ -1,7 +1,10 @@
 package view.edit.film;
 
+import controller.ActorController;
+import controller.DirectorController;
 import controller.FilmController;
-import model.Film.Film;
+import controller.GenreController;
+import model.film.Film;
 import view.IView;
 import view.View;
 
@@ -75,7 +78,7 @@ public class EditFilmMenuView extends View implements IView {
         }
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
@@ -93,20 +96,29 @@ public class EditFilmMenuView extends View implements IView {
 
     private void setGenres(int filmInd) {
         Film film = filmController.getEntity(filmInd);
-        LinkedList<String> newGenresId = getGenresId();
+        GenreController genreController = new GenreController();
+        LinkedList<String> newGenresId = getEntitiesId(genreController, "Select Genres\n");
         film.setGenres(newGenresId);
     }
 
     private void setDirectors(int filmInd) {
         Film film = filmController.getEntity(filmInd);
-        LinkedList<String> newDirectorsId = getDirectorsId();
+        DirectorController directorController = new DirectorController();
+        LinkedList<String> newDirectorsId = getEntitiesId(directorController, "Select Directors\n");
         film.setDirectors(newDirectorsId);
+        directorController.removeFilmFromAllDirectors(film);
+        directorController.addFilmToDirectors(film, newDirectorsId);
+        directorController.updateRepository();
     }
 
     private void setActors(int filmInd) {
         Film film = filmController.getEntity(filmInd);
-        LinkedList<String> newActorsId = getActorsId();
+        ActorController actorController = new ActorController();
+        LinkedList<String> newActorsId = getEntitiesId(actorController, "Select Actors\n");
         film.setActors(newActorsId);
+        actorController.removeFilmFromAllActors(film);
+        actorController.addFilmToActors(film, newActorsId);
+        actorController.updateRepository();
     }
 
     @Override

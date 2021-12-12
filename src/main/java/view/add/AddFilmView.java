@@ -1,7 +1,9 @@
 package view.add;
 
+import controller.ActorController;
+import controller.DirectorController;
 import controller.FilmController;
-import model.Film.Film;
+import model.film.Film;
 import view.IView;
 import view.View;
 
@@ -32,43 +34,45 @@ public class AddFilmView extends View implements IView {
             }
             if (option == 1) {
                 // добавляем нового актера, а потом его редактируем
-                filmController.addEntity();
-                int ind = filmController.size() - 1;
-                setTittle(ind);
-                setDate(ind);
-                setActors(ind);
-                setDirectors(ind);
+                Film film = new Film();
+                setTittle(film);
+                setDate(film);
+                setActors(film);
+                setDirectors(film);
+                filmController.addEntity(film);
                 filmController.updateRepository();
             }
         }
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
-    public void setTittle(int filmInd) {
-        Film film = filmController.getEntity(filmInd);
+    public void setTittle(Film film) {
         String newTittle = getStr("Enter a tittle\n");
         film.setTittle(newTittle);
     }
 
-    public void setDate(int filmInd) {
-        Film film = filmController.getEntity(filmInd);
+    public void setDate(Film film) {
         Date newDate = getDate();
         film.setDate(newDate);
     }
 
-    public void setActors(int filmInd) {
-        Film film = filmController.getEntity(filmInd);
-        LinkedList<String> newActorsId = getActorsId();
+    public void setActors(Film film) {
+        ActorController actorController = new ActorController();
+        LinkedList<String> newActorsId = getEntitiesId(actorController, "Select Actors to add\n");
         film.setActors(newActorsId);
+        actorController.addFilmToActors(film, newActorsId);
+        actorController.updateRepository();
     }
 
-    public void setDirectors(int filmInd) {
-        Film film = filmController.getEntity(filmInd);
-        LinkedList<String> newDirectorsId = getDirectorsId();
+    public void setDirectors(Film film) {
+        DirectorController directorController = new DirectorController();
+        LinkedList<String> newDirectorsId = getEntitiesId(directorController, "Select Directors to add\n");
         film.setDirectors(newDirectorsId);
+        directorController.addFilmToDirectors(film, newDirectorsId);
+        directorController.updateRepository();
     }
 
     @Override

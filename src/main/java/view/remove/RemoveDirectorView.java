@@ -21,6 +21,7 @@ public class RemoveDirectorView extends View implements IView {
         while (show) {
             System.out.println("------Remove Director menu------");
             System.out.println("Select director to remove");
+            System.out.println(directorController);
             System.out.println("-1. Exit");
             int option = getOption();
             if (option == -1) {

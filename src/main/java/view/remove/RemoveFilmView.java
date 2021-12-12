@@ -21,6 +21,7 @@ public class RemoveFilmView extends View implements IView {
         while (show) {
             System.out.println("------Remove Film Menu------");
             System.out.println("Select Film to Delete");
+            System.out.println(filmController);
             System.out.println("-1. Exit");
             int option = getOption();
             if (option == -1) {

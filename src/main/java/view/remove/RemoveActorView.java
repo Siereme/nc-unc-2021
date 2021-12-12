@@ -21,6 +21,7 @@ public class RemoveActorView extends View implements IView {
         while (show) {
             System.out.println("------Remove Actor Menu------");
             System.out.println("Select Actor to Delete");
+            System.out.println(actorController);
             System.out.println("-1. Exit");
             int option = getOption();
             if (option == -1) {

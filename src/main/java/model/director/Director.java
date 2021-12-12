@@ -1,4 +1,6 @@
-package model.Director;
+package model.director;
+
+import model.IEntity;
 
 import java.util.LinkedList;
 import java.util.UUID;
@@ -7,7 +9,7 @@ import java.util.UUID;
  * @author Vasiliy, Sergey
  * @version 1.0
  * */
-public class Director {
+public class Director implements IEntity {
 
     /** Поле первичный ключ - id режиссера */
     private String id;

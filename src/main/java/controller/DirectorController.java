@@ -1,7 +1,9 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.Director.Director;
+import model.IEntity;
+import model.director.Director;
+import model.film.Film;
 import repository.DirectorRepository;
 
 import java.io.IOException;
@@ -9,13 +11,13 @@ import java.util.LinkedList;
 import java.util.Objects;
 
 /** Контроллер для сущности режиссер
- * @see IController
+ * @see IEntityController
  * @see Director
  * @see DirectorRepository
  * @author Vasiliy
  * @version 1.0
  * */
-public class DirectorController implements IController<Director> {
+public class DirectorController implements IEntityController<Director> {
 
     public DirectorRepository getDirectorRepository() {
         return directorRepository;
@@ -77,8 +79,8 @@ public class DirectorController implements IController<Director> {
         return directorRepository.findAll().get(ind);
     }
 
-    public void addEntity() {
-        directorRepository.findAll().add(new Director());
+    public void addEntity(IEntity entity) {
+        directorRepository.findAll().add((Director) entity);
     }
 
     public void updateRepository() {
@@ -89,8 +91,47 @@ public class DirectorController implements IController<Director> {
         }
     }
 
-    public void removeEntity(int ind){
+    public void removeEntity(int ind) {
+        FilmController filmController = new FilmController();
+        Director director = getEntity(ind);
+        filmController.removeDirectorFromAllFilms(director);
+        filmController.updateRepository();
         directorRepository.findAll().remove(ind);
+    }
+
+    @Override
+    public LinkedList<String> getEntities() {
+        LinkedList<String> ids = new LinkedList<>();
+        for (Director director : directorRepository.findAll()) {
+            ids.add(director.getId());
+        }
+        return ids;
+    }
+
+    public void addFilmToDirectors(Film film, LinkedList<String> directorsId) {
+        for (String dirId : directorsId) {
+            Director director = getEntityById(dirId);
+            LinkedList<String> dirFilmsID = director.getFilms();
+            dirFilmsID.add(film.getId());
+        }
+    }
+
+    public void removeFilmFromAllDirectors(Film film) {
+        for (Director director : directorRepository.findAll()) {
+            if (isContainsFilm(director, film)) {
+                LinkedList<String> filmsId = director.getFilms();
+                filmsId.remove(film.getId());
+            }
+        }
+    }
+
+    public static boolean isContainsFilm(Director director, Film film) {
+        for (String filmID : director.getFilms()) {
+            if (Objects.equals(film.getId(), filmID)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

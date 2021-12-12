@@ -1,7 +1,7 @@
 package view.add;
 
 import controller.GenreController;
-import model.Genre.Genre;
+import model.genre.Genre;
 import view.IView;
 import view.View;
 
@@ -28,10 +28,9 @@ public class AddGenreView extends View implements IView {
                 show = false;
             }
             if (option == 1) {
-                // добавляем нового актера, а потом его редактируем
-                genreController.addEntity();
-                int ind = genreController.size() - 1;
-                setTittle(ind);
+                Genre genre = new Genre();
+                setTittle(genre);
+                genreController.addEntity(genre);
                 genreController.updateRepository();
             }
         }
@@ -41,8 +40,7 @@ public class AddGenreView extends View implements IView {
         return this.name;
     }
 
-    void setTittle(int genreInd) {
-        Genre genre = genreController.getEntity(genreInd);
+    void setTittle(Genre genre) {
         String newTittle = getStr("Enter a tittle\n");
         genre.setTittle(newTittle);
     }

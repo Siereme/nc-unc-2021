@@ -2,7 +2,7 @@ package view.find;
 
 import controller.DirectorController;
 import controller.FilmController;
-import model.Director.Director;
+import model.director.Director;
 import view.IView;
 import view.View;
 

@@ -1,7 +1,8 @@
 package view.add;
 
 import controller.DirectorController;
-import model.Director.Director;
+import controller.FilmController;
+import model.director.Director;
 import view.IView;
 import view.View;
 
@@ -31,11 +32,11 @@ public class AddDirectorView extends View implements IView {
             }
             if (option == 1) {
                 // добавляем нового актера, а потом его редактируем
-                directorController.addEntity();
-                int ind = directorController.size() - 1;
-                setName(ind);
-                setYear(ind);
-                setFilms(ind);
+                Director director = new Director();
+                setName(director);
+                setYear(director);
+                setFilms(director);
+                directorController.addEntity(director);
                 directorController.updateRepository();
             }
         }
@@ -46,22 +47,22 @@ public class AddDirectorView extends View implements IView {
         return this.name;
     }
 
-    void setName(int dirInd) {
-        Director director = directorController.getEntity(dirInd);
+    void setName(Director director) {
         String newName = getStr("Enter Director Name\n");
         director.setName(newName);
     }
 
-    void setYear(int dirInd) {
-        Director director = directorController.getEntity(dirInd);
+    void setYear(Director director) {
         String newAge = getStr("Enter Director Age\n");
         director.setYear(newAge);
     }
 
-    void setFilms(int dirInd) {
-        Director director = directorController.getEntity(dirInd);
-        LinkedList<String> newFilmsId = getFilmsId();
+    void setFilms(Director director) {
+        FilmController filmController = new FilmController();
+        LinkedList<String> newFilmsId = getEntitiesId(filmController, "Select film to add\n");
         director.setFilms(newFilmsId);
+        filmController.addDirectorToFilms(director, newFilmsId);
+        filmController.updateRepository();
     }
 
     @Override

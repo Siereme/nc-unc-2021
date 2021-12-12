@@ -1,35 +1,35 @@
-package model.User.Admin;
+package model.user.Visitor;
 
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import model.User.IUser;
+import model.user.IUser;
 
 import java.util.UUID;
 
-/** Класс Администратор
+/** Класс пользователь(привилегий меньше чем у админа)
  * @author Sergey
  * @version 1.0
  * */
-@JsonTypeName("admin")
-public class Admin implements IUser {
-    /** Поле первичный ключ id администратора*/
+@JsonTypeName("visitor")
+public class Visitor implements IUser {
+    /** Поле первичный ключ - id пользователя */
     private String id;
 
-    /** Поле имя администратора */
+    /** Поле имя пользователя */
     private String name;
 
-    /** Поле пароль администратора */
+    /** Поле пароль пользователя */
     private String password;
 
-    /** Поле роль администратора */
-    private final Boolean role = true;
+    /** Поле роль пользователя */
+    private final Boolean role = false;
 
-    public Admin() {
+    public Visitor() {
         this.id = UUID.randomUUID().toString();
         this.name = "Unknown";
         this.password = "None";
     }
 
-    public Admin(String name, String password) {
+    public Visitor(String name, String password) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.password = password;
@@ -64,5 +64,4 @@ public class Admin implements IUser {
     public Boolean getRole(){
         return this.role;
     }
-
 }

@@ -1,4 +1,6 @@
-package model.Genre;
+package model.genre;
+
+import model.IEntity;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -6,7 +8,7 @@ import java.util.UUID;
 /** Сущность жанр содержит первичный ключ - id, название жанра
  * @author Vasiliy, Sergey
  * */
-public class Genre {
+public class Genre implements IEntity {
 
     /** Поле первичный ключ - id жанра */
     private String id;

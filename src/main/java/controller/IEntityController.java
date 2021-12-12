@@ -1,12 +1,14 @@
 package controller;
 
+import model.IEntity;
+
 import java.util.LinkedList;
 
 /** Интерфейс контроллера
  * @author Vasiliy
  * @version 1.0
  * */
-public interface IController<T> {
+public interface IEntityController<T> {
 
     /** Метод получения сущности по её id
      * @param id - id сущности, которую необходимо будет найти
@@ -43,7 +45,7 @@ public interface IController<T> {
      * необходимо будет отредактировать
      * @see repository.IRepository
      * */
-    void addEntity();
+    void addEntity(IEntity entity);
 
     /** Метод обновляет репозиторий
      * @see repository.IRepository
@@ -55,5 +57,7 @@ public interface IController<T> {
      * @see repository.IRepository
      * */
     void removeEntity(int ind);
+
+    LinkedList<String> getEntities();
 
 }
