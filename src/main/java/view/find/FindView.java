@@ -1,7 +1,7 @@
 package view.find;
 
-import controller.commands.Commands;
 import controller.commands.find.FindUserCommands;
+import model.User.IUser;
 import view.IView;
 import view.View;
 
@@ -15,18 +15,26 @@ import java.util.stream.Collectors;
  * */
 public class FindView extends View implements IView {
     private String name = "Find film by ...";
+    private final IUser currentUser;
+
+    public FindView(IUser currentUser) {
+        this.currentUser = currentUser;
+    }
+
     @Override
     public void display() {
         FindUserCommands commands = new FindUserCommands();
 
-        List<View> userCommands = commands.commands.entrySet().stream().filter(e -> e.getValue()).map(x -> {
-            try {
-                return x.getKey().getDeclaredConstructor().newInstance();
-            } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }).collect(Collectors.toList());
+        List<View> userCommands = commands.commands.entrySet().stream()
+                .filter(e -> e.getValue().contains(this.currentUser.isAdmin()))
+                .map(x -> {
+                    try {
+                        return x.getKey().getDeclaredConstructor().newInstance();
+                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+                        e.printStackTrace();
+                    }
+                    return null;
+                }).collect(Collectors.toList());
 
         while (true) {
             System.out.println("------Find Menu------");
@@ -41,7 +49,7 @@ public class FindView extends View implements IView {
             }
 
             if (option >= 0 && option < userCommands.size()) {
-                new Commands(userCommands.get(option)).execute();
+                userCommands.get(option).display();
             }
         }
     }

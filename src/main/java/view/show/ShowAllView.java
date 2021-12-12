@@ -1,7 +1,7 @@
 package view.show;
 
-import controller.commands.Commands;
 import controller.commands.show.ShowUserCommands;
+import model.User.IUser;
 import view.IView;
 import view.View;
 
@@ -13,11 +13,18 @@ public class ShowAllView extends View implements IView {
 
     private final String name = "Show all ...";
 
+    private final IUser currentUser;
+
+    public ShowAllView(IUser currentUser) {
+        this.currentUser = currentUser;
+    }
+
+
     @Override
     public void display() {
         ShowUserCommands commands = new ShowUserCommands();
         List<View> userCommands = commands.commands.entrySet().stream()
-                .filter(e ->  e.getValue() == true)
+                .filter(e ->  e.getValue().contains(this.currentUser.isAdmin()))
                 .map(x-> {
                     try {
                         return x.getKey().getDeclaredConstructor().newInstance();
@@ -42,7 +49,7 @@ public class ShowAllView extends View implements IView {
                 break;
             }
 
-            new Commands(userCommands.get(option - 1)).execute();
+            userCommands.get(option - 1).display();
         }
     }
 

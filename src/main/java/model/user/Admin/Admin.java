@@ -1,5 +1,6 @@
 package model.user.Admin;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import model.user.IUser;
 
@@ -21,7 +22,8 @@ public class Admin implements IUser {
     private String password;
 
     /** Поле роль администратора */
-    private final Boolean role = true;
+    @JsonProperty("isAdmin")
+    private final Boolean isAdmin = true;
 
     public Admin() {
         this.id = UUID.randomUUID().toString();
@@ -61,8 +63,9 @@ public class Admin implements IUser {
     }
 
     @Override
-    public Boolean getRole(){
-        return this.role;
+    @JsonProperty("isAdmin")
+    public Boolean isAdmin(){
+        return this.isAdmin;
     }
 
 }

@@ -2,7 +2,7 @@ package repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.genre.Genre;
+import model.Genre.Genre;
 
 import java.io.File;
 import java.io.FileReader;

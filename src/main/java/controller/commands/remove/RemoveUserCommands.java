@@ -6,7 +6,10 @@ import view.remove.RemoveDirectorView;
 import view.remove.RemoveFilmView;
 import view.remove.RemoveGenreView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 /** Класс команд удаления сущностей, включает в себя 1) Удаление фильмов 2) Удаление жанров
  * 3) Удаление Актеров 4) Удаление Режиссеров
@@ -14,11 +17,11 @@ import java.util.HashMap;
  * @version 1.0
  * */
 public class RemoveUserCommands {
-    public HashMap<Class<? extends View>, Boolean> commands = new HashMap<Class<? extends View>, Boolean>()
+    public HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>()
         {{
-            put(RemoveFilmView.class, true);
-            put(RemoveGenreView.class, true);
-            put(RemoveActorView.class, true);
-            put(RemoveDirectorView.class, true);
+            put(RemoveFilmView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
+            put(RemoveGenreView.class, new ArrayList<Boolean>(Arrays.asList(true)));
+            put(RemoveActorView.class, new ArrayList<Boolean>(Arrays.asList(true)));
+            put(RemoveDirectorView.class, new ArrayList<Boolean>(Arrays.asList(true)));
         }};
 }

@@ -1,4 +1,4 @@
-import view.MainMenuView;
+import view.authorization.login.LoginView;
 
 public class test {
 
@@ -27,7 +27,15 @@ public class test {
 //        String user1 = new File("src/main/resources/test/User1.json").getAbsolutePath();
 //        String user2 = new File("src/main/resources/test/User2.json").getAbsolutePath();
 //        mergeUsers.mergeFiles(user1, user2);
-        MainMenuView mainMenuView = new MainMenuView();
-        mainMenuView.display();
+
+//        AuthorithationView authorithationView = new AuthorithationView();
+//        authorithationView.display();
+//        IUser user =  authorithationView.getCurrentUser();
+
+//        MainMenuView mainMenuView = new MainMenuView();
+//        mainMenuView.display();
+
+        LoginView login = new LoginView();
+        login.display();
     }
 }

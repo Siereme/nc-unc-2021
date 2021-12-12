@@ -45,5 +45,5 @@ public interface IUser {
     void setPassword(String password);
 
     /** Метод не используется, информация не известна */
-    Boolean getRole();
+    Boolean isAdmin();
 }
