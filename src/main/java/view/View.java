@@ -2,14 +2,14 @@ package view;
 
 import controller.IEntityController;
 import model.IEntity;
+import model.user.IUser;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Класс представление, от которого будут наследованы все остальные классы-представления
@@ -18,9 +18,51 @@ import java.util.Scanner;
  * */
 
 public abstract class View implements IView {
+    protected IUser currentUser;
 
     /** Поле сканер, для считывания данных с клавиатуры */
     protected final Scanner input = new Scanner(System.in);
+
+    public View() {
+    }
+
+    public View(IUser currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    protected void drawSubMenu(Map<Class<? extends View>, List<Boolean>> commands, String nameMenu){
+        List<View> userCommands = commands.entrySet().stream()
+                .filter(e ->  e.getValue().contains(this.currentUser.isAdmin()))
+                .map(x-> {
+                    try {
+                        return x.getKey().getConstructor(IUser.class).newInstance(this.currentUser);
+                    } catch (InstantiationException | IllegalAccessException |
+                            NoSuchMethodException | InvocationTargetException | NullPointerException e) {
+                        e.printStackTrace();
+                        return null;
+                    }
+                })
+                .filter(x -> x != null)
+                .collect(Collectors.toList());
+
+        boolean show = true;
+        while (show) {
+            System.out.println(nameMenu);
+            for (int i = 0; i < userCommands.size(); i++) {
+                System.out.println((i + 1) + ". " + userCommands.get(i).getName());
+            }
+            System.out.println((userCommands.size() + 1) + ". Exit");
+
+            int option = getOption();
+
+            if(option < 1 || option > userCommands.size()){
+                break;
+            }
+
+            userCommands.get(option - 1).display();
+        }
+
+    }
 
     /** Функция для взаимодействия с пользователем, пользователь должен ввести какое-либо число
      * @return возвращает число, введенное пользователем

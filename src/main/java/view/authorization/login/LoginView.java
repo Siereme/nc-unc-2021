@@ -1,7 +1,7 @@
 package view.authorization.login;
 
 import controller.UserController;
-import model.User.IUser;
+import model.user.IUser;
 import view.IView;
 import view.MainMenuView;
 

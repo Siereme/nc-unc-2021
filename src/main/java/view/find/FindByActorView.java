@@ -3,6 +3,7 @@ package view.find;
 import controller.ActorController;
 import controller.FilmController;
 import model.actor.Actor;
+import model.user.IUser;
 import view.IView;
 import view.View;
 
@@ -18,6 +19,10 @@ public class FindByActorView extends View implements IView {
 
     /** Поле контроллер для актеров */
     ActorController actorController = new ActorController();
+
+    public FindByActorView(IUser currentUser) {
+        super(currentUser);
+    }
 
     @Override
     public void display() {

@@ -3,6 +3,7 @@ package model.user;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import model.IEntity;
 import model.user.Admin.Admin;
 import model.user.Visitor.Visitor;
 
@@ -18,7 +19,7 @@ import model.user.Visitor.Visitor;
         @JsonSubTypes.Type(value = Admin.class, name = "admin"),
         @JsonSubTypes.Type(value = Visitor.class, name = "visitor") }
 )
-public interface IUser {
+public interface IUser extends IEntity {
     /** Метод получения id пользователя
      * @return возвращает id пользователя
      * */

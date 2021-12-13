@@ -1,6 +1,7 @@
 package view.remove;
 
 import controller.FilmController;
+import model.user.IUser;
 import view.IView;
 import view.View;
 
@@ -14,6 +15,10 @@ public class RemoveFilmView extends View implements IView {
 
     /** Поле контроллер для фильмов */
     FilmController filmController = new FilmController();
+
+    public RemoveFilmView(IUser currentUser) {
+        super(currentUser);
+    }
 
     @Override
     public void display() {

@@ -1,6 +1,7 @@
 package view.remove;
 
 import controller.GenreController;
+import model.user.IUser;
 import view.IView;
 import view.View;
 
@@ -14,6 +15,10 @@ public class RemoveGenreView extends View implements IView {
 
     /** Поле контроллер для жанров */
     GenreController genreController = new GenreController();
+
+    public RemoveGenreView(IUser currentUser) {
+        super(currentUser);
+    }
 
     @Override
     public void display() {

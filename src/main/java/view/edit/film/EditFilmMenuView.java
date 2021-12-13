@@ -5,6 +5,7 @@ import controller.DirectorController;
 import controller.FilmController;
 import controller.GenreController;
 import model.film.Film;
+import model.user.IUser;
 import view.IView;
 import view.View;
 
@@ -21,6 +22,10 @@ public class EditFilmMenuView extends View implements IView {
 
     /** Поле контроллер для фильмов */
     private final FilmController filmController = new FilmController();
+
+    public EditFilmMenuView(IUser currentUser) {
+        super(currentUser);
+    }
 
     @Override
     public void display() {

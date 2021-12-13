@@ -2,7 +2,7 @@ package repository;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.User.IUser;
+import model.user.IUser;
 
 import java.io.File;
 import java.io.FileReader;
@@ -28,12 +28,11 @@ public class UserRepository implements IRepository<IUser> {
     /** Список хранимых пользователей */
     private LinkedList<IUser> users = new LinkedList<>();
 
-    public UserRepository(){
+    public UserRepository(List<IUser> users){
 //        users.add(new Admin("admin1", "123"));
 //        users.add(new Admin("admin2", "123"));
 //        users.add(new Visitor("visitor1", "123"));
 //        users.add(new Visitor("visitor1", "123"));
-        init();
     }
 
     private void init() {
@@ -44,12 +43,13 @@ public class UserRepository implements IRepository<IUser> {
         }
     }
 
-    public UserRepository(LinkedList<IUser> users) {
+    public UserRepository() {
+        init();
         this.users = users;
     }
 
     @Override
-    public List findAll() {
+    public List<IUser> findAll() {
         return this.users;
     }
 

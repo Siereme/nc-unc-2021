@@ -1,6 +1,7 @@
 package view.remove;
 
 import controller.ActorController;
+import model.user.IUser;
 import view.IView;
 import view.View;
 
@@ -14,6 +15,10 @@ public class RemoveActorView extends View implements IView {
 
     /** Поле контроллер для актеров */
     ActorController actorController = new ActorController();
+
+    public RemoveActorView(IUser currentUser) {
+        super(currentUser);
+    }
 
     @Override
     public void display() {

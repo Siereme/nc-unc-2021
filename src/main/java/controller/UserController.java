@@ -1,7 +1,8 @@
 package controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import model.User.IUser;
+import model.IEntity;
+import model.user.IUser;
 import repository.UserRepository;
 
 import java.io.IOException;
@@ -9,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class UserController implements IController<IUser>{
+public class UserController implements IEntityController<IUser>{
     UserRepository repository;
 
     public UserController() {
@@ -68,7 +69,7 @@ public class UserController implements IController<IUser>{
     }
 
     @Override
-    public void addEntity() {
+    public void addEntity(IEntity entity) {
 
     }
 
@@ -84,5 +85,10 @@ public class UserController implements IController<IUser>{
     @Override
     public void removeEntity(int ind) {
         repository.findAll().remove(ind);
+    }
+
+    @Override
+    public LinkedList<String> getEntities() {
+        return null;
     }
 }

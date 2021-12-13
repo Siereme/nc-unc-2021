@@ -3,6 +3,7 @@ package view.add;
 import controller.DirectorController;
 import controller.FilmController;
 import model.director.Director;
+import model.user.IUser;
 import view.IView;
 import view.View;
 
@@ -18,6 +19,10 @@ public class AddDirectorView extends View implements IView {
 
     /** Поле контроллер для режиссеров */
     DirectorController directorController = new DirectorController();
+
+    public AddDirectorView(IUser currentUser) {
+        super(currentUser);
+    }
 
     @Override
     public void display() {

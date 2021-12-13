@@ -1,6 +1,7 @@
 package view.show;
 
 import controller.DirectorController;
+import model.user.IUser;
 import view.View;
 
 public class ShowAllDirectorsView extends View {
@@ -8,6 +9,10 @@ public class ShowAllDirectorsView extends View {
     public String name = "Show All Directors";
 
     DirectorController directorController = new DirectorController();
+
+    public ShowAllDirectorsView(IUser currentUser) {
+        super(currentUser);
+    }
 
     @Override
     public void display() {

@@ -1,6 +1,7 @@
 package view.show;
 
 import controller.GenreController;
+import model.user.IUser;
 import view.View;
 
 public class ShowAllGenresView extends View {
@@ -8,6 +9,10 @@ public class ShowAllGenresView extends View {
     public String name = "Show All Genres";
 
     GenreController genreController = new GenreController();
+
+    public ShowAllGenresView(IUser currentUser) {
+        super(currentUser);
+    }
 
     @Override
     public void display() {

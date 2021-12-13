@@ -2,6 +2,7 @@ package view.add;
 
 import controller.GenreController;
 import model.genre.Genre;
+import model.user.IUser;
 import view.IView;
 import view.View;
 
@@ -15,6 +16,10 @@ public class AddGenreView extends View implements IView {
 
     /** Поле контроллер для жанров */
     private GenreController genreController = new GenreController();
+
+    public AddGenreView(IUser currentUser) {
+        super(currentUser);
+    }
 
     @Override
     public void display() {

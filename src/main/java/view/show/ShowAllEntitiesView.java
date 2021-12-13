@@ -1,7 +1,7 @@
 package view.show;
 
 import controller.commands.show.ShowUserCommands;
-import model.User.IUser;
+import model.user.IUser;
 import view.IView;
 import view.View;
 
@@ -11,10 +11,9 @@ import java.util.stream.Collectors;
 
 public class ShowAllEntitiesView extends View implements IView {
     private final String name = "Show all entities";
-    private final IUser currentUser;
 
     public ShowAllEntitiesView(IUser currentUser) {
-        this.currentUser = currentUser;
+        super(currentUser);
     }
 
     @Override

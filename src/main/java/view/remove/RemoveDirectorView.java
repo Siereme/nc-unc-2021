@@ -1,6 +1,7 @@
 package view.remove;
 
 import controller.DirectorController;
+import model.user.IUser;
 import view.IView;
 import view.View;
 
@@ -14,6 +15,10 @@ public class RemoveDirectorView extends View implements IView {
 
     /** Поле контроллер для режиссеров */
     DirectorController directorController = new DirectorController();
+
+    public RemoveDirectorView(IUser currentUser) {
+        super(currentUser);
+    }
 
     @Override
     public void display() {

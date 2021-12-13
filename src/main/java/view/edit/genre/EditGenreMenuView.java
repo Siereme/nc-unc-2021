@@ -2,6 +2,7 @@ package view.edit.genre;
 
 import controller.GenreController;
 import model.genre.Genre;
+import model.user.IUser;
 import view.IView;
 import view.View;
 
@@ -15,6 +16,10 @@ public class EditGenreMenuView extends View implements IView {
 
     /** Поле контроллер для жанров */
     private final GenreController genreController = new GenreController();
+
+    public EditGenreMenuView(IUser currentUser) {
+        super(currentUser);
+    }
 
     @Override
     public void display() {

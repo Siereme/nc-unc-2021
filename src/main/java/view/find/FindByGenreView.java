@@ -3,6 +3,7 @@ package view.find;
 import controller.FilmController;
 import controller.GenreController;
 import model.genre.Genre;
+import model.user.IUser;
 import view.IView;
 import view.View;
 
@@ -18,6 +19,10 @@ public class FindByGenreView extends View implements IView {
 
     /** Поле контроллер для жанров */
     GenreController genreController = new GenreController();
+
+    public FindByGenreView(IUser currentUser) {
+        super(currentUser);
+    }
 
     @Override
     public void display() {

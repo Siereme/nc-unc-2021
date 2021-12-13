@@ -4,6 +4,7 @@ import controller.ActorController;
 import controller.DirectorController;
 import controller.FilmController;
 import model.film.Film;
+import model.user.IUser;
 import view.IView;
 import view.View;
 
@@ -21,12 +22,16 @@ public class AddFilmView extends View implements IView {
     /** Поле контроллер для фильмов */
     FilmController filmController = new FilmController();
 
+    public AddFilmView(IUser currentUser) {
+        super(currentUser);
+    }
+
     @Override
     public void display() {
         boolean show = true;
         while (show) {
             System.out.println("------Adding Genre menu------");
-            System.out.println("1. Add Genre");
+            System.out.println("1. Add Film");
             System.out.println("-1. Exit");
             int option = getOption();
             if (option == -1) {
