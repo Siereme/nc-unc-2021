@@ -2,6 +2,7 @@ package model.user.Visitor;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import model.IEntity;
 import model.user.IUser;
 
 import java.util.UUID;
@@ -11,7 +12,7 @@ import java.util.UUID;
  * @version 1.0
  * */
 @JsonTypeName("visitor")
-public class Visitor implements IUser {
+public class Visitor implements IUser, IEntity {
     /** Поле первичный ключ - id пользователя */
     private String id;
 

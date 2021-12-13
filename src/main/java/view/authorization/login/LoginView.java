@@ -3,11 +3,11 @@ package view.authorization.login;
 import controller.UserController;
 import model.user.IUser;
 import view.IView;
-import view.MainMenuView;
 
 import java.util.Scanner;
 
 public class LoginView implements IView {
+    private IUser currentUser;
     private final Scanner input = new Scanner(System.in);
 
     @Override
@@ -21,18 +21,19 @@ public class LoginView implements IView {
             String password = getOption();
 
             UserController controller = new UserController();
-            IUser user = controller.getEntityByLogin(login, password);
+            currentUser = controller.getEntityByLogin(login, password);
 
-            if(user == null){
+            if(currentUser == null){
                 System.out.println("Incorrect login or password");
                 continue;
             }
 
-            MainMenuView mainMenu = new MainMenuView(user);
-            mainMenu.display();
-
             show = false;
         }
+    }
+
+    public IUser getCurrentUser() {
+        return currentUser;
     }
 
     private String getOption(){

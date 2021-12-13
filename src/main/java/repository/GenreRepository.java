@@ -20,18 +20,20 @@ import java.util.stream.Collectors;
  * @author Vasiliy,Sergey
  * @version 1.0
  * */
-public class GenreRepository implements IRepository<Genre> {
+public class GenreRepository extends AbstractRepository<Genre> implements IRepository<Genre> {
     /** Путь для сериализации\десериализации */
-    private final String filePath = new File("src/main/resources/Genres.json").getAbsolutePath();
+    public static final String GENRE_FILE_PATH = new File("src/main/resources/Genres.json").getAbsolutePath();
 
     /** Список хранимых жанров */
     private final List<Genre> genres = new ArrayList<>();
 
     public GenreRepository(Genre... genres) {
+        super(GENRE_FILE_PATH, Arrays.asList(genres));
         this.genres.addAll(Arrays.asList(genres));
     }
 
     public GenreRepository() {
+        super(GENRE_FILE_PATH);
         init();
     }
 

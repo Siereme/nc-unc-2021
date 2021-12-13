@@ -1,7 +1,5 @@
 package repository;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -37,16 +35,14 @@ public interface IRepository<T> {
     void clear();
 
     /** Функция сериализует репозиторий в файл
-     * @param objectMapper - объект для записи репозитория в файл
      * @throws IOException
      * */
-    void serialize(ObjectMapper objectMapper) throws IOException;
+    void serialize() throws IOException;
 
     /** Функция десериализации из файла
-     * @param objectMapper - объект для считывания данных из файла
      * @return список сущностей типа T, считанных из файла
      * */
-    List<T> deserialize(ObjectMapper objectMapper) throws IOException;
+    List<T> deserialize() throws IOException;
 
     /** Функция возвращает количество элементов в списке репозитория
      * @return возвращает количество элементов в списке репозитория

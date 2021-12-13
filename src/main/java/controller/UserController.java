@@ -1,6 +1,5 @@
 package controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import model.IEntity;
 import model.user.IUser;
 import repository.UserRepository;
@@ -76,7 +75,7 @@ public class UserController implements IEntityController<IUser>{
     @Override
     public void updateRepository() {
         try {
-            repository.serialize(new ObjectMapper());
+            repository.serialize();
         } catch (IOException e) {
             System.out.println("Serialize corrupted... " + e);
         }

@@ -1,6 +1,5 @@
 package controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import model.IEntity;
 import model.actor.Actor;
 import model.film.Film;
@@ -95,7 +94,7 @@ public class ActorController implements IEntityController<Actor> {
 
     public void updateRepository() {
         try {
-            actorRepository.serialize(new ObjectMapper());
+            actorRepository.serialize();
         } catch (IOException e) {
             System.out.println("Serialize corrupted... " + e);
         }

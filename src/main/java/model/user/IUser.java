@@ -11,14 +11,7 @@ import model.user.Visitor.Visitor;
  * @author Sergey
  * @version 1.0
  * */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "type")
-@JsonSubTypes({
-        @JsonSubTypes.Type(value = Admin.class, name = "admin"),
-        @JsonSubTypes.Type(value = Visitor.class, name = "visitor") }
-)
+
 public interface IUser extends IEntity {
     /** Метод получения id пользователя
      * @return возвращает id пользователя
