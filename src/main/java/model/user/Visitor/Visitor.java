@@ -7,7 +7,8 @@ import model.user.IUser;
 
 import java.util.UUID;
 
-/** Класс пользователь(привилегий меньше чем у админа)
+/** Visitor entity
+ * privileges are less than those of the admin
  * @author Sergey
  * @version 1.0
  * */

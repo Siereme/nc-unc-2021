@@ -39,7 +39,6 @@ public class AddActorView extends View implements IView {
                 setYear(actor);
                 setFilms(actor);
                 actorController.addEntity(actor);
-                actorController.updateRepository();
             }
         }
     }
@@ -55,7 +54,6 @@ public class AddActorView extends View implements IView {
         actor.setFilms(newFilmsId);
         // adding actor to new films
         filmController.addActorToFilms(actor, newFilmsId);
-        filmController.updateRepository();
     }
 
     public void setYear(Actor actor) {

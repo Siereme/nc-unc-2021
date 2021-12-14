@@ -9,8 +9,17 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-public class UserController implements IEntityController<IUser>{
+public class UserController implements IEntityController<IUser> {
     UserRepository repository;
+
+    @Override
+    public String getNames() {
+        StringBuffer sb = new StringBuffer();
+        for (IUser user : repository.findAll()) {
+            sb.append(user.getName()).append("\n");
+        }
+        return new String(sb);
+    }
 
     public UserController() {
         this.repository = new UserRepository();
@@ -30,9 +39,9 @@ public class UserController implements IEntityController<IUser>{
         return null;
     }
 
-    public IUser getEntityByLogin(String login, String password){
-        for(IUser user : repository.findAll()){
-            if(Objects.equals(user.getName(), login) && Objects.equals(user.getPassword(), password)){
+    public IUser getEntityByLogin(String login, String password) {
+        for (IUser user : repository.findAll()) {
+            if (Objects.equals(user.getName(), login) && Objects.equals(user.getPassword(), password)) {
                 return user;
             }
         }

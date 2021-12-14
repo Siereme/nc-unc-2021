@@ -1,43 +1,41 @@
 package model.user;
 
 
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import model.IEntity;
-import model.user.Admin.Admin;
-import model.user.Visitor.Visitor;
 
-/** Интерфейс пользователя
+/** User Interface
  * @author Sergey
  * @version 1.0
  * */
 
 public interface IUser extends IEntity {
-    /** Метод получения id пользователя
-     * @return возвращает id пользователя
+    /** Method gets user id
+     * @return user id
      * */
     String getId();
 
-    /** Метод получения имени пользователя
-     * @return возвращает строку - имя пользователя
+    /** Method gets user name
+     * @return string value of the username
      * */
     String getName();
 
-    /** Метод установки нового имени пользователя
-     * @param name - новое имя пользователя
+    /** Method sets username
+     * @param name - new value of the username
      * */
     void setName(String name);
 
-    /** Метод получения пароля пользователя
-     * @return возвращает пароль пользователя
+    /** Method gets user password
+     * @return string value of the user password
      * */
     String getPassword();
 
-    /** Метод установки нового пароля пользователю
-     * @param password - новый пароль пользователя
+    /** Method sets new value of the user password
+     * @param password - new value of the user password
      * */
     void setPassword(String password);
 
-    /** Метод не используется, информация не известна */
+    /** Method checks whether the user is an administrator
+     * @return true - if user is administrator, false - else
+     * */
     Boolean isAdmin();
 }

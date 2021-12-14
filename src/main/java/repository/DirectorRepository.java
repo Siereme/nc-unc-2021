@@ -4,10 +4,8 @@ import model.director.Director;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 /** Репозиторий режиссеров, хранит список режиссеров
  * @see IRepository
@@ -15,16 +13,14 @@ import java.util.Objects;
  * @author Vasiliy,Sergey
  * @version 1.0
  * */
-public class DirectorRepository extends AbstractRepository<Director> implements repository.IRepository<Director> {
+public class DirectorRepository extends AbstractRepository<Director>  {
     /** Путь для сериализации\десериализации */
     public static final String DIRECTOR_FILE_PATH = new File("src/main/resources/Directors.json").getAbsolutePath();
 
-    /** Список хранимых режиссеров */
-    private final List<Director> directors = new ArrayList<>();
 
     public DirectorRepository(Director... directors) {
         super(DIRECTOR_FILE_PATH, Arrays.asList(directors));
-        this.directors.addAll(Arrays.asList(directors));
+        this.entities.addAll(Arrays.asList(directors));
     }
 
     public DirectorRepository() {
@@ -34,7 +30,7 @@ public class DirectorRepository extends AbstractRepository<Director> implements 
 
     public void init() {
         try {
-            directors.addAll(deserialize());
+            entities.addAll(deserialize());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,10 +38,10 @@ public class DirectorRepository extends AbstractRepository<Director> implements 
 
     @Override
     public List<Director> findAll() {
-        return directors;
+        return entities;
     }
 
-    @Override
+/*    @Override
     public boolean deleteById(Integer Id) {
         for (Director director : directors) {
             if (director.getId().equals(Id.toString())) {
@@ -54,28 +50,19 @@ public class DirectorRepository extends AbstractRepository<Director> implements 
             }
         }
         return false;
-    }
+    }*/
 
-    @Override
+/*    @Override
     public boolean findById(Integer Id) {
         return directors.stream().allMatch(d -> Objects.equals(d.getId(), Id.toString()));
-    }
+    }*/
 
-    @Override
-    public boolean create(Director entity) {
-        return directors.add(entity);
-    }
-
-    @Override
-    public void clear() {
-        directors.clear();
-    }
 
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
-        for (Director director : directors) {
+        for (Director director : entities) {
             sb.append(ind).append(". ").append(director).append("\n");
             ++ind;
         }
@@ -83,7 +70,7 @@ public class DirectorRepository extends AbstractRepository<Director> implements 
     }
 
     public int size() {
-        return directors.size();
+        return entities.size();
     }
 
 }

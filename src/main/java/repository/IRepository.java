@@ -1,51 +1,53 @@
 package repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.util.List;
 
-/** Интерфейс репозитория, от него будут наследованы все репозитории программа
+/** Repository interface
  * @author Sergey
  * @version 1.0
  * */
 public interface IRepository<T> {
-    /** Метод возвращает список сущностей типа T
-     * @return список сущностей типа T
+    /** Method gets list of entities
+     * @return list of entities with type T
      * */
     List<T> findAll();
 
-    /** Метод удаляет сущность по её id
-     * @param Id - id удаляемой сущности
-     * @return значение true или false в зависимости от успешности удаления
+    /** Method removes Entity by its id
+     * @param Id - id entity
+     * @return true if deletion successful, else - false
      * */
     boolean deleteById(Integer Id);
 
-    /** Метод осуществляет поиск сущности по её id
-     * @param Id - id искомой сущности
-     * @return значение true - если сущность была найдена и false - иначе
+    /** Method searches entity by its id
+     * @param Id - id of the entity
+     * @return true if search successful, else - false
      * */
     boolean findById(Integer Id);
 
-    /** Функция добавляет в репозиторий новую сущность
-     * @param entity - сущность которая будет добавлена в репозиторий
-     * @return значение true, если добавление успешно и false - иначе
+    /** Method adds new entity to the repository
+     * (unused)
      * */
     boolean create(T entity);
 
-    /** Функция очищает репозиторий */
+    /** unused */
     void clear();
 
-    /** Функция сериализует репозиторий в файл
-     * @throws IOException
+    /** Method serializes repository
+     * @param objectMapper - object to write repository to the file
      * */
-    void serialize() throws IOException;
+    void serialize(ObjectMapper objectMapper) throws IOException;
 
-    /** Функция десериализации из файла
-     * @return список сущностей типа T, считанных из файла
+    /** Method deserializes repository
+     * @param objectMapper - object gets repository from the file
+     * @return list of the entities with type T
      * */
-    List<T> deserialize() throws IOException;
+    List<T> deserialize(ObjectMapper objectMapper) throws IOException;
 
-    /** Функция возвращает количество элементов в списке репозитория
-     * @return возвращает количество элементов в списке репозитория
+    /** Method gets size - count of repository elements
+     * @return count of repository elements
      * */
     int size();
 

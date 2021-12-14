@@ -13,7 +13,7 @@ import java.util.List;
 
 
 
-public abstract class AbstractRepository<T extends IEntity> {
+public abstract class AbstractRepository<T extends IEntity>  {
     protected String filePath;
     protected List<T> entities;
     private ObjectMapper mapper = new ObjectMapper();
@@ -28,6 +28,7 @@ public abstract class AbstractRepository<T extends IEntity> {
         this.entities = entities;
     }
 
+    public abstract List<T> findAll();
 
 
     public void serialize() throws IOException {

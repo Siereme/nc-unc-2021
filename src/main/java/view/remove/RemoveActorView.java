@@ -34,7 +34,6 @@ public class RemoveActorView extends View implements IView {
             } else if (option >= 0 && option < actorController.size()) {
                 if (getConfirm()) {
                     actorController.removeEntity(option);
-                    actorController.updateRepository();
                 }
             }
         }

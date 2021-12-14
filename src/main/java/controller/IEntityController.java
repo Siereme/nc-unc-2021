@@ -4,60 +4,66 @@ import model.IEntity;
 
 import java.util.LinkedList;
 
-/** Интерфейс контроллера
+/** Controller Interface
  * @author Vasiliy
  * @version 1.0
  * */
 public interface IEntityController<T> {
 
-    /** Метод получения сущности по её id
-     * @param id - id сущности, которую необходимо будет найти
-     * @return возвращает объект типа сущности
+    /** method of getting the entity by id
+     * @param id - id entity, to be found
+     * @return entity type object with id = @id
      * */
     T getEntityById(String id);
 
-    /** Метод приводит сущность к типу String
-     * @param entity - сущность, которую метод преобразует в строку
-     * @return возвращает строковое представление данной на вход сущности
+    /** Method converts entity to string
+     * @param entity - which will be converted to string
+     * @return string value of @entity
      * */
     String entityToString(T entity);
 
-    /** Метод 1) ищет сущность с id из списка ids, далее преобразует эту сущность в строку и так для каждого ids из списка
-     * @param ids - список id сущностей, которые метод будет искать в репозитории
-     * @return возвращает строковое представление всех найденных сущностей
+    /** method searches for an entity with an id from the ids list
+     *  then converts this entity into a string and so on for each ids from the list
+     * @param ids - list of id entities
+     * @return string value of all entities in @ids
      * */
     String entitiesByIDsToString(LinkedList<String> ids);
 
-    /** Метод возвращает количество элементов списка репозитория
+    /** Method gets count of repository items
      * @see repository.IRepository
-     * @return возвращает количество элементов списка репозитория
+     * @return return count of repository items
      * */
     int size();
 
-    /** Получает сущность из репозитория по её индексу
+    /** Method gets entity by its index
      * @see repository.IRepository
-     * @param ind - индекс сущности
-     * @return возвращает найденную по индексу сущность
+     * @param ind - index of entity
+     * @return entity with index = @ind
      * */
     T getEntity(int ind);
 
-    /** Метод добавляет сущность в репозиторий, При этом сущность не содержит никакой полезной информации, то есть ее
-     * необходимо будет отредактировать
+    /** Method adds entity to repository
+     * @param entity - entity which will be added
      * @see repository.IRepository
      * */
     void addEntity(IEntity entity);
 
-    /** Метод обновляет репозиторий
+    /** Method updates repository
      * @see repository.IRepository
      * */
     void updateRepository();
 
-    /** Метод удаляет сущность из репозитория по её индексу
-     * @param ind - индекс удаляемой сущности
+    /** Method removes entity from repository by its(entity) index
+     * @param ind - index of the entity being deleted
      * @see repository.IRepository
      * */
     void removeEntity(int ind);
 
+    /** Method gets linked list with ids of entities
+     * @return Linked list of id with all entities
+     * */
     LinkedList<String> getEntities();
+
+    String getNames();
 
 }

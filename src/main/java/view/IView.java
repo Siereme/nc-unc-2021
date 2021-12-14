@@ -7,11 +7,11 @@ package view;
  * @version 1.0
  */
 public interface IView {
-    /** Поле - меню, которое выводится пользователю */
+    /** method creates menu that the user will see*/
     void display();
 
-    /** функция выводит сообщение пользователю
-     * @param messsage - сообщение, которое будет выведено
+    /** method shows message to user
+     * @param messsage - string value of the message that will be showed to user
      * */
     void showMessage(String messsage);
 }

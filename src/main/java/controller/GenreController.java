@@ -1,6 +1,5 @@
 package controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import model.IEntity;
 import model.genre.Genre;
 import repository.GenreRepository;
@@ -9,7 +8,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
 
-/** Контроллер для сущности жанр
+/** Genre controller
  * @see Genre
  * @see IEntityController
  * @see GenreRepository
@@ -18,18 +17,27 @@ import java.util.Objects;
  * */
 public class GenreController implements IEntityController<Genre> {
 
-    public GenreRepository getGenreRepository() {
-        return genreRepository;
+    public GenreRepository getRepository() {
+        return repository;
     }
 
-    GenreRepository genreRepository = new GenreRepository();
+    GenreRepository repository = new GenreRepository();
 
     public GenreController() {
-        genreRepository = new GenreRepository();
+        repository = new GenreRepository();
+    }
+
+    @Override
+    public String getNames() {
+        StringBuffer sb = new StringBuffer();
+        for (Genre genre : repository.findAll()) {
+            sb.append(genre.getTittle()).append("\n");
+        }
+        return new String(sb);
     }
 
     public Genre getEntityById(String id) {
-        for (Genre genre : genreRepository.findAll()) {
+        for (Genre genre : repository.findAll()) {
             if (Objects.equals(genre.getId(), id)) {
                 return genre;
             }
@@ -47,7 +55,7 @@ public class GenreController implements IEntityController<Genre> {
     public String toString() {
         StringBuffer sb = new StringBuffer();
         int ind = 0;
-        for (Genre genre : genreRepository.findAll()) {
+        for (Genre genre : repository.findAll()) {
             sb.append(ind).append(". ").append(entityToString(genre)).append("\n");
             ++ind;
         }
@@ -64,33 +72,34 @@ public class GenreController implements IEntityController<Genre> {
     }
 
     public int size() {
-        return genreRepository.size();
+        return repository.size();
     }
 
     public Genre getEntity(int ind) {
-        return genreRepository.findAll().get(ind);
+        return repository.findAll().get(ind);
     }
 
     public void addEntity(IEntity entity) {
-        genreRepository.findAll().add((Genre) entity);
+        repository.findAll().add((Genre) entity);
     }
 
     public void updateRepository() {
         try {
-            genreRepository.serialize(new ObjectMapper());
+            repository.serialize();
         } catch (IOException e) {
             System.out.println("Serialize corrupted... " + e);
         }
     }
 
     public void removeEntity(int ind) {
-        genreRepository.findAll().remove(ind);
+        repository.findAll().remove(ind);
+        updateRepository();
     }
 
     @Override
     public LinkedList<String> getEntities() {
         LinkedList<String> ids = new LinkedList<>();
-        for (Genre genre : genreRepository.findAll()) {
+        for (Genre genre : repository.findAll()) {
             ids.add(genre.getId());
         }
         return ids;

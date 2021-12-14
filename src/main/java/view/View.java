@@ -30,20 +30,16 @@ public abstract class View implements IView {
         this.currentUser = currentUser;
     }
 
-    protected void drawSubMenu(Map<Class<? extends View>, List<Boolean>> commands, String nameMenu){
-        List<View> userCommands = commands.entrySet().stream()
-                .filter(e ->  e.getValue().contains(this.currentUser.isAdmin()))
-                .map(x-> {
+    protected void drawSubMenu(Map<Class<? extends View>, List<Boolean>> commands, String nameMenu) {
+        List<View> userCommands =
+                commands.entrySet().stream().filter(e -> e.getValue().contains(this.currentUser.isAdmin())).map(x -> {
                     try {
                         return x.getKey().getConstructor(IUser.class).newInstance(this.currentUser);
-                    } catch (InstantiationException | IllegalAccessException |
-                            NoSuchMethodException | InvocationTargetException | NullPointerException e) {
+                    } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException | NullPointerException e) {
                         e.printStackTrace();
                         return null;
                     }
-                })
-                .filter(x -> x != null)
-                .collect(Collectors.toList());
+                }).filter(x -> x != null).collect(Collectors.toList());
 
         boolean show = true;
         while (show) {
@@ -55,7 +51,7 @@ public abstract class View implements IView {
 
             int option = getOption();
 
-            if(option < 1 || option > userCommands.size()){
+            if (option < 1 || option > userCommands.size()) {
                 break;
             }
 
@@ -127,9 +123,8 @@ public abstract class View implements IView {
         return input.nextLine();
     }
 
-
     protected LinkedList<String> getEntitiesId(IEntityController<? extends IEntity> entityController, String message) {
-        LinkedList<String> entities = entityController.getEntities();
+        LinkedList<String> newEntities = new LinkedList<>();
         while (true) {
             System.out.println(message);
             System.out.println("-1. Exit");
@@ -142,11 +137,11 @@ public abstract class View implements IView {
                 continue;
             }
             IEntity entity = entityController.getEntity(option);
-            if (!entities.contains(entity.getId())) {
-                entities.add(entity.getId());
+            if (!newEntities.contains(entity.getId())) {
+                newEntities.add(entity.getId());
             }
         }
-        return entities;
+        return newEntities;
     }
 
     /** Функция получает подтверждение от пользователя

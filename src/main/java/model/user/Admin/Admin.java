@@ -2,27 +2,22 @@ package model.user.Admin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import model.IEntity;
 import model.user.IUser;
 
 import java.util.UUID;
 
-/** Класс Администратор
+/** Administrator entity
  * @author Sergey
  * @version 1.0
  * */
 @JsonTypeName("admin")
-public class Admin implements IUser, IEntity {
-    /** Поле первичный ключ id администратора*/
+public class Admin implements IUser {
     private String id;
 
-    /** Поле имя администратора */
     private String name;
 
-    /** Поле пароль администратора */
     private String password;
 
-    /** Поле роль администратора */
     @JsonProperty("isAdmin")
     private final Boolean isAdmin = true;
 

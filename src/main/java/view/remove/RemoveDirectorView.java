@@ -32,10 +32,9 @@ public class RemoveDirectorView extends View implements IView {
             if (option == -1) {
                 show = false;
             }
-            if (option >= 0 && option < directorController.getDirectorRepository().findAll().size()) {
+            if (option >= 0 && option < directorController.getRepository().findAll().size()) {
                 if (getConfirm()) {
                     directorController.removeEntity(option);
-                    directorController.updateRepository();
                 }
             }
         }

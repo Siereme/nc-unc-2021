@@ -5,15 +5,13 @@ import model.IEntity;
 import java.util.Objects;
 import java.util.UUID;
 
-/** Сущность жанр содержит первичный ключ - id, название жанра
+/** Genre entity
  * @author Vasiliy, Sergey
  * */
 public class Genre implements IEntity {
 
-    /** Поле первичный ключ - id жанра */
     private String id;
 
-    /** Поле название жанра */
     private String tittle;
 
     public Genre(){

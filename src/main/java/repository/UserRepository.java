@@ -1,10 +1,11 @@
 package repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import model.user.IUser;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,8 +18,6 @@ public class UserRepository extends AbstractRepository<IUser> implements IReposi
     /** Путь для сериализации\десериализации */
     public static final String USERS_FILE_PATH = new File("src/main/resources/Users.json").getAbsolutePath();
 
-    /** Список хранимых пользователей */
-    private LinkedList<IUser> users = new LinkedList<>();
 
     public UserRepository(List<IUser> users){
         super(USERS_FILE_PATH, users);
@@ -30,7 +29,7 @@ public class UserRepository extends AbstractRepository<IUser> implements IReposi
     }
     private void init() {
         try {
-            this.users.addAll(deserialize());
+            this.entities.addAll(deserialize());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,14 +37,14 @@ public class UserRepository extends AbstractRepository<IUser> implements IReposi
 
     @Override
     public List<IUser> findAll() {
-        return this.users;
+        return this.entities;
     }
 
     @Override
     public boolean deleteById(Integer id) {
-        for (IUser user : users) {
+        for (IUser user : entities) {
             if (user.getId().equals(id.toString())) {
-                return users.removeIf(f -> Objects.equals(f.getId(), id.toString()));
+                return entities.removeIf(f -> Objects.equals(f.getId(), id.toString()));
             }
         }
         return false;
@@ -53,22 +52,32 @@ public class UserRepository extends AbstractRepository<IUser> implements IReposi
 
     @Override
     public boolean findById(Integer Id) {
-        return users.stream().allMatch(f -> Objects.equals(f.getId(), Id.toString()));
+        return entities.stream().allMatch(f -> Objects.equals(f.getId(), Id.toString()));
     }
 
     @Override
     public boolean create(IUser user) {
-        return users.add(user);
+        return entities.add(user);
     }
 
     @Override
     public void clear() {
-        users.clear();
+        entities.clear();
+    }
+
+    @Override
+    public void serialize(ObjectMapper objectMapper) throws IOException {
+        objectMapper.writeValue(new FileWriter(this.filePath), this.entities);
+    }
+
+    @Override
+    public List<IUser> deserialize(ObjectMapper objectMapper) throws IOException {
+        return null;
     }
 
     @Override
     public int size() {
-        return users.size();
+        return entities.size();
     }
 
 }
