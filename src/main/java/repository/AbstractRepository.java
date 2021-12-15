@@ -13,7 +13,7 @@ import java.util.List;
 
 
 
-public abstract class AbstractRepository<T extends IEntity>  {
+public abstract class AbstractRepository<T extends IEntity>  implements IRepository<T> {
     protected String filePath;
     protected List<T> entities;
     private ObjectMapper mapper = new ObjectMapper();
