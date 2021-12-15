@@ -8,6 +8,12 @@ To make it easy for you to get started with GitLab, here's a list of recommended
 
 Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
 
+## Commit message
+```
+git commit -m "Sort more efficiently" -m "Closes #7"
+git push
+```
+
 ## Add your files
 
 - [ ] [Create](https://gitlab.com/-/experiment/new_project_readme_content:0ae3209b5245578e29c30e18262a7a4b?https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://gitlab.com/-/experiment/new_project_readme_content:0ae3209b5245578e29c30e18262a7a4b?https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
