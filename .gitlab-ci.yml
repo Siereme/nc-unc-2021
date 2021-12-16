@@ -3,4 +3,4 @@ stages:
 
 build-java-project:
     stage: build
-    script: mvn package
+    script: $MAVEN_HOME/bin/mvn package
