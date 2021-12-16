@@ -5,7 +5,7 @@ import model.user.IUser;
 import view.IView;
 import view.View;
 
-/** Меню команд добавления данных
+/** Menu of the adding commands
  * @author Sergey, Vasiliy
  * @version 1.0
  * */

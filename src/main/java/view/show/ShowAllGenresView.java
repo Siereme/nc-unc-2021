@@ -5,7 +5,7 @@ import model.user.IUser;
 import view.View;
 
 public class ShowAllGenresView extends View {
-    /** Поле название команды */
+    /** Name of the command*/
     public String name = "Show All Genres";
 
     GenreController genreController = new GenreController();

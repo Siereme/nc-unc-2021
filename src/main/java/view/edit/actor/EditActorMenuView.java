@@ -9,15 +9,13 @@ import view.View;
 
 import java.util.LinkedList;
 
-/** Класс команда изменения актера
+/** Command changing actor
  * @author Vasiliy
  * @version 1.0
  * */
 public class EditActorMenuView extends View implements IView {
-    /** Поле название команды */
     private final String name = "Edit Actor";
 
-    /** Поле контроллер для актеров */
     ActorController actorController = new ActorController();
 
     public EditActorMenuView(IUser currentUser) {
@@ -76,7 +74,6 @@ public class EditActorMenuView extends View implements IView {
         Actor actor = actorController.getEntity(actorInd);
         FilmController filmController = new FilmController();
         final LinkedList<String> newFilmsId = getEntitiesId(filmController, "Select Films\n");
-        actor.setFilms(newFilmsId);
         filmController.removeActorFromAllFilms(actor);
         filmController.addActorToFilms(actor, newFilmsId);
         filmController.updateRepository();

@@ -6,7 +6,7 @@ import view.IView;
 import view.View;
 
 public class ShowAllActorsView extends View implements IView {
-    /** Поле название команды */
+    /** Name of the command*/
     public String name = "Show All Actors";
 
     ActorController actorController = new ActorController();

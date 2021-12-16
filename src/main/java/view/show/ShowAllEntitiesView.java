@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ShowAllEntitiesView extends View implements IView {
+    /** Name of the command*/
     private final String name = "Show all entities";
 
     public ShowAllEntitiesView(IUser currentUser) {

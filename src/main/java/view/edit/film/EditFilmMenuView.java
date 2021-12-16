@@ -12,15 +12,13 @@ import view.View;
 import java.util.Date;
 import java.util.LinkedList;
 
-/** Класс команда изменения фильмов
+/** Command changing film
  * @author Vasiliy
  * @version 1.0
  * */
 public class EditFilmMenuView extends View implements IView {
-    /** Поле название команды */
     private final String name = "Edit Film";
 
-    /** Поле контроллер для фильмов */
     private final FilmController filmController = new FilmController();
 
     public EditFilmMenuView(IUser currentUser) {
@@ -111,9 +109,6 @@ public class EditFilmMenuView extends View implements IView {
         DirectorController directorController = new DirectorController();
         LinkedList<String> newDirectorsId = getEntitiesId(directorController, "Select Directors\n");
         film.setDirectors(newDirectorsId);
-        directorController.removeFilmFromAllDirectors(film);
-        directorController.addFilmToDirectors(film, newDirectorsId);
-        directorController.updateRepository();
     }
 
     private void setActors(int filmInd) {
@@ -121,9 +116,6 @@ public class EditFilmMenuView extends View implements IView {
         ActorController actorController = new ActorController();
         LinkedList<String> newActorsId = getEntitiesId(actorController, "Select Actors\n");
         film.setActors(newActorsId);
-        actorController.removeFilmFromAllActors(film);
-        actorController.addFilmToActors(film, newActorsId);
-        actorController.updateRepository();
     }
 
     @Override

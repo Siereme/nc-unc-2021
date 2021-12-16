@@ -12,7 +12,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Класс представление, от которого будут наследованы все остальные классы-представления
+ * Class view with some universal methods
  * @author vasiliy
  * @version 1.0
  * */
@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 public abstract class View implements IView {
     protected IUser currentUser;
 
-    /** Поле сканер, для считывания данных с клавиатуры */
     protected final Scanner input = new Scanner(System.in);
 
     public View() {
@@ -60,8 +59,8 @@ public abstract class View implements IView {
 
     }
 
-    /** Функция для взаимодействия с пользователем, пользователь должен ввести какое-либо число
-     * @return возвращает число, введенное пользователем
+    /** Function gets number from user
+     * @return int value of number
      * */
     protected int getOption() {
         try {

@@ -6,7 +6,7 @@ import view.IView;
 import view.View;
 
 public class ShowAllFilmsView extends View implements IView {
-    /** Поле название команды */
+    /** Name of the command*/
     public String name = "Show All Films";
 
     FilmController filmController = new FilmController();

@@ -6,15 +6,14 @@ import model.user.IUser;
 import view.IView;
 import view.View;
 
-/** Команда добавления жанра
+/** Command adding genre
  * @author Vasiliy
  * @version 1.0
  * */
 public class AddGenreView extends View implements IView {
-    /** Поле название команды */
+    /** Name of the command*/
     public String name = "Add Genre";
 
-    /** Поле контроллер для жанров */
     private GenreController genreController = new GenreController();
 
     public AddGenreView(IUser currentUser) {

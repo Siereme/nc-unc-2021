@@ -238,11 +238,7 @@ public class FilmController implements IEntityController<Film> {
     public void removeEntity(int ind) {
         Film film = getEntity(ind);
         ActorController actorController = new ActorController();
-        // remove film from all common actors
-        actorController.removeFilmFromAllActors(film);
         DirectorController directorController = new DirectorController();
-        // remove film from all common directors
-        directorController.removeFilmFromAllDirectors(film);
         // remove film from film repository
         repository.findAll().remove(ind);
         updateRepository();

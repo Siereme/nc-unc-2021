@@ -8,8 +8,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-/** Класс репозиторий фильмов
- * @see IRepository
+/** Film repository
+ * @see AbstractRepository
  * @see Film
  * @author Vasiliy, Sergey
  * @version 1.0
@@ -50,24 +50,6 @@ public class FilmsRepository extends AbstractRepository<Film>  {
         }
         return false;
     }
-
-    /*@Override
-    public boolean findById(Integer Id) {
-        // предикат, надеюсь не ошибся в использовании.
-        return films.stream().allMatch(f -> Objects.equals(f.getId(), Id.toString()));
-    }
-
-    // пока не ясно что должен делать метод, добавлять в репозиторий новый фильм? или создавать новый...
-    @Override
-    public boolean create(Film entity) {
-        return films.add(entity);
-    }
-
-    @Override
-    public void clear() {
-        films.clear();
-    }*/
-
 
     @Override
     public String toString() {

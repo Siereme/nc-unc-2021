@@ -2,7 +2,6 @@ package controller;
 
 import model.IEntity;
 import model.actor.Actor;
-import model.film.Film;
 import repository.ActorRepository;
 
 import java.io.IOException;
@@ -29,11 +28,6 @@ public class ActorController implements IEntityController<Actor> {
 
     public ActorController(ActorRepository newActorRepository) {
         repository = newActorRepository;
-    }
-
-    public void setFilms(int ind, LinkedList<String> newFilms) {
-        Actor actor = getEntity(ind);
-        actor.setFilms(newFilms);
     }
 
     @Override
@@ -71,16 +65,6 @@ public class ActorController implements IEntityController<Actor> {
         sb.append("Id: ").append(actor.getId()).append("\n");
         sb.append("Name: ").append(actor.getName()).append("\n");
         sb.append("Year: ").append(actor.getYear()).append("\n");
-        if (actor.getFilms().isEmpty()) {
-            sb.append("Films is empty");
-        } else {
-            sb.append("Films:\n");
-            FilmController filmController = new FilmController();
-            for (String filmId : actor.getFilms()) {
-                Film film = filmController.getEntityById(filmId);
-                sb.append(film.getTittle()).append("\n");
-            }
-        }
         return new String(sb);
     }
 
@@ -133,35 +117,6 @@ public class ActorController implements IEntityController<Actor> {
         return new String(sb);
     }
 
-    public void addFilmToActors(Film film, LinkedList<String> actorsId) {
-        for (String actorId : actorsId) {
-            Actor actor = getEntityById(actorId);
-            LinkedList<String> filmsId = actor.getFilms();
-            filmsId.add(film.getId());
-        }
-    }
 
-    public static boolean isContainsFilms(Actor actor, Film film) {
-        for (String filmsId : actor.getFilms()) {
-            if (Objects.equals(filmsId, film.getId())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void removeFilmFromAllActors(Film film) {
-        boolean isChange = false;
-        for (Actor actor : repository.findAll()) {
-            if (isContainsFilms(actor, film)) {
-                LinkedList<String> filmsId = actor.getFilms();
-                filmsId.remove(film.getId());
-                isChange = true;
-            }
-        }
-        if (isChange) {
-            updateRepository();
-        }
-    }
 
 }

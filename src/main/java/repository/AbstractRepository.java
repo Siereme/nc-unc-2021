@@ -12,7 +12,10 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-
+/** Abstract class of repository
+ * @author Sergey
+ * @version 1.0
+ * */
 public abstract class AbstractRepository<T extends IEntity>  {
     protected String filePath;
     protected List<T> entities;

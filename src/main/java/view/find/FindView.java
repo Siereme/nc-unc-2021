@@ -5,7 +5,7 @@ import model.user.IUser;
 import view.IView;
 import view.View;
 
-/** Класс меню команд поиска
+/** Class menu of searching commands
  * @author Vasiliy
  * @version 1.0
  * */

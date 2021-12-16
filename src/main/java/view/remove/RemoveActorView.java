@@ -5,15 +5,13 @@ import model.user.IUser;
 import view.IView;
 import view.View;
 
-/** Класс команда удаления актера
+/** Command delition actor
  * @author Vasiliy
  * @version 1.0
  * */
 public class RemoveActorView extends View implements IView {
-    /** Поле название команды */
     private final String name = "Delete Actor";
 
-    /** Поле контроллер для актеров */
     ActorController actorController = new ActorController();
 
     public RemoveActorView(IUser currentUser) {

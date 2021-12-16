@@ -6,6 +6,7 @@ import view.IView;
 import view.View;
 
 public class ShowAllView extends View implements IView {
+    /** String that user will see*/
     public static final String SHOW_ALL_MENU = "------Show All Menu------";
     private final String name = "Show all ...";
 

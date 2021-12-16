@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-/** Репозиторий режиссеров, хранит список режиссеров
- * @see IRepository
+/** Director repository
+ * @see AbstractRepository
  * @see Director
  * @author Vasiliy,Sergey
  * @version 1.0
@@ -40,22 +40,6 @@ public class DirectorRepository extends AbstractRepository<Director>  {
     public List<Director> findAll() {
         return entities;
     }
-
-/*    @Override
-    public boolean deleteById(Integer Id) {
-        for (Director director : directors) {
-            if (director.getId().equals(Id.toString())) {
-                // предикат, надеюсь не ошибся в использовании.
-                return directors.removeIf(d -> Objects.equals(d.getId(), Id.toString()));
-            }
-        }
-        return false;
-    }*/
-
-/*    @Override
-    public boolean findById(Integer Id) {
-        return directors.stream().allMatch(d -> Objects.equals(d.getId(), Id.toString()));
-    }*/
 
 
     @Override

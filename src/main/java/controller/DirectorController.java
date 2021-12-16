@@ -2,7 +2,6 @@ package controller;
 
 import model.IEntity;
 import model.director.Director;
-import model.film.Film;
 import repository.DirectorRepository;
 
 import java.io.IOException;
@@ -51,16 +50,6 @@ public class DirectorController implements IEntityController<Director> {
         sb.append("Id: ").append(director.getId()).append("\n");
         sb.append("Name: ").append(director.getName()).append("\n");
         sb.append("Year: ").append(director.getYear()).append("\n");
-        if (director.getFilms().isEmpty()) {
-            sb.append("Films is empty\n");
-        } else {
-            sb.append("Films:\n");
-            FilmController filmController = new FilmController();
-            for (String filmId : director.getFilms()) {
-                Film film = filmController.getEntityById(filmId);
-                sb.append(film.getTittle()).append("\n");
-            }
-        }
         return new String(sb);
 
     }
@@ -123,35 +112,5 @@ public class DirectorController implements IEntityController<Director> {
         return ids;
     }
 
-    public void addFilmToDirectors(Film film, LinkedList<String> directorsId) {
-        for (String dirId : directorsId) {
-            Director director = getEntityById(dirId);
-            LinkedList<String> dirFilmsID = director.getFilms();
-            dirFilmsID.add(film.getId());
-        }
-    }
-
-    public void removeFilmFromAllDirectors(Film film) {
-        boolean isChange = false;
-        for (Director director : repository.findAll()) {
-            if (isContainsFilm(director, film)) {
-                LinkedList<String> filmsId = director.getFilms();
-                filmsId.remove(film.getId());
-                isChange = true;
-            }
-        }
-        if (isChange) {
-            updateRepository();
-        }
-    }
-
-    public static boolean isContainsFilm(Director director, Film film) {
-        for (String filmID : director.getFilms()) {
-            if (Objects.equals(film.getId(), filmID)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
 }

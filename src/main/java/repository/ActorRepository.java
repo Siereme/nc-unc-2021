@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-/** Класс репозиторий, хранящий всех актеров
- * @see IRepository
+/** Actor repositiry
+ * @see AbstractRepository
  * @see Actor
  * @author Vasiliy,Sergey
  * @version 1.0
@@ -40,32 +40,6 @@ public class ActorRepository extends AbstractRepository<Actor> {
     public List<Actor> findAll() {
         return entities;
     }
-
-/*    @Override
-    public boolean deleteById(Integer Id) {
-        for (Actor actor : actors) {
-            if (actor.getId().equals(Id.toString())) {
-                // предикат, надеюсь не ошибся в использовании.
-                return actors.removeIf(a -> Objects.equals(a.getId(), Id.toString()));
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean findById(Integer Id) {
-        return actors.stream().allMatch(a -> Objects.equals(a.getId(), Id.toString()));
-    }*/
-
-/*    @Override
-    public boolean create(Actor entity) {
-        return actors.add(entity);
-    }
-
-    @Override
-    public void clear() {
-        actors.clear();
-    }*/
 
 
     @Override

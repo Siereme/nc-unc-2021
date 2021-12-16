@@ -6,6 +6,10 @@ import view.IView;
 
 import java.util.Scanner;
 
+/** Menu of authorization
+ * @author Sergey
+ * @version 1.0
+ * */
 public class LoginView implements IView {
     private IUser currentUser;
     private final Scanner input = new Scanner(System.in);

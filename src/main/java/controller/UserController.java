@@ -9,6 +9,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+/** user controller
+ * @author Sergey
+ * @version 1.0
+ * */
 public class UserController implements IEntityController<IUser> {
     UserRepository repository;
 

@@ -9,15 +9,14 @@ import view.View;
 
 import java.util.LinkedList;
 
-/** Команда добавления режиссера
+/** Command adding director
  * @author Vasiliy
  * @version 1.0
  * */
 public class AddDirectorView extends View implements IView {
-    /** Поле название команды */
+    /** Name of the command*/
     public String name = "Add Director";
 
-    /** Поле контроллер для режиссеров */
     DirectorController directorController = new DirectorController();
 
     public AddDirectorView(IUser currentUser) {
@@ -65,7 +64,6 @@ public class AddDirectorView extends View implements IView {
     void setFilms(Director director) {
         FilmController filmController = new FilmController();
         LinkedList<String> newFilmsId = getEntitiesId(filmController, "Select film to add\n");
-        director.setFilms(newFilmsId);
         filmController.addDirectorToFilms(director, newFilmsId);
         filmController.updateRepository();
     }

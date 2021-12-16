@@ -4,11 +4,12 @@ import controller.commands.main.MainUserCommands;
 import model.user.IUser;
 
 /**
- * Класс главное меню
+ * Main menu class
  * @author vasily
  * @version 1.0
  * */
 public class MainMenuView extends View {
+    /** String that user will see*/
     public static final String MAIN_MENU = "------Main Menu------";
 
 

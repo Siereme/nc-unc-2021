@@ -5,7 +5,7 @@ import model.user.IUser;
 import view.View;
 
 public class ShowAllDirectorsView extends View {
-    /** Поле название команды */
+    /** Name of the command*/
     public String name = "Show All Directors";
 
     DirectorController directorController = new DirectorController();

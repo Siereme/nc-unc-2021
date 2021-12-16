@@ -9,13 +9,12 @@ import view.View;
 
 import java.util.LinkedList;
 
-/** Команда добавления актера */
+/** Class Command adding actor to repository */
 public class AddActorView extends View implements IView {
 
-    /** Название команды*/
+    /** Name of the command*/
     public String name = "Add Actor";
 
-    /** Контроллер для актеров */
     ActorController actorController = new ActorController();
 
     public AddActorView(IUser currentUser) {
@@ -50,8 +49,6 @@ public class AddActorView extends View implements IView {
     public void setFilms(Actor actor) {
         FilmController filmController = new FilmController();
         LinkedList<String> newFilmsId = getEntitiesId(filmController, "Select films to add\n");
-        // adding new films to actor
-        actor.setFilms(newFilmsId);
         // adding actor to new films
         filmController.addActorToFilms(actor, newFilmsId);
     }

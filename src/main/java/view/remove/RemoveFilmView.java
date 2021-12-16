@@ -5,15 +5,13 @@ import model.user.IUser;
 import view.IView;
 import view.View;
 
-/** Класс команда удаления фильма
+/** Command deletion film
  * @author Vasiliy
  * @version 1.0
  * */
 public class RemoveFilmView extends View implements IView {
-    /** Поле название команды */
     private final String name = "Delete Film";
 
-    /** Поле контроллер для фильмов */
     FilmController filmController = new FilmController();
 
     public RemoveFilmView(IUser currentUser) {

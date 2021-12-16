@@ -5,7 +5,7 @@ import model.user.IUser;
 import view.IView;
 import view.View;
 
-/** Класс Меню команд редактирования сущностей
+/** Class menu of changing command
  * @author Sergey, Vasiliy
  * @version 1.0
  * */

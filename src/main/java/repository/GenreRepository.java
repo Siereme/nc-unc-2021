@@ -15,7 +15,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-/** Репозиторий жанров
+/** Genre repository
  * @see IRepository
  * @see Genre
  * @author Vasiliy, Sergey
@@ -47,32 +47,6 @@ public class GenreRepository extends AbstractRepository<Genre> {
     public List<Genre> findAll() {
         return entities;
     }
-
-    /*@Override
-    public boolean deleteById(Integer Id) {
-        for (Genre genre : genres) {
-            if (genre.getId().equals(Id.toString())) {
-                // предикат, надеюсь не ошибся в использовании.
-                return genres.removeIf(g -> Objects.equals(g.getId(), Id.toString()));
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public boolean findById(Integer Id) {
-        return genres.stream().allMatch(g -> Objects.equals(g.getId(), Id.toString()));
-    }
-
-    @Override
-    public boolean create(Genre entity) {
-        return genres.add(entity);
-    }
-
-    @Override
-    public void clear() {
-        genres.clear();
-    }*/
 
     @Override
     public String toString() {

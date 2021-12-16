@@ -14,7 +14,7 @@ import java.util.LinkedList;
  * @version 1.0
  * */
 public class FindByGenreView extends View implements IView {
-
+    /** Name of the command*/
     public String name = "Find By Genre";
 
 
