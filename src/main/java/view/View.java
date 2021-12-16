@@ -22,8 +22,7 @@ public abstract class View implements IView {
 
     protected final Scanner input = new Scanner(System.in);
 
-    public View() {
-    }
+    public View() {}
 
     public View(IUser currentUser) {
         this.currentUser = currentUser;
