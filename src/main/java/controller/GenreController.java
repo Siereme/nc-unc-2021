@@ -21,7 +21,7 @@ public class GenreController implements IEntityController<Genre> {
         return repository;
     }
 
-    GenreRepository repository = new GenreRepository();
+    GenreRepository repository;
 
     public GenreController() {
         repository = new GenreRepository();

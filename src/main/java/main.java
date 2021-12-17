@@ -2,7 +2,7 @@ import model.user.IUser;
 import view.MainMenuView;
 import view.authorization.login.LoginView;
 
-public class test {
+public class main {
 
     public static void main(String[] argv) {
 /*        GenreRepository mergeGenres = new GenreRepository(

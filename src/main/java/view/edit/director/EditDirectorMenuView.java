@@ -15,7 +15,7 @@ import java.util.LinkedList;
  * */
 public class EditDirectorMenuView extends View implements IView {
 
-    DirectorController directorController = new DirectorController();
+    final DirectorController directorController = new DirectorController();
 
     public EditDirectorMenuView(IUser currentUser) {
         super(currentUser);

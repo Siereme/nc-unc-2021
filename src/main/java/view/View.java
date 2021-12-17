@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * */
 
-public abstract class View implements IView {
+public abstract class View<T> implements IView {
     protected IUser currentUser;
 
     protected final Scanner input = new Scanner(System.in);
@@ -38,7 +38,7 @@ public abstract class View implements IView {
                         e.printStackTrace();
                         return null;
                     }
-                }).filter(x -> x != null).collect(Collectors.toList());
+                }).filter(Objects::nonNull).collect(Collectors.toList());
 
         while (true) {
             System.out.println(nameMenu);
@@ -164,7 +164,7 @@ public abstract class View implements IView {
         return null;
     }
 
-    protected boolean deleteAction(IEntityController entityController) {
+    protected boolean deleteAction(IEntityController<? extends IEntity> entityController) {
         boolean show = true;
         System.out.println(entityController.getAllEntitiesAsString());
         System.out.println("-1. Exit");

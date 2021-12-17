@@ -8,6 +8,7 @@ import view.remove.RemoveGenreView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,9 +20,9 @@ import java.util.List;
 public class RemoveUserCommands {
     public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>()
         {{
-            put(RemoveFilmView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
-            put(RemoveGenreView.class, new ArrayList<Boolean>(Arrays.asList(true)));
-            put(RemoveActorView.class, new ArrayList<Boolean>(Arrays.asList(true)));
-            put(RemoveDirectorView.class, new ArrayList<Boolean>(Arrays.asList(true)));
+            put(RemoveFilmView.class, new ArrayList<>(Arrays.asList(true, false)));
+            put(RemoveGenreView.class, new ArrayList<>(Collections.singletonList(true)));
+            put(RemoveActorView.class, new ArrayList<>(Collections.singletonList(true)));
+            put(RemoveDirectorView.class, new ArrayList<>(Collections.singletonList(true)));
         }};
 }

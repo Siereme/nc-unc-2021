@@ -8,6 +8,7 @@ import view.add.AddGenreView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,9 +20,9 @@ import java.util.List;
 public class AddUserCommands {
     public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>()
         {{
-            put(AddFilmView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
-            put(AddGenreView.class, new ArrayList<Boolean>(Arrays.asList(true)));
-            put(AddActorView.class, new ArrayList<Boolean>(Arrays.asList(true)));
-            put(AddDirectorView.class, new ArrayList<Boolean>(Arrays.asList(true)));
+            put(AddFilmView.class, new ArrayList<>(Arrays.asList(true, false)));
+            put(AddGenreView.class, new ArrayList<>(Collections.singletonList(true)));
+            put(AddActorView.class, new ArrayList<>(Collections.singletonList(true)));
+            put(AddDirectorView.class, new ArrayList<>(Collections.singletonList(true)));
         }};
 }

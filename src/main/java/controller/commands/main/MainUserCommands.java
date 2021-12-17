@@ -15,10 +15,10 @@ import java.util.List;
 public class MainUserCommands {
     public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>()
     {{
-        put(AddView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
-        put(EditView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
-        put(FindView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
-        put(RemoveView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
-        put(ShowAllView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
+        put(AddView.class, new ArrayList<>(Arrays.asList(true, false)));
+        put(EditView.class, new ArrayList<>(Arrays.asList(true, false)));
+        put(FindView.class, new ArrayList<>(Arrays.asList(true, false)));
+        put(RemoveView.class, new ArrayList<>(Arrays.asList(true, false)));
+        put(ShowAllView.class, new ArrayList<>(Arrays.asList(true, false)));
     }};
 }

@@ -8,6 +8,7 @@ import view.edit.genre.EditGenreMenuView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,9 +20,9 @@ import java.util.List;
 public class EditUserCommands {
     public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>()
     {{
-        put(EditFilmMenuView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
-        put(EditGenreMenuView.class, new ArrayList<Boolean>(Arrays.asList(true)));
-        put(EditActorMenuView.class, new ArrayList<Boolean>(Arrays.asList(true)));
-        put(EditDirectorMenuView.class, new ArrayList<Boolean>(Arrays.asList(true)));
+        put(EditFilmMenuView.class, new ArrayList<>(Arrays.asList(true, false)));
+        put(EditGenreMenuView.class, new ArrayList<>(Collections.singletonList(true)));
+        put(EditActorMenuView.class, new ArrayList<>(Collections.singletonList(true)));
+        put(EditDirectorMenuView.class, new ArrayList<>(Collections.singletonList(true)));
     }};
 }

@@ -10,7 +10,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-
+import java.util.Objects;
 
 /** Abstract class of repository
  * @author Sergey
@@ -23,7 +23,7 @@ public abstract class AbstractRepository<T extends IEntity>  {
 
     public AbstractRepository(String filePath) {
         this.filePath = filePath;
-        this.entities = new LinkedList<T>();
+        this.entities = new LinkedList<>();
     }
 
     public AbstractRepository(String filePath, List<T> entities) {
@@ -44,7 +44,7 @@ public abstract class AbstractRepository<T extends IEntity>  {
         }catch (MismatchedInputException e){
             System.out.println("File is empty");
             System.out.println(e);
-            return new LinkedList<T>();
+            return new LinkedList<>();
         }
     }
 
@@ -54,19 +54,18 @@ public abstract class AbstractRepository<T extends IEntity>  {
         }catch (MismatchedInputException e){
             System.out.println("File is empty");
             System.out.println(e);
-            return new LinkedList<T>();
+            return new LinkedList<>();
         }
     }
 
     public Boolean isContains(String id){
-        return this.entities.stream().anyMatch(x -> x.getId() == id);
+        return this.entities.stream().anyMatch(x -> Objects.equals(x.getId(), id));
     }
 
     public void mergeFiles(String file){
-        List<T> entities = new LinkedList<>();
         List<T> setEntities = new LinkedList<>();
         try {
-            entities.addAll(deserialize(file));
+            List<T> entities = new LinkedList<>(deserialize(file));
             for(T entity : entities){
                 if(!isContains(entity.getId())){
                     setEntities.add(entity);

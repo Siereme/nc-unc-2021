@@ -78,7 +78,7 @@ public class GenreRepository extends AbstractRepository<Genre> {
             genres.addAll(mapper.readValue(new File(file2), new TypeReference<List<Genre>>() {
             }));
             mapper.writeValue(new File(this.filePath),
-                    genres.stream().filter(distinctByKey(p -> p.getId())).collect(Collectors.toList()));
+                    genres.stream().filter(distinctByKey(Genre::getId)).collect(Collectors.toList()));
         } catch (IOException e) {
             e.printStackTrace();
         }
