@@ -17,9 +17,9 @@ import java.util.LinkedList;
  * */
 public class AddFilmView extends View implements IView {
     /** Name of the command*/
-    public String name = "Add Film";
+    public final String name = "Add Film";
 
-    FilmController filmController = new FilmController();
+    final FilmController filmController = new FilmController();
 
     public AddFilmView(IUser currentUser) {
         super(currentUser);

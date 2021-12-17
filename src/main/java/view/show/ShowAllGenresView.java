@@ -6,9 +6,9 @@ import view.View;
 
 public class ShowAllGenresView extends View {
     /** Name of the command*/
-    public String name = "Show All Genres";
+    public final String name = "Show All Genres";
 
-    GenreController genreController = new GenreController();
+    final GenreController genreController = new GenreController();
 
     public ShowAllGenresView(IUser currentUser) {
         super(currentUser);
@@ -16,7 +16,7 @@ public class ShowAllGenresView extends View {
 
     @Override
     public void display() {
-        System.out.println(genreController);
+        System.out.println(genreController.getAllEntitiesAsString());
         pressAnyKeyToContinue();
     }
 

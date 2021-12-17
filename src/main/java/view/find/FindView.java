@@ -11,7 +11,6 @@ import view.View;
  * */
 public class FindView extends View implements IView {
     public static final String FIND_MENU = "------Find Menu------";
-    private String name = "Find film by ...";
 
     public FindView(IUser currentUser) {
         super(currentUser);
@@ -24,7 +23,7 @@ public class FindView extends View implements IView {
     }
 
     public String getName(){
-        return this.name;
+        return "Find film by ...";
     }
 
     @Override

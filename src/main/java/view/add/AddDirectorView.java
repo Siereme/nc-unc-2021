@@ -15,9 +15,9 @@ import java.util.LinkedList;
  * */
 public class AddDirectorView extends View implements IView {
     /** Name of the command*/
-    public String name = "Add Director";
+    public final String name = "Add Director";
 
-    DirectorController directorController = new DirectorController();
+    final DirectorController directorController = new DirectorController();
 
     public AddDirectorView(IUser currentUser) {
         super(currentUser);

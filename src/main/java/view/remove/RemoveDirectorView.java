@@ -10,9 +10,8 @@ import view.View;
  * @version 1.0
  * */
 public class RemoveDirectorView extends View implements IView {
-    private final String name = "Delete Director";
 
-    DirectorController directorController = new DirectorController();
+    final DirectorController directorController = new DirectorController();
 
     public RemoveDirectorView(IUser currentUser) {
         super(currentUser);
@@ -24,7 +23,7 @@ public class RemoveDirectorView extends View implements IView {
     }
 
     public String getName() {
-        return this.name;
+        return "Delete Director";
     }
 
     @Override

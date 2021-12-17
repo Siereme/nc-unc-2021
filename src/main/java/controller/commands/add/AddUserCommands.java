@@ -17,7 +17,7 @@ import java.util.List;
  * @version 1.0
  * */
 public class AddUserCommands {
-    public HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>()
+    public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>()
         {{
             put(AddFilmView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
             put(AddGenreView.class, new ArrayList<Boolean>(Arrays.asList(true)));

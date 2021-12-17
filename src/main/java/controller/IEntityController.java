@@ -66,4 +66,6 @@ public interface IEntityController<T> {
 
     String getNames();
 
+    String getAllEntitiesAsString();
+
 }

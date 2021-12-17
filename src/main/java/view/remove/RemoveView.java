@@ -13,8 +13,6 @@ public class RemoveView extends View implements IView {
     /** String that user will see */
     public static final String DELETE_MENU = "------Delete Menu------";
 
-    private String name = "Delete anything ...";
-
     public RemoveView(IUser currentUser) {
         super(currentUser);
     }
@@ -26,7 +24,7 @@ public class RemoveView extends View implements IView {
     }
 
     public String getName() {
-        return this.name;
+        return "Delete anything ...";
     }
 
     @Override

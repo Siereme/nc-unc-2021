@@ -7,9 +7,9 @@ import view.View;
 
 public class ShowAllFilmsView extends View implements IView {
     /** Name of the command*/
-    public String name = "Show All Films";
+    public final String name = "Show All Films";
 
-    FilmController filmController = new FilmController();
+    final FilmController filmController = new FilmController();
 
     public ShowAllFilmsView(IUser currentUser) {
         super(currentUser);
@@ -17,7 +17,7 @@ public class ShowAllFilmsView extends View implements IView {
 
     @Override
     public void display() {
-        System.out.println(filmController);
+        System.out.println(filmController.getAllEntitiesAsString());
         pressAnyKeyToContinue();
     }
 

@@ -13,13 +13,6 @@ public interface IRepository<T> {
      * */
     List<T> findAll();
 
-//    /** Method removes Entity by its id
-//     * @param Id - id entity
-//     * @return true if deletion successful, else - false
-//     * */
-//    boolean deleteById(Integer Id);
-
-
     /** Method serializes repository **/
     void serialize() throws IOException;
 

@@ -10,9 +10,8 @@ import view.View;
  * @version 1.0
  * */
 public class RemoveActorView extends View implements IView {
-    private final String name = "Delete Actor";
 
-    ActorController actorController = new ActorController();
+    final ActorController actorController = new ActorController();
 
     public RemoveActorView(IUser currentUser) {
         super(currentUser);
@@ -24,7 +23,7 @@ public class RemoveActorView extends View implements IView {
     }
 
     public String getName() {
-        return this.name;
+        return "Delete Actor";
     }
 
     @Override

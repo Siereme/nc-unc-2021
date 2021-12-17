@@ -12,13 +12,13 @@ import java.util.UUID;
  * */
 public class Film implements IEntity {
 
-    private String id;
+    private final String id;
 
     private String tittle;
 
     private Date date;
 
-    private LinkedList<String> genres;
+    private final LinkedList<String> genres;
 
     private LinkedList<String> directors;
 

@@ -36,6 +36,18 @@ public class GenreController implements IEntityController<Genre> {
         return new String(sb);
     }
 
+    @Override
+    public String getAllEntitiesAsString() {
+        StringBuffer sb = new StringBuffer();
+        int ind = 0;
+        for (Genre genre : repository.findAll()) {
+            sb.append(ind++).append(". ");
+            sb.append(entityToString(genre));
+            sb.append("\n");
+        }
+        return new String(sb);
+    }
+
     public Genre getEntityById(String id) {
         for (Genre genre : repository.findAll()) {
             if (Objects.equals(genre.getId(), id)) {
@@ -47,8 +59,8 @@ public class GenreController implements IEntityController<Genre> {
 
     public String entityToString(Genre genre) {
         StringBuffer sb = new StringBuffer();
-        sb.append("Id: ").append(genre.getId()).append("\n");
-        sb.append("Tittle: ").append(genre.getTittle()).append("\n");
+        sb.append("Id: ").append(genre.getId()).append(" ");
+        sb.append("Tittle: ").append(genre.getTittle()).append(" ");
         return new String(sb);
     }
 

@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ShowAllEntitiesView extends View implements IView {
-    /** Name of the command*/
-    private final String name = "Show all entities";
 
     public ShowAllEntitiesView(IUser currentUser) {
         super(currentUser);
@@ -32,8 +30,7 @@ public class ShowAllEntitiesView extends View implements IView {
                     return null;
                 }).collect(Collectors.toList());
 
-        boolean show = true;
-        while (show) {
+        while (true) {
             System.out.println("------Show Menu------");
             for (int i = 0; i < userCommands.size(); i++) {
                 System.out.println((i) + ". " + userCommands.get(i).getName());
@@ -53,7 +50,8 @@ public class ShowAllEntitiesView extends View implements IView {
     }
 
     public String getName(){
-        return this.name;
+        /** Name of the command*/
+        return "Show all entities";
     }
 
     @Override

@@ -40,8 +40,7 @@ public abstract class View implements IView {
                     }
                 }).filter(x -> x != null).collect(Collectors.toList());
 
-        boolean show = true;
-        while (show) {
+        while (true) {
             System.out.println(nameMenu);
             for (int i = 0; i < userCommands.size(); i++) {
                 System.out.println((i + 1) + ". " + userCommands.get(i).getName());
@@ -127,7 +126,7 @@ public abstract class View implements IView {
         while (true) {
             System.out.println(message);
             System.out.println("-1. Exit");
-            System.out.println(entityController);
+            System.out.println(entityController.getAllEntitiesAsString());
             int option = getOption();
             if (option == -1) {
                 break;
@@ -167,7 +166,7 @@ public abstract class View implements IView {
 
     protected boolean deleteAction(IEntityController entityController) {
         boolean show = true;
-        System.out.println(entityController);
+        System.out.println(entityController.getAllEntitiesAsString());
         System.out.println("-1. Exit");
         int option = getOption();
         if (option == -1) {

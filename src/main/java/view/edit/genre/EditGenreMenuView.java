@@ -11,7 +11,6 @@ import view.View;
  * @version 1.0
  * */
 public class EditGenreMenuView extends View implements IView {
-    private final String name = "Edit Genre";
 
     private final GenreController genreController = new GenreController();
 
@@ -25,7 +24,7 @@ public class EditGenreMenuView extends View implements IView {
         while (show) {
             System.out.println("Select Genre to Edit");
             System.out.println("-1. Exit");
-            System.out.println(genreController);
+            System.out.println(genreController.getAllEntitiesAsString());
             int option = getOption();
             if (option == -1) {
                 show = false;
@@ -52,7 +51,7 @@ public class EditGenreMenuView extends View implements IView {
     }
 
     public String getName(){
-        return this.name;
+        return "Edit Genre";
     }
 
     private void setTittle(int genreInd) {

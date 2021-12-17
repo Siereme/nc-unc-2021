@@ -15,9 +15,9 @@ import java.util.LinkedList;
  * */
 public class FindByDirectorView extends View implements IView {
     /** Name of the command*/
-    public String name = "Find By Director";
+    public final String name = "Find By Director";
 
-    DirectorController directorController = new DirectorController();
+    final DirectorController directorController = new DirectorController();
 
     public FindByDirectorView(IUser currentUser) {
         super(currentUser);
@@ -29,7 +29,7 @@ public class FindByDirectorView extends View implements IView {
         while (show) {
             System.out.println("------Find By Director Menu------");
             System.out.println("------Select Director------");
-            System.out.println(directorController);
+            System.out.println(directorController.getAllEntitiesAsString());
             System.out.println("-1. Exit");
             int option = getOption();
             if (option == -1) {

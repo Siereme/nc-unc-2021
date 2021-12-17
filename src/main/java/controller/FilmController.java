@@ -20,7 +20,7 @@ import java.util.Objects;
  * */
 public class FilmController implements IEntityController<Film> {
 
-    private FilmsRepository repository;
+    private final FilmsRepository repository;
 
     public FilmController() {
         repository = new FilmsRepository();
@@ -39,6 +39,18 @@ public class FilmController implements IEntityController<Film> {
         StringBuffer sb = new StringBuffer();
         for (Film film : repository.findAll()) {
             sb.append(film.getTittle()).append("\n");
+        }
+        return new String(sb);
+    }
+
+    @Override
+    public String getAllEntitiesAsString() {
+        StringBuffer sb = new StringBuffer();
+        int ind = 0;
+        for (Film film : repository.findAll()) {
+            sb.append(ind++).append(". ");
+            sb.append(entityToString(film));
+            sb.append("\n");
         }
         return new String(sb);
     }
@@ -73,16 +85,17 @@ public class FilmController implements IEntityController<Film> {
 
     public String entityToString(Film film) {
         StringBuffer sb = new StringBuffer();
-        sb.append("Id: ").append(film.getId()).append("\n").append("Tittle: ").append(film.getTittle()).append("\n")
-                .append("Date of release: ").append(film.getDate()).append("\n");
+        sb.append("Id: ").append(film.getId()).append(" ");
+        sb.append("Tittle: ").append(film.getTittle()).append("\n");
         if (!film.getGenres().isEmpty()) {
             sb.append("Genres\n");
             GenreController genreController = new GenreController();
             for (String genreId : film.getGenres()) {
                 Genre genre = genreController.getEntityById(genreId);
                 String genreTittle = genre.getTittle();
-                sb.append(genreTittle).append("\n");
+                sb.append(genreTittle).append(" ");
             }
+            sb.append("\n");
         } else {
             sb.append("Genres is empty\n");
         }
@@ -92,8 +105,9 @@ public class FilmController implements IEntityController<Film> {
             for (String dirId : film.getDirectors()) {
                 Director director = directorController.getEntityById(dirId);
                 String directorName = director.getName();
-                sb.append(directorName).append("\n");
+                sb.append(directorName).append(" ");
             }
+            sb.append("\n");
         } else {
             sb.append("Directors is empty\n");
         }
@@ -103,8 +117,9 @@ public class FilmController implements IEntityController<Film> {
             for (String actorId : film.getActors()) {
                 Actor actor = actorController.getEntityById(actorId);
                 String actorName = actor.getName();
-                sb.append(actorName).append("\n");
+                sb.append(actorName).append(" ");
             }
+            sb.append("\n");
         } else {
             sb.append("Actors is empty\n");
         }

@@ -6,9 +6,9 @@ import view.View;
 
 public class ShowAllDirectorsView extends View {
     /** Name of the command*/
-    public String name = "Show All Directors";
+    public final String name = "Show All Directors";
 
-    DirectorController directorController = new DirectorController();
+    final DirectorController directorController = new DirectorController();
 
     public ShowAllDirectorsView(IUser currentUser) {
         super(currentUser);
@@ -16,7 +16,7 @@ public class ShowAllDirectorsView extends View {
 
     @Override
     public void display() {
-        System.out.println(directorController);
+        System.out.println(directorController.getAllEntitiesAsString());
         pressAnyKeyToContinue();
     }
 

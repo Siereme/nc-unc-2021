@@ -11,7 +11,6 @@ import view.View;
  * */
 public class EditView extends View implements IView {
     public static final String EDIT_MENU = "------Edit Menu------";
-    private String name = "Edit anything ...";
 
     public EditView(IUser currentUser) {
         super(currentUser);
@@ -24,7 +23,7 @@ public class EditView extends View implements IView {
     }
 
     public String getName(){
-        return this.name;
+        return "Edit anything ...";
     }
 
     @Override

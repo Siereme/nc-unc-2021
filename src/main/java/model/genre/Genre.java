@@ -10,7 +10,7 @@ import java.util.UUID;
  * */
 public class Genre implements IEntity {
 
-    private String id;
+    private final String id;
 
     private String tittle;
 

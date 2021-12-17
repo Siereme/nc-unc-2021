@@ -15,9 +15,9 @@ import java.util.LinkedList;
  * */
 public class FindByActorView extends View implements IView {
     /** Name of the command*/
-    public String name = "Find By Actor";
+    public final String name = "Find By Actor";
 
-    ActorController actorController = new ActorController();
+    final ActorController actorController = new ActorController();
 
     public FindByActorView(IUser currentUser) {
         super(currentUser);
@@ -29,7 +29,7 @@ public class FindByActorView extends View implements IView {
         while (show) {
             System.out.println("------Find By Actor Menu------");
             System.out.println("------Select Actor------");
-            System.out.println(actorController);
+            System.out.println(actorController.getAllEntitiesAsString());
             System.out.println("-1. Exit");
             int option = getOption();
             if (option == -1) {

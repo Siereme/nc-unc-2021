@@ -20,7 +20,7 @@ public class ActorController implements IEntityController<Actor> {
         return repository;
     }
 
-    private ActorRepository repository;
+    private final ActorRepository repository;
 
     public ActorController() {
         repository = new ActorRepository();
@@ -62,9 +62,9 @@ public class ActorController implements IEntityController<Actor> {
     @Override
     public String entityToString(Actor actor) {
         StringBuffer sb = new StringBuffer();
-        sb.append("Id: ").append(actor.getId()).append("\n");
-        sb.append("Name: ").append(actor.getName()).append("\n");
-        sb.append("Year: ").append(actor.getYear()).append("\n");
+        sb.append("Id: ").append(actor.getId()).append(" ");
+        sb.append("Name: ").append(actor.getName()).append(" ");
+        sb.append("Age: ").append(actor.getYear());
         return new String(sb);
     }
 
@@ -117,6 +117,16 @@ public class ActorController implements IEntityController<Actor> {
         return new String(sb);
     }
 
-
+    @Override
+    public String getAllEntitiesAsString() {
+        StringBuffer sb = new StringBuffer();
+        int ind = 0;
+        for (Actor actor : repository.findAll()) {
+            sb.append(ind++).append(". ");
+            sb.append(entityToString(actor));
+            sb.append("\n");
+        }
+        return new String(sb);
+    }
 
 }

@@ -14,7 +14,6 @@ import java.util.LinkedList;
  * @version 1.0
  * */
 public class EditDirectorMenuView extends View implements IView {
-    private final String name = "Edit Director";
 
     DirectorController directorController = new DirectorController();
 
@@ -27,7 +26,7 @@ public class EditDirectorMenuView extends View implements IView {
         boolean show = true;
         while (show) {
             System.out.println("------Select Director To Edit------");
-            System.out.println(directorController);
+            System.out.println(directorController.getAllEntitiesAsString());
             System.out.println("-1. Exit");
             int option = getOption();
             if (option == -1) {
@@ -62,7 +61,7 @@ public class EditDirectorMenuView extends View implements IView {
     }
 
     public String getName() {
-        return this.name;
+        return "Edit Director";
     }
 
     private void setName(int directorInd) {

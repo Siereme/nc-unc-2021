@@ -12,9 +12,9 @@ import view.View;
  * */
 public class AddGenreView extends View implements IView {
     /** Name of the command*/
-    public String name = "Add Genre";
+    public final String name = "Add Genre";
 
-    private GenreController genreController = new GenreController();
+    private final GenreController genreController = new GenreController();
 
     public AddGenreView(IUser currentUser) {
         super(currentUser);

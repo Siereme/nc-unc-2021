@@ -11,7 +11,6 @@ import view.View;
  * */
 public class AddView extends View implements IView {
     private static final String ADD_MENU = "------Add Menu------";
-    private String name = "Add anything ...";
 
     public AddView(IUser currentUser) {
         super(currentUser);
@@ -24,7 +23,7 @@ public class AddView extends View implements IView {
     }
 
     public String getName(){
-        return this.name;
+        return "Add anything ...";
     }
 
     @Override

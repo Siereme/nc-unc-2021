@@ -10,9 +10,8 @@ import view.View;
  * @version 1.0
  * */
 public class RemoveFilmView extends View implements IView {
-    private final String name = "Delete Film";
 
-    FilmController filmController = new FilmController();
+    final FilmController filmController = new FilmController();
 
     public RemoveFilmView(IUser currentUser) {
         super(currentUser);
@@ -24,7 +23,7 @@ public class RemoveFilmView extends View implements IView {
     }
 
     public String getName(){
-        return this.name;
+        return "Delete Film";
     }
 
 

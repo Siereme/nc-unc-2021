@@ -36,6 +36,18 @@ public class DirectorController implements IEntityController<Director> {
         return new String(sb);
     }
 
+    @Override
+    public String getAllEntitiesAsString() {
+        StringBuffer sb = new StringBuffer();
+        int ind = 0;
+        for (Director director : repository.findAll()) {
+            sb.append(ind).append(". ");
+            sb.append(entityToString(director));
+            sb.append("\n");
+        }
+        return new String(sb);
+    }
+
     public Director getEntityById(String id) {
         for (Director director : repository.findAll()) {
             if (Objects.equals(director.getId(), id)) {
@@ -47,11 +59,10 @@ public class DirectorController implements IEntityController<Director> {
 
     public String entityToString(Director director) {
         StringBuffer sb = new StringBuffer();
-        sb.append("Id: ").append(director.getId()).append("\n");
-        sb.append("Name: ").append(director.getName()).append("\n");
-        sb.append("Year: ").append(director.getYear()).append("\n");
+        sb.append("Id: ").append(director.getId()).append(" ");
+        sb.append("Name: ").append(director.getName()).append(" ");
+        sb.append("Age: ").append(director.getYear());
         return new String(sb);
-
     }
 
     public String toString() {
@@ -111,6 +122,5 @@ public class DirectorController implements IEntityController<Director> {
         }
         return ids;
     }
-
 
 }

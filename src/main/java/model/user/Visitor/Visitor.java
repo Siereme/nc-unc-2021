@@ -15,7 +15,7 @@ import java.util.UUID;
 @JsonTypeName("visitor")
 public class Visitor implements IUser, IEntity {
     /** Поле первичный ключ - id пользователя */
-    private String id;
+    private final String id;
 
     /** Поле имя пользователя */
     private String name;

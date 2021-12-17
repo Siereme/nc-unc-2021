@@ -17,9 +17,9 @@ import java.util.List;
  * @version 1.0
  * */
 public abstract class AbstractRepository<T extends IEntity>  {
-    protected String filePath;
-    protected List<T> entities;
-    private ObjectMapper mapper = new ObjectMapper();
+    protected final String filePath;
+    protected final List<T> entities;
+    private final ObjectMapper mapper = new ObjectMapper();
 
     public AbstractRepository(String filePath) {
         this.filePath = filePath;

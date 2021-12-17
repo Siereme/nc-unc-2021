@@ -10,9 +10,8 @@ import view.View;
  * @version 1.0
  * */
 public class RemoveGenreView extends View implements IView {
-    private final String name = "Delete Genre";
 
-    GenreController genreController = new GenreController();
+    final GenreController genreController = new GenreController();
 
     public RemoveGenreView(IUser currentUser) {
         super(currentUser);
@@ -24,7 +23,7 @@ public class RemoveGenreView extends View implements IView {
     }
 
     public String getName(){
-        return this.name;
+        return "Delete Genre";
     }
 
     @Override

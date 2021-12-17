@@ -12,7 +12,7 @@ import java.util.UUID;
  * */
 @JsonTypeName("admin")
 public class Admin implements IUser {
-    private String id;
+    private final String id;
 
     private String name;
 

@@ -17,7 +17,6 @@ import java.util.LinkedList;
  * @version 1.0
  * */
 public class EditFilmMenuView extends View implements IView {
-    private final String name = "Edit Film";
 
     private final FilmController filmController = new FilmController();
 
@@ -30,7 +29,7 @@ public class EditFilmMenuView extends View implements IView {
         boolean show = true;
         while (show) {
             System.out.println("------Select Film To Edit------");
-            System.out.println(filmController);
+            System.out.println(filmController.getAllEntitiesAsString());
             System.out.println("-1. Exit");
             int option = getOption();
             if (option == -1) {
@@ -82,7 +81,7 @@ public class EditFilmMenuView extends View implements IView {
     }
 
     public String getName() {
-        return this.name;
+        return "Edit Film";
     }
 
     private void setTittle(int filmInd) {

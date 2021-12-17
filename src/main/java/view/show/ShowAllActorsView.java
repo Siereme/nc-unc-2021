@@ -7,9 +7,9 @@ import view.View;
 
 public class ShowAllActorsView extends View implements IView {
     /** Name of the command*/
-    public String name = "Show All Actors";
+    public final String name = "Show All Actors";
 
-    ActorController actorController = new ActorController();
+    final ActorController actorController = new ActorController();
 
     public ShowAllActorsView(IUser currentUser) {
         super(currentUser);
@@ -17,7 +17,7 @@ public class ShowAllActorsView extends View implements IView {
 
     @Override
     public void display() {
-        System.out.println(actorController);
+        System.out.println(actorController.getAllEntitiesAsString());
         pressAnyKeyToContinue();
     }
 

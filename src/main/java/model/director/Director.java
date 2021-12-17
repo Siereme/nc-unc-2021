@@ -10,7 +10,7 @@ import java.util.UUID;
  * */
 public class Director implements IEntity {
 
-    private String id;
+    private final String id;
 
     public void setName(String name) {
         this.name = name;

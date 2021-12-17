@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class FindUserCommands {
-    public HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>() {{
+    public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>() {{
         put(FindByActorView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
         put(FindByGenreView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));
         put(FindByDirectorView.class, new ArrayList<Boolean>(Arrays.asList(true, false)));

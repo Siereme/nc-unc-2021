@@ -13,9 +13,9 @@ import java.util.LinkedList;
 public class AddActorView extends View implements IView {
 
     /** Name of the command*/
-    public String name = "Add Actor";
+    public final String name = "Add Actor";
 
-    ActorController actorController = new ActorController();
+    final ActorController actorController = new ActorController();
 
     public AddActorView(IUser currentUser) {
         super(currentUser);

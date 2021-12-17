@@ -14,7 +14,7 @@ import java.util.Objects;
  * @version 1.0
  * */
 public class UserController implements IEntityController<IUser> {
-    UserRepository repository;
+    final UserRepository repository;
 
     @Override
     public String getNames() {
@@ -23,6 +23,11 @@ public class UserController implements IEntityController<IUser> {
             sb.append(user.getName()).append("\n");
         }
         return new String(sb);
+    }
+
+    @Override
+    public String getAllEntitiesAsString() {
+        return null;
     }
 
     public UserController() {

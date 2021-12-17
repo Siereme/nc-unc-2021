@@ -14,9 +14,8 @@ import java.util.LinkedList;
  * @version 1.0
  * */
 public class EditActorMenuView extends View implements IView {
-    private final String name = "Edit Actor";
 
-    ActorController actorController = new ActorController();
+    final ActorController actorController = new ActorController();
 
     public EditActorMenuView(IUser currentUser) {
         super(currentUser);
@@ -27,7 +26,7 @@ public class EditActorMenuView extends View implements IView {
         boolean show = true;
         while (show) {
             System.out.println("------Select Actor To Edit------");
-            System.out.println(actorController);
+            System.out.println(actorController.getAllEntitiesAsString());
             System.out.println("-1. Exit");
             int option = getOption();
             if (option == -1) {
@@ -61,7 +60,7 @@ public class EditActorMenuView extends View implements IView {
     }
 
     public String getName() {
-        return this.name;
+        return "Edit Actor";
     }
 
     public void setName(int actorInd) {

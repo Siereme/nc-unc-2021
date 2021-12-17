@@ -8,8 +8,6 @@ import view.View;
 public class ShowAllView extends View implements IView {
     /** String that user will see*/
     public static final String SHOW_ALL_MENU = "------Show All Menu------";
-    private final String name = "Show all ...";
-
 
     public ShowAllView(IUser currentUser) {
         super(currentUser);
@@ -23,7 +21,7 @@ public class ShowAllView extends View implements IView {
     }
 
     public String getName(){
-        return this.name;
+        return "Show all ...";
     }
 
     @Override

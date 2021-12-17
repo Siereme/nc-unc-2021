@@ -15,10 +15,10 @@ import java.util.LinkedList;
  * */
 public class FindByGenreView extends View implements IView {
     /** Name of the command*/
-    public String name = "Find By Genre";
+    public final String name = "Find By Genre";
 
 
-    GenreController genreController = new GenreController();
+    final GenreController genreController = new GenreController();
 
     public FindByGenreView(IUser currentUser) {
         super(currentUser);
@@ -30,7 +30,7 @@ public class FindByGenreView extends View implements IView {
         while (show) {
             System.out.println("------Find By Genre Menu------");
             System.out.println("------Select Genre------");
-            System.out.println(genreController);
+            System.out.println(genreController.getAllEntitiesAsString());
             System.out.println("-1. Exit");
             int option = getOption();
             if (option == -1) {
