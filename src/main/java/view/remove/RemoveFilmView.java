@@ -20,21 +20,7 @@ public class RemoveFilmView extends View implements IView {
 
     @Override
     public void display() {
-        boolean show = true;
-        while (show) {
-            System.out.println("------Remove Film Menu------");
-            System.out.println("Select Film to Delete");
-            System.out.println(filmController);
-            System.out.println("-1. Exit");
-            int option = getOption();
-            if (option == -1) {
-                show = false;
-            } else if (option >= 0 && option < filmController.size()) {
-                if (getConfirm()) {
-                    filmController.removeEntity(option);
-                }
-            }
-        }
+        deleteAction(filmController);
     }
 
     public String getName(){

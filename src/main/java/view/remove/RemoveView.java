@@ -25,7 +25,7 @@ public class RemoveView extends View implements IView {
         drawSubMenu(commands.commands, DELETE_MENU);
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 

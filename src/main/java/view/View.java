@@ -22,7 +22,8 @@ public abstract class View implements IView {
 
     protected final Scanner input = new Scanner(System.in);
 
-    public View() {}
+    public View() {
+    }
 
     public View(IUser currentUser) {
         this.currentUser = currentUser;
@@ -162,6 +163,21 @@ public abstract class View implements IView {
     /** В данный момент функция не используется */
     public String getName() {
         return null;
+    }
+
+    protected boolean deleteAction(IEntityController entityController) {
+        boolean show = true;
+        System.out.println(entityController);
+        System.out.println("-1. Exit");
+        int option = getOption();
+        if (option == -1) {
+            show = false;
+        } else if (option >= 0 && option < entityController.size()) {
+            if (getConfirm()) {
+                entityController.removeEntity(option);
+            }
+        }
+        return show;
     }
 
 }

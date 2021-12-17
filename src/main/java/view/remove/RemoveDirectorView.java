@@ -20,25 +20,10 @@ public class RemoveDirectorView extends View implements IView {
 
     @Override
     public void display() {
-        boolean show = true;
-        while (show) {
-            System.out.println("------Remove Director menu------");
-            System.out.println("Select director to remove");
-            System.out.println(directorController);
-            System.out.println("-1. Exit");
-            int option = getOption();
-            if (option == -1) {
-                show = false;
-            }
-            if (option >= 0 && option < directorController.getRepository().findAll().size()) {
-                if (getConfirm()) {
-                    directorController.removeEntity(option);
-                }
-            }
-        }
+        deleteAction(directorController);
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 

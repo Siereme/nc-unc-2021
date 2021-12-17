@@ -20,24 +20,10 @@ public class RemoveActorView extends View implements IView {
 
     @Override
     public void display() {
-        boolean show = true;
-        while (show) {
-            System.out.println("------Remove Actor Menu------");
-            System.out.println("Select Actor to Delete");
-            System.out.println(actorController);
-            System.out.println("-1. Exit");
-            int option = getOption();
-            if (option == -1) {
-                show = false;
-            } else if (option >= 0 && option < actorController.size()) {
-                if (getConfirm()) {
-                    actorController.removeEntity(option);
-                }
-            }
-        }
+        deleteAction(actorController);
     }
 
-    public String getName(){
+    public String getName() {
         return this.name;
     }
 
