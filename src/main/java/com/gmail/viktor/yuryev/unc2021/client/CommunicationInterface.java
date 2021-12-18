@@ -22,10 +22,10 @@ public class CommunicationInterface {
     }
 
     public Response exchange(Request request) throws IOException, ClassNotFoundException {
-        System.out.println("request sent : " + request);
+        System.out.println("request sent : "+ request);
         dos.writeObject(request);
         final Response commandResponse = (Response) dis.readObject();
-        System.out.println("response received " + commandResponse);
+        System.out.println("response received "+ commandResponse);
         return commandResponse;
     }
 

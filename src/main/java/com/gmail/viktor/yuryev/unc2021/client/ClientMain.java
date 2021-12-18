@@ -24,6 +24,8 @@ public class ClientMain {
         final GetEntityRequest<Film> getFilm = new GetEntityRequest<>("get", "123");
         GetEntityResponse<Film> commandResponse = (GetEntityResponse<Film>) clientInterface.exchange(getFilm);
 
+
+
     }
 
 }
