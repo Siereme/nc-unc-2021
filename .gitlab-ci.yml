@@ -11,7 +11,37 @@ build-java-project:
     stage: build
     script: $MAVEN_HOME/bin/mvn package
 
+
 code_quality:
+  stage: test
+  image: docker:stable
+  allow_failure: true
+  services:
+    - docker:stable-dind
+  variables:
+    DOCKER_DRIVER: overlay2
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - docker info
+    - docker run 
+       --env CODECLIMATE_DEBUG=1 
+       --env CODECLIMATE_CODE="$PWD" 
+       --volume "$PWD":/code 
+       --volume /var/run/docker.sock:/var/run/docker.sock 
+       --volume /tmp/cc:/tmp/cc 
+       codeclimate/codeclimate:0.85.13 analyze -f html > report.html
+    #- cat report.html
+
   artifacts:
-    reports:
-      codequality: gl-code-quality-report.json
+    paths: [report.html]
+    expire_in: 10 weeks
+  dependencies: []
+  except:
+    variables:
+      - $CODE_QUALITY_DISABLED
+
+
+
+
+
+
