@@ -1,13 +1,12 @@
 include:
   - template: Code-Quality.gitlab-ci.yml
 
-image: maven:latest
-
 stages:
     - build
     - test
 
 build-java-project:
+    image: maven:latest
     stage: build
     script: $MAVEN_HOME/bin/mvn package
 
