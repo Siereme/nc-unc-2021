@@ -12,7 +12,6 @@ build-java-project:
     script: $MAVEN_HOME/bin/mvn package
 
 code_quality:
-  image: docker:19.03.11
   artifacts:
     reports:
       codequality: gl-code-quality-report.json
