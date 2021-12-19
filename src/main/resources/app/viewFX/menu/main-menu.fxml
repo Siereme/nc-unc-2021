@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <TabPane fx:id="tapPaneMenu" prefHeight="540.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+        <tabs>
+            <Tab fx:id="tapSearch" text="Search">
+                <fx:include source="search/search.fxml"/>
+            </Tab>
+          <Tab fx:id="tapAdd" text="Add">
+              <fx:include source="add/add.fxml"/>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </top>
+</BorderPane>
