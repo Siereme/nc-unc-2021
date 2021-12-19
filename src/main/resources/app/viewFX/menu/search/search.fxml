@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="search" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.viewFX.menu.search.Search">
+   <children>
+      <Pane prefHeight="540.0" prefWidth="960.0">
+         <children>
+            <ListView fx:id="filmList" layoutY="199.0" prefHeight="290.0" prefWidth="960.0" />
+            <Button layoutX="566.0" layoutY="109.0" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="107.0" text="Search" />
+            <TextField fx:id="director" layoutX="566.0" layoutY="48.0" prefHeight="25.0" prefWidth="315.0" promptText="Search by director" />
+            <TextField fx:id="genre" layoutX="72.0" layoutY="109.0" prefHeight="25.0" prefWidth="315.0" promptText="Search by genre" />
+            <TextField fx:id="actor" layoutX="72.0" layoutY="48.0" prefHeight="25.0" prefWidth="315.0" promptText="Search by Actor" />
+            <Label layoutX="72.0" layoutY="22.0" prefHeight="17.0" prefWidth="38.0" text="Actor" />
+            <Label layoutX="566.0" layoutY="22.0" text="Director" />
+            <Label layoutX="72.0" layoutY="84.0" text="Genre" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
