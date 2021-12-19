@@ -10,6 +10,8 @@ import model.genre.Genre;
 import model.user.Admin.Admin;
 import model.user.Visitor.Visitor;
 
+import java.io.Serializable;
+
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
@@ -23,6 +25,6 @@ import model.user.Visitor.Visitor;
         @JsonSubTypes.Type(value = Film.class, name = "film"),
     }
 )
-public interface IEntity {
+public interface IEntity extends Serializable {
     String getId();
 }

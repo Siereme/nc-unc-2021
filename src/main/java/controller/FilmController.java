@@ -148,12 +148,12 @@ public class FilmController implements IEntityController<Film> {
 
     /** Метод проверки, содержится ли автор в фильме
      * @param film - фильм для которого будет проверяться, содержится ли в нем определенный актер
-     * @param actor - актер, которого будет искать метод в фильме film
+     * @param actorId - id актера, которого будет искать метод в фильме film
      * @return true - если в фильме film был найден актер @actor, false - иначе
      * */
-    public static boolean isContainsActor(Film film, Actor actor) {
+    public static boolean isContainsActor(Film film, String actorId) {
         for (String actorID : film.getActors()) {
-            if (Objects.equals(actorID, actor.getId())) {
+            if (Objects.equals(actorID, actorId)) {
                 return true;
             }
         }
@@ -167,7 +167,7 @@ public class FilmController implements IEntityController<Film> {
     public LinkedList<String> getFilmsByActor(Actor actor) {
         LinkedList<String> filmsId = new LinkedList<>();
         for (Film film : repository.findAll()) {
-            if (isContainsActor(film, actor)) {
+            if (isContainsActor(film, actor.getId())) {
                 filmsId.add(film.getId());
             }
         }
@@ -176,12 +176,12 @@ public class FilmController implements IEntityController<Film> {
 
     /** Метод проверки, содержится ли автор в фильме
      * @param film - фильм для которого будет проверяться, содержится ли в нем определенный режиссер
-     * @param director - режиссер, которого будет искать метод в фильме film
+     * @param idDirector - id режиссера, которого будет искать метод в фильме film
      * @return true - если в фильме film был найден актер @director, false - иначе
      * */
-    public static boolean isContainsDirector(Film film, Director director) {
+    public static boolean isContainsDirector(Film film, String idDirector) {
         for (String dirId : film.getDirectors()) {
-            if (Objects.equals(dirId, director.getId())) {
+            if (Objects.equals(dirId, idDirector)) {
                 return true;
             }
         }
@@ -195,7 +195,7 @@ public class FilmController implements IEntityController<Film> {
     public LinkedList<String> getFilmsByDirector(Director director) {
         LinkedList<String> filmsId = new LinkedList<>();
         for (Film film : repository.findAll()) {
-            if (isContainsDirector(film, director)) {
+            if (isContainsDirector(film, director.getId())) {
                 filmsId.add(film.getId());
             }
         }
@@ -204,12 +204,12 @@ public class FilmController implements IEntityController<Film> {
 
     /** Метод проверки, содержится ли жанр в фильме
      * @param film - фильм для которого будет проверяться, содержится ли в нем определенный жанр
-     * @param genre - жанр, по которому будет проверяться фильм @film
+     * @param idGenre - жанр, по которому будет проверяться фильм @film
      * @return true - если в фильме film был найден жанр @genre, false - иначе
      * */
-    public boolean isContainsGenre(Film film, Genre genre) {
+    public boolean isContainsGenre(Film film, String idGenre) {
         for (String genreId : film.getGenres()) {
-            if (Objects.equals(genreId, genre.getId())) {
+            if (Objects.equals(genreId, idGenre)) {
                 return true;
             }
         }
@@ -223,7 +223,7 @@ public class FilmController implements IEntityController<Film> {
     public LinkedList<String> getFilmsByGenre(Genre genre) {
         LinkedList<String> filmsId = new LinkedList<>();
         for (Film film : repository.findAll()) {
-            if (isContainsGenre(film, genre)) {
+            if (isContainsGenre(film, genre.getId())) {
                 filmsId.add(film.getId());
             }
         }
@@ -289,7 +289,7 @@ public class FilmController implements IEntityController<Film> {
     public void removeActorFromAllFilms(Actor actor) {
         boolean isChange = false;
         for (Film film : repository.findAll()) {
-            if (isContainsActor(film, actor)) {
+            if (isContainsActor(film, actor.getId())) {
                 removeActorFromFilm(actor, film);
                 isChange = true;
             }
@@ -317,7 +317,7 @@ public class FilmController implements IEntityController<Film> {
     public void removeDirectorFromAllFilms(Director director) {
         boolean isChange = false;
         for (Film film : repository.findAll()) {
-            if (isContainsDirector(film, director)) {
+            if (isContainsDirector(film, director.getId())) {
                 removeDirectorFromFilm(director, film);
                 isChange = true;
             }
@@ -325,6 +325,42 @@ public class FilmController implements IEntityController<Film> {
         if (isChange) {
             updateRepository();
         }
+    }
+
+    // function may be parallel
+    public LinkedList<Film> filmsBy(LinkedList<String> actorsId, LinkedList<String> genresId,
+                                    LinkedList<String> directorsId) {
+        LinkedList<Film> films = new LinkedList<>();
+        for (Film film : this.getRepository().findAll()) {
+            boolean flag = true;
+            for (String actorId : actorsId) {
+                if (!isContainsActor(film, actorId)) {
+                    flag = false;
+                    break;
+                }
+            }
+            if (flag) {
+                for (String genreId : genresId) {
+                    if (!isContainsGenre(film, genreId)) {
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+            if (flag) {
+                for (String directorId : directorsId) {
+                    if (!isContainsDirector(film, directorId)) {
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+
+            if (flag) {
+                films.add(film);
+            }
+        }
+        return films;
     }
 
 }
