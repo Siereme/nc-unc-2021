@@ -10,9 +10,12 @@
             <Tab fx:id="tapSearch" text="Search">
                 <fx:include source="search/search.fxml"/>
             </Tab>
-          <Tab fx:id="tapAdd" text="Add">
+            <Tab fx:id="tapAdd" text="Add">
               <fx:include source="add/add.fxml"/>
-          </Tab>
+            </Tab>
+            <Tab fx:id="tapRemove" text="Remove">
+                <fx:include source="remove/remove.fxml"/>
+            </Tab>
         </tabs>
       </TabPane>
    </top>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.viewFX.menu.remove.Remove">
+   <children>
+      <SplitPane dividerPositions="0.25052192066805845" prefHeight="540.0" prefWidth="960.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <ListView fx:id="menuList" prefHeight="538.0" prefWidth="238.0" />
+               </children>
+            </AnchorPane>
+          <AnchorPane fx:id="contentWrapper" minHeight="0.0" minWidth="0.0" />
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

@@ -14,11 +14,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class Main extends Application{
-    public static boolean IS_ADMIN;
+    public static boolean IS_ADMIN = true;
 
     @Override
     public void start(Stage stage) {
-        loadStage(stage, Login.class, "login.fxml");
+//        loadStage(stage, Login.class, "login.fxml");
+        loadStage(stage, Menu.class, "main-menu.fxml");
     }
 
     protected void loadStage(Stage stage, Class<? extends Main> viewCLass, String viewPath){
