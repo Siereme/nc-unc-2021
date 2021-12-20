@@ -1,6 +1,6 @@
 package app.viewFX.menu;
 
-import app.viewFX.IView;
+import app.viewFX.Main;
 
-public class Menu {
+public class Menu extends Main {
 }

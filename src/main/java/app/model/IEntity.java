@@ -12,7 +12,6 @@ import app.model.user.Visitor.Visitor;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = Admin.class, name = "admin"),

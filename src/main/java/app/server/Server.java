@@ -12,7 +12,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class Server extends Thread {
-    private Socket socket;
     DataOutputStream out;
 
     private String showEntities(String entityName) {
@@ -52,7 +51,6 @@ public class Server extends Thread {
             DataOutputStream out = new DataOutputStream(client.getOutputStream());
             DataInputStream in = new DataInputStream(client.getInputStream());
             this.out = out;
-            this.socket = client;
 
             while (!client.isClosed()) {
                 // авторизация

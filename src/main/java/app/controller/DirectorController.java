@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.model.IEntity;
-import app.model.actor.Actor;
 import app.model.director.Director;
 import app.repository.DirectorRepository;
 
