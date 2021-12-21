@@ -18,8 +18,8 @@ public class Main extends Application{
 
     @Override
     public void start(Stage stage) {
-//        loadStage(stage, Login.class, "login.fxml");
-        loadStage(stage, Menu.class, "main-menu.fxml");
+        loadStage(stage, Login.class, "login.fxml");
+//        loadStage(stage, Menu.class, "main-menu.fxml");
     }
 
     protected void loadStage(Stage stage, Class<? extends Main> viewCLass, String viewPath){
