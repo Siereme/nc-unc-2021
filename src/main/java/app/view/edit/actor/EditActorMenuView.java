@@ -78,8 +78,4 @@ public class EditActorMenuView extends View implements IView {
         filmController.updateRepository();
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

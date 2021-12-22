@@ -117,8 +117,4 @@ public class EditFilmMenuView extends View implements IView {
         film.setActors(newActorsId);
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

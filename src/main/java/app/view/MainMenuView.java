@@ -26,12 +26,4 @@ public class MainMenuView extends View {
         drawSubMenu(commands.commands, MAIN_MENU);
     }
 
-    /**
-     * @see View
-     * */
-    @Override
-    public void showMessage(String messsage) {
-
-    }
-
 }

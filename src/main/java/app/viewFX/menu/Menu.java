@@ -1,6 +1,10 @@
 package app.viewFX.menu;
 
-import app.viewFX.IView;
+import app.viewFX.Main;
 
-public class Menu {
+import java.io.IOException;
+
+public class Menu extends Main {
+    public Menu() throws IOException {
+    }
 }

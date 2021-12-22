@@ -26,8 +26,4 @@ public class    FindView extends View implements IView {
         return "Find film by ...";
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

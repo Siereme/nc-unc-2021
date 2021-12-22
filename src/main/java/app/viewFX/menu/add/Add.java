@@ -22,15 +22,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Add implements Initializable {
-    private AddUserCommands commands;
     private List<IView> viewList;
-    private List<String> commandNameList;
     @FXML private ListView<String> menuList;
     @FXML private AnchorPane contentWrapper;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        commands = new AddUserCommands();
+        AddUserCommands commands = new AddUserCommands();
         viewList =
                 commands.commands.entrySet().stream().filter(e -> e.getValue().contains(Main.IS_ADMIN)).map(x -> {
                     try {
@@ -41,7 +39,7 @@ public class Add implements Initializable {
                     }
                 }).filter(Objects::nonNull).collect(Collectors.toList());
 
-        commandNameList = new LinkedList<String>(viewList.stream().map(x -> x.getTitle()).collect(Collectors.toList()));
+        List<String> commandNameList = viewList.stream().map(IView::getTitle).collect(Collectors.toCollection(LinkedList::new));
 
         ObservableList<String> items = FXCollections.observableArrayList(commandNameList);
 

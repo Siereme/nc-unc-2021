@@ -26,8 +26,4 @@ public class RemoveDirectorView extends View implements IView {
         return "Delete Director";
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

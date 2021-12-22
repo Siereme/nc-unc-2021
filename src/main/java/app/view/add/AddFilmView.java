@@ -75,8 +75,4 @@ public class AddFilmView extends View implements IView {
         film.setDirectors(newDirectorsId);
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

@@ -26,8 +26,4 @@ public class RemoveActorView extends View implements IView {
         return "Delete Actor";
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

@@ -45,14 +45,14 @@ public class FilmsRepository extends AbstractRepository<Film>  {
         return entities;
     }
 
-    public boolean deleteById(Integer id) {
+    public void deleteById(Integer id) {
         for (Film film : entities) {
             if (film.getId().equals(id.toString())) {
                 // предикат, надеюсь не ошибся в использовании.
-                return entities.removeIf(f -> Objects.equals(f.getId(), id.toString()));
+                entities.removeIf(f -> Objects.equals(f.getId(), id.toString()));
+                return;
             }
         }
-        return false;
     }
 
     @Override

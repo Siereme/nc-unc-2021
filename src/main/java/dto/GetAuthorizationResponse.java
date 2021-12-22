@@ -1,13 +1,9 @@
 package dto;
 
-import controller.UserController;
-import model.user.IUser;
+import app.controller.UserController;
+import app.model.user.IUser;
 
 public class GetAuthorizationResponse extends Response {
-    public GetAuthorizationResponse(String name) {
-        super(name);
-    }
-
     public GetAuthorizationResponse(String name, String userName, String password) {
         super(name);
         // check authorization

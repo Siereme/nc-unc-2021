@@ -27,8 +27,4 @@ public class RemoveView extends View implements IView {
         return "Delete anything ...";
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

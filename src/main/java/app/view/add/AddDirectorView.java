@@ -68,8 +68,4 @@ public class AddDirectorView extends View implements IView {
         filmController.updateRepository();
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

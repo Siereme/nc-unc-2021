@@ -1,13 +1,11 @@
 package server;
 
 import dto.CreateAuthorizationRequest;
-import dto.CreateEntityRequest;
+import dto.CreateFindByFilterRequest;
 import dto.GetAuthorizationResponse;
-import dto.GetEntityRequest;
-import dto.GetEntityResponse;
+import dto.GetFindByFilterResponse;
 import dto.Request;
 import dto.Response;
-import model.film.Film;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,9 +19,9 @@ import java.util.concurrent.Executors;
 
 public class Server {
     private static final ExecutorService pool = Executors.newFixedThreadPool(10);
-    private static int PORT = 7777;
 
     public static void main(String[] args) throws IOException {
+        int PORT = 7777;
         ServerSocket ss = new ServerSocket(PORT);
         System.out.println("ServerSocket awaiting connections...");
         while (!ss.isClosed()) {
@@ -43,7 +41,7 @@ public class Server {
         private static Socket client;
 
         public SingleServer(Socket client) {
-            this.client = client;
+            SingleServer.client = client;
         }
 
         @Override
@@ -54,6 +52,7 @@ public class Server {
                 ObjectOutputStream dos = new ObjectOutputStream(outputStream);
                 final InputStream inputStream = client.getInputStream();
                 ObjectInputStream dis = new ObjectInputStream(inputStream);
+
                 while (!client.isClosed()) {
                     final Request request = (Request) dis.readObject();
                     System.out.println("handling request " + request);
@@ -61,22 +60,20 @@ public class Server {
                     final Response response = respond(request);
                     dos.writeObject(response);
                     System.out.println(" response sent");
-
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         }
 
-        private Response respond(Request request) throws IOException {
-            if (request instanceof CreateEntityRequest) {
-                //create entity
-                return new Response("ok");
-            } else if (request instanceof GetEntityRequest) {
-                return new GetEntityResponse<>("ok", new Film("this is film!"));
-            } else if (request instanceof CreateAuthorizationRequest) {
+        private Response respond(Request request) {
+            if (request instanceof CreateAuthorizationRequest) {
                 return new GetAuthorizationResponse("ok", ((CreateAuthorizationRequest) request).getUserName(),
                         ((CreateAuthorizationRequest) request).getPassword());
+            } else if (request instanceof CreateFindByFilterRequest) {
+                return new GetFindByFilterResponse("ok", ((CreateFindByFilterRequest) request).getActorsId(),
+                        ((CreateFindByFilterRequest) request).getGenresId(),
+                        ((CreateFindByFilterRequest) request).getDirectorsId());
             } else {
                 return new Response("error");
             }

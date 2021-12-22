@@ -26,9 +26,4 @@ public class RemoveFilmView extends View implements IView {
         return "Delete Film";
     }
 
-
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

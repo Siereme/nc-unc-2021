@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.model.IEntity;
-import app.model.actor.Actor;
 import app.model.genre.Genre;
 import app.repository.GenreRepository;
 
@@ -22,7 +21,7 @@ public class GenreController implements IEntityController<Genre> {
         return repository;
     }
 
-    GenreRepository repository;
+    final GenreRepository repository;
 
     public GenreController() {
         repository = new GenreRepository();

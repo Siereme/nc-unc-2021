@@ -3,20 +3,31 @@ package dto;
 import java.util.LinkedList;
 
 public class CreateFindByFilterRequest extends Request {
-    public CreateFindByFilterRequest(String name) {
-        super(name);
-    }
 
-    public CreateFindByFilterRequest(String name, LinkedList<String> actors, LinkedList<String> genres,
+    public CreateFindByFilterRequest(LinkedList<String> actors, LinkedList<String> genres,
                                      LinkedList<String> directors) {
-        super(name);
         actorsId = actors;
         genresId = genres;
         directorsId = directors;
     }
 
+    public LinkedList<String> getActorsId() {
+        return actorsId;
+    }
+
     private LinkedList<String> actorsId;
+
+
+    public LinkedList<String> getGenresId() {
+        return genresId;
+    }
+
     private LinkedList<String> genresId;
+
+    public LinkedList<String> getDirectorsId() {
+        return directorsId;
+    }
+
     private LinkedList<String> directorsId;
 
     public String toString() {

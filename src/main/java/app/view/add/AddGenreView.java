@@ -49,8 +49,4 @@ public class AddGenreView extends View implements IView {
         genre.setTittle(newTittle);
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

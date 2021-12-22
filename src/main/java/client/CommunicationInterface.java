@@ -10,8 +10,8 @@ import java.net.Socket;
 public class CommunicationInterface {
     public static final int PORT = 7777;
     public static final String LOCALHOST = "localhost";
-    private ObjectInputStream dis;
-    private ObjectOutputStream dos;
+    private final ObjectInputStream dis;
+    private final ObjectOutputStream dos;
 
     public CommunicationInterface() throws IOException {
         Socket socket = new Socket(LOCALHOST, PORT);

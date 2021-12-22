@@ -24,8 +24,4 @@ public class ShowAllGenresView extends View {
         return this.name;
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

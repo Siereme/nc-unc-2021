@@ -16,7 +16,7 @@ import java.util.Objects;
  * @author Sergey
  * @version 1.0
  * */
-public abstract class AbstractRepository<T extends IEntity>  {
+public abstract class AbstractRepository<T extends IEntity> {
     protected final String filePath;
     protected final List<T> entities;
     private final ObjectMapper mapper = new ObjectMapper();
@@ -33,45 +33,48 @@ public abstract class AbstractRepository<T extends IEntity>  {
 
     public abstract List<T> findAll();
 
-
     public void serialize() throws IOException {
-        mapper.writerFor(new TypeReference<List<T>>() {}).writeValue(new File(this.filePath), this.entities);
+        mapper.writerFor(new TypeReference<List<T>>() {
+        }).writeValue(new File(this.filePath), this.entities);
     }
 
     public List<T> deserialize() throws IOException {
         try {
-            return mapper.readerFor(new TypeReference<List<T>>() {}).readValue(new FileReader(this.filePath));
-        }catch (MismatchedInputException e){
+            return mapper.readerFor(new TypeReference<List<T>>() {
+            }).readValue(new FileReader(this.filePath));
+        } catch (MismatchedInputException e) {
             System.out.println("File is empty");
-            System.out.println(e);
+            e.printStackTrace();
             return new LinkedList<>();
         }
     }
 
     public List<T> deserialize(String file) throws IOException {
         try {
-            return mapper.readerFor(new TypeReference<List<T>>() {}).readValue(new FileReader(file));
-        }catch (MismatchedInputException e){
+            return mapper.readerFor(new TypeReference<List<T>>() {
+            }).readValue(new FileReader(file));
+        } catch (MismatchedInputException e) {
             System.out.println("File is empty");
-            System.out.println(e);
+            e.printStackTrace();
             return new LinkedList<>();
         }
     }
 
-    public Boolean isContains(String id){
+    public Boolean isContains(String id) {
         return this.entities.stream().anyMatch(x -> Objects.equals(x.getId(), id));
     }
 
-    public void mergeFiles(String file){
+    public void mergeFiles(String file) {
         List<T> setEntities = new LinkedList<>();
         try {
             List<T> entities = new LinkedList<>(deserialize(file));
-            for(T entity : entities){
-                if(!isContains(entity.getId())){
+            for (T entity : entities) {
+                if (!isContains(entity.getId())) {
                     setEntities.add(entity);
                 }
             }
-            mapper.writerFor(new TypeReference<List<T>>() {}).writeValue(new File(this.filePath), entities);
+            mapper.writerFor(new TypeReference<List<T>>() {
+            }).writeValue(new File(this.filePath), entities);
         } catch (IOException e) {
             e.printStackTrace();
         }

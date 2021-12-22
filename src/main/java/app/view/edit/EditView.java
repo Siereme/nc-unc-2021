@@ -26,8 +26,4 @@ public class EditView extends View implements IView {
         return "Edit anything ...";
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

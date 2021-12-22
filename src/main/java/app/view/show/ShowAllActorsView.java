@@ -25,8 +25,4 @@ public class ShowAllActorsView extends View implements IView {
         return this.name;
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

@@ -26,8 +26,4 @@ public class RemoveGenreView extends View implements IView {
         return "Delete Genre";
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

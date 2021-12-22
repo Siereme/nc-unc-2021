@@ -1,14 +1,9 @@
 package dto;
 
-import model.IEntity;
+import app.model.IEntity;
 
 public class CreateEntityRequest<T extends IEntity> extends Request {
-    public CreateEntityRequest(String name) {
-        super(name);
-    }
-
-    public CreateEntityRequest(String name, T entity) {
-        super(name);
+    public CreateEntityRequest( T entity) {
         this.entity = entity;
     }
 

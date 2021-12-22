@@ -63,8 +63,4 @@ public class AddActorView extends View implements IView {
         actor.setName(newName);
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

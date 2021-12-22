@@ -1,11 +1,8 @@
 package dto;
 
-import model.IEntity;
+import app.model.IEntity;
 
 public class GetEntityResponse<T extends IEntity> extends Response {
-    public GetEntityResponse(String name) {
-        super(name);
-    }
 
     public T getEntity() {
         return entity;

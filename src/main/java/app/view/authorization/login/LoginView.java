@@ -44,8 +44,4 @@ public class LoginView implements IView {
         return this.input.nextLine();
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

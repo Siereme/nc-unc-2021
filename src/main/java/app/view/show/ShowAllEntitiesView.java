@@ -50,12 +50,7 @@ public class ShowAllEntitiesView extends View implements IView {
     }
 
     public String getName(){
-        /** Name of the command*/
         return "Show all entities";
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

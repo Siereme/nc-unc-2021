@@ -26,8 +26,4 @@ public class AddView extends View implements IView {
         return "Add anything ...";
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

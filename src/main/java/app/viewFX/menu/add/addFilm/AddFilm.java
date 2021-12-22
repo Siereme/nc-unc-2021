@@ -7,8 +7,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class AddFilm implements Initializable, IView {
-    private String title = "Add Film";
-    private String fxmlFile = "addFilm.fxml";
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -16,10 +14,10 @@ public class AddFilm implements Initializable, IView {
 
     @Override
     public String getTitle() {
-        return this.title;
+        return "Add Film";
     }
 
     public String getFxmlFile(){
-        return this.fxmlFile;
+        return "addFilm.fxml";
     }
 }

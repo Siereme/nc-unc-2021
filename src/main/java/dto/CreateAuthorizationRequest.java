@@ -1,13 +1,9 @@
 package dto;
 
 public class CreateAuthorizationRequest extends Request {
-    public CreateAuthorizationRequest(String name) {
-        super(name);
-    }
 
 
     public CreateAuthorizationRequest(String name, String userName, String password) {
-        super(name);
         this.userName = userName;
         this.password = password;
     }

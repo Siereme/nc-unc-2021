@@ -60,8 +60,4 @@ public class EditGenreMenuView extends View implements IView {
         genre.setTittle(newTittle);
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }

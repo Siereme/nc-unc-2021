@@ -1,14 +1,10 @@
 package dto;
 
-import model.IEntity;
+import app.model.IEntity;
 
 public class GetEntityRequest<T extends IEntity> extends Request {
-    public GetEntityRequest(String name) {
-        super(name);
-    }
 
     public GetEntityRequest(String name, String id) {
-        super(name);
         this.id = id;
     }
 

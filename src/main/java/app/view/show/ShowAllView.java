@@ -24,8 +24,4 @@ public class ShowAllView extends View implements IView {
         return "Show all ...";
     }
 
-    @Override
-    public void showMessage(String messsage) {
-
-    }
 }
