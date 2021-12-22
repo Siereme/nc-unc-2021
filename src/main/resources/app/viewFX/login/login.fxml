@@ -31,6 +31,6 @@
       <TextField fx:id="loginField" prefHeight="26.0" prefWidth="113.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="3" />
       <TextField fx:id="passwordField" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="5" />
       <Label text="Password" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-      <Label fx:id="status" prefHeight="18.0" prefWidth="202.0" textFill="#fa0000" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+      <Label fx:id="status" prefHeight="18.0" prefWidth="202.0" textFill="#fa0000" translateY="5.0" GridPane.columnIndex="2" GridPane.columnSpan="3" GridPane.rowIndex="1" />
    </children>
 </GridPane>
