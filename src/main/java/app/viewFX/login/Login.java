@@ -3,6 +3,7 @@ package app.viewFX.login;
 import app.model.user.IUser;
 import app.viewFX.Main;
 import app.viewFX.menu.Menu;
+import client.CommunicationInterface;
 import dto.CreateAuthorizationRequest;
 import dto.GetAuthorizationResponse;
 import javafx.event.ActionEvent;

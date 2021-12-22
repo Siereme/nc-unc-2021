@@ -2,6 +2,7 @@ package app.viewFX;
 
 import app.viewFX.login.Login;
 import app.viewFX.menu.Menu;
+import client.CommunicationInterface;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -13,16 +14,20 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Main extends Application{
+public class Main extends Application {
+    protected CommunicationInterface communicationInterface = new CommunicationInterface();
     public static boolean IS_ADMIN = true;
+
+    public Main() throws IOException {
+    }
 
     @Override
     public void start(Stage stage) {
         loadStage(stage, Login.class, "login.fxml");
-//        loadStage(stage, Menu.class, "main-menu.fxml");
+        //        loadStage(stage, Menu.class, "main-menu.fxml");
     }
 
-    protected void loadStage(Stage stage, Class<? extends Main> viewCLass, String viewPath){
+    protected void loadStage(Stage stage, Class<? extends Main> viewCLass, String viewPath) {
         try {
             FXMLLoader loader = new FXMLLoader(viewCLass.getResource(viewPath));
             stage.setScene(new Scene(loader.load()));
@@ -36,7 +41,7 @@ public class Main extends Application{
         loadStage(new Stage(), viewCLass, viewPath);
     }
 
-    protected void closeCurrentStage(ActionEvent event){
+    protected void closeCurrentStage(ActionEvent event) {
         Node source = (Node) event.getSource();
         Stage stage = (Stage) source.getScene().getWindow();
         stage.close();
