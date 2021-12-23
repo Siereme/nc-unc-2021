@@ -139,4 +139,14 @@ public class ActorController implements IEntityController<Actor> {
         return new String(sb);
     }
 
+    @Override
+    public String getIdByName(String name) {
+        for (Actor actor : repository.findAll()) {
+            if (Objects.equals(actor.getName(), name)) {
+                return actor.getId();
+            }
+        }
+        return null;
+    }
+
 }

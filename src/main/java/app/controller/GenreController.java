@@ -48,6 +48,17 @@ public class GenreController implements IEntityController<Genre> {
         return new String(sb);
     }
 
+    @Override
+    public String getIdByName(String name) {
+        for (Genre genre : repository.findAll()) {
+            String genreName = genre.getTittle();
+            if (Objects.equals(genreName, name)) {
+                return genre.getId();
+            }
+        }
+        return null;
+    }
+
     public Genre getEntityById(String id) {
         for (Genre genre : repository.findAll()) {
             if (Objects.equals(genre.getId(), id)) {

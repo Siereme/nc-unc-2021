@@ -16,13 +16,11 @@ public interface IEntityController<T> {
      * */
     T getEntityById(String id);
 
-
     /** method of getting the entity by name
      * @param name - id entity, to be found
      * @return entity type object with id = @id
      * */
     T getEntityByName(String name);
-
 
     /** Method converts entity to string
      * @param entity - which will be converted to string
@@ -75,5 +73,30 @@ public interface IEntityController<T> {
     String getNames();
 
     String getAllEntitiesAsString();
+
+    String getIdByName(String name);
+
+    default LinkedList<String> getIdsByNames(LinkedList<String> names) {
+        LinkedList<String> ids = new LinkedList<>();
+        for (String name : names) {
+            String id = getIdByName(name);
+            if (id != null) {
+                if (!ids.contains(id)) {
+                    ids.add(id);
+                }
+            }
+        }
+        return ids;
+    }
+
+    default LinkedList<T> getEntitiesByNames(LinkedList<String> names) {
+        LinkedList<String> ids = getIdsByNames(names);
+        LinkedList<T> entities = new LinkedList<>();
+        for (String id : ids) {
+            T entity = getEntityById(id);
+            entities.add(entity);
+        }
+        return entities;
+    }
 
 }

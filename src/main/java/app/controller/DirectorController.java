@@ -48,6 +48,16 @@ public class DirectorController implements IEntityController<Director> {
         return new String(sb);
     }
 
+    @Override
+    public String getIdByName(String name) {
+        for (Director director : repository.findAll()) {
+            if (Objects.equals(director.getName(), name)) {
+                return director.getId();
+            }
+        }
+        return null;
+    }
+
     public Director getEntityById(String id) {
         for (Director director : repository.findAll()) {
             if (Objects.equals(director.getId(), id)) {

@@ -1,11 +1,20 @@
 package server;
 
-import dto.CreateAuthorizationRequest;
-import dto.CreateFindByFilterRequest;
-import dto.GetAuthorizationResponse;
-import dto.GetFindByFilterResponse;
-import dto.Request;
-import dto.Response;
+import app.model.IEntity;
+import dto.request.CreateAddFilmRequest;
+import dto.request.CreateAuthorizationRequest;
+import dto.request.CreateEditFilmRequest;
+import dto.request.CreateFindByFilterRequest;
+import dto.request.CreateGetEntitiesByNamesRequest;
+import dto.request.CreateGetEntityRequest;
+import dto.response.GetAddFilmResponse;
+import dto.response.GetAuthorizationResponse;
+import dto.response.GetEntitiesByNamesResponse;
+import dto.response.GetEntityResponse;
+import dto.response.GetFilmEditResponse;
+import dto.response.GetFindByFilterResponse;
+import dto.request.Request;
+import dto.response.Response;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -68,12 +77,17 @@ public class Server {
 
         private Response respond(Request request) {
             if (request instanceof CreateAuthorizationRequest) {
-                return new GetAuthorizationResponse("ok", ((CreateAuthorizationRequest) request).getUserName(),
-                        ((CreateAuthorizationRequest) request).getPassword());
+                return new GetAuthorizationResponse("ok", (CreateAuthorizationRequest) request);
             } else if (request instanceof CreateFindByFilterRequest) {
-                return new GetFindByFilterResponse("ok", ((CreateFindByFilterRequest) request).getActorsId(),
-                        ((CreateFindByFilterRequest) request).getGenresId(),
-                        ((CreateFindByFilterRequest) request).getDirectorsId());
+                return new GetFindByFilterResponse("ok", (CreateFindByFilterRequest) request);
+            } else if (request instanceof CreateAddFilmRequest) {
+                return new GetAddFilmResponse("ok", (CreateAddFilmRequest) request);
+            } else if (request instanceof CreateGetEntitiesByNamesRequest) {
+                return new GetEntitiesByNamesResponse("ok", (CreateGetEntitiesByNamesRequest) request);
+            } else if (request instanceof CreateGetEntityRequest) {
+                return new GetEntityResponse("ok", (CreateGetEntityRequest) request);
+            } else if (request instanceof CreateEditFilmRequest) {
+                return new GetFilmEditResponse("ok", (CreateEditFilmRequest) request);
             } else {
                 return new Response("error");
             }

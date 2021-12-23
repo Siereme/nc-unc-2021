@@ -30,6 +30,11 @@ public class UserController implements IEntityController<IUser> {
         return null;
     }
 
+    @Override
+    public String getIdByName(String name) {
+        return null;
+    }
+
     public UserController() {
         this.repository = new UserRepository();
     }

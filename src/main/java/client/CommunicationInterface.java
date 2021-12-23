@@ -1,6 +1,6 @@
 package client;
-import dto.Request;
-import dto.Response;
+import dto.request.Request;
+import dto.response.Response;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;

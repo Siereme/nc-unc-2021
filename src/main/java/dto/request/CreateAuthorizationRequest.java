@@ -1,5 +1,6 @@
-package dto;
+package dto.request;
 
+/** request send user name and password to server */
 public class CreateAuthorizationRequest extends Request {
 
 
@@ -12,13 +13,13 @@ public class CreateAuthorizationRequest extends Request {
         return userName;
     }
 
-    private String userName;
+    private final String userName;
 
     public String getPassword() {
         return password;
     }
 
-    private String password;
+    private final String password;
 
     public String toString(){
         return "CreateAuthorizationRequest: request " + "user name: " + userName + " password: " + password;

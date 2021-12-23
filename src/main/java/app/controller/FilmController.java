@@ -8,6 +8,7 @@ import app.model.genre.Genre;
 import app.repository.FilmsRepository;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -53,6 +54,17 @@ public class FilmController implements IEntityController<Film> {
             sb.append("\n");
         }
         return new String(sb);
+    }
+
+    @Override
+    public String getIdByName(String name) {
+        for (Film film : repository.findAll()) {
+            String filmName = film.getTittle();
+            if (Objects.equals(filmName, name)) {
+                return film.getId();
+            }
+        }
+        return null;
     }
 
     public void deleteById(Integer id) {
@@ -183,7 +195,6 @@ public class FilmController implements IEntityController<Film> {
         }
         return filmsId;
     }
-
 
     /** Метод проверки, содержится ли автор в фильме
      * @param film - фильм для которого будет проверяться, содержится ли в нем определенный режиссер
@@ -372,6 +383,18 @@ public class FilmController implements IEntityController<Film> {
             }
         }
         return films;
+    }
+
+    public boolean edit(String filmId, String newTittle, Date newDate, LinkedList<String> actors,
+                        LinkedList<String> directors, LinkedList<String> genres) {
+        Film film = getEntityById(filmId);
+        film.setTittle(newTittle);
+        film.setDate(newDate);
+        film.setActors(actors);
+        film.setDirectors(directors);
+        film.setGenres(genres);
+        updateRepository();
+        return true;
     }
 
 }
