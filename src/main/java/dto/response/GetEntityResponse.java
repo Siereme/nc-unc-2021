@@ -1,5 +1,6 @@
 package dto.response;
 
+import app.controller.IEntityController;
 import app.model.IEntity;
 import dto.controller.GetEntityController;
 import dto.request.CreateGetEntityRequest;
@@ -15,11 +16,12 @@ public class GetEntityResponse<T extends IEntity> extends Response {
         this.entity = entity;
     }
 
-    public GetEntityResponse(String name, CreateGetEntityRequest entityRequest) {
+    public GetEntityResponse(String name, CreateGetEntityRequest<T> entityRequest) {
         super(name);
-        GetEntityController<T> entityController = new GetEntityController<>();
+        IEntityController<T> entityController = entityRequest.getEntityController();
+        GetEntityController<T> getEntityController = new GetEntityController<>(entityController);
         String entityId = entityRequest.getEntityId();
-        entity = entityController.getEntity(entityId);
+        entity = getEntityController.getEntity(entityId);
     }
 
     private T entity;
