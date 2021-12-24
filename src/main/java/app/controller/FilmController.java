@@ -70,7 +70,9 @@ public class FilmController implements IEntityController<Film> {
     @Override
     public boolean remove(String id) {
         Film film = getEntityById(id);
-        return repository.findAll().remove(film);
+        repository.findAll().remove(film);
+        updateRepository();
+        return true;
     }
 
     public void deleteById(Integer id) {
@@ -268,6 +270,7 @@ public class FilmController implements IEntityController<Film> {
 
     public void addEntity(IEntity entity) {
         repository.findAll().add((Film) entity);
+        updateRepository();
     }
 
     public void updateRepository() {

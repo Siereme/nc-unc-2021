@@ -1,10 +1,7 @@
 package app.viewFX.login;
 
-import app.controller.UserController;
 import app.model.user.IUser;
-import app.repository.UserRepository;
 import app.viewFX.Main;
-import app.viewFX.menu.Menu;
 import dto.request.CreateAuthorizationRequest;
 import dto.response.GetAuthorizationResponse;
 import javafx.event.ActionEvent;
@@ -38,8 +35,6 @@ public class Login extends Main {
 
         IUser currentUser = response.getUser();
 
-//        IUser currentUser = new UserController().getEntityByLogin(loginField.getText(), passwordField.getText());
-
         if(currentUser == null){
             status.setText("Incorrect login or password");
             loginField.setText("");
@@ -50,10 +45,6 @@ public class Login extends Main {
             Node source = (Node) event.getSource();
             Stage stage = (Stage) source.getScene().getWindow();
             stage.close();
-//            closeCurrentStage(event);
-//            loadStage(Menu.class, "main-menu.fxml");
         }
-        /*main.setName(loginField.getText());
-        main.setPassword(passwordField.getText());*/
     }
 }

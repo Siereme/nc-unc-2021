@@ -18,7 +18,7 @@ public class CreateGetEntitiesByNamesRequest<T extends IEntity> extends Request 
 
     private final IEntityController<T> entityController;
 
-    CreateGetEntitiesByNamesRequest(LinkedList<String> names, IEntityController<T> entityController) {
+    public CreateGetEntitiesByNamesRequest(LinkedList<String> names, IEntityController<T> entityController) {
         this.names = names;
         this.entityController = entityController;
     }

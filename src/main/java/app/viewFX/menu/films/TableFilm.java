@@ -14,7 +14,8 @@ import javafx.scene.control.ListView;
 
 import java.util.Date;
 
-public class TableFilm extends Films{
+public class TableFilm{
+    private String id;
     private CheckBox checked = new CheckBox();
     private String title;
     private Date date;
@@ -23,38 +24,35 @@ public class TableFilm extends Films{
     private ListView<String> directors = new ListView<>();
 
     public TableFilm(Film film) {
+        this.id = film.getId();
         this.title = film.getTittle();
         this.date = film.getDate();
-//        for (String id : film.getGenres()){
-//            CreateGetEntityRequest createGetEntityRequest = new CreateGetEntityRequest(id);
-//            GetEntityResponse getEntityResponse = new GetEntityResponse("response", createGetEntityRequest);
-//            Genre genre = (Genre) getEntityResponse.getEntity();
-//            this.genres.getItems().add("Title: " + genre.getTittle());
-//        }
-//        for (String id : film.getActors()){
-//            CreateGetEntityRequest createGetEntityRequest = new CreateGetEntityRequest(id);
-//            GetEntityResponse getEntityResponse = new GetEntityResponse("response", createGetEntityRequest);
-//            Actor actor = (Actor) getEntityResponse.getEntity();
-//            this.genres.getItems().add("Name: " + actor.getName() + "\n" + "Year: " + actor.getYear());
-//        }
-//        for (String id : film.getActors()){
-//            CreateGetEntityRequest createGetEntityRequest = new CreateGetEntityRequest(id);
-//            GetEntityResponse getEntityResponse = new GetEntityResponse("response", createGetEntityRequest);
-//            Director director = (Director) getEntityResponse.getEntity();
-//            this.genres.getItems().add("Name: " + director.getName() + "\n" + "Year: " + director.getYear());
-//        }
         GenreController genreController = new GenreController();
-        this.genres.getItems().addAll(film.getGenres().stream().map(x ->
-                "Title: " + genreController.getEntityById(x).getTittle()
-        ).toList());
+        for (String id : film.getGenres()){
+            CreateGetEntityRequest createGetEntityRequest = new CreateGetEntityRequest(id, genreController);
+            GetEntityResponse getEntityResponse = new GetEntityResponse("response", createGetEntityRequest);
+            Genre genre = (Genre) getEntityResponse.getEntity();
+            this.genres.getItems().add("Title: " + genre.getTittle());
+        }
         ActorController actorController = new ActorController();
-        this.actors.getItems().addAll(film.getActors().stream().map(x ->
-                "Name: " + actorController.getEntityById(x).getName() + "\n" + "Year: " + actorController.getEntityById(x).getYear()
-        ).toList());
+        for (String id : film.getActors()){
+            CreateGetEntityRequest createGetEntityRequest = new CreateGetEntityRequest(id, actorController);
+            GetEntityResponse getEntityResponse = new GetEntityResponse("response", createGetEntityRequest);
+            Actor actor = (Actor) getEntityResponse.getEntity();
+            this.actors.getItems().add("Name: " + actor.getName() + "\n" + "Year: " + actor.getYear());
+        }
         DirectorController directorController = new DirectorController();
-        this.directors.getItems().addAll(film.getDirectors().stream().map(x ->
-                "Name: " + directorController.getEntityById(x).getName() + "\n" + "Year: " + directorController.getEntityById(x).getYear()
-        ).toList());
+        for (String id : film.getDirectors()){
+            CreateGetEntityRequest createGetEntityRequest = new CreateGetEntityRequest(id, directorController);
+            GetEntityResponse getEntityResponse = new GetEntityResponse("response", createGetEntityRequest);
+            Director director = (Director) getEntityResponse.getEntity();
+            this.directors.getItems().add("Name: " + director.getName() + "\n" + "Year: " + director.getYear());
+        }
+    }
+
+
+    public String getId() {
+        return this.id;
     }
 
     public CheckBox getChecked() {

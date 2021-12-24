@@ -12,7 +12,9 @@ import app.repository.FilmsRepository;
 import app.viewFX.Main;
 import dto.request.CreateFindByFilterRequest;
 import dto.request.CreateGetEntitiesByNamesRequest;
+import dto.request.CreateRemoveEntityRequest;
 import dto.response.GetFindByFilterResponse;
+import dto.response.GetRemoveEntityResponse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -66,7 +68,7 @@ public class Films extends Menu implements Initializable {
         filmTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
-    public void search(ActionEvent event) {
+    public void search() {
         getFilms();
         filmTable.getItems().clear();
         filmTable.getItems().addAll(films);
@@ -77,6 +79,7 @@ public class Films extends Menu implements Initializable {
         Stage stage = new Stage();
         stage.setScene(new Scene(loader.load()));
         stage.showAndWait();
+        search();
     }
 
     public void edit(ActionEvent event) throws IOException {
@@ -88,6 +91,7 @@ public class Films extends Menu implements Initializable {
             Stage stage = new Stage();
             stage.setScene(new Scene(loader.load()));
             stage.showAndWait();
+            search();
         }
     }
 
@@ -102,8 +106,13 @@ public class Films extends Menu implements Initializable {
             filmTable.setEditable(false);
             removeButton.setStyle("");
 
-            filmTable.getItems().removeAll(films.stream().filter(film -> film.getChecked().isSelected()).toList());
-            filmTable.getSelectionModel().clearSelection();
+            FilmController filmController = new FilmController();
+            List<String> removeFilmIds = films.stream().filter(film -> film.getChecked().isSelected()).map(x -> x.getId()).toList();
+            for(String id : removeFilmIds){
+                CreateRemoveEntityRequest removeEntityRequest = new CreateRemoveEntityRequest(id, filmController);
+                new GetRemoveEntityResponse<Film>("response", removeEntityRequest);
+            }
+            search();
         }
     }
 
