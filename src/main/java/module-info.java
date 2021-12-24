@@ -11,8 +11,8 @@ module app {
     opens app.model.genre to com.fasterxml.jackson.databind;
     opens app.model.user.Admin to com.fasterxml.jackson.databind;
     opens app.model.user.Visitor to com.fasterxml.jackson.databind;
-    opens app.viewFX.menu.search to javafx.fxml;
-    opens app.model.film to com.fasterxml.jackson.databind;
+    opens app.viewFX.menu.films to javafx.fxml, javafx.base;
+    opens app.model.film to com.fasterxml.jackson.databind, javafx.base;
     opens app.model.actor to com.fasterxml.jackson.databind;
     opens app.model.director to com.fasterxml.jackson.databind;
     opens app.viewFX.menu.remove to javafx.fxml;
@@ -26,7 +26,7 @@ module app {
     exports app.model.user.Visitor to com.fasterxml.jackson.databind;
     exports app.viewFX.login to com.fasterxml.jackson.databind;
     exports app.viewFX.menu;
-    exports app.viewFX.menu.search to javafx.fxml;
+    exports app.viewFX.menu.films to javafx.fxml;
     exports app.viewFX.menu.add to javafx.fxml;
     exports app.viewFX.menu.add.addFilm to javafx.fxml;
     exports app.model.actor to com.fasterxml.jackson.databind;

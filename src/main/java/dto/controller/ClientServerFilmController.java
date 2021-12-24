@@ -1,6 +1,9 @@
 package dto.controller;
 
+import app.controller.ActorController;
+import app.controller.DirectorController;
 import app.controller.FilmController;
+import app.controller.GenreController;
 import app.model.film.Film;
 import dto.request.CreateAddFilmRequest;
 import dto.request.CreateEditFilmRequest;
@@ -11,6 +14,9 @@ import java.util.LinkedList;
 
 public class ClientServerFilmController {
     FilmController filmController = new FilmController();
+    ActorController actorController = new ActorController();
+    DirectorController directorController = new DirectorController();
+    GenreController genreController = new GenreController();
 
     public boolean editFilm(CreateEditFilmRequest editFilmRequest) {
         String id = editFilmRequest.getFilmId();
@@ -35,13 +41,13 @@ public class ClientServerFilmController {
 
     public LinkedList<Film> getFilmsByFilter(CreateFindByFilterRequest findByFilterRequest) {
         LinkedList<String> actorNames = findByFilterRequest.getActors();
-        LinkedList<String> actorIds = filmController.getIdsByNames(actorNames);
+        LinkedList<String> actorIds = actorController.getIdsByNames(actorNames);
 
         LinkedList<String> directorNames = findByFilterRequest.getDirectors();
-        LinkedList<String> directorsIds = filmController.getIdsByNames(directorNames);
+        LinkedList<String> directorsIds = directorController.getIdsByNames(directorNames);
 
         LinkedList<String> genreNames = findByFilterRequest.getGenres();
-        LinkedList<String> genresIds = filmController.getIdsByNames(genreNames);
+        LinkedList<String> genresIds = genreController.getIdsByNames(genreNames);
 
         return filmController.filmsBy(actorIds, genresIds, directorsIds);
     }

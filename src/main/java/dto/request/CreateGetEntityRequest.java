@@ -8,7 +8,7 @@ public class CreateGetEntityRequest extends Request {
 
     private final String entityId;
 
-    CreateGetEntityRequest(String id) {
+    public CreateGetEntityRequest(String id) {
         entityId = id;
     }
 

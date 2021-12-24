@@ -30,7 +30,7 @@ public class View {
 
     protected void drawSubMenu(Map<Class<? extends IView>, List<Boolean>> commands, ListView menuList, AnchorPane wrapper){
         List<IView> viewList =
-                commands.entrySet().stream().filter(e -> e.getValue().contains(Main.IS_ADMIN)).map(x -> {
+                commands.entrySet().stream().filter(e -> e.getValue().contains(Main.CURRENT_USER)).map(x -> {
                     try {
                         return x.getKey().getConstructor().newInstance();
                     } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException | NullPointerException e) {

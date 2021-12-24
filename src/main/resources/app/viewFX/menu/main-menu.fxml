@@ -5,15 +5,18 @@
 
 <BorderPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1">
    <top>
-      <TabPane fx:id="tapPaneMenu" prefHeight="540.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <TabPane fx:id="tapPaneMenu" minHeight="540.0" minWidth="960.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-            <Tab fx:id="tapSearch" text="Search">
-                <fx:include source="search/search.fxml"/>
+            <Tab fx:id="tapFilms" text="Films">
+                <fx:include source="films/films.fxml"/>
             </Tab>
-            <Tab fx:id="tapAdd" text="Add">
+            <Tab fx:id="tapGenres" text="Genres">
               <fx:include source="add/add.fxml"/>
             </Tab>
-            <Tab fx:id="tapRemove" text="Remove">
+            <Tab fx:id="tapActors" text="Actors">
+                <fx:include source="remove/remove.fxml"/>
+            </Tab>
+            <Tab fx:id="tapDirectors" text="Directors">
                 <fx:include source="remove/remove.fxml"/>
             </Tab>
         </tabs>
