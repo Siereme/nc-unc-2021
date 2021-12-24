@@ -5,24 +5,24 @@ import dto.controller.GetEntityController;
 import dto.request.CreateGetEntityRequest;
 
 /** request send entity to client*/
-public class GetEntityResponse extends Response {
+public class GetEntityResponse<T extends IEntity> extends Response {
 
-    public IEntity getEntity() {
+    public T getEntity() {
         return entity;
     }
 
-    public void setEntity(IEntity entity) {
+    public void setEntity(T entity) {
         this.entity = entity;
     }
 
     public GetEntityResponse(String name, CreateGetEntityRequest entityRequest) {
         super(name);
-        GetEntityController<IEntity> entityController = new GetEntityController<IEntity>();
+        GetEntityController<T> entityController = new GetEntityController<>();
         String entityId = entityRequest.getEntityId();
         entity = entityController.getEntity(entityId);
     }
 
-    IEntity entity;
+    private T entity;
 
     @Override
     public String toString() {
