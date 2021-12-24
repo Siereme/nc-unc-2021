@@ -2,10 +2,8 @@ package dto.response;
 
 import app.controller.IEntityController;
 import app.model.IEntity;
-import dto.controller.ClientServerFilmController;
-import dto.controller.GetEntityController;
+import dto.controller.EntityController;
 import dto.request.CreateGetEntitiesByNamesRequest;
-import dto.request.CreateGetEntityRequest;
 
 import java.util.LinkedList;
 
@@ -15,7 +13,7 @@ public class GetEntitiesByNamesResponse<T extends IEntity> extends Response {
     public GetEntitiesByNamesResponse(String name, CreateGetEntitiesByNamesRequest<T> createGetEntitiesByNamesRequest) {
         super(name);
         IEntityController<T> entityController = createGetEntitiesByNamesRequest.getEntityController();
-        GetEntityController<T> getEntityController = new GetEntityController<>(entityController);
+        EntityController<T> getEntityController = new EntityController<>(entityController);
         LinkedList<String> names = createGetEntitiesByNamesRequest.getNames();
         entities = getEntityController.getEntitiesByNames(names);
     }

@@ -149,4 +149,10 @@ public class ActorController implements IEntityController<Actor> {
         return null;
     }
 
+    @Override
+    public boolean remove(String id) {
+        Actor actor = getEntityById(id);
+        return repository.findAll().remove(actor);
+    }
+
 }

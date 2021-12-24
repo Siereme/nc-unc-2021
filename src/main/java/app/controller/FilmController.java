@@ -67,6 +67,12 @@ public class FilmController implements IEntityController<Film> {
         return null;
     }
 
+    @Override
+    public boolean remove(String id) {
+        Film film = getEntityById(id);
+        return repository.findAll().remove(film);
+    }
+
     public void deleteById(Integer id) {
         repository.deleteById(id);
     }

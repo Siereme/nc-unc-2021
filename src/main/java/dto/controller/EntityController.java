@@ -5,10 +5,10 @@ import app.model.IEntity;
 
 import java.util.LinkedList;
 
-public class GetEntityController<T extends IEntity> {
+public class EntityController<T extends IEntity> {
     IEntityController<T> entityController;
 
-    public GetEntityController(IEntityController<T> entityController) {
+    public EntityController(IEntityController<T> entityController) {
         this.entityController = entityController;
     }
 
@@ -22,6 +22,10 @@ public class GetEntityController<T extends IEntity> {
 
     public LinkedList<T> getEntitiesByNames(LinkedList<String> names) {
         return entityController.getEntitiesByNames(names);
+    }
+
+    public boolean removeEntity(String id){
+        return entityController.remove(id);
     }
 
 }

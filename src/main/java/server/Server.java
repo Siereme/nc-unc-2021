@@ -7,6 +7,7 @@ import dto.request.CreateEditFilmRequest;
 import dto.request.CreateFindByFilterRequest;
 import dto.request.CreateGetEntitiesByNamesRequest;
 import dto.request.CreateGetEntityRequest;
+import dto.request.CreateRemoveEntityRequest;
 import dto.response.GetAddFilmResponse;
 import dto.response.GetAuthorizationResponse;
 import dto.response.GetEntitiesByNamesResponse;
@@ -14,6 +15,7 @@ import dto.response.GetEntityResponse;
 import dto.response.GetFilmEditResponse;
 import dto.response.GetFindByFilterResponse;
 import dto.request.Request;
+import dto.response.GetRemoveEntityResponse;
 import dto.response.Response;
 
 import java.io.IOException;
@@ -88,6 +90,8 @@ public class Server {
                 return new GetEntityResponse("ok", (CreateGetEntityRequest) request);
             } else if (request instanceof CreateEditFilmRequest) {
                 return new GetFilmEditResponse("ok", (CreateEditFilmRequest) request);
+            } else if (request instanceof CreateRemoveEntityRequest) {
+                return new GetRemoveEntityResponse("ok", (CreateRemoveEntityRequest) request);
             } else {
                 return new Response("error");
             }

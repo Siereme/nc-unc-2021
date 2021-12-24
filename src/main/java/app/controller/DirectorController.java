@@ -58,6 +58,12 @@ public class DirectorController implements IEntityController<Director> {
         return null;
     }
 
+    @Override
+    public boolean remove(String id) {
+        Director director = getEntityById(id);
+        return repository.findAll().remove(director);
+    }
+
     public Director getEntityById(String id) {
         for (Director director : repository.findAll()) {
             if (Objects.equals(director.getId(), id)) {

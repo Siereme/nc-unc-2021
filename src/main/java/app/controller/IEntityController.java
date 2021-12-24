@@ -99,4 +99,6 @@ public interface IEntityController<T> {
         return entities;
     }
 
+    boolean remove(String id);
+
 }

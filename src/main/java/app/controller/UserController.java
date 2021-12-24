@@ -35,6 +35,11 @@ public class UserController implements IEntityController<IUser> {
         return null;
     }
 
+    @Override
+    public boolean remove(String id) {
+        return false;
+    }
+
     public UserController() {
         this.repository = new UserRepository();
     }
