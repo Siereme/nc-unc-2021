@@ -5,7 +5,7 @@ import app.model.IEntity;
 
 import java.util.LinkedList;
 
-public class CreateGetEntitiesByNamesRequest<T extends IEntity> extends Request {
+public class GetEntitiesByNamesRequest<T extends IEntity> extends Request {
     public LinkedList<String> getNames() {
         return names;
     }
@@ -18,7 +18,7 @@ public class CreateGetEntitiesByNamesRequest<T extends IEntity> extends Request 
 
     private final IEntityController<T> entityController;
 
-    public CreateGetEntitiesByNamesRequest(LinkedList<String> names, IEntityController<T> entityController) {
+    public GetEntitiesByNamesRequest(LinkedList<String> names, IEntityController<T> entityController) {
         this.names = names;
         this.entityController = entityController;
     }

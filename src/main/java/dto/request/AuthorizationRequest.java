@@ -1,10 +1,10 @@
 package dto.request;
 
 /** request send user name and password to server */
-public class CreateAuthorizationRequest extends Request {
+public class AuthorizationRequest extends Request {
 
 
-    public CreateAuthorizationRequest(String name, String userName, String password) {
+    public AuthorizationRequest(String name, String userName, String password) {
         this.userName = userName;
         this.password = password;
     }

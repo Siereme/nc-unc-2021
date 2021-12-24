@@ -1,9 +1,8 @@
 package dto.response;
 
-import app.controller.FilmController;
 import app.model.film.Film;
 import dto.controller.ClientServerFilmController;
-import dto.request.CreateFindByFilterRequest;
+import dto.request.FindByFilterRequest;
 
 import java.util.LinkedList;
 
@@ -16,7 +15,7 @@ public class GetFindByFilterResponse extends Response {
 
     private final LinkedList<Film> films;
 
-    public GetFindByFilterResponse(String name, CreateFindByFilterRequest findByFilterRequest) {
+    public GetFindByFilterResponse(String name, FindByFilterRequest findByFilterRequest) {
         super(name);
         ClientServerFilmController clientServerFilmController = new ClientServerFilmController();
         films = clientServerFilmController.getFilmsByFilter(findByFilterRequest);

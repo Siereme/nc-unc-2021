@@ -2,7 +2,7 @@ package app.viewFX.login;
 
 import app.model.user.IUser;
 import app.viewFX.Main;
-import dto.request.CreateAuthorizationRequest;
+import dto.request.AuthorizationRequest;
 import dto.response.GetAuthorizationResponse;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,8 +27,8 @@ public class Login extends Main {
 
     @FXML
     protected void login(ActionEvent event) throws IOException, ClassNotFoundException {
-        CreateAuthorizationRequest authorizationRequest =
-                new CreateAuthorizationRequest("request", loginField.getText(), passwordField.getText());
+        AuthorizationRequest authorizationRequest =
+                new AuthorizationRequest("request", loginField.getText(), passwordField.getText());
 
         GetAuthorizationResponse response =
                 (GetAuthorizationResponse) communicationInterface.exchange(authorizationRequest);

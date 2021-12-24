@@ -7,7 +7,7 @@ import app.model.actor.Actor;
 import app.model.director.Director;
 import app.model.film.Film;
 import app.model.genre.Genre;
-import dto.request.CreateGetEntityRequest;
+import dto.request.GetEntityRequest;
 import dto.response.GetEntityResponse;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
@@ -29,22 +29,22 @@ public class TableFilm{
         this.date = film.getDate();
         GenreController genreController = new GenreController();
         for (String id : film.getGenres()){
-            CreateGetEntityRequest createGetEntityRequest = new CreateGetEntityRequest(id, genreController);
-            GetEntityResponse getEntityResponse = new GetEntityResponse("response", createGetEntityRequest);
+            GetEntityRequest getEntityRequest = new GetEntityRequest(id, genreController);
+            GetEntityResponse getEntityResponse = new GetEntityResponse("response", getEntityRequest);
             Genre genre = (Genre) getEntityResponse.getEntity();
             this.genres.getItems().add("Title: " + genre.getTittle());
         }
         ActorController actorController = new ActorController();
         for (String id : film.getActors()){
-            CreateGetEntityRequest createGetEntityRequest = new CreateGetEntityRequest(id, actorController);
-            GetEntityResponse getEntityResponse = new GetEntityResponse("response", createGetEntityRequest);
+            GetEntityRequest getEntityRequest = new GetEntityRequest(id, actorController);
+            GetEntityResponse getEntityResponse = new GetEntityResponse("response", getEntityRequest);
             Actor actor = (Actor) getEntityResponse.getEntity();
             this.actors.getItems().add("Name: " + actor.getName() + "\n" + "Year: " + actor.getYear());
         }
         DirectorController directorController = new DirectorController();
         for (String id : film.getDirectors()){
-            CreateGetEntityRequest createGetEntityRequest = new CreateGetEntityRequest(id, directorController);
-            GetEntityResponse getEntityResponse = new GetEntityResponse("response", createGetEntityRequest);
+            GetEntityRequest getEntityRequest = new GetEntityRequest(id, directorController);
+            GetEntityResponse getEntityResponse = new GetEntityResponse("response", getEntityRequest);
             Director director = (Director) getEntityResponse.getEntity();
             this.directors.getItems().add("Name: " + director.getName() + "\n" + "Year: " + director.getYear());
         }

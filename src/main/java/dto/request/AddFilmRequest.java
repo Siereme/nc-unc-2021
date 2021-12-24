@@ -3,12 +3,16 @@ package dto.request;
 import java.util.Date;
 import java.util.LinkedList;
 
-public class CreateEditFilmRequest extends Request {
-    public String getFilmId() {
-        return filmId;
-    }
+public class AddFilmRequest extends Request {
 
-    private final String filmId;
+    public AddFilmRequest(String filmName, Date filmDate, LinkedList<String> filmGenres,
+                          LinkedList<String> filmDirectors, LinkedList<String> filmActors) {
+        this.filmName = filmName;
+        this.filmDate = filmDate;
+        this.filmGenres = filmGenres;
+        this.filmDirectors = filmDirectors;
+        this.filmActors = filmActors;
+    }
 
     public String getFilmName() {
         return filmName;
@@ -36,18 +40,8 @@ public class CreateEditFilmRequest extends Request {
     private final LinkedList<String> filmDirectors;
     private final LinkedList<String> filmActors;
 
-    public CreateEditFilmRequest(String filmId, String filmName, Date filmDate, LinkedList<String> filmGenres,
-                                 LinkedList<String> filmDirectors, LinkedList<String> filmActors) {
-        this.filmId = filmId;
-        this.filmName = filmName;
-        this.filmDate = filmDate;
-        this.filmGenres = filmGenres;
-        this.filmDirectors = filmDirectors;
-        this.filmActors = filmActors;
-    }
-
     public String toString() {
-        return "CreateEditFilmRequest: request " + "filmId:" + filmId + filmName;
+        return "CreateAddFilmRequest : request " + filmName;
     }
 
 }

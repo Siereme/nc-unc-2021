@@ -2,11 +2,11 @@ package dto.response;
 
 import app.model.user.IUser;
 import dto.controller.GetAuthorizationController;
-import dto.request.CreateAuthorizationRequest;
+import dto.request.AuthorizationRequest;
 
 /** request send new User to client */
 public class GetAuthorizationResponse extends Response {
-    public GetAuthorizationResponse(String name, CreateAuthorizationRequest authorizationRequest) {
+    public GetAuthorizationResponse(String name, AuthorizationRequest authorizationRequest) {
         super(name);
 
         GetAuthorizationController authorizationController = new GetAuthorizationController();

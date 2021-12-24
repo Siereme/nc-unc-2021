@@ -3,7 +3,7 @@ package dto.response;
 import app.controller.IEntityController;
 import app.model.IEntity;
 import dto.controller.EntityController;
-import dto.request.CreateGetEntityRequest;
+import dto.request.GetEntityRequest;
 
 /** request send entity to client*/
 public class GetEntityResponse<T extends IEntity> extends Response {
@@ -16,7 +16,7 @@ public class GetEntityResponse<T extends IEntity> extends Response {
         this.entity = entity;
     }
 
-    public GetEntityResponse(String name, CreateGetEntityRequest<T> entityRequest) {
+    public GetEntityResponse(String name, GetEntityRequest<T> entityRequest) {
         super(name);
         IEntityController<T> entityController = entityRequest.getEntityController();
         EntityController<T> getEntityController = new EntityController<>(entityController);

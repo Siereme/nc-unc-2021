@@ -1,11 +1,11 @@
 package dto.response;
 
 import dto.controller.ClientServerFilmController;
-import dto.request.CreateEditFilmRequest;
+import dto.request.EditFilmRequest;
 
 public class GetFilmEditResponse extends Response {
 
-    public GetFilmEditResponse(String name, CreateEditFilmRequest editFilmRequest) {
+    public GetFilmEditResponse(String name, EditFilmRequest editFilmRequest) {
         super(name);
         ClientServerFilmController editFilmController = new ClientServerFilmController();
         isSuccessfully = editFilmController.editFilm(editFilmRequest);

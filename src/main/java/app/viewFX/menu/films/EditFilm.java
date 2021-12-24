@@ -8,10 +8,8 @@ import app.model.actor.Actor;
 import app.model.director.Director;
 import app.model.film.Film;
 import app.model.genre.Genre;
-import dto.request.CreateAddFilmRequest;
-import dto.request.CreateEditFilmRequest;
-import dto.request.CreateGetEntitiesByNamesRequest;
-import dto.response.GetAddFilmResponse;
+import dto.request.EditFilmRequest;
+import dto.request.GetEntitiesByNamesRequest;
 import dto.response.GetEntitiesByNamesResponse;
 import dto.response.GetFilmEditResponse;
 import javafx.event.ActionEvent;
@@ -69,7 +67,7 @@ public class EditFilm implements Initializable{
     public void editFilm(ActionEvent event) {
         LinkedList<String> genres = new LinkedList<>(genreList.getItems().stream().filter(x -> x.getText().length() > 0).map(x -> x.getText()).toList());
         GenreController genreController = new GenreController();
-        CreateGetEntitiesByNamesRequest createRequestGenre = new CreateGetEntitiesByNamesRequest(
+        GetEntitiesByNamesRequest createRequestGenre = new GetEntitiesByNamesRequest(
                 genres,
                 genreController
         );
@@ -79,7 +77,7 @@ public class EditFilm implements Initializable{
 
         LinkedList<String> actors = new LinkedList<>(actorList.getItems().stream().filter(x -> x.getText().length() > 0).map(x -> x.getText()).toList());
         ActorController actorController = new ActorController();
-        CreateGetEntitiesByNamesRequest createRequestActor = new CreateGetEntitiesByNamesRequest(
+        GetEntitiesByNamesRequest createRequestActor = new GetEntitiesByNamesRequest(
                 actors,
                 actorController
         );
@@ -89,7 +87,7 @@ public class EditFilm implements Initializable{
 
         LinkedList<String> directors = new LinkedList<>(directorList.getItems().stream().filter(x -> x.getText().length() > 0).map(x -> x.getText()).toList());
         DirectorController directorController = new DirectorController();
-        CreateGetEntitiesByNamesRequest createRequestDirector = new CreateGetEntitiesByNamesRequest(
+        GetEntitiesByNamesRequest createRequestDirector = new GetEntitiesByNamesRequest(
                 directors,
                 directorController
         );
@@ -98,7 +96,7 @@ public class EditFilm implements Initializable{
         directorIds.addAll(getResponseDirector.stream().map(x -> x.getId()).toList());
 
         FilmController filmController = new FilmController();
-        CreateEditFilmRequest editFilmRequest = new CreateEditFilmRequest(
+        EditFilmRequest editFilmRequest = new EditFilmRequest(
                 this.film.getId(),
                 titleField.getText(),
                 this.film.getDate(),

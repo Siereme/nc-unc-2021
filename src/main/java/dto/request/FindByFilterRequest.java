@@ -3,10 +3,10 @@ package dto.request;
 import java.util.LinkedList;
 
 /** request send list of actors name, list of genres name, list of directors name to server */
-public class CreateFindByFilterRequest extends Request {
+public class FindByFilterRequest extends Request {
 
-    public CreateFindByFilterRequest(LinkedList<String> actors, LinkedList<String> genres,
-                                     LinkedList<String> directors) {
+    public FindByFilterRequest(LinkedList<String> actors, LinkedList<String> genres,
+                               LinkedList<String> directors) {
         this.actors = actors;
         this.genres = genres;
         this.directors = directors;

@@ -1,18 +1,9 @@
 package app.viewFX.menu.films;
 
-import app.controller.ActorController;
-import app.controller.DirectorController;
 import app.controller.FilmController;
-import app.controller.GenreController;
-import app.model.actor.Actor;
-import app.model.director.Director;
 import app.model.film.Film;
-import app.model.genre.Genre;
-import app.repository.FilmsRepository;
-import app.viewFX.Main;
-import dto.request.CreateFindByFilterRequest;
-import dto.request.CreateGetEntitiesByNamesRequest;
-import dto.request.CreateRemoveEntityRequest;
+import dto.request.FindByFilterRequest;
+import dto.request.RemoveEntityRequest;
 import dto.response.GetFindByFilterResponse;
 import dto.response.GetRemoveEntityResponse;
 import javafx.collections.FXCollections;
@@ -109,7 +100,7 @@ public class Films extends Menu implements Initializable {
             FilmController filmController = new FilmController();
             List<String> removeFilmIds = films.stream().filter(film -> film.getChecked().isSelected()).map(x -> x.getId()).toList();
             for(String id : removeFilmIds){
-                CreateRemoveEntityRequest removeEntityRequest = new CreateRemoveEntityRequest(id, filmController);
+                RemoveEntityRequest removeEntityRequest = new RemoveEntityRequest(id, filmController);
                 new GetRemoveEntityResponse<Film>("response", removeEntityRequest);
             }
             search();
@@ -118,13 +109,13 @@ public class Films extends Menu implements Initializable {
 
 
     private void getFilms() {
-        CreateFindByFilterRequest createFindByFilterRequest =
-                new CreateFindByFilterRequest(
+        FindByFilterRequest findByFilterRequest =
+                new FindByFilterRequest(
                         new LinkedList<String>(Collections.singleton(actor.getText())),
                         new LinkedList<String>(Collections.singleton(genre.getText())),
                         new LinkedList<String>(Collections.singleton(director.getText()))
                 );
-        GetFindByFilterResponse getFindByFilterResponse = new GetFindByFilterResponse("response", createFindByFilterRequest);
+        GetFindByFilterResponse getFindByFilterResponse = new GetFindByFilterResponse("response", findByFilterRequest);
         filmList = getFindByFilterResponse.getFilms();
         films.clear();
         films.addAll(filmList.stream().map(x -> new TableFilm(x)).toList());

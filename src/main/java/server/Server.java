@@ -1,20 +1,16 @@
 package server;
 
+import app.controller.FilmController;
+import app.controller.IEntityController;
 import app.model.IEntity;
-import dto.request.CreateAddFilmRequest;
-import dto.request.CreateAuthorizationRequest;
-import dto.request.CreateEditFilmRequest;
-import dto.request.CreateFindByFilterRequest;
-import dto.request.CreateGetEntitiesByNamesRequest;
-import dto.request.CreateGetEntityRequest;
-import dto.request.CreateRemoveEntityRequest;
+import app.model.film.Film;
+import dto.request.*;
 import dto.response.GetAddFilmResponse;
 import dto.response.GetAuthorizationResponse;
 import dto.response.GetEntitiesByNamesResponse;
 import dto.response.GetEntityResponse;
 import dto.response.GetFilmEditResponse;
 import dto.response.GetFindByFilterResponse;
-import dto.request.Request;
 import dto.response.GetRemoveEntityResponse;
 import dto.response.Response;
 
@@ -23,8 +19,11 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -74,25 +73,47 @@ public class Server {
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
         }
 
-        private Response respond(Request request) {
-            if (request instanceof CreateAuthorizationRequest) {
-                return new GetAuthorizationResponse("ok", (CreateAuthorizationRequest) request);
-            } else if (request instanceof CreateFindByFilterRequest) {
-                return new GetFindByFilterResponse("ok", (CreateFindByFilterRequest) request);
-            } else if (request instanceof CreateAddFilmRequest) {
-                return new GetAddFilmResponse("ok", (CreateAddFilmRequest) request);
-            } else if (request instanceof CreateGetEntitiesByNamesRequest) {
-                return new GetEntitiesByNamesResponse("ok", (CreateGetEntitiesByNamesRequest) request);
-            } else if (request instanceof CreateGetEntityRequest) {
-                return new GetEntityResponse("ok", (CreateGetEntityRequest) request);
-            } else if (request instanceof CreateEditFilmRequest) {
-                return new GetFilmEditResponse("ok", (CreateEditFilmRequest) request);
-            } else if (request instanceof CreateRemoveEntityRequest) {
-                return new GetRemoveEntityResponse("ok", (CreateRemoveEntityRequest) request);
-            } else {
+        private static final Map<Class<? extends IEntity>, Class<? extends IEntityController>> REQUEST_RESOLVER_HASH_MAP_CHECK = new HashMap<>();
+        static {
+            REQUEST_RESOLVER_HASH_MAP_CHECK.put (Film.class, FilmController.class);
+        }
+
+        private Response respond(Request request) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+            Class<? extends IEntity> entityClass = request.getEntityType();
+            Class<? extends IEntityController> controllerClass = REQUEST_RESOLVER_HASH_MAP_CHECK.get(entityClass);
+            IEntityController controller = controllerClass.getConstructor().newInstance();
+
+            if (request instanceof AuthorizationRequest) {
+                return new GetAuthorizationResponse("ok", (AuthorizationRequest) request);
+            } else if (request instanceof FindByFilterRequest) {
+                return new GetFindByFilterResponse("ok", (FindByFilterRequest) request);
+            } else if (request instanceof AddFilmRequest) {
+                return new GetAddFilmResponse("ok", (AddFilmRequest) request);
+            } else if (request instanceof GetEntitiesByNamesRequest) {
+                return new GetEntitiesByNamesResponse("ok", (GetEntitiesByNamesRequest) request);
+            } else if (request instanceof GetEntityRequest) {
+                return new GetEntityResponse("ok", (GetEntityRequest) request);
+            } else if (request instanceof EditFilmRequest) {
+                return new GetFilmEditResponse("ok", (EditFilmRequest) request);
+            } else if (request instanceof RemoveEntityRequest) {
+//                controller.removeEntity(request);
+                return new GetRemoveEntityResponse("ok", (RemoveEntityRequest) request);
+            } else if (request instanceof AddEntityRequest request1){
+//                controller.addEntity(request1.getEntity());
+                    return null;
+            }
+            else {
                 return new Response("error");
             }
         }

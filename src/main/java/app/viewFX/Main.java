@@ -26,9 +26,9 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(Login.class.getResource("login.fxml"));
-        Stage stageLogin = new Stage();
-        stageLogin.setScene(new Scene(loader.load()));
-        stageLogin.showAndWait();
+//        Stage stageLogin = new Stage();
+//        stageLogin.setScene(new Scene(loader.load()));
+//        stageLogin.showAndWait();
 
 
         loader = new FXMLLoader(Menu.class.getResource("main-menu.fxml"));

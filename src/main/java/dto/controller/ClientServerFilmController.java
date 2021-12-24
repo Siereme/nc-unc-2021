@@ -5,9 +5,9 @@ import app.controller.DirectorController;
 import app.controller.FilmController;
 import app.controller.GenreController;
 import app.model.film.Film;
-import dto.request.CreateAddFilmRequest;
-import dto.request.CreateEditFilmRequest;
-import dto.request.CreateFindByFilterRequest;
+import dto.request.AddFilmRequest;
+import dto.request.EditFilmRequest;
+import dto.request.FindByFilterRequest;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -18,7 +18,7 @@ public class ClientServerFilmController {
     DirectorController directorController = new DirectorController();
     GenreController genreController = new GenreController();
 
-    public boolean editFilm(CreateEditFilmRequest editFilmRequest) {
+    public boolean editFilm(EditFilmRequest editFilmRequest) {
         String id = editFilmRequest.getFilmId();
         String tittle = editFilmRequest.getFilmName();
         Date date = editFilmRequest.getFilmDate();
@@ -28,7 +28,7 @@ public class ClientServerFilmController {
         return filmController.edit(id, tittle, date, actors, directors, genres);
     }
 
-    public boolean addFilm(CreateAddFilmRequest addFilmRequest) {
+    public boolean addFilm(AddFilmRequest addFilmRequest) {
         String filmTittle = addFilmRequest.getFilmName();
         Date filmDate = addFilmRequest.getFilmDate();
         LinkedList<String> genres = addFilmRequest.getFilmGenres();
@@ -39,7 +39,7 @@ public class ClientServerFilmController {
         return true;
     }
 
-    public LinkedList<Film> getFilmsByFilter(CreateFindByFilterRequest findByFilterRequest) {
+    public LinkedList<Film> getFilmsByFilter(FindByFilterRequest findByFilterRequest) {
         LinkedList<String> actorNames = findByFilterRequest.getActors();
         LinkedList<String> actorIds = actorController.getIdsByNames(actorNames);
 
