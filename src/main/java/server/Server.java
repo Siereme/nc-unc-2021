@@ -7,7 +7,10 @@ import app.controller.imp.GenreController;
 import app.controller.IEntityController;
 import app.controller.imp.UserController;
 import app.model.IEntity;
+import app.model.actor.Actor;
+import app.model.director.Director;
 import app.model.film.Film;
+import app.model.genre.Genre;
 import app.model.user.IUser;
 import dto.request.*;
 import dto.response.GetAuthorizationResponse;
@@ -74,15 +77,7 @@ public class Server {
                     dos.writeObject(response);
                     System.out.println(" response sent");
                 }
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (InvocationTargetException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e) {
-                e.printStackTrace();
-            } catch (InstantiationException e) {
-                e.printStackTrace();
-            } catch (IllegalAccessException e) {
+            } catch (IOException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
         }
@@ -92,6 +87,10 @@ public class Server {
 
         static {
             REQUEST_RESOLVER_HASH_MAP_CHECK.put(Film.class, FilmController.class);
+            REQUEST_RESOLVER_HASH_MAP_CHECK.put(IUser.class, UserController.class);
+            REQUEST_RESOLVER_HASH_MAP_CHECK.put(Genre.class, GenreController.class);
+            REQUEST_RESOLVER_HASH_MAP_CHECK.put(Actor.class, ActorController.class);
+            REQUEST_RESOLVER_HASH_MAP_CHECK.put(Director.class, DirectorController.class);
         }
 
         private Response respond(Request request)

@@ -1,5 +1,7 @@
 package dto.request;
 
+import app.model.film.Film;
+
 import java.util.LinkedList;
 
 /** request send list of actors name, list of genres name, list of directors name to server */
@@ -7,6 +9,7 @@ public class FindByFilterRequest extends Request {
 
     public FindByFilterRequest(LinkedList<String> actors, LinkedList<String> genres,
                                LinkedList<String> directors) {
+        setEntityType(Film.class);
         this.actors = actors;
         this.genres = genres;
         this.directors = directors;

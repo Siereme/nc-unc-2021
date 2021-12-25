@@ -12,7 +12,10 @@ import dto.response.GetEntityResponse;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 public class TableFilm{
     private String id;
@@ -23,31 +26,17 @@ public class TableFilm{
     private ListView<String> actors = new ListView<>();
     private ListView<String> directors = new ListView<>();
 
-    public TableFilm(Film film) {
+    public TableFilm(Film film, List<Genre> genreList, List<Actor> actorList, List<Director> directorList) throws IOException {
+        init(film, genreList, actorList, directorList);
+    }
+
+    private void init(Film film, List<Genre> genreList, List<Actor> actorList, List<Director> directorList) {
         this.id = film.getId();
         this.title = film.getTittle();
         this.date = film.getDate();
-        GenreController genreController = new GenreController();
-        for (String id : film.getGenres()){
-            GetEntityRequest getEntityRequest = new GetEntityRequest(id, genreController);
-            GetEntityResponse getEntityResponse = new GetEntityResponse("response", getEntityRequest);
-            Genre genre = (Genre) getEntityResponse.getEntity();
-            this.genres.getItems().add("Title: " + genre.getTittle());
-        }
-        ActorController actorController = new ActorController();
-        for (String id : film.getActors()){
-            GetEntityRequest getEntityRequest = new GetEntityRequest(id, actorController);
-            GetEntityResponse getEntityResponse = new GetEntityResponse("response", getEntityRequest);
-            Actor actor = (Actor) getEntityResponse.getEntity();
-            this.actors.getItems().add("Name: " + actor.getName() + "\n" + "Year: " + actor.getYear());
-        }
-        DirectorController directorController = new DirectorController();
-        for (String id : film.getDirectors()){
-            GetEntityRequest getEntityRequest = new GetEntityRequest(id, directorController);
-            GetEntityResponse getEntityResponse = new GetEntityResponse("response", getEntityRequest);
-            Director director = (Director) getEntityResponse.getEntity();
-            this.directors.getItems().add("Name: " + director.getName() + "\n" + "Year: " + director.getYear());
-        }
+        genreList.forEach(genre -> this.genres.getItems().add("Title: " + genre.getTittle()));
+        actorList.forEach(actor -> this.actors.getItems().add("Name: " + actor.getName() + "\n" + "Year: " + actor.getYear()));
+        directorList.forEach(director -> this.directors.getItems().add("Name: " + director.getName() + "\n" + "Year: " + director.getYear()));
     }
 
 

@@ -2,26 +2,25 @@ package app.viewFX.menu.films;
 
 import app.controller.imp.ActorController;
 import app.controller.imp.DirectorController;
-import app.controller.imp.FilmController;
 import app.controller.imp.GenreController;
 import app.model.actor.Actor;
 import app.model.director.Director;
 import app.model.film.Film;
 import app.model.genre.Genre;
-import dto.request.GetEntitiesByNamesRequest;
-import dto.response.GetEntitiesByNamesResponse;
+import dto.request.EditEntityRequest;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
+import javafx.scene.control.TextInputControl;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class EditFilm implements Initializable{
+public class EditFilm extends Films implements Initializable{
     @FXML
     private TextField titleField;
     @FXML private TextField dateField;
@@ -33,7 +32,7 @@ public class EditFilm implements Initializable{
     ActorController actorController = new ActorController();
     DirectorController directorController = new DirectorController();
 
-    public EditFilm(Film film) {
+    public EditFilm(Film film) throws IOException {
         this.film = film;
     }
 
@@ -63,38 +62,21 @@ public class EditFilm implements Initializable{
     }
 
     public void editFilm(ActionEvent event) {
-        LinkedList<String> genres = new LinkedList<>(genreList.getItems().stream().filter(x -> x.getText().length() > 0).map(x -> x.getText()).toList());
-        GenreController genreController = new GenreController();
-        GetEntitiesByNamesRequest createRequestGenre = new GetEntitiesByNamesRequest(
-                genres,
-                genreController
-        );
-        List<Genre> getResponseGenre = (List<Genre>) new GetEntitiesByNamesResponse("response", createRequestGenre).getEntities();
-        LinkedList<String> genreIds = new LinkedList<>();
-        genreIds.addAll(getResponseGenre.stream().map(x -> x.getId()).toList());
 
-        LinkedList<String> actors = new LinkedList<>(actorList.getItems().stream().filter(x -> x.getText().length() > 0).map(x -> x.getText()).toList());
-        ActorController actorController = new ActorController();
-        GetEntitiesByNamesRequest createRequestActor = new GetEntitiesByNamesRequest(
-                actors,
-                actorController
-        );
-        List<Actor> getResponseActor = (List<Actor>) new GetEntitiesByNamesResponse("response", createRequestActor).getEntities();
-        LinkedList<String> actorIds = new LinkedList<>();
-        actorIds.addAll(getResponseActor.stream().map(x -> x.getId()).toList());
+        LinkedList<String> genres = genreList.getItems().stream().map(TextInputControl::getText).filter(text -> text.length() > 0).collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<Genre> genreList = getEntitiesByNames(genres, Genre.class);
+        LinkedList<String> genreIds = genreList.stream().map(Genre::getId).collect(Collectors.toCollection(LinkedList::new));
 
-        LinkedList<String> directors = new LinkedList<>(directorList.getItems().stream().filter(x -> x.getText().length() > 0).map(x -> x.getText()).toList());
-        DirectorController directorController = new DirectorController();
-        GetEntitiesByNamesRequest createRequestDirector = new GetEntitiesByNamesRequest(
-                directors,
-                directorController
-        );
-        List<Director> getResponseDirector = (List<Director>) new GetEntitiesByNamesResponse("request", createRequestDirector).getEntities();
-        LinkedList<String> directorIds = new LinkedList<>();
-        directorIds.addAll(getResponseDirector.stream().map(x -> x.getId()).toList());
 
-        FilmController filmController = new FilmController();
-        EditFilmRequest editFilmRequest = new EditFilmRequest(
+        LinkedList<String> actors = actorList.getItems().stream().map(TextInputControl::getText).filter(text -> text.length() > 0).collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<Actor> actorList = getEntitiesByNames(actors, Actor.class);
+        LinkedList<String> actorIds = actorList.stream().map(Actor::getId).collect(Collectors.toCollection(LinkedList::new));
+
+        LinkedList<String> directors = directorList.getItems().stream().map(TextInputControl::getText).filter(text -> text.length() > 0).collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<Director> directorList = getEntitiesByNames(directors, Director.class);
+        LinkedList<String> directorIds = directorList.stream().map(Director::getId).collect(Collectors.toCollection(LinkedList::new));
+
+        EntityFilm film = new EntityFilm(
                 this.film.getId(),
                 titleField.getText(),
                 this.film.getDate(),
@@ -102,11 +84,14 @@ public class EditFilm implements Initializable{
                 directorIds,
                 actorIds
         );
-        GetFilmEditResponse filmEditResponse = new GetFilmEditResponse("response", editFilmRequest);
 
+        EditEntityRequest editEntityRequest = new EditEntityRequest(film);
+        try {
+            communicationInterface.exchange(editEntityRequest);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        Node source = (Node) event.getSource();
-        Stage stage = (Stage) source.getScene().getWindow();
-        stage.close();
+        closeStage(event);
     }
 }

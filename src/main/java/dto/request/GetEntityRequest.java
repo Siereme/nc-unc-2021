@@ -12,6 +12,7 @@ public class GetEntityRequest extends Request {
     private final String entityId;
 
     public GetEntityRequest(String id, Class<? extends IEntity> entityType) {
+        setEntityType(entityType);
         this.entityType = entityType;
         entityId = id;
     }

@@ -13,6 +13,7 @@ public class GetEntitiesByNamesRequest extends Request {
     private final LinkedList<String> names;
 
     public GetEntitiesByNamesRequest(LinkedList<String> names, Class<? extends IEntity> entityType) {
+        setEntityType(entityType);
         this.entityType = entityType;
         this.names = names;
     }

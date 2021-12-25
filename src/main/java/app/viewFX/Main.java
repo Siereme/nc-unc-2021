@@ -18,17 +18,19 @@ import java.io.IOException;
 
 public class Main extends Application {
     protected CommunicationInterface communicationInterface = new CommunicationInterface();
-    public static IUser CURRENT_USER;
+
+    private IUser currentUser;
 
     public Main() throws IOException {
     }
 
     @Override
     public void start(Stage stage) throws IOException {
+
         FXMLLoader loader = new FXMLLoader(Login.class.getResource("login.fxml"));
-//        Stage stageLogin = new Stage();
-//        stageLogin.setScene(new Scene(loader.load()));
-//        stageLogin.showAndWait();
+        Stage stageLogin = new Stage();
+        stageLogin.setScene(new Scene(loader.load()));
+        stageLogin.showAndWait();
 
 
         loader = new FXMLLoader(Menu.class.getResource("main-menu.fxml"));
@@ -36,6 +38,19 @@ public class Main extends Application {
         stage.show();
     }
 
+    protected void closeStage(ActionEvent event){
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
+    }
+
+    public IUser getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(IUser currentUser) {
+        this.currentUser = currentUser;
+    }
 
     public static void main(String[] args) {
         launch();

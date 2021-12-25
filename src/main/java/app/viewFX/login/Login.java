@@ -23,6 +23,7 @@ public class Login extends Main {
 
     public Login() throws IOException {
     }
+
     // Main main; // нужно хранить родителя...
 
     @FXML
@@ -41,10 +42,8 @@ public class Login extends Main {
             passwordField.setText("");
         }
         else{
-            Main.CURRENT_USER = currentUser;
-            Node source = (Node) event.getSource();
-            Stage stage = (Stage) source.getScene().getWindow();
-            stage.close();
+            setCurrentUser(currentUser);
+            closeStage(event);
         }
     }
 }

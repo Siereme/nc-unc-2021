@@ -1,10 +1,13 @@
 package dto.request;
 
+import app.model.user.IUser;
+
 /** request send user name and password to server */
 public class AuthorizationRequest extends Request {
 
 
     public AuthorizationRequest(String userName, String password) {
+        setEntityType(IUser.class);
         this.userName = userName;
         this.password = password;
     }
