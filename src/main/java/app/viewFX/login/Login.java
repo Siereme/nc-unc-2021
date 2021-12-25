@@ -28,7 +28,7 @@ public class Login extends Main {
     @FXML
     protected void login(ActionEvent event) throws IOException, ClassNotFoundException {
         AuthorizationRequest authorizationRequest =
-                new AuthorizationRequest("request", loginField.getText(), passwordField.getText());
+                new AuthorizationRequest(loginField.getText(), passwordField.getText());
 
         GetAuthorizationResponse response =
                 (GetAuthorizationResponse) communicationInterface.exchange(authorizationRequest);

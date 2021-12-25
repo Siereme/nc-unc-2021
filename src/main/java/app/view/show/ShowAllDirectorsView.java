@@ -1,6 +1,6 @@
 package app.view.show;
 
-import app.controller.DirectorController;
+import app.controller.imp.DirectorController;
 import app.model.user.IUser;
 import app.view.View;
 

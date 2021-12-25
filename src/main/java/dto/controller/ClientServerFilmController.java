@@ -1,12 +1,10 @@
 package dto.controller;
 
-import app.controller.ActorController;
-import app.controller.DirectorController;
-import app.controller.FilmController;
-import app.controller.GenreController;
+import app.controller.imp.ActorController;
+import app.controller.imp.DirectorController;
+import app.controller.imp.FilmController;
+import app.controller.imp.GenreController;
 import app.model.film.Film;
-import dto.request.AddFilmRequest;
-import dto.request.EditFilmRequest;
 import dto.request.FindByFilterRequest;
 
 import java.util.Date;

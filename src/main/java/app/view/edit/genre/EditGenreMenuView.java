@@ -1,6 +1,6 @@
 package app.view.edit.genre;
 
-import app.controller.GenreController;
+import app.controller.imp.GenreController;
 import app.model.genre.Genre;
 import app.model.user.IUser;
 import app.view.IView;

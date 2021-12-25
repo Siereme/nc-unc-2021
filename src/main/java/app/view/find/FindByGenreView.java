@@ -1,7 +1,7 @@
 package app.view.find;
 
-import app.controller.FilmController;
-import app.controller.GenreController;
+import app.controller.imp.FilmController;
+import app.controller.imp.GenreController;
 import app.model.genre.Genre;
 import app.model.user.IUser;
 import app.view.IView;

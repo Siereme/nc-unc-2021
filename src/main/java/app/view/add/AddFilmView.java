@@ -1,8 +1,8 @@
 package app.view.add;
 
-import app.controller.ActorController;
-import app.controller.DirectorController;
-import app.controller.FilmController;
+import app.controller.imp.ActorController;
+import app.controller.imp.DirectorController;
+import app.controller.imp.FilmController;
 import app.model.film.Film;
 import app.model.user.IUser;
 import app.view.IView;

@@ -15,10 +15,9 @@ public class GetFindByFilterResponse extends Response {
 
     private final LinkedList<Film> films;
 
-    public GetFindByFilterResponse(String name, FindByFilterRequest findByFilterRequest) {
+    public GetFindByFilterResponse(String name, LinkedList<Film> newFilms) {
         super(name);
-        ClientServerFilmController clientServerFilmController = new ClientServerFilmController();
-        films = clientServerFilmController.getFilmsByFilter(findByFilterRequest);
+        films = newFilms;
     }
 
     public String toString() {

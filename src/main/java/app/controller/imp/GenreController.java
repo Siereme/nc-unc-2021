@@ -1,5 +1,6 @@
-package app.controller;
+package app.controller.imp;
 
+import app.controller.IEntityController;
 import app.model.IEntity;
 import app.model.genre.Genre;
 import app.repository.GenreRepository;
@@ -63,6 +64,11 @@ public class GenreController implements IEntityController<Genre> {
     public boolean remove(String id) {
         Genre genre = getEntityById(id);
         return repository.findAll().remove(genre);
+    }
+
+    @Override
+    public boolean remove(Genre entity) {
+        return repository.findAll().remove(entity);
     }
 
     public Genre getEntityById(String id) {

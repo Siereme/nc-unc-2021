@@ -1,6 +1,6 @@
 package app.viewFX.menu.remove.removeDirector;
 
-import app.controller.DirectorController;
+import app.controller.imp.DirectorController;
 import app.viewFX.IView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

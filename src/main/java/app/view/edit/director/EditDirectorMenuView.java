@@ -1,7 +1,7 @@
 package app.view.edit.director;
 
-import app.controller.DirectorController;
-import app.controller.FilmController;
+import app.controller.imp.DirectorController;
+import app.controller.imp.FilmController;
 import app.model.director.Director;
 import app.model.user.IUser;
 import app.view.IView;

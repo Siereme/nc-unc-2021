@@ -1,6 +1,6 @@
 package app.view.authorization.login;
 
-import app.controller.UserController;
+import app.controller.imp.UserController;
 import app.model.user.IUser;
 import app.view.IView;
 

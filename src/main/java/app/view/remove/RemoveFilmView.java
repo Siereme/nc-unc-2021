@@ -1,6 +1,6 @@
 package app.view.remove;
 
-import app.controller.FilmController;
+import app.controller.imp.FilmController;
 import app.model.user.IUser;
 import app.view.IView;
 import app.view.View;

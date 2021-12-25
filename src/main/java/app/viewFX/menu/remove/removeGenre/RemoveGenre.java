@@ -1,7 +1,6 @@
 package app.viewFX.menu.remove.removeGenre;
 
-import app.controller.FilmController;
-import app.controller.GenreController;
+import app.controller.imp.GenreController;
 import app.viewFX.IView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -1,6 +1,6 @@
 package app.view.remove;
 
-import app.controller.GenreController;
+import app.controller.imp.GenreController;
 import app.model.user.IUser;
 import app.view.IView;
 import app.view.View;

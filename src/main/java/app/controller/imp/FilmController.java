@@ -1,5 +1,6 @@
-package app.controller;
+package app.controller.imp;
 
+import app.controller.IEntityController;
 import app.model.IEntity;
 import app.model.actor.Actor;
 import app.model.director.Director;
@@ -73,6 +74,11 @@ public class FilmController implements IEntityController<Film> {
         repository.findAll().remove(film);
         updateRepository();
         return true;
+    }
+
+    @Override
+    public boolean remove(Film entity) {
+        return repository.findAll().remove(entity);
     }
 
     public void deleteById(Integer id) {

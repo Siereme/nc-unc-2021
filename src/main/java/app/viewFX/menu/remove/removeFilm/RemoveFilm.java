@@ -1,7 +1,6 @@
 package app.viewFX.menu.remove.removeFilm;
 
-import app.controller.ActorController;
-import app.controller.FilmController;
+import app.controller.imp.FilmController;
 import app.viewFX.IView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

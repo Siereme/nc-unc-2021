@@ -1,11 +1,9 @@
 package app.viewFX.menu.films;
 
-import app.controller.FilmController;
+import app.controller.imp.FilmController;
 import app.model.film.Film;
 import dto.request.FindByFilterRequest;
-import dto.request.RemoveEntityRequest;
 import dto.response.GetFindByFilterResponse;
-import dto.response.GetRemoveEntityResponse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -100,8 +98,9 @@ public class Films extends Menu implements Initializable {
             FilmController filmController = new FilmController();
             List<String> removeFilmIds = films.stream().filter(film -> film.getChecked().isSelected()).map(x -> x.getId()).toList();
             for(String id : removeFilmIds){
-                RemoveEntityRequest removeEntityRequest = new RemoveEntityRequest(id, filmController);
-                new GetRemoveEntityResponse<Film>("response", removeEntityRequest);
+                //
+                // RemoveEntityRequest removeEntityRequest = new RemoveEntityRequest(id, filmController);
+                // new GetRemoveEntityResponse<Film>("response", removeEntityRequest);
             }
             search();
         }

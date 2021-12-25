@@ -6,13 +6,9 @@ import dto.request.AuthorizationRequest;
 
 /** request send new User to client */
 public class GetAuthorizationResponse extends Response {
-    public GetAuthorizationResponse(String name, AuthorizationRequest authorizationRequest) {
+    public GetAuthorizationResponse(String name, IUser newUser) {
         super(name);
-
-        GetAuthorizationController authorizationController = new GetAuthorizationController();
-        String userName = authorizationRequest.getUserName();
-        String password = authorizationRequest.getPassword();
-        user = authorizationController.getUser(userName, password);
+        user = newUser;
     }
 
     private final IUser user;

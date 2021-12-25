@@ -3,23 +3,21 @@ package dto.request;
 import app.controller.IEntityController;
 import app.model.IEntity;
 
-public class RemoveEntityRequest<T extends IEntity> extends Request{
-    public String getEntityId() {
-        return entityId;
+public class RemoveEntityRequest extends Request {
+
+    public IEntity getEntity() {
+        return entity;
     }
 
-    private final String entityId;
+    private final IEntity entity;
 
-
-
-    public RemoveEntityRequest(String id, Class<? extends IEntity> entityType) {
+    public RemoveEntityRequest(IEntity entity, Class<? extends IEntity> entityType) {
         this.entityType = entityType;
-        entityId = id;
+        this.entity = entity;
     }
 
     public String toString() {
-        return "CreateRemoveEntityRequest: request " + entityId;
+        return "CreateRemoveEntityRequest: request " + entity;
     }
-
 
 }

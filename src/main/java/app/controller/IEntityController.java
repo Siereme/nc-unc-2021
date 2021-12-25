@@ -1,6 +1,7 @@
 package app.controller;
 
 import app.model.IEntity;
+import app.repository.IRepository;
 
 import java.util.LinkedList;
 
@@ -9,7 +10,6 @@ import java.util.LinkedList;
  * @version 1.0
  * */
 public interface IEntityController<T> {
-
     /** method of getting the entity by id
      * @param id - id entity, to be found
      * @return entity type object with id = @id
@@ -100,5 +100,7 @@ public interface IEntityController<T> {
     }
 
     boolean remove(String id);
+
+    boolean remove(T entity);
 
 }

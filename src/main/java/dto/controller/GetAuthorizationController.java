@@ -1,8 +1,6 @@
 package dto.controller;
 
-import app.controller.IEntityController;
-import app.controller.UserController;
-import app.model.IEntity;
+import app.controller.imp.UserController;
 import app.model.user.IUser;
 
 public class GetAuthorizationController {

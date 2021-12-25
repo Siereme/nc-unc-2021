@@ -7,19 +7,16 @@ import dto.request.GetEntitiesByNamesRequest;
 
 import java.util.LinkedList;
 
-public class GetEntitiesByNamesResponse<T extends IEntity> extends Response {
-    private final LinkedList<T> entities;
-
-    public GetEntitiesByNamesResponse(String name, GetEntitiesByNamesRequest<T> createGetEntitiesByNamesRequest) {
-        super(name);
-        IEntityController<T> entityController = createGetEntitiesByNamesRequest.getEntityController();
-        EntityController<T> getEntityController = new EntityController<>(entityController);
-        LinkedList<String> names = createGetEntitiesByNamesRequest.getNames();
-        entities = getEntityController.getEntitiesByNames(names);
+public class GetEntitiesByNamesResponse extends Response {
+    public LinkedList<? extends IEntity> getEntities() {
+        return entities;
     }
 
-    public LinkedList<T> getEntities() {
-        return entities;
+    private final LinkedList<? extends IEntity> entities;
+
+    public GetEntitiesByNamesResponse(String name, LinkedList<? extends IEntity> entities) {
+        super(name);
+        this.entities = entities;
     }
 
     public String toString() {

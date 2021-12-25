@@ -1,8 +1,8 @@
 package app.viewFX.menu.films;
 
-import app.controller.ActorController;
-import app.controller.DirectorController;
-import app.controller.GenreController;
+import app.controller.imp.ActorController;
+import app.controller.imp.DirectorController;
+import app.controller.imp.GenreController;
 import app.model.actor.Actor;
 import app.model.director.Director;
 import app.model.film.Film;

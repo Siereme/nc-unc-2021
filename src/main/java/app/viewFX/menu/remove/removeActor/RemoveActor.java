@@ -1,11 +1,9 @@
 package app.viewFX.menu.remove.removeActor;
 
-import app.controller.ActorController;
-import app.model.actor.Actor;
+import app.controller.imp.ActorController;
 import app.viewFX.IView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;

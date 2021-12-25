@@ -6,25 +6,22 @@ import dto.controller.EntityController;
 import dto.request.GetEntityRequest;
 
 /** request send entity to client*/
-public class GetEntityResponse<T extends IEntity> extends Response {
+public class GetEntityResponse extends Response {
 
-    public T getEntity() {
+    public IEntity getEntity() {
         return entity;
     }
 
-    public void setEntity(T entity) {
+    public void setEntity(IEntity entity) {
         this.entity = entity;
     }
 
-    public GetEntityResponse(String name, GetEntityRequest<T> entityRequest) {
+    public GetEntityResponse(String name, IEntity entity) {
         super(name);
-        IEntityController<T> entityController = entityRequest.getEntityController();
-        EntityController<T> getEntityController = new EntityController<>(entityController);
-        String entityId = entityRequest.getEntityId();
-        entity = getEntityController.getEntity(entityId);
+        this.entity = entity;
     }
 
-    private T entity;
+    private IEntity entity;
 
     @Override
     public String toString() {

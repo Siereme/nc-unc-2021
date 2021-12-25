@@ -1,5 +1,6 @@
-package app.controller;
+package app.controller.imp;
 
+import app.controller.IEntityController;
 import app.model.IEntity;
 import app.model.director.Director;
 import app.repository.DirectorRepository;
@@ -62,6 +63,11 @@ public class DirectorController implements IEntityController<Director> {
     public boolean remove(String id) {
         Director director = getEntityById(id);
         return repository.findAll().remove(director);
+    }
+
+    @Override
+    public boolean remove(Director entity) {
+        return repository.findAll().remove(entity);
     }
 
     public Director getEntityById(String id) {

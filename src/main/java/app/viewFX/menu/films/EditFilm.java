@@ -1,17 +1,15 @@
 package app.viewFX.menu.films;
 
-import app.controller.ActorController;
-import app.controller.DirectorController;
-import app.controller.FilmController;
-import app.controller.GenreController;
+import app.controller.imp.ActorController;
+import app.controller.imp.DirectorController;
+import app.controller.imp.FilmController;
+import app.controller.imp.GenreController;
 import app.model.actor.Actor;
 import app.model.director.Director;
 import app.model.film.Film;
 import app.model.genre.Genre;
-import dto.request.EditFilmRequest;
 import dto.request.GetEntitiesByNamesRequest;
 import dto.response.GetEntitiesByNamesResponse;
-import dto.response.GetFilmEditResponse;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

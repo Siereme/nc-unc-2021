@@ -1,6 +1,6 @@
 package app.view.show;
 
-import app.controller.GenreController;
+import app.controller.imp.GenreController;
 import app.model.user.IUser;
 import app.view.View;
 

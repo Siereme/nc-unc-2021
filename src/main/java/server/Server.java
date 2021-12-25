@@ -1,17 +1,19 @@
 package server;
 
-import app.controller.FilmController;
+import app.controller.imp.ActorController;
+import app.controller.imp.DirectorController;
+import app.controller.imp.FilmController;
+import app.controller.imp.GenreController;
 import app.controller.IEntityController;
+import app.controller.imp.UserController;
 import app.model.IEntity;
 import app.model.film.Film;
+import app.model.user.IUser;
 import dto.request.*;
-import dto.response.GetAddFilmResponse;
 import dto.response.GetAuthorizationResponse;
 import dto.response.GetEntitiesByNamesResponse;
 import dto.response.GetEntityResponse;
-import dto.response.GetFilmEditResponse;
 import dto.response.GetFindByFilterResponse;
-import dto.response.GetRemoveEntityResponse;
 import dto.response.Response;
 
 import java.io.IOException;
@@ -23,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -84,34 +87,62 @@ public class Server {
             }
         }
 
-        private static final Map<Class<? extends IEntity>, Class<? extends IEntityController>> REQUEST_RESOLVER_HASH_MAP_CHECK = new HashMap<>();
+        private static final Map<Class<? extends IEntity>, Class<? extends IEntityController>>
+                REQUEST_RESOLVER_HASH_MAP_CHECK = new HashMap<>();
+
         static {
-            REQUEST_RESOLVER_HASH_MAP_CHECK.put (Film.class, FilmController.class);
+            REQUEST_RESOLVER_HASH_MAP_CHECK.put(Film.class, FilmController.class);
         }
 
-        private Response respond(Request request) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        private Response respond(Request request)
+                throws NoSuchMethodException, InvocationTargetException, InstantiationException,
+                IllegalAccessException {
             Class<? extends IEntity> entityClass = request.getEntityType();
             Class<? extends IEntityController> controllerClass = REQUEST_RESOLVER_HASH_MAP_CHECK.get(entityClass);
             IEntityController controller = controllerClass.getConstructor().newInstance();
 
             if (request instanceof AuthorizationRequest) {
-                return new GetAuthorizationResponse("ok", (AuthorizationRequest) request);
+                UserController userController = (UserController) controller;
+                IUser user = userController.getEntityByLogin(((AuthorizationRequest) request).getUserName(),
+                        ((AuthorizationRequest) request).getPassword());
+                return new GetAuthorizationResponse("ok", user);
             } else if (request instanceof FindByFilterRequest) {
-                return new GetFindByFilterResponse("ok", (FindByFilterRequest) request);
-            } else if (request instanceof AddFilmRequest) {
-                return new GetAddFilmResponse("ok", (AddFilmRequest) request);
-            } else if (request instanceof GetEntitiesByNamesRequest) {
-                return new GetEntitiesByNamesResponse("ok", (GetEntitiesByNamesRequest) request);
-            } else if (request instanceof GetEntityRequest) {
-                return new GetEntityResponse("ok", (GetEntityRequest) request);
-            } else if (request instanceof EditFilmRequest) {
-                return new GetFilmEditResponse("ok", (EditFilmRequest) request);
+                FilmController filmController = (FilmController) controller;
+
+                LinkedList<String> actorNames = ((FindByFilterRequest) request).getActors();
+                ActorController actorController = new ActorController();
+                LinkedList<String> actorsIds = actorController.getIdsByNames(actorNames);
+
+                LinkedList<String> directorNames = ((FindByFilterRequest) request).getDirectors();
+                DirectorController directorController = new DirectorController();
+                LinkedList<String> directorIds = directorController.getIdsByNames(directorNames);
+
+                LinkedList<String> genreNames = ((FindByFilterRequest) request).getGenres();
+                GenreController genreController = new GenreController();
+                LinkedList<String> genreIds = genreController.getIdsByNames(genreNames);
+
+                LinkedList<Film> films = filmController.filmsBy(actorsIds, genreIds, directorIds);
+                return new GetFindByFilterResponse("ok", films);
+            } else if (request instanceof AddEntityRequest) {
+                IEntity entity = ((AddEntityRequest) request).getEntity();
+                controller.addEntity(entity);
+                return new Response("the entity was successfully added");
             } else if (request instanceof RemoveEntityRequest) {
-//                controller.removeEntity(request);
-                return new GetRemoveEntityResponse("ok", (RemoveEntityRequest) request);
-            } else if (request instanceof AddEntityRequest request1){
-//                controller.addEntity(request1.getEntity());
-                    return null;
+                IEntity entity = ((RemoveEntityRequest) request).getEntity();
+                boolean isSuccessfully = controller.remove(entity);
+                if (isSuccessfully) {
+                    return new Response("the entity was successfully removed");
+                } else {
+                    return new Response("failed to remove entity");
+                }
+            } else if (request instanceof GetEntityRequest) {
+                String entityId = ((GetEntityRequest) request).getEntityId();
+                IEntity entity = (IEntity) controller.getEntityById(entityId);
+                return new GetEntityResponse("ok", entity);
+            } else if(request instanceof GetEntitiesByNamesRequest){
+                LinkedList<String> names = ((GetEntitiesByNamesRequest) request).getNames();
+                LinkedList<? extends IEntity> entities = controller.getEntitiesByNames(names);
+                return new GetEntitiesByNamesResponse("ok", entities);
             }
             else {
                 return new Response("error");

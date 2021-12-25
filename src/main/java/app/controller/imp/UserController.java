@@ -1,5 +1,6 @@
-package app.controller;
+package app.controller.imp;
 
+import app.controller.IEntityController;
 import app.model.IEntity;
 import app.model.user.IUser;
 import app.repository.UserRepository;
@@ -38,6 +39,11 @@ public class UserController implements IEntityController<IUser> {
     @Override
     public boolean remove(String id) {
         return false;
+    }
+
+    @Override
+    public boolean remove(IUser entity) {
+        return repository.findAll().remove(entity);
     }
 
     public UserController() {

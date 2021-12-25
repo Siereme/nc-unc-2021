@@ -4,22 +4,16 @@ import app.controller.IEntityController;
 import app.model.IEntity;
 
 /** request send id to server */
-public class GetEntityRequest<T extends IEntity> extends Request {
+public class GetEntityRequest extends Request {
     public String getEntityId() {
         return entityId;
     }
 
     private final String entityId;
 
-    public IEntityController<T> getEntityController() {
-        return entityController;
-    }
-
-    private final IEntityController<T> entityController;
-
-    public GetEntityRequest(String id, IEntityController<T> entityController) {
+    public GetEntityRequest(String id, Class<? extends IEntity> entityType) {
+        this.entityType = entityType;
         entityId = id;
-        this.entityController = entityController;
     }
 
     public String toString() {

@@ -1,5 +1,6 @@
-package app.controller;
+package app.controller.imp;
 
+import app.controller.IEntityController;
 import app.model.IEntity;
 import app.model.actor.Actor;
 import app.repository.ActorRepository;
@@ -153,6 +154,11 @@ public class ActorController implements IEntityController<Actor> {
     public boolean remove(String id) {
         Actor actor = getEntityById(id);
         return repository.findAll().remove(actor);
+    }
+
+    @Override
+    public boolean remove(Actor entity) {
+        return repository.findAll().remove(entity);
     }
 
 }

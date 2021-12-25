@@ -1,6 +1,6 @@
 package app.view.show;
 
-import app.controller.ActorController;
+import app.controller.imp.ActorController;
 import app.model.user.IUser;
 import app.view.IView;
 import app.view.View;

@@ -4,7 +4,7 @@ package dto.request;
 public class AuthorizationRequest extends Request {
 
 
-    public AuthorizationRequest(String name, String userName, String password) {
+    public AuthorizationRequest(String userName, String password) {
         this.userName = userName;
         this.password = password;
     }
