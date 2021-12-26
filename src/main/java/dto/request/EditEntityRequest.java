@@ -4,9 +4,8 @@ import app.model.IEntity;
 import app.model.film.Film;
 
 public class EditEntityRequest extends Request{
-    public EditEntityRequest(IEntity entity) {
-        setEntityType(Film.class);
-        this.entityType = entity.getClass();
+    public EditEntityRequest(IEntity entity, Class<? extends IEntity> entityType) {
+        setEntityType(entityType);
         this.entity = entity;
     }
 

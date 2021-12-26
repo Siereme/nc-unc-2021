@@ -23,8 +23,8 @@ public class Menu extends Main {
         LinkedList<T> entities = new LinkedList<>();
         try {
             GetEntitiesByNamesResponse entitiesResponse = (GetEntitiesByNamesResponse) communicationInterface.exchange(entitiesRequest);
-            T entityList = (T) entitiesResponse.getEntities();
-            entities.addAll(entities);
+            LinkedList<T> entityList = (LinkedList<T>) entitiesResponse.getEntities();
+            entities.addAll(entityList);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

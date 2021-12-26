@@ -7,7 +7,6 @@ import app.model.actor.Actor;
 import app.model.director.Director;
 import app.model.film.Film;
 import app.model.genre.Genre;
-import dto.request.EditEntityRequest;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -76,7 +75,7 @@ public class EditFilm extends Films implements Initializable{
         LinkedList<Director> directorList = getEntitiesByNames(directors, Director.class);
         LinkedList<String> directorIds = directorList.stream().map(Director::getId).collect(Collectors.toCollection(LinkedList::new));
 
-        EntityFilm film = new EntityFilm(
+        RequestFilm film = new RequestFilm(
                 this.film.getId(),
                 titleField.getText(),
                 this.film.getDate(),
@@ -85,12 +84,12 @@ public class EditFilm extends Films implements Initializable{
                 actorIds
         );
 
-        EditEntityRequest editEntityRequest = new EditEntityRequest(film);
-        try {
-            communicationInterface.exchange(editEntityRequest);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+//        EditEntityRequest editEntityRequest = new EditEntityRequest(film);
+//        try {
+//            communicationInterface.exchange(editEntityRequest);
+//        } catch (IOException | ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
         closeStage(event);
     }

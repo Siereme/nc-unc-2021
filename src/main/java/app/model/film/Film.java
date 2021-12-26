@@ -79,6 +79,15 @@ public class Film implements IEntity {
         actors = newActors;
     }
 
+    public Film(Film film) {
+        id = UUID.randomUUID().toString();
+        tittle = film.getTittle();
+        date = film.getDate();
+        genres = film.getGenres();
+        directors = film.getDirectors();
+        actors = film.getActors();
+    }
+
     public String getId() {
         return this.id;
     }

@@ -103,4 +103,5 @@ public interface IEntityController<T> {
 
     boolean remove(T entity);
 
+    boolean edit(T entity);
 }

@@ -161,4 +161,9 @@ public class ActorController implements IEntityController<Actor> {
         return repository.findAll().remove(entity);
     }
 
+    @Override
+    public boolean edit(Actor entity) {
+        return false;
+    }
+
 }

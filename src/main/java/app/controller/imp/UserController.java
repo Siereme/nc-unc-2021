@@ -46,6 +46,11 @@ public class UserController implements IEntityController<IUser> {
         return repository.findAll().remove(entity);
     }
 
+    @Override
+    public boolean edit(IUser entity) {
+        return false;
+    }
+
     public UserController() {
         this.repository = new UserRepository();
     }

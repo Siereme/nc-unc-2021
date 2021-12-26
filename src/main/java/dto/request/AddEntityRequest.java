@@ -10,9 +10,9 @@ public class AddEntityRequest extends Request{
 
     private final IEntity entity;
 
-    public AddEntityRequest(IEntity entity) {
-        setEntityType(Film.class);
-        this.entityType = entity.getClass();
+    public AddEntityRequest(IEntity entity, Class<? extends IEntity> entityType) {
+        setEntityType(entityType);
         this.entity = entity;
     }
 }
+

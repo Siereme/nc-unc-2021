@@ -27,14 +27,9 @@ module app {
     exports app.viewFX.login to com.fasterxml.jackson.databind;
     exports app.viewFX.menu;
     exports app.viewFX.menu.films to javafx.fxml;
-    exports app.viewFX.menu.add to javafx.fxml;
-    exports app.viewFX.menu.add.addFilm to javafx.fxml;
     exports app.model.actor to com.fasterxml.jackson.databind;
     exports app.model.film to com.fasterxml.jackson.databind;
     exports app.model.director to com.fasterxml.jackson.databind;
-    exports app.viewFX.menu.remove to javafx.fxml;
-    exports app.viewFX.menu.remove.removeActor to javafx.fxml;
-    exports app.viewFX.menu.remove.removeFilm to javafx.fxml;
-    exports app.viewFX.menu.remove.removeDirector to javafx.fxml;
-    exports app.viewFX.menu.remove.removeGenre to javafx.fxml;
+    exports app.viewFX.menu.films.handle to javafx.fxml;
+    opens app.viewFX.menu.films.handle to javafx.base, javafx.fxml;
 }

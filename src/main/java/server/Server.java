@@ -126,6 +126,10 @@ public class Server {
                 IEntity entity = ((AddEntityRequest) request).getEntity();
                 controller.addEntity(entity);
                 return new Response("the entity was successfully added");
+            } else if (request instanceof EditEntityRequest) {
+                IEntity entity = ((EditEntityRequest) request).getEntity();
+                controller.edit(entity);
+                return new Response("the entity was successfully added");
             } else if (request instanceof RemoveEntityRequest) {
                 IEntity entity = ((RemoveEntityRequest) request).getEntity();
                 boolean isSuccessfully = controller.remove(entity);

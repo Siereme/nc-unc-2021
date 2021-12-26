@@ -1,5 +1,6 @@
 package dto.request;
 
+import app.model.IEntity;
 import app.model.film.Film;
 
 import java.util.LinkedList;
@@ -8,8 +9,8 @@ import java.util.LinkedList;
 public class FindByFilterRequest extends Request {
 
     public FindByFilterRequest(LinkedList<String> actors, LinkedList<String> genres,
-                               LinkedList<String> directors) {
-        setEntityType(Film.class);
+                               LinkedList<String> directors, Class<? extends IEntity> entityType) {
+        setEntityType(entityType);
         this.actors = actors;
         this.genres = genres;
         this.directors = directors;

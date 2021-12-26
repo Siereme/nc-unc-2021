@@ -1,30 +1,17 @@
 package app.viewFX.menu.films;
 
-import app.controller.imp.ActorController;
-import app.controller.imp.DirectorController;
-import app.controller.imp.GenreController;
 import app.model.actor.Actor;
 import app.model.director.Director;
 import app.model.genre.Genre;
-import dto.request.AddEntityRequest;
-import dto.request.EditEntityRequest;
-import dto.request.GetEntitiesByNamesRequest;
-import dto.response.GetEntitiesByNamesResponse;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputControl;
-import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 public class AddFilm extends Films {
@@ -61,7 +48,7 @@ public class AddFilm extends Films {
         LinkedList<String> directorIds = directorList.stream().map(Director::getId).collect(Collectors.toCollection(LinkedList::new));
 
 
-        EntityFilm film = new EntityFilm(
+        RequestFilm film = new RequestFilm(
                 titleField.getText(),
                 new Date(),
                 genreIds,
@@ -69,12 +56,12 @@ public class AddFilm extends Films {
                 actorIds
         );
 
-        AddEntityRequest addEntityRequest = new AddEntityRequest(film);
-        try {
-            communicationInterface.exchange(addEntityRequest);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+//        AddEntityRequest addEntityRequest = new AddEntityRequest(film);
+//        try {
+//            communicationInterface.exchange(addEntityRequest);
+//        } catch (IOException | ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
 
         closeStage(event);
     }

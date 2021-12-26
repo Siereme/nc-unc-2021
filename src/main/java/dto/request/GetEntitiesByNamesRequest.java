@@ -14,7 +14,6 @@ public class GetEntitiesByNamesRequest extends Request {
 
     public GetEntitiesByNamesRequest(LinkedList<String> names, Class<? extends IEntity> entityType) {
         setEntityType(entityType);
-        this.entityType = entityType;
         this.names = names;
     }
 

@@ -1,12 +1,13 @@
 package app.viewFX.menu.films;
 
 import app.model.IEntity;
+import app.model.film.Film;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.UUID;
 
-public class EntityFilm implements IEntity {
+public class RequestFilm extends Film {
     private final String id;
 
     private String tittle;
@@ -20,8 +21,8 @@ public class EntityFilm implements IEntity {
     private LinkedList<String> actors;
 
 
-    public EntityFilm(String id, String newTittle, Date newDate, LinkedList<String> newGenres, LinkedList<String> newDirectors,
-                      LinkedList<String> newActors) {
+    public RequestFilm(String id, String newTittle, Date newDate, LinkedList<String> newGenres, LinkedList<String> newDirectors,
+                       LinkedList<String> newActors) {
         this.id = id;
         tittle = newTittle;
         date = newDate;
@@ -30,9 +31,9 @@ public class EntityFilm implements IEntity {
         actors = newActors;
     }
 
-    public EntityFilm(String newTittle, Date newDate, LinkedList<String> newGenres, LinkedList<String> newDirectors,
-                      LinkedList<String> newActors) {
-        this.id = UUID.randomUUID().toString();
+    public RequestFilm(String newTittle, Date newDate, LinkedList<String> newGenres, LinkedList<String> newDirectors,
+                       LinkedList<String> newActors) {
+        this.id = "";
         tittle = newTittle;
         date = newDate;
         genres = newGenres;

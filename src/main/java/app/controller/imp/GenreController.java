@@ -71,6 +71,11 @@ public class GenreController implements IEntityController<Genre> {
         return repository.findAll().remove(entity);
     }
 
+    @Override
+    public boolean edit(Genre entity) {
+        return false;
+    }
+
     public Genre getEntityById(String id) {
         for (Genre genre : repository.findAll()) {
             if (Objects.equals(genre.getId(), id)) {

@@ -275,7 +275,8 @@ public class FilmController implements IEntityController<Film> {
     }
 
     public void addEntity(IEntity entity) {
-        repository.findAll().add((Film) entity);
+        Film film = new Film((Film) entity);
+        repository.findAll().add(film);
         updateRepository();
     }
 
@@ -400,14 +401,13 @@ public class FilmController implements IEntityController<Film> {
         return films;
     }
 
-    public boolean edit(String filmId, String newTittle, Date newDate, LinkedList<String> actors,
-                        LinkedList<String> directors, LinkedList<String> genres) {
-        Film film = getEntityById(filmId);
-        film.setTittle(newTittle);
-        film.setDate(newDate);
-        film.setActors(actors);
-        film.setDirectors(directors);
-        film.setGenres(genres);
+    public boolean edit(Film editFilm) {
+        Film film = getEntityById(editFilm.getId());
+        film.setTittle(editFilm.getTittle());
+        film.setDate(editFilm.getDate());
+        film.setActors(editFilm.getActors());
+        film.setDirectors(editFilm.getDirectors());
+        film.setGenres(editFilm.getGenres());
         updateRepository();
         return true;
     }

@@ -6,6 +6,10 @@ import app.model.director.Director;
 import app.model.film.Film;
 import app.model.genre.Genre;
 import app.viewFX.menu.Menu;
+import app.viewFX.menu.films.handle.AddFilm;
+import app.viewFX.menu.films.handle.EditFilm;
+import app.viewFX.menu.films.handle.HandleFilm;
+import dto.request.EditEntityRequest;
 import dto.request.FindByFilterRequest;
 import dto.response.GetFindByFilterResponse;
 import javafx.collections.FXCollections;
@@ -69,24 +73,25 @@ public class Films extends Menu implements Initializable {
     }
 
     public void add(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(AddFilm.class.getResource("add-film.fxml"));
-        Stage stage = new Stage();
-        stage.setScene(new Scene(loader.load()));
-        stage.showAndWait();
-        search();
+        HandleFilm handleFilmController = new AddFilm();
+        handle(handleFilmController);
     }
 
     public void edit(ActionEvent event) throws IOException {
         if(filmTable.getSelectionModel().getSelectedIndices().size() > 0){
-            FXMLLoader loader = new FXMLLoader(EditFilm.class.getResource("edit-film.fxml"));
             Film editFilm = filmList.get(filmTable.getSelectionModel().getSelectedIndex());
-            EditFilm editFilmController = new EditFilm(editFilm);
-            loader.setController(editFilmController);
-            Stage stage = new Stage();
-            stage.setScene(new Scene(loader.load()));
-            stage.showAndWait();
-            search();
+            HandleFilm handleFilmController = new EditFilm(editFilm);
+            handle(handleFilmController);
         }
+    }
+
+    private void handle(HandleFilm handleFilm) throws IOException {
+        FXMLLoader loader = new FXMLLoader(handleFilm.getClass().getResource("handle-film.fxml"));
+        loader.setController(handleFilm);
+        Stage stage = new Stage();
+        stage.setScene(new Scene(loader.load()));
+        stage.showAndWait();
+        search();
     }
 
     public void remove(ActionEvent event) {
@@ -113,7 +118,8 @@ public class Films extends Menu implements Initializable {
                 new FindByFilterRequest(
                         new LinkedList<String>(Collections.singleton(actor.getText())),
                         new LinkedList<String>(Collections.singleton(genre.getText())),
-                        new LinkedList<String>(Collections.singleton(director.getText()))
+                        new LinkedList<String>(Collections.singleton(director.getText())),
+                        Film.class
                 );
         try {
             GetFindByFilterResponse getFindByFilterResponse = (GetFindByFilterResponse) communicationInterface.exchange(findByFilterRequest);
