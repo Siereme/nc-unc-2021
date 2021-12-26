@@ -12,6 +12,7 @@ import dto.response.GetEntityResponse;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Menu extends Main {
     public Menu() throws IOException {
@@ -29,6 +30,22 @@ public class Menu extends Main {
             e.printStackTrace();
         }
         return entities;
+    }
+
+    protected <T extends IEntity> LinkedList<String> getEntitiesIdsByNames(LinkedList<String> names, Class<T> entityType){
+        LinkedList<String> entityIds = new LinkedList<>();
+        if(names.size() > 0){
+            LinkedList<T> entityList = getEntitiesByNames(names, entityType);
+            if(entityList.size() > 0){
+                LinkedList<String> strings = new LinkedList<>();
+                for (T t : entityList) {
+                    String id = t.getId();
+                    strings.add(id);
+                }
+                entityIds.addAll(strings);
+            }
+        }
+        return entityIds;
     }
 
     protected <T extends IEntity> LinkedList<T> getEntitiesByIds(List<String> ids, Class<T> entityType){

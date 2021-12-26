@@ -10,15 +10,15 @@
             <Tab fx:id="tapFilms" text="Films">
                 <fx:include source="films/films.fxml"/>
             </Tab>
-<!--            <Tab fx:id="tapGenres" text="Genres">-->
-<!--              <fx:include source="add/add.fxml"/>-->
-<!--            </Tab>-->
-<!--            <Tab fx:id="tapActors" text="Actors">-->
-<!--                <fx:include source="remove/remove.fxml"/>-->
-<!--            </Tab>-->
-<!--            <Tab fx:id="tapDirectors" text="Directors">-->
-<!--                <fx:include source="remove/remove.fxml"/>-->
-<!--            </Tab>-->
+            <Tab fx:id="tapGenres" text="Genres">
+              <fx:include source="films/films.fxml"/>
+            </Tab>
+            <Tab fx:id="tapActors" text="Actors">
+                <fx:include source="films/films.fxml"/>
+            </Tab>
+            <Tab fx:id="tapDirectors" text="Directors">
+                <fx:include source="films/films.fxml"/>
+            </Tab>
         </tabs>
       </TabPane>
    </top>

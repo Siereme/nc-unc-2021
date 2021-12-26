@@ -1,5 +1,6 @@
 package app.viewFX.menu.films.handle;
 
+import app.model.IEntity;
 import app.model.actor.Actor;
 import app.model.director.Director;
 import app.model.film.Film;
@@ -8,6 +9,8 @@ import app.viewFX.menu.films.RequestFilm;
 import dto.request.AddEntityRequest;
 import dto.request.EditEntityRequest;
 import dto.request.Request;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,10 +23,7 @@ import javafx.scene.control.TextInputControl;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class EditFilm extends HandleFilm implements Initializable {
@@ -48,26 +48,39 @@ public class EditFilm extends HandleFilm implements Initializable {
         this.dateField.setText(film.getDate().toString());
 
         List<Genre> genreList = getEntitiesByIds(film.getGenres(), Genre.class);
-        for(Genre genre : genreList){
-            genres.getItems().add(new TextField(genre.getTittle()));
+        List<TextField> genreFields = new ArrayList<>();
+        for (Genre genre : genreList) {
+            String tittle = genre.getTittle();
+            genreFields.add(new TextField(tittle));
+        }
+        while (genreFields.size() < 6){
+            genreFields.add(new TextField());
         }
         List<Actor> actorList = getEntitiesByIds(film.getActors(), Actor.class);
-        for(Actor actor : actorList){
-            actors.getItems().add(new TextField(actor.getName()));
+        List<TextField> actorFields = new ArrayList<>();
+        for (Actor actor : actorList) {
+            String tittle = actor.getName();
+            actorFields.add(new TextField(tittle));
+        }
+        while (actorFields.size() < 6){
+            actorFields.add(new TextField());
         }
         List<Director> directorList = getEntitiesByIds(film.getDirectors(), Director.class);
-        for(Director director : directorList){
-            directors.getItems().add(new TextField(director.getName()));
+        List<TextField> directorFields = new ArrayList<>();
+        for (Director director : directorList) {
+            String tittle = director.getName();
+            directorFields.add(new TextField(tittle));
         }
-        while (genres.getItems().size() < 6){
-            genres.getItems().add(new TextField());
+        while (directorFields.size() < 6){
+            directorFields.add(new TextField());
         }
-        while (actors.getItems().size() < 6){
-            actors.getItems().add(new TextField());
-        }
-        while (directors.getItems().size() < 6){
-            directors.getItems().add(new TextField());
-        }
+
+        ObservableList<TextField> observableList = FXCollections.observableList(genreFields);
+        genres.setItems(observableList);
+        observableList = FXCollections.observableList(actorFields);
+        actors.setItems(observableList);
+        observableList = FXCollections.observableList(directorFields);
+        directors.setItems(observableList);
 
         handleButton.setText("Edit");
         handleButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -78,21 +91,19 @@ public class EditFilm extends HandleFilm implements Initializable {
         });
     }
 
+
     public void handleFilm(ActionEvent event){
         LinkedList<String> genreNames = genres.getItems().stream().map(TextField::getText).filter(text -> text.length() > 0).collect(Collectors.toCollection(LinkedList::new));
-        LinkedList<Genre> genreList = getEntitiesByNames(genreNames, Genre.class);
-        LinkedList<String> genreIds = genreList.stream().map(Genre::getId).collect(Collectors.toCollection(LinkedList::new));
-
+        LinkedList<String> genreIds = getEntitiesIdsByNames(genreNames, Genre.class);
 
         LinkedList<String> actorNames = actors.getItems().stream().map(TextField::getText).filter(text -> text.length() > 0).collect(Collectors.toCollection(LinkedList::new));
-        LinkedList<Actor> actorList = getEntitiesByNames(actorNames, Actor.class);
-        LinkedList<String> actorIds = actorList.stream().map(Actor::getId).collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<String> actorIds = getEntitiesIdsByNames(actorNames, Actor.class);
 
         LinkedList<String> directorNames = directors.getItems().stream().map(TextField::getText).filter(text -> text.length() > 0).collect(Collectors.toCollection(LinkedList::new));
-        LinkedList<Director> directorList = getEntitiesByNames(directorNames, Director.class);
-        LinkedList<String> directorIds = directorList.stream().map(Director::getId).collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<String> directorIds = getEntitiesIdsByNames(directorNames, Director.class);
 
         RequestFilm film = new RequestFilm(
+                id,
                 titleField.getText(),
                 new Date(),
                 genreIds,

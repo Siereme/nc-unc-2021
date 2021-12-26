@@ -90,10 +90,10 @@ public interface IEntityController<T> {
     }
 
     default LinkedList<T> getEntitiesByNames(LinkedList<String> names) {
-        LinkedList<String> ids = getIdsByNames(names);
+//        LinkedList<String> ids = getIdsByNames(names);
         LinkedList<T> entities = new LinkedList<>();
-        for (String id : ids) {
-            T entity = getEntityById(id);
+        for (String name : names) {
+            T entity = getEntityByName(name);
             entities.add(entity);
         }
         return entities;

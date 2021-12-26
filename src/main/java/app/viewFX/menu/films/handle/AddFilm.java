@@ -52,18 +52,14 @@ public class AddFilm extends HandleFilm implements Initializable {
     }
 
     public void handleFilm(ActionEvent event){
-        LinkedList<String> genreNames = genres.getItems().stream().map(TextInputControl::getText).filter(text -> text.length() > 0).collect(Collectors.toCollection(LinkedList::new));
-        LinkedList<Genre> genreList = getEntitiesByNames(genreNames, Genre.class);
-        LinkedList<String> genreIds = genreList.stream().map(Genre::getId).collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<String> genreNames = genres.getItems().stream().map(TextField::getText).filter(text -> text.length() > 0).collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<String> genreIds = getEntitiesIdsByNames(genreNames, Genre.class);
 
+        LinkedList<String> actorNames = actors.getItems().stream().map(TextField::getText).filter(text -> text.length() > 0).collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<String> actorIds = getEntitiesIdsByNames(actorNames, Actor.class);
 
-        LinkedList<String> actorNames = actors.getItems().stream().map(TextInputControl::getText).filter(text -> text.length() > 0).collect(Collectors.toCollection(LinkedList::new));
-        LinkedList<Actor> actorList = getEntitiesByNames(actorNames, Actor.class);
-        LinkedList<String> actorIds = actorList.stream().map(Actor::getId).collect(Collectors.toCollection(LinkedList::new));
-
-        LinkedList<String> directorNames = directors.getItems().stream().map(TextInputControl::getText).filter(text -> text.length() > 0).collect(Collectors.toCollection(LinkedList::new));
-        LinkedList<Director> directorList = getEntitiesByNames(directorNames, Director.class);
-        LinkedList<String> directorIds = directorList.stream().map(Director::getId).collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<String> directorNames = directors.getItems().stream().map(TextField::getText).filter(text -> text.length() > 0).collect(Collectors.toCollection(LinkedList::new));
+        LinkedList<String> directorIds = getEntitiesIdsByNames(directorNames, Director.class);
 
         RequestFilm film = new RequestFilm(
                 titleField.getText(),
