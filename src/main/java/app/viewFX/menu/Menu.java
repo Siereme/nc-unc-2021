@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Menu extends Main {
+public class Menu <T extends IEntity> extends Main {
     public Menu() throws IOException {
     }
 
@@ -50,8 +50,8 @@ public class Menu extends Main {
         for (String id : ids){
             GetEntityRequest entityRequest = new GetEntityRequest(id, entityType);
             try {
-                GetEntityResponse entityResponse = (GetEntityResponse) communicationInterface.exchange(entityRequest);
-                T entity = (T) entityResponse.getEntity();
+                GetEntityResponse<T> entityResponse = (GetEntityResponse<T>) communicationInterface.exchange(entityRequest);
+                T entity = entityResponse.getEntity();
                 entities.add(entity);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();

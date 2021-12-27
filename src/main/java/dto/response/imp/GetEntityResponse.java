@@ -4,22 +4,22 @@ import app.model.IEntity;
 import dto.response.Response;
 
 /** request send entity to client*/
-public class GetEntityResponse extends Response {
+public class  GetEntityResponse <T extends  IEntity> extends Response {
 
-    public IEntity getEntity() {
+    public T getEntity() {
         return entity;
     }
 
-    public void setEntity(IEntity entity) {
+    public void setEntity(T entity) {
         this.entity = entity;
     }
 
-    public GetEntityResponse(String name, IEntity entity) {
+    public GetEntityResponse(String name, T entity) {
         super(name);
         this.entity = entity;
     }
 
-    private IEntity entity;
+    private T entity;
 
     @Override
     public String toString() {
