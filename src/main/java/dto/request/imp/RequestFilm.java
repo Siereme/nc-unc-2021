@@ -1,9 +1,10 @@
-package app.viewFX.menu.films;
+package dto.request.imp;
 
 import app.model.film.Film;
 
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 public class RequestFilm extends Film {
     private final String id;
@@ -12,15 +13,14 @@ public class RequestFilm extends Film {
 
     private Date date;
 
-    private final LinkedList<String> genres;
+    private final List<String> genres;
 
-    private LinkedList<String> directors;
+    private List<String> directors;
 
-    private LinkedList<String> actors;
+    private List<String> actors;
 
-
-    public RequestFilm(String id, String newTittle, Date newDate, LinkedList<String> newGenres, LinkedList<String> newDirectors,
-                       LinkedList<String> newActors) {
+    public RequestFilm(String id, String newTittle, Date newDate, List<String> newGenres, List<String> newDirectors,
+                       List<String> newActors) {
         this.id = id;
         tittle = newTittle;
         date = newDate;
@@ -29,8 +29,7 @@ public class RequestFilm extends Film {
         actors = newActors;
     }
 
-    public RequestFilm(String newTittle, Date newDate, LinkedList<String> newGenres, LinkedList<String> newDirectors,
-                       LinkedList<String> newActors) {
+    public RequestFilm(String newTittle, Date newDate, List<String> newGenres, List<String> newDirectors, List<String> newActors) {
         this.id = "";
         tittle = newTittle;
         date = newDate;
@@ -59,7 +58,7 @@ public class RequestFilm extends Film {
         this.date = date;
     }
 
-    public LinkedList<String> getActors() {
+    public List<String> getActors() {
         return actors;
     }
 
@@ -67,7 +66,7 @@ public class RequestFilm extends Film {
         this.actors = actors;
     }
 
-    public LinkedList<String> getDirectors() {
+    public List<String> getDirectors() {
         return directors;
     }
 
@@ -75,7 +74,7 @@ public class RequestFilm extends Film {
         this.directors = directors;
     }
 
-    public LinkedList<String> getGenres() {
+    public List<String> getGenres() {
         return genres;
     }
 

@@ -4,6 +4,7 @@ import app.model.IEntity;
 
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 /** Film entity
@@ -18,33 +19,33 @@ public class Film implements IEntity {
 
     private Date date;
 
-    private final LinkedList<String> genres;
+    private final List<String> genres;
 
-    private LinkedList<String> directors;
+    private List<String> directors;
 
-    private LinkedList<String> actors;
+    private List<String> actors;
 
-    public LinkedList<String> getActors() {
+    public List<String> getActors() {
         return actors;
     }
 
-    public void setActors(LinkedList<String> actors) {
+    public void setActors(List<String> actors) {
         this.actors = actors;
     }
 
-    public LinkedList<String> getDirectors() {
+    public List<String> getDirectors() {
         return directors;
     }
 
-    public void setDirectors(LinkedList<String> directors) {
+    public void setDirectors(List<String> directors) {
         this.directors = directors;
     }
 
-    public LinkedList<String> getGenres() {
+    public List<String> getGenres() {
         return genres;
     }
 
-    public void setGenres(LinkedList<String> newGenres) {
+    public void setGenres(List<String> newGenres) {
         System.out.println(newGenres);
         this.genres.addAll(newGenres);
         System.out.println(this.genres);

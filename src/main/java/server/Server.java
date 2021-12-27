@@ -36,6 +36,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -152,8 +153,8 @@ public class Server {
                 IEntity entity = (IEntity) controller.getEntityById(entityId);
                 return new GetEntityResponse("ok", entity);
             } else if(request instanceof GetEntitiesByNamesRequest){
-                LinkedList<String> names = ((GetEntitiesByNamesRequest) request).getNames();
-                LinkedList<? extends IEntity> entities = controller.getEntitiesByNames(names);
+                List<String> names = ((GetEntitiesByNamesRequest) request).getNames();
+                List<? extends IEntity> entities = controller.getEntitiesByNames(names);
                 return new GetEntitiesByNamesResponse("ok", entities);
             }
             else {

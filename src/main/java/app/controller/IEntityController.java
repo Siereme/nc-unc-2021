@@ -3,6 +3,7 @@ package app.controller;
 import app.model.IEntity;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /** Controller Interface
  * @author Vasiliy
@@ -88,7 +89,7 @@ public interface IEntityController<T> {
         return ids;
     }
 
-    default LinkedList<T> getEntitiesByNames(LinkedList<String> names) {
+    default List<T> getEntitiesByNames(List<String> names) {
 //        LinkedList<String> ids = getIdsByNames(names);
         LinkedList<T> entities = new LinkedList<>();
         for (String name : names) {

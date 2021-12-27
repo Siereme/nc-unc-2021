@@ -26,4 +26,6 @@ module app {
     exports app.model.director to com.fasterxml.jackson.databind;
     exports app.viewFX.menu.films.handle to javafx.fxml;
     opens app.viewFX.menu.films.handle to javafx.base, javafx.fxml;
+    exports dto.request.imp to javafx.fxml;
+    opens dto.request.imp to javafx.base, javafx.fxml;
 }

@@ -1,17 +1,19 @@
 package app.viewFX.login;
 
 import app.model.user.IUser;
-import app.viewFX.Main;
+import client.CommunicationInterface;
 import dto.request.imp.AuthorizationRequest;
 import dto.response.imp.GetAuthorizationResponse;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Login extends Main {
+public class LoginController {
     @FXML
     private Label status;
     @FXML
@@ -19,7 +21,7 @@ public class Login extends Main {
     @FXML
     private TextField passwordField;
 
-    public Login() throws IOException {
+    public LoginController() throws IOException {
     }
 
     // Main main; // нужно хранить родителя...
@@ -30,7 +32,7 @@ public class Login extends Main {
                 new AuthorizationRequest(loginField.getText(), passwordField.getText());
 
         GetAuthorizationResponse response =
-                (GetAuthorizationResponse) communicationInterface.exchange(authorizationRequest);
+                (GetAuthorizationResponse) CommunicationInterface.getInstance().exchange(authorizationRequest);
 
         IUser currentUser = response.getUser();
 
@@ -40,8 +42,13 @@ public class Login extends Main {
             passwordField.setText("");
         }
         else{
-            setCurrentUser(currentUser);
+         // TODO?   setCurrentUser(currentUser);
             closeStage(event);
         }
+    }
+    protected void closeStage(ActionEvent event){
+        Node source = (Node) event.getSource();
+        Stage stage = (Stage) source.getScene().getWindow();
+        stage.close();
     }
 }

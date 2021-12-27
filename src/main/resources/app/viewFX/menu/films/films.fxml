@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 
 <AnchorPane fx:id="search" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="app.viewFX.menu.films.Films">
+            fx:controller="app.viewFX.menu.films.FilmsController">
    <Pane>
       <TextField fx:id="director" layoutX="566.0" layoutY="48.0" prefHeight="25.0" prefWidth="360.0"
                  promptText="Search by director"/>

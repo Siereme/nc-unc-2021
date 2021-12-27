@@ -10,6 +10,7 @@ import app.repository.imp.FilmsRepository;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /** Film app.controller
@@ -310,7 +311,7 @@ public class FilmController implements IEntityController<Film> {
     public void addActorToFilms(Actor actor, LinkedList<String> ids) {
         for (String id : ids) {
             Film film = getEntityById(id);
-            LinkedList<String> actorsId = film.getActors();
+            List<String> actorsId = film.getActors();
             actorsId.add(actor.getId());
         }
         updateRepository();
@@ -319,7 +320,7 @@ public class FilmController implements IEntityController<Film> {
     public void addDirectorToFilms(Director director, LinkedList<String> ids) {
         for (String id : ids) {
             Film film = getEntityById(id);
-            LinkedList<String> directorsId = film.getDirectors();
+            List<String> directorsId = film.getDirectors();
             directorsId.add(director.getId());
         }
         updateRepository();
@@ -339,17 +340,17 @@ public class FilmController implements IEntityController<Film> {
     }
 
     public static void addActorToFilm(Actor actor, Film film) {
-        LinkedList<String> actorsId = film.getActors();
+        List<String> actorsId = film.getActors();
         actorsId.add(actor.getId());
     }
 
     public static void removeActorFromFilm(Actor actor, Film film) {
-        LinkedList<String> actorsId = film.getActors();
+        List<String> actorsId = film.getActors();
         actorsId.remove(actor.getId());
     }
 
     public static void removeDirectorFromFilm(Director director, Film film) {
-        LinkedList<String> directorsId = film.getDirectors();
+        List<String> directorsId = film.getDirectors();
         directorsId.remove(director.getId());
     }
 
