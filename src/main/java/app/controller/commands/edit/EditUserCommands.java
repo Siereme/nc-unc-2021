@@ -18,8 +18,7 @@ import java.util.List;
  * @version 1.0
  * */
 public class EditUserCommands {
-    public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>()
-    {{
+    public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<>() {{
         put(EditFilmMenuView.class, new ArrayList<>(Arrays.asList(true, false)));
         put(EditGenreMenuView.class, new ArrayList<>(Collections.singletonList(true)));
         put(EditActorMenuView.class, new ArrayList<>(Collections.singletonList(true)));

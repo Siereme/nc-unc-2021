@@ -6,9 +6,7 @@ import app.model.film.Film;
 import app.model.genre.Genre;
 import app.viewFX.menu.films.RequestFilm;
 import dto.request.imp.AddEntityRequest;
-import dto.request.Request;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -29,24 +27,18 @@ public class AddFilm extends HandleFilm implements Initializable {
     @FXML private ListView<TextField> actors;
     @FXML private ListView<TextField> directors;
     @FXML private Button handleButton;
-    private final Class<? extends Request> request = AddEntityRequest.class;
 
     public AddFilm() throws IOException {}
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         for(int i = 0; i < 6; i++){
-            this.genres.getItems().add(new TextField());
+            genres.getItems().add(new TextField());
             this.actors.getItems().add(new TextField());
             this.directors.getItems().add(new TextField());
         }
         handleButton.setText("Add");
-        handleButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                handleFilm(event);
-            }
-        });
+        handleButton.setOnAction(event -> handleFilm(event));
     }
 
     public void handleFilm(ActionEvent event){

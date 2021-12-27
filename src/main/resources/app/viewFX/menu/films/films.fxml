@@ -4,48 +4,51 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="search" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.viewFX.menu.films.Films">
-   <children>
-      <Pane>
-         <children>
-            <TextField fx:id="director" layoutX="566.0" layoutY="48.0" prefHeight="25.0" prefWidth="360.0" promptText="Search by director" />
-            <TextField fx:id="genre" layoutX="72.0" layoutY="109.0" prefHeight="25.0" prefWidth="360.0" promptText="Search by genre" />
-            <TextField fx:id="actor" layoutX="72.0" layoutY="48.0" prefHeight="25.0" prefWidth="360.0" promptText="Search by Actor" />
-            <Label layoutX="72.0" layoutY="22.0" prefHeight="17.0" prefWidth="38.0" text="Actor" />
-            <Label layoutX="566.0" layoutY="22.0" text="Director" />
-            <Label layoutX="72.0" layoutY="84.0" text="Genre" />
-            <FlowPane fx:id="containerControlButton" alignment="CENTER_LEFT" layoutX="566.0" layoutY="108.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="360.0" rowValignment="TOP">
-               <children>
-                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#search" prefHeight="25.0" prefWidth="107.0" text="Search">
-                     <FlowPane.margin>
-                        <Insets right="35.0" />
-                     </FlowPane.margin>
-                  </Button>
-                  <Button fx:id="addButton" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="65.0" text="Add">
-                     <FlowPane.margin>
-                        <Insets right="10.0" />
-                     </FlowPane.margin>
-                  </Button>
-                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#edit" prefHeight="26.0" prefWidth="65.0" text="Edit">
-                     <FlowPane.margin>
-                        <Insets right="10.0" />
-                     </FlowPane.margin>
-                  </Button>
-                  <Button fx:id="removeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#remove" prefHeight="26.0" prefWidth="65.0" text="Remove" />
-               </children>
-            </FlowPane>
-            <TableView layoutX="4.0" layoutY="199.0" minWidth="960.0" prefHeight="380.0" fx:id="filmTable">
-              <columns>
-                 <TableColumn prefWidth="75.0" text="" visible="false" maxWidth="30.0" minWidth="30.0" fx:id="select">
-                 </TableColumn>
-                <TableColumn prefWidth="75.0" text="Title" fx:id="title"/>
-                <TableColumn prefWidth="75.0" text="Date" fx:id="date"/>
-                  <TableColumn prefWidth="75.0" text="Genres" fx:id="genres"/>
-                  <TableColumn prefWidth="75.0" text="Actors" fx:id="actors"/>
-                  <TableColumn prefWidth="75.0" text="Directors" fx:id="directors"/>
-              </columns>
-            </TableView>
-         </children>
-      </Pane>
-   </children>
+<AnchorPane fx:id="search" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="app.viewFX.menu.films.Films">
+   <Pane>
+      <TextField fx:id="director" layoutX="566.0" layoutY="48.0" prefHeight="25.0" prefWidth="360.0"
+                 promptText="Search by director"/>
+      <TextField fx:id="genre" layoutX="72.0" layoutY="109.0" prefHeight="25.0" prefWidth="360.0"
+                 promptText="Search by genre"/>
+      <TextField fx:id="actor" layoutX="72.0" layoutY="48.0" prefHeight="25.0" prefWidth="360.0"
+                 promptText="Search by Actor"/>
+      <Label layoutX="72.0" layoutY="22.0" prefHeight="17.0" prefWidth="38.0" text="Actor"/>
+      <Label layoutX="566.0" layoutY="22.0" text="Director"/>
+      <Label layoutX="72.0" layoutY="84.0" text="Genre"/>
+      <FlowPane fx:id="containerControlButton" alignment="CENTER_LEFT" layoutX="566.0" layoutY="108.0"
+                nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="360.0" rowValignment="TOP">
+         <Button fx:id="searchButton" mnemonicParsing="false" onAction="#search" prefHeight="25.0"
+                 prefWidth="107.0" text="Search">
+            <FlowPane.margin>
+               <Insets right="35.0"/>
+            </FlowPane.margin>
+         </Button>
+         <Button fx:id="addButton" mnemonicParsing="false" onAction="#add" prefHeight="26.0" prefWidth="65.0"
+                 text="Add">
+            <FlowPane.margin>
+               <Insets right="10.0"/>
+            </FlowPane.margin>
+         </Button>
+         <Button fx:id="editButton" mnemonicParsing="false" onAction="#edit" prefHeight="26.0" prefWidth="65.0"
+                 text="Edit">
+            <FlowPane.margin>
+               <Insets right="10.0"/>
+            </FlowPane.margin>
+         </Button>
+         <Button fx:id="removeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
+                 onAction="#remove" prefHeight="26.0" prefWidth="65.0" text="Remove"/>
+      </FlowPane>
+      <TableView layoutX="4.0" layoutY="199.0" minWidth="960.0" prefHeight="380.0" fx:id="filmTable">
+         <columns>
+            <TableColumn prefWidth="75.0" visible="false" maxWidth="30.0" minWidth="30.0" fx:id="select">
+            </TableColumn>
+            <TableColumn prefWidth="75.0" text="Title" fx:id="title"/>
+            <TableColumn prefWidth="75.0" text="Date" fx:id="date"/>
+            <TableColumn prefWidth="75.0" text="Genres" fx:id="genres"/>
+            <TableColumn prefWidth="75.0" text="Actors" fx:id="actors"/>
+            <TableColumn prefWidth="75.0" text="Directors" fx:id="directors"/>
+         </columns>
+      </TableView>
+   </Pane>
 </AnchorPane>

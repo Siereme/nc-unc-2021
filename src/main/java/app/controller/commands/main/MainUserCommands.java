@@ -13,8 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MainUserCommands {
-    public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>()
-    {{
+    public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<>() {{
         put(AddView.class, new ArrayList<>(Arrays.asList(true, false)));
         put(EditView.class, new ArrayList<>(Arrays.asList(true, false)));
         put(FindView.class, new ArrayList<>(Arrays.asList(true, false)));

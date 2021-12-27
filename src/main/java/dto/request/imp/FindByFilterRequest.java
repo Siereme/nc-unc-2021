@@ -1,7 +1,6 @@
 package dto.request.imp;
 
 import app.model.IEntity;
-import app.model.film.Film;
 import dto.request.Request;
 
 import java.util.LinkedList;

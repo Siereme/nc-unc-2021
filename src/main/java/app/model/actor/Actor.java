@@ -35,21 +35,21 @@ public class Actor implements IEntity {
         this.id = UUID.randomUUID().toString();
         this.name = "Unknown";
         this.year = "Unknown";
-        this.films = new LinkedList<String>();
+        this.films = new LinkedList<>();
     }
 
     public Actor(String name) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.year = "Unknown";
-        this.films = new LinkedList<String>();
+        this.films = new LinkedList<>();
     }
 
     public Actor(String name, String year) {
         this.id = UUID.randomUUID().toString();
         this.name = name;
         this.year = year;
-        this.films = new LinkedList<String>();
+        this.films = new LinkedList<>();
     }
 
     public String getId() {

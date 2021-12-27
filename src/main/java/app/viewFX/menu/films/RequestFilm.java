@@ -1,11 +1,9 @@
 package app.viewFX.menu.films;
 
-import app.model.IEntity;
 import app.model.film.Film;
 
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.UUID;
 
 public class RequestFilm extends Film {
     private final String id;

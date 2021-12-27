@@ -17,7 +17,7 @@ import java.util.List;
  * @version 1.0
  * */
 public class ShowUserCommands {
-    public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>() {{
+    public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<>() {{
         put(ShowAllActorsView.class, new ArrayList<>(Arrays.asList(true, false)));
         put(ShowAllDirectorsView.class, new ArrayList<>(Arrays.asList(true, false)));
         put(ShowAllFilmsView.class, new ArrayList<>(Arrays.asList(true, false)));

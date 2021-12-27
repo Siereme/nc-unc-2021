@@ -1,6 +1,5 @@
 package dto.request.imp;
 
-import app.controller.IEntityController;
 import app.model.IEntity;
 import dto.request.Request;
 

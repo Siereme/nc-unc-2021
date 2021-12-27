@@ -10,7 +10,6 @@ import dto.request.Request;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -31,7 +30,7 @@ public class EditFilm extends HandleFilm implements Initializable {
     @FXML private ListView<TextField> directors;
     @FXML private Button handleButton;
     private Class<? extends Request> request = EditEntityRequest.class;
-    private Film film;
+    private final Film film;
     public EditFilm(Film film) throws IOException {
         this.film = film;
     }
@@ -78,12 +77,7 @@ public class EditFilm extends HandleFilm implements Initializable {
         directors.setItems(observableList);
 
         handleButton.setText("Edit");
-        handleButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                handleFilm(event);
-            }
-        });
+        handleButton.setOnAction(event -> handleFilm(event));
     }
 
 

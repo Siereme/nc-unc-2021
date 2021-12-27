@@ -7,7 +7,6 @@ import app.model.genre.Genre;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -20,11 +19,7 @@ public class TableFilm{
     private ListView<String> actors = new ListView<>();
     private ListView<String> directors = new ListView<>();
 
-    public TableFilm(Film film, List<Genre> genreList, List<Actor> actorList, List<Director> directorList) throws IOException {
-        init(film, genreList, actorList, directorList);
-    }
-
-    private void init(Film film, List<Genre> genreList, List<Actor> actorList, List<Director> directorList) {
+    public TableFilm(Film film, List<Genre> genreList, List<Actor> actorList, List<Director> directorList) {
         this.id = film.getId();
         this.title = film.getTittle();
         this.date = film.getDate();
@@ -32,7 +27,6 @@ public class TableFilm{
         actorList.forEach(actor -> this.actors.getItems().add("Name: " + actor.getName() + "\n" + "Year: " + actor.getYear()));
         directorList.forEach(director -> this.directors.getItems().add("Name: " + director.getName() + "\n" + "Year: " + director.getYear()));
     }
-
 
     public String getId() {
         return this.id;

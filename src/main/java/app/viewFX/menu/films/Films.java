@@ -1,6 +1,5 @@
 package app.viewFX.menu.films;
 
-import app.controller.imp.FilmController;
 import app.model.actor.Actor;
 import app.model.director.Director;
 import app.model.film.Film;
@@ -14,7 +13,6 @@ import dto.request.imp.RemoveEntityRequest;
 import dto.response.imp.GetFindByFilterResponse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -30,7 +28,7 @@ import java.util.*;
 
 public class Films extends Menu implements Initializable {
     List<Film> filmList;
-    List<TableFilm> films = new LinkedList<>();
+    final List<TableFilm> films = new LinkedList<>();
     @FXML private TableView<TableFilm> filmTable;
     @FXML private TableColumn<TableFilm, Boolean> select;
     @FXML private TableColumn<TableFilm, String> title;
@@ -72,12 +70,12 @@ public class Films extends Menu implements Initializable {
         filmTable.getItems().addAll(films);
     }
 
-    public void add(ActionEvent event) throws IOException {
+    public void add() throws IOException {
         HandleFilm handleFilmController = new AddFilm();
         handle(handleFilmController);
     }
 
-    public void edit(ActionEvent event) throws IOException {
+    public void edit() throws IOException {
         if(filmTable.getSelectionModel().getSelectedIndices().size() > 0){
             Film editFilm = filmList.get(filmTable.getSelectionModel().getSelectedIndex());
             HandleFilm handleFilmController = new EditFilm(editFilm);
@@ -94,7 +92,7 @@ public class Films extends Menu implements Initializable {
         search();
     }
 
-    public void remove(ActionEvent event) {
+    public void remove() {
         if(!select.isVisible()){
             select.setVisible(true);
             filmTable.setEditable(true);
@@ -124,9 +122,9 @@ public class Films extends Menu implements Initializable {
     private void getFilms() {
         FindByFilterRequest findByFilterRequest =
                 new FindByFilterRequest(
-                        new LinkedList<String>(Collections.singleton(actor.getText())),
-                        new LinkedList<String>(Collections.singleton(genre.getText())),
-                        new LinkedList<String>(Collections.singleton(director.getText())),
+                        new LinkedList<>(Collections.singleton(actor.getText())),
+                        new LinkedList<>(Collections.singleton(genre.getText())),
+                        new LinkedList<>(Collections.singleton(director.getText())),
                         Film.class
                 );
         try {

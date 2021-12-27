@@ -10,6 +10,7 @@ import app.view.View;
 import java.util.LinkedList;
 
 /** Class Command adding actor to app.repository */
+@SuppressWarnings("unchecked")
 public class AddActorView extends View implements IView {
 
     /** Name of the command*/

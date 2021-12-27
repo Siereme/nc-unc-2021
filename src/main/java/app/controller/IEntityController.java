@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.model.IEntity;
-import app.repository.IRepository;
 
 import java.util.LinkedList;
 

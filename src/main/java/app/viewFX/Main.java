@@ -8,16 +8,13 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
 public class Main extends Application {
-    protected CommunicationInterface communicationInterface = new CommunicationInterface();
+    protected final CommunicationInterface communicationInterface = new CommunicationInterface();
 
     private IUser currentUser;
 
@@ -28,9 +25,9 @@ public class Main extends Application {
     public void start(Stage stage) throws IOException {
 
         FXMLLoader loader = new FXMLLoader(Login.class.getResource("login.fxml"));
-//        Stage stageLogin = new Stage();
-//        stageLogin.setScene(new Scene(loader.load()));
-//        stageLogin.showAndWait();
+        Stage stageLogin = new Stage();
+        stageLogin.setScene(new Scene(loader.load()));
+        stageLogin.showAndWait();
 
 
         loader = new FXMLLoader(Menu.class.getResource("main-menu.fxml"));

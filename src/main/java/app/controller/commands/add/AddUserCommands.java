@@ -18,11 +18,10 @@ import java.util.List;
  * @version 1.0
  * */
 public class AddUserCommands {
-    public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<Class<? extends View>, List<Boolean>>()
-        {{
-            put(AddFilmView.class, new ArrayList<>(Arrays.asList(true, false)));
-            put(AddGenreView.class, new ArrayList<>(Collections.singletonList(true)));
-            put(AddActorView.class, new ArrayList<>(Collections.singletonList(true)));
-            put(AddDirectorView.class, new ArrayList<>(Collections.singletonList(true)));
-        }};
+    public final HashMap<Class<? extends View>, List<Boolean>> commands = new HashMap<>() {{
+        put(AddFilmView.class, new ArrayList<>(Arrays.asList(true, false)));
+        put(AddGenreView.class, new ArrayList<>(Collections.singletonList(true)));
+        put(AddActorView.class, new ArrayList<>(Collections.singletonList(true)));
+        put(AddDirectorView.class, new ArrayList<>(Collections.singletonList(true)));
+    }};
 }
