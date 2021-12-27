@@ -71,13 +71,13 @@ public class FilmController implements IEntityController<Film> {
     public boolean remove(String id) {
         Film film = getEntityById(id);
         repository.findAll().remove(film);
-        updateRepository();
-        return true;
+        return updateRepository();
     }
 
     @Override
     public boolean remove(Film entity) {
-        return repository.findAll().remove(entity);
+        repository.findAll().remove(entity);
+        return updateRepository();
     }
 
     public void deleteById(Integer id) {
@@ -279,11 +279,13 @@ public class FilmController implements IEntityController<Film> {
         updateRepository();
     }
 
-    public void updateRepository() {
+    public boolean updateRepository() {
         try {
             repository.serialize();
+            return true;
         } catch (IOException e) {
             System.out.println("Serialize corrupted... " + e);
+            return false;
         }
     }
 

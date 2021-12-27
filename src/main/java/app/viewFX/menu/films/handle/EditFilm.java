@@ -24,8 +24,7 @@ import java.util.stream.Collectors;
 
 public class EditFilm extends HandleFilm implements Initializable {
     private String id;
-    @FXML
-    private TextField titleField;
+    @FXML private TextField titleField;
     @FXML private TextField dateField;
     @FXML private ListView<TextField> genres;
     @FXML private ListView<TextField> actors;

@@ -57,7 +57,7 @@ public interface IEntityController<T> {
     /** Method updates app.repository
      * @see app.repository.IRepository
      * */
-    void updateRepository();
+    boolean updateRepository();
 
     /** Method removes entity from app.repository by its(entity) index
      * @param ind - index of the entity being deleted

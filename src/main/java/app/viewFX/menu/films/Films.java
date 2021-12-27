@@ -10,6 +10,7 @@ import app.viewFX.menu.films.handle.AddFilm;
 import app.viewFX.menu.films.handle.EditFilm;
 import app.viewFX.menu.films.handle.HandleFilm;
 import dto.request.imp.FindByFilterRequest;
+import dto.request.imp.RemoveEntityRequest;
 import dto.response.imp.GetFindByFilterResponse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -104,9 +105,17 @@ public class Films extends Menu implements Initializable {
             filmTable.setEditable(false);
             removeButton.setStyle("");
 
-            FilmController filmController = new FilmController();
             List<String> removeFilmIds = films.stream().filter(film -> film.getChecked().isSelected()).map(TableFilm::getId).toList();
-
+            if(removeFilmIds.size() > 0){
+                for(String id : removeFilmIds){
+                    RemoveEntityRequest removeRequest = new RemoveEntityRequest(id, Film.class);
+                    try {
+                        communicationInterface.exchange(removeRequest);
+                    } catch (IOException | ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
             search();
         }
     }

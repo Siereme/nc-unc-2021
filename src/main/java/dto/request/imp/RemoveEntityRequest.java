@@ -14,7 +14,6 @@ public class RemoveEntityRequest extends Request {
 
     public RemoveEntityRequest(String entityId, Class<? extends IEntity> entityType) {
         setEntityType(entityType);
-        this.entityType = entityType;
         this.entityId = entityId;
     }
 

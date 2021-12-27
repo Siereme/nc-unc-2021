@@ -122,11 +122,13 @@ public class UserController implements IEntityController<IUser> {
     }
 
     @Override
-    public void updateRepository() {
+    public boolean updateRepository() {
         try {
             repository.serialize();
+            return true;
         } catch (IOException e) {
             System.out.println("Serialize corrupted... " + e);
+            return false;
         }
     }
 
