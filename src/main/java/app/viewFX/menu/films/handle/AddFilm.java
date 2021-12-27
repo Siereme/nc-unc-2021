@@ -5,7 +5,7 @@ import app.model.director.Director;
 import app.model.film.Film;
 import app.model.genre.Genre;
 import app.viewFX.menu.films.RequestFilm;
-import dto.request.AddEntityRequest;
+import dto.request.imp.AddEntityRequest;
 import dto.request.Request;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,14 +14,12 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class AddFilm extends HandleFilm implements Initializable {

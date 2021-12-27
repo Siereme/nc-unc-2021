@@ -1,9 +1,7 @@
-package dto.response;
+package dto.response.imp;
 
-import app.controller.IEntityController;
 import app.model.IEntity;
-import dto.controller.EntityController;
-import dto.request.GetEntityRequest;
+import dto.response.Response;
 
 /** request send entity to client*/
 public class GetEntityResponse extends Response {

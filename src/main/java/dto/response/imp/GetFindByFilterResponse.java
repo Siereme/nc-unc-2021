@@ -1,8 +1,7 @@
-package dto.response;
+package dto.response.imp;
 
 import app.model.film.Film;
-import dto.controller.ClientServerFilmController;
-import dto.request.FindByFilterRequest;
+import dto.response.Response;
 
 import java.util.LinkedList;
 

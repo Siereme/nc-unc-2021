@@ -1,18 +1,15 @@
 package app.viewFX.menu;
 
 import app.model.IEntity;
-import app.model.genre.Genre;
 import app.viewFX.Main;
-import client.CommunicationInterface;
-import dto.request.GetEntitiesByNamesRequest;
-import dto.request.GetEntityRequest;
-import dto.response.GetEntitiesByNamesResponse;
-import dto.response.GetEntityResponse;
+import dto.request.imp.GetEntitiesByNamesRequest;
+import dto.request.imp.GetEntityRequest;
+import dto.response.imp.GetEntitiesByNamesResponse;
+import dto.response.imp.GetEntityResponse;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Menu extends Main {
     public Menu() throws IOException {

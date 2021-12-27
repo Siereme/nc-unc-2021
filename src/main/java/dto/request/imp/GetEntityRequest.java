@@ -1,7 +1,8 @@
-package dto.request;
+package dto.request.imp;
 
 import app.controller.IEntityController;
 import app.model.IEntity;
+import dto.request.Request;
 
 /** request send id to server */
 public class GetEntityRequest extends Request {

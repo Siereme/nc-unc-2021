@@ -1,8 +1,7 @@
-package dto.response;
+package dto.response.imp;
 
 import app.model.user.IUser;
-import dto.controller.GetAuthorizationController;
-import dto.request.AuthorizationRequest;
+import dto.response.Response;
 
 /** request send new User to client */
 public class GetAuthorizationResponse extends Response {

@@ -3,7 +3,7 @@ package app.controller.imp;
 import app.controller.IEntityController;
 import app.model.IEntity;
 import app.model.genre.Genre;
-import app.repository.GenreRepository;
+import app.repository.imp.GenreRepository;
 
 import java.io.IOException;
 import java.util.LinkedList;

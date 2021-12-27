@@ -3,7 +3,7 @@ package app.controller.imp;
 import app.controller.IEntityController;
 import app.model.IEntity;
 import app.model.director.Director;
-import app.repository.DirectorRepository;
+import app.repository.imp.DirectorRepository;
 
 import java.io.IOException;
 import java.util.LinkedList;

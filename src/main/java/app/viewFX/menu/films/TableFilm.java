@@ -1,20 +1,14 @@
 package app.viewFX.menu.films;
 
-import app.controller.imp.ActorController;
-import app.controller.imp.DirectorController;
-import app.controller.imp.GenreController;
 import app.model.actor.Actor;
 import app.model.director.Director;
 import app.model.film.Film;
 import app.model.genre.Genre;
-import dto.request.GetEntityRequest;
-import dto.response.GetEntityResponse;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 public class TableFilm{

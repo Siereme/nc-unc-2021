@@ -1,9 +1,10 @@
-package dto.request;
+package dto.request.imp;
 
 import app.model.IEntity;
 import app.model.film.Film;
+import dto.request.Request;
 
-public class EditEntityRequest extends Request{
+public class EditEntityRequest extends Request {
     public EditEntityRequest(IEntity entity, Class<? extends IEntity> entityType) {
         setEntityType(entityType);
         this.entity = entity;

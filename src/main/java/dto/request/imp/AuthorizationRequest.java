@@ -1,6 +1,7 @@
-package dto.request;
+package dto.request.imp;
 
 import app.model.user.IUser;
+import dto.request.Request;
 
 /** request send user name and password to server */
 public class AuthorizationRequest extends Request {

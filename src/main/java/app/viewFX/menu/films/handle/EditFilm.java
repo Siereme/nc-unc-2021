@@ -1,13 +1,11 @@
 package app.viewFX.menu.films.handle;
 
-import app.model.IEntity;
 import app.model.actor.Actor;
 import app.model.director.Director;
 import app.model.film.Film;
 import app.model.genre.Genre;
 import app.viewFX.menu.films.RequestFilm;
-import dto.request.AddEntityRequest;
-import dto.request.EditEntityRequest;
+import dto.request.imp.EditEntityRequest;
 import dto.request.Request;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,10 +16,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.*;
 import java.util.stream.Collectors;

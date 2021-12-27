@@ -3,7 +3,7 @@ package app.controller.imp;
 import app.controller.IEntityController;
 import app.model.IEntity;
 import app.model.actor.Actor;
-import app.repository.ActorRepository;
+import app.repository.imp.ActorRepository;
 
 import java.io.IOException;
 import java.util.LinkedList;

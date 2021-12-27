@@ -1,9 +1,7 @@
-package dto.response;
+package dto.response.imp;
 
-import app.controller.IEntityController;
 import app.model.IEntity;
-import dto.controller.EntityController;
-import dto.request.GetEntitiesByNamesRequest;
+import dto.response.Response;
 
 import java.util.LinkedList;
 

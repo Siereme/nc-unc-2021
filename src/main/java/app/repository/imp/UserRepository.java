@@ -1,6 +1,8 @@
-package app.repository;
+package app.repository.imp;
 
 import app.model.user.IUser;
+import app.repository.AbstractRepository;
+import app.repository.IRepository;
 
 import java.io.File;
 import java.io.IOException;

@@ -2,14 +2,12 @@ package app.viewFX.login;
 
 import app.model.user.IUser;
 import app.viewFX.Main;
-import dto.request.AuthorizationRequest;
-import dto.response.GetAuthorizationResponse;
+import dto.request.imp.AuthorizationRequest;
+import dto.response.imp.GetAuthorizationResponse;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 

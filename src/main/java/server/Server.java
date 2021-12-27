@@ -13,10 +13,17 @@ import app.model.film.Film;
 import app.model.genre.Genre;
 import app.model.user.IUser;
 import dto.request.*;
-import dto.response.GetAuthorizationResponse;
-import dto.response.GetEntitiesByNamesResponse;
-import dto.response.GetEntityResponse;
-import dto.response.GetFindByFilterResponse;
+import dto.request.imp.AddEntityRequest;
+import dto.request.imp.AuthorizationRequest;
+import dto.request.imp.EditEntityRequest;
+import dto.request.imp.FindByFilterRequest;
+import dto.request.imp.GetEntitiesByNamesRequest;
+import dto.request.imp.GetEntityRequest;
+import dto.request.imp.RemoveEntityRequest;
+import dto.response.imp.GetAuthorizationResponse;
+import dto.response.imp.GetEntitiesByNamesResponse;
+import dto.response.imp.GetEntityResponse;
+import dto.response.imp.GetFindByFilterResponse;
 import dto.response.Response;
 
 import java.io.IOException;
@@ -120,6 +127,7 @@ public class Server {
                 GenreController genreController = new GenreController();
                 LinkedList<String> genreIds = genreController.getIdsByNames(genreNames);
 
+                // в интерфейсе этого метода нет, поэтому пришлось привести к filmController
                 LinkedList<Film> films = filmController.filmsBy(actorsIds, genreIds, directorIds);
                 return new GetFindByFilterResponse("ok", films);
             } else if (request instanceof AddEntityRequest) {
@@ -131,7 +139,8 @@ public class Server {
                 controller.edit(entity);
                 return new Response("the entity was successfully added");
             } else if (request instanceof RemoveEntityRequest) {
-                IEntity entity = ((RemoveEntityRequest) request).getEntity();
+                String entityId = ((RemoveEntityRequest) request).getEntityId();
+                IEntity entity = (IEntity) controller.getEntityById(entityId);
                 boolean isSuccessfully = controller.remove(entity);
                 if (isSuccessfully) {
                     return new Response("the entity was successfully removed");

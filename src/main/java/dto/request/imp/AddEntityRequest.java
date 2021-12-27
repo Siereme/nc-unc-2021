@@ -1,9 +1,10 @@
-package dto.request;
+package dto.request.imp;
 
 import app.model.IEntity;
 import app.model.film.Film;
+import dto.request.Request;
 
-public class AddEntityRequest extends Request{
+public class AddEntityRequest extends Request {
     public IEntity getEntity() {
         return entity;
     }
