@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class AddEditFilmController extends HandleFilmController implements Initializable {
+public class AddEditFilmController extends HandleFilmController {
     @FXML
     private TextField titleField;
     @FXML
@@ -48,10 +48,6 @@ public class AddEditFilmController extends HandleFilmController implements Initi
     private boolean editMode;
 
     public AddEditFilmController() throws IOException {
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 
 
@@ -143,7 +139,7 @@ public class AddEditFilmController extends HandleFilmController implements Initi
                 .collect(Collectors.toCollection(LinkedList::new));
         List<String> directorIds = getEntitiesIdsByNames(directorNames, Director.class);
 
-        return new RequestFilm(titleField.getText(), new Date(), genreIds, directorIds, actorIds);
+        return new RequestFilm(editMode ? film.getId() : "", titleField.getText(), new Date(), genreIds, directorIds, actorIds);
     }
 
     protected void closeStage(ActionEvent event) {

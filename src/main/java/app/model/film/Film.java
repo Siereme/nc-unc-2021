@@ -70,9 +70,18 @@ public class Film implements IEntity {
     }
 
 
-    public Film(String newTittle, Date newDate, LinkedList<String> newGenres, LinkedList<String> newDirectors,
-                LinkedList<String> newActors) {
+    public Film(String newTittle, Date newDate, List<String> newGenres, List<String> newDirectors,
+                List<String> newActors) {
         id = UUID.randomUUID().toString();
+        tittle = newTittle;
+        date = newDate;
+        genres = newGenres;
+        directors = newDirectors;
+        actors = newActors;
+    }
+    public Film(String newId, String newTittle, Date newDate, List<String> newGenres, List<String> newDirectors,
+                List<String> newActors) {
+        id = newId;
         tittle = newTittle;
         date = newDate;
         genres = newGenres;

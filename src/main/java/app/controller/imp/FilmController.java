@@ -410,8 +410,7 @@ public class FilmController implements IEntityController<Film> {
         film.setActors(editFilm.getActors());
         film.setDirectors(editFilm.getDirectors());
         film.setGenres(editFilm.getGenres());
-        updateRepository();
-        return true;
+        return updateRepository();
     }
 
 }

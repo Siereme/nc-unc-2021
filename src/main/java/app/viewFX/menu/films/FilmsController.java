@@ -119,8 +119,13 @@ public class FilmsController extends AbstractController implements Initializable
             filmTable.setEditable(false);
             removeButton.setStyle("");
 
-            List<String> removeFilmIds =
-                    Collections.emptyList();// films.stream().filter(film -> film.getChecked().isSelected()).map(TableFilm::getId).toList();
+            List<String> removeFilmIds = new ArrayList<>();
+            for (TableFilm film : films) {
+                if (film.getChecked().isSelected()) {
+                    String film1Id = film.getId();
+                    removeFilmIds.add(film1Id);
+                }
+            }
             if (removeFilmIds.size() > 0) {
                 for (String id : removeFilmIds) {
                     RemoveEntityRequest removeRequest = new RemoveEntityRequest(id, Film.class);
