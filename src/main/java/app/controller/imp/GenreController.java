@@ -7,6 +7,7 @@ import app.repository.imp.GenreRepository;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /** Genre app.controller
@@ -155,6 +156,32 @@ public class GenreController implements IEntityController<Genre> {
             ids.add(genre.getId());
         }
         return ids;
+    }
+
+    public void setFilmToEntities(String filmId, List<String> genreIds){
+        if(genreIds.size() > 0){
+            for(String id : genreIds){
+                Genre genre = getEntityById(id);
+                genre.setFilm(filmId);
+            }
+            updateRepository();
+        }
+    }
+
+    public void deleteFilmFromEntities(String filmId, List<String> genreIds){
+        if(genreIds.size() > 0){
+            for(String id : genreIds){
+                Genre genre = getEntityById(id);
+                genre.deleteFilm(filmId);
+            }
+            updateRepository();
+        }
+    }
+    public void deleteFilmFromEntities(String filmId){
+        for(Genre genre : repository.findAll()){
+            genre.deleteFilm(filmId);
+        }
+        updateRepository();
     }
 
 }

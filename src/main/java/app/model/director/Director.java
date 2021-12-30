@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /** Director entity
@@ -63,6 +64,26 @@ public class Director implements IEntity {
 
     public String getYear() {
         return this.year;
+    }
+
+    public List<String> getFilms() { return this.films; }
+
+    public boolean setFilm(String filmId){
+        for(String id : this.films){
+            if(Objects.equals(id, filmId)) return false;
+        }
+        this.films.add(filmId);
+        return true;
+    }
+
+    public boolean deleteFilm(String filmId){
+        for(String id : this.films){
+            if(Objects.equals(id, filmId)){
+                this.films.remove(id);
+                return true;
+            };
+        }
+        return false;
     }
 
 }

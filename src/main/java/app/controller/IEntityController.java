@@ -9,7 +9,7 @@ import java.util.List;
  * @author Vasiliy
  * @version 1.0
  * */
-public interface IEntityController<T> {
+public interface IEntityController<T extends IEntity> {
     /** method of getting the entity by id
      * @param id - id entity, to be found
      * @return entity type object with id = @id

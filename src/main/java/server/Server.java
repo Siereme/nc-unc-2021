@@ -48,6 +48,7 @@ public class Server {
         int PORT = 7777;
         ServerSocket ss = new ServerSocket(PORT);
         System.out.println("ServerSocket awaiting connections...");
+
         while (!ss.isClosed()) {
             Socket client = ss.accept();
             pool.execute(new SingleServer(client));

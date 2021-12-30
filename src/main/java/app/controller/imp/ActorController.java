@@ -3,10 +3,12 @@ package app.controller.imp;
 import app.controller.IEntityController;
 import app.model.IEntity;
 import app.model.actor.Actor;
+import app.model.genre.Genre;
 import app.repository.imp.ActorRepository;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /** Actor app.controller
@@ -167,5 +169,34 @@ public class ActorController implements IEntityController<Actor> {
     public boolean edit(Actor entity) {
         return false;
     }
+
+    public void setFilmToEntities(String filmId, List<String> actorIds){
+        if(actorIds.size() > 0){
+            for(String id : actorIds){
+                Actor actor = getEntityById(id);
+                actor.setFilm(filmId);
+            }
+            updateRepository();
+        }
+    }
+
+    public void deleteFilmFromEntities(String filmId, List<String> actorIds){
+        if(actorIds.size() > 0){
+            for(String id : actorIds){
+                Actor actor = getEntityById(id);
+                actor.deleteFilm(filmId);
+            }
+            updateRepository();
+        }
+    }
+
+    public void deleteFilmFromEntities(String filmId){
+        for(Actor actor : repository.findAll()){
+            actor.deleteFilm(filmId);
+        }
+        updateRepository();
+    }
+
+
 
 }

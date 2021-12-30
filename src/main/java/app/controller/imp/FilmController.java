@@ -9,9 +9,7 @@ import app.model.genre.Genre;
 import app.repository.imp.FilmsRepository;
 
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /** Film app.controller
  * @see Film
@@ -23,6 +21,9 @@ import java.util.Objects;
 public class FilmController implements IEntityController<Film> {
 
     private final FilmsRepository repository;
+    private final ActorController actorController = new ActorController();
+    private final DirectorController directorController = new DirectorController();
+    private final GenreController genreController = new GenreController();
 
     public FilmController() {
         repository = new FilmsRepository();
@@ -78,6 +79,9 @@ public class FilmController implements IEntityController<Film> {
     @Override
     public boolean remove(Film entity) {
         repository.findAll().remove(entity);
+        actorController.deleteFilmFromEntities(entity.getId());
+        directorController.deleteFilmFromEntities(entity.getId());
+        genreController.deleteFilmFromEntities(entity.getId());
         return updateRepository();
     }
 
@@ -274,11 +278,6 @@ public class FilmController implements IEntityController<Film> {
         return repository.findAll().get(ind);
     }
 
-    public void addEntity(IEntity entity) {
-        Film film = new Film((Film) entity);
-        repository.findAll().add(film);
-        updateRepository();
-    }
 
     public boolean updateRepository() {
         try {
@@ -403,14 +402,70 @@ public class FilmController implements IEntityController<Film> {
         return films;
     }
 
+
+    @Override
+    public void addEntity(IEntity entity) {
+        Film addFilm = new Film((Film) entity);
+        addFilmToEntities(addFilm.getId(), addFilm.getGenres(), addFilm.getActors(), addFilm.getDirectors());
+        getRepository().findAll().add(addFilm);
+        updateRepository();
+    }
+
+    private void addFilmToEntities(String filmId, List<String> genreIds, List<String> actorIds, List<String> directorIds){
+        genreController.setFilmToEntities(filmId, genreIds);
+        actorController.setFilmToEntities(filmId, actorIds);
+        directorController.setFilmToEntities(filmId, directorIds);
+    }
+
+    private void deleteFilmToEntities(String filmId, List<String> genreIds, List<String> actorIds, List<String> directorIds){
+        genreController.deleteFilmFromEntities(filmId, genreIds);
+        actorController.deleteFilmFromEntities(filmId, actorIds);
+        directorController.deleteFilmFromEntities(filmId, directorIds);
+    }
+
     public boolean edit(Film editFilm) {
         Film film = getEntityById(editFilm.getId());
+        editFilmInEntities(film, editFilm);
         film.setTittle(editFilm.getTittle());
         film.setDate(editFilm.getDate());
+        film.actorsClear();
         film.setActors(editFilm.getActors());
+        film.directorsClear();
         film.setDirectors(editFilm.getDirectors());
+        film.genresClear();
         film.setGenres(editFilm.getGenres());
         return updateRepository();
+    }
+
+    private Map<List<String>, List<String>> editFilmInEntity(String filmId, List<String> entityIds, List<String> editEntityIds) {
+        List<String> addList = new LinkedList<>();
+        List<String> removeList = new LinkedList<>();
+        for(String id : entityIds){
+            boolean isContains = editEntityIds.stream().anyMatch(editId -> Objects.equals(editId, id));
+            if(!isContains) removeList.add(id);
+        }
+        for(String editId : editEntityIds){
+            boolean isContains = entityIds.stream().anyMatch(id -> Objects.equals(id, editId));
+            if(!isContains) addList.add(editId);
+        }
+        Map<List<String>, List<String>> editMap = new HashMap<>(){{put(addList, removeList);}};
+        return editMap;
+    }
+
+    private void editFilmInEntities(Film film, Film editFilm) {
+        Map<List<String>, List<String>> genreMap = editFilmInEntity(film.getId(), film.getGenres(), editFilm.getGenres());
+        Map<List<String>, List<String>> actorMap = editFilmInEntity(film.getId(), film.getActors(), editFilm.getActors());
+        Map<List<String>, List<String>> directorMap = editFilmInEntity(film.getId(), film.getDirectors(), editFilm.getDirectors());
+
+        List<String> genres = genreMap.entrySet().iterator().next().getKey();
+        List<String> actors = actorMap.entrySet().iterator().next().getKey();
+        List<String> directors = directorMap.entrySet().iterator().next().getKey();
+        addFilmToEntities(film.getId(), genres, actors, directors);
+
+        genres = genreMap.entrySet().iterator().next().getValue();
+        actors = actorMap.entrySet().iterator().next().getValue();
+        directors = directorMap.entrySet().iterator().next().getValue();
+        deleteFilmToEntities(film.getId(), genres, actors, directors);
     }
 
 }

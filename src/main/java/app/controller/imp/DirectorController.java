@@ -3,10 +3,12 @@ package app.controller.imp;
 import app.controller.IEntityController;
 import app.model.IEntity;
 import app.model.director.Director;
+import app.model.genre.Genre;
 import app.repository.imp.DirectorRepository;
 
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /** Director app.controller
@@ -160,6 +162,33 @@ public class DirectorController implements IEntityController<Director> {
             ids.add(director.getId());
         }
         return ids;
+    }
+
+    public void setFilmToEntities(String filmId, List<String> directorIds){
+        if(directorIds.size() > 0){
+            for(String id : directorIds){
+                Director director = getEntityById(id);
+                director.setFilm(filmId);
+            }
+            updateRepository();
+        }
+    }
+
+    public void deleteFilmFromEntities(String filmId, List<String> directorIds){
+        if(directorIds.size() > 0){
+            for(String id : directorIds){
+                Director director = getEntityById(id);
+                director.deleteFilm(filmId);
+            }
+            updateRepository();
+        }
+    }
+
+    public void deleteFilmFromEntities(String filmId){
+        for(Director director : repository.findAll()){
+            director.deleteFilm(filmId);
+        }
+        updateRepository();
     }
 
 }

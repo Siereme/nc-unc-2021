@@ -1,7 +1,10 @@
 package app.model.genre;
 
 import app.model.IEntity;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -14,14 +17,19 @@ public class Genre implements IEntity {
 
     private String tittle;
 
+    @JsonProperty("films")
+    private List<String> films;
+
     public Genre(){
         id = UUID.randomUUID().toString();
         tittle = "Unknown";
+        this.films = new LinkedList<>();
     }
 
     public Genre(String newGener) {
         id = UUID.randomUUID().toString();
         tittle = newGener;
+        this.films = new LinkedList<>();
     }
 
     public String getId() {
@@ -34,6 +42,26 @@ public class Genre implements IEntity {
 
     public void setTittle(String tittle) {
         this.tittle = tittle;
+    }
+
+    public List<String> getFilms() { return this.films; }
+
+    public boolean setFilm(String filmId){
+        for(String id : this.films){
+            if(Objects.equals(id, filmId)) return false;
+        }
+        this.films.add(filmId);
+        return true;
+    }
+
+    public boolean deleteFilm(String filmId){
+        for(String id : this.films){
+            if(Objects.equals(id, filmId)){
+                this.films.remove(id);
+                return true;
+            };
+        }
+        return false;
     }
 
     @Override

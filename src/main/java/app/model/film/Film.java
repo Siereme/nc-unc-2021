@@ -29,6 +29,8 @@ public class Film implements IEntity {
         return actors;
     }
 
+    public void actorsClear(){ this.actors.clear(); }
+
     public void setActors(List<String> actors) {
         this.actors = actors;
     }
@@ -37,6 +39,8 @@ public class Film implements IEntity {
         return directors;
     }
 
+    public void directorsClear(){ this.directors.clear(); }
+
     public void setDirectors(List<String> directors) {
         this.directors = directors;
     }
@@ -44,6 +48,8 @@ public class Film implements IEntity {
     public List<String> getGenres() {
         return genres;
     }
+
+    public void genresClear(){ this.genres.clear(); }
 
     public void setGenres(List<String> newGenres) {
         System.out.println(newGenres);
