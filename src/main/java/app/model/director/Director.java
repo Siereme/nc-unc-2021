@@ -1,6 +1,7 @@
 package app.model.director;
 
 import app.model.IEntity;
+import app.model.actor.Actor;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.LinkedList;
@@ -54,6 +55,13 @@ public class Director implements IEntity {
         this.films = new LinkedList<>();
     }
 
+    public Director(Director director) {
+        this.id = UUID.randomUUID().toString();
+        this.name = director.getName();
+        this.year = director.getYear();
+        this.films = director.getFilms();
+    }
+
     public String getId() {
         return this.id;
     }
@@ -76,6 +84,12 @@ public class Director implements IEntity {
         return true;
     }
 
+    public void setFilms(List<String> filmId){
+        for(String id : filmId){
+            setFilm(id);
+        }
+    }
+
     public boolean deleteFilm(String filmId){
         for(String id : this.films){
             if(Objects.equals(id, filmId)){
@@ -85,5 +99,7 @@ public class Director implements IEntity {
         }
         return false;
     }
+
+    public void clearFilms(){ this.films.clear(); }
 
 }

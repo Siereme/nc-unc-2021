@@ -21,9 +21,6 @@ import java.util.*;
 public class FilmController implements IEntityController<Film> {
 
     private final FilmsRepository repository;
-    private final ActorController actorController = new ActorController();
-    private final DirectorController directorController = new DirectorController();
-    private final GenreController genreController = new GenreController();
 
     public FilmController() {
         repository = new FilmsRepository();
@@ -78,6 +75,9 @@ public class FilmController implements IEntityController<Film> {
 
     @Override
     public boolean remove(Film entity) {
+        ActorController actorController = new ActorController();
+        DirectorController directorController = new DirectorController();
+        GenreController genreController = new GenreController();
         repository.findAll().remove(entity);
         actorController.deleteFilmFromEntities(entity.getId());
         directorController.deleteFilmFromEntities(entity.getId());
@@ -307,20 +307,26 @@ public class FilmController implements IEntityController<Film> {
         return ids;
     }
 
-    public void addActorToFilms(Actor actor, LinkedList<String> ids) {
+    public void addActorToFilms(Actor actor, List<String> ids) {
         for (String id : ids) {
             Film film = getEntityById(id);
-            List<String> actorsId = film.getActors();
-            actorsId.add(actor.getId());
+            film.setActors(Collections.singletonList(actor.getId()));
         }
         updateRepository();
     }
 
-    public void addDirectorToFilms(Director director, LinkedList<String> ids) {
+    public void addDirectorToFilms(Director director, List<String> ids) {
         for (String id : ids) {
             Film film = getEntityById(id);
-            List<String> directorsId = film.getDirectors();
-            directorsId.add(director.getId());
+            film.setDirectors(Collections.singletonList(director.getId()));
+        }
+        updateRepository();
+    }
+
+    public void addGenreToFilms(Genre genre, List<String> ids) {
+        for (String id : ids) {
+            Film film = getEntityById(id);
+            film.setGenres(Collections.singletonList(genre.getId()));
         }
         updateRepository();
     }
@@ -338,14 +344,30 @@ public class FilmController implements IEntityController<Film> {
         }
     }
 
+    public void removeActorFromFilms(Actor actor, List<String> filmIds){
+        for(String id : filmIds){
+            Film film = getEntityById(id);
+            removeActorFromFilm(actor, film);
+        }
+        updateRepository();
+    }
+    public void removeActorFromFilm(Actor actor, Film film) {
+        List<String> actorsId = film.getActors();
+        actorsId.remove(actor.getId());
+    }
+
     public static void addActorToFilm(Actor actor, Film film) {
         List<String> actorsId = film.getActors();
         actorsId.add(actor.getId());
     }
 
-    public static void removeActorFromFilm(Actor actor, Film film) {
-        List<String> actorsId = film.getActors();
-        actorsId.remove(actor.getId());
+
+    public void removeDirectorFromFilms(Director director, List<String> filmIds){
+        for(String id : filmIds){
+            Film film = getEntityById(id);
+            removeDirectorFromFilm(director, film);
+        }
+        updateRepository();
     }
 
     public static void removeDirectorFromFilm(Director director, Film film) {
@@ -364,6 +386,32 @@ public class FilmController implements IEntityController<Film> {
         if (isChange) {
             updateRepository();
         }
+    }
+
+    public void removeGenreFromAllFilms(Genre genre) {
+        boolean isChange = false;
+        for (Film film : repository.findAll()) {
+            if (isContainsGenre(film, genre.getId())) {
+                removeGenreFromFilm(genre, film);
+                isChange = true;
+            }
+        }
+        if (isChange) {
+            updateRepository();
+        }
+    }
+
+    public void removeGenreFromFilms(Genre genre, List<String> filmIds) {
+        for(String id : filmIds){
+            Film film = getEntityById(id);
+            removeGenreFromFilm(genre, film);
+        }
+        updateRepository();
+    }
+
+    private void removeGenreFromFilm(Genre genre, Film film) {
+        List<String> genreIds = film.getGenres();
+        genreIds.remove(genre.getId());
     }
 
     // function may be parallel
@@ -403,6 +451,8 @@ public class FilmController implements IEntityController<Film> {
     }
 
 
+
+
     @Override
     public void addEntity(IEntity entity) {
         Film addFilm = new Film((Film) entity);
@@ -412,12 +462,18 @@ public class FilmController implements IEntityController<Film> {
     }
 
     private void addFilmToEntities(String filmId, List<String> genreIds, List<String> actorIds, List<String> directorIds){
+        ActorController actorController = new ActorController();
+        DirectorController directorController = new DirectorController();
+        GenreController genreController = new GenreController();
         genreController.setFilmToEntities(filmId, genreIds);
         actorController.setFilmToEntities(filmId, actorIds);
         directorController.setFilmToEntities(filmId, directorIds);
     }
 
     private void deleteFilmToEntities(String filmId, List<String> genreIds, List<String> actorIds, List<String> directorIds){
+        ActorController actorController = new ActorController();
+        DirectorController directorController = new DirectorController();
+        GenreController genreController = new GenreController();
         genreController.deleteFilmFromEntities(filmId, genreIds);
         actorController.deleteFilmFromEntities(filmId, actorIds);
         directorController.deleteFilmFromEntities(filmId, directorIds);
@@ -437,7 +493,7 @@ public class FilmController implements IEntityController<Film> {
         return updateRepository();
     }
 
-    private Map<List<String>, List<String>> editFilmInEntity(String filmId, List<String> entityIds, List<String> editEntityIds) {
+    private Map<List<String>, List<String>> getChangesEntitiesInFilm(List<String> entityIds, List<String> editEntityIds) {
         List<String> addList = new LinkedList<>();
         List<String> removeList = new LinkedList<>();
         for(String id : entityIds){
@@ -453,9 +509,9 @@ public class FilmController implements IEntityController<Film> {
     }
 
     private void editFilmInEntities(Film film, Film editFilm) {
-        Map<List<String>, List<String>> genreMap = editFilmInEntity(film.getId(), film.getGenres(), editFilm.getGenres());
-        Map<List<String>, List<String>> actorMap = editFilmInEntity(film.getId(), film.getActors(), editFilm.getActors());
-        Map<List<String>, List<String>> directorMap = editFilmInEntity(film.getId(), film.getDirectors(), editFilm.getDirectors());
+        Map<List<String>, List<String>> genreMap = getChangesEntitiesInFilm(film.getGenres(), editFilm.getGenres());
+        Map<List<String>, List<String>> actorMap = getChangesEntitiesInFilm(film.getActors(), editFilm.getActors());
+        Map<List<String>, List<String>> directorMap = getChangesEntitiesInFilm(film.getDirectors(), editFilm.getDirectors());
 
         List<String> genres = genreMap.entrySet().iterator().next().getKey();
         List<String> actors = actorMap.entrySet().iterator().next().getKey();

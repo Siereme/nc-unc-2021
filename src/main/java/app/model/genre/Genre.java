@@ -1,6 +1,7 @@
 package app.model.genre;
 
 import app.model.IEntity;
+import app.model.actor.Actor;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.LinkedList;
@@ -32,6 +33,12 @@ public class Genre implements IEntity {
         this.films = new LinkedList<>();
     }
 
+    public Genre(Genre genre) {
+        this.id = UUID.randomUUID().toString();
+        this.tittle = genre.getTittle();
+        this.films = genre.getFilms();
+    }
+
     public String getId() {
         return this.id;
     }
@@ -54,6 +61,12 @@ public class Genre implements IEntity {
         return true;
     }
 
+    public void setFilms(List<String> filmId){
+        for(String id : filmId){
+            setFilm(id);
+        }
+    }
+
     public boolean deleteFilm(String filmId){
         for(String id : this.films){
             if(Objects.equals(id, filmId)){
@@ -63,6 +76,9 @@ public class Genre implements IEntity {
         }
         return false;
     }
+
+    public void clearFilms(){ this.films.clear(); }
+
 
     @Override
     public boolean equals(Object o) {

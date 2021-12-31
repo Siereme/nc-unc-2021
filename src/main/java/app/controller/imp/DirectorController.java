@@ -2,6 +2,7 @@ package app.controller.imp;
 
 import app.controller.IEntityController;
 import app.model.IEntity;
+import app.model.actor.Actor;
 import app.model.director.Director;
 import app.model.genre.Genre;
 import app.repository.imp.DirectorRepository;
@@ -69,12 +70,49 @@ public class DirectorController implements IEntityController<Director> {
 
     @Override
     public boolean remove(Director entity) {
-        return repository.findAll().remove(entity);
+        FilmController filmController = new FilmController();
+        repository.findAll().remove(entity);
+        filmController.removeDirectorFromAllFilms(entity);
+        return updateRepository();
+    }
+
+    public void addEntity(IEntity entity) {
+        FilmController filmController = new FilmController();
+        Director director = new Director((Director) entity);
+        filmController.addDirectorToFilms(director , director.getFilms());
+        getRepository().findAll().add(director);
+        updateRepository();
     }
 
     @Override
     public boolean edit(Director entity) {
-        return false;
+        Director director = getEntityById(entity.getId());
+        director.setName(entity.getName());
+        director.setYear(entity.getYear());
+        editEntityInFilms(director, entity);
+        director.clearFilms();
+        director.setFilms(entity.getFilms());
+        return updateRepository();
+    }
+
+    private void editEntityInFilms(Director director, Director editDirector) {
+        FilmController filmController = new FilmController();
+        List<String> addList = new LinkedList<>();
+        List<String> removeList = new LinkedList<>();
+        for(String id : director.getFilms()){
+            boolean isContains = editDirector.getFilms().stream().anyMatch(editId -> Objects.equals(editId, id));
+            if(!isContains) removeList.add(id);
+        }
+        for(String editId : editDirector.getFilms()){
+            boolean isContains = director.getFilms().stream().anyMatch(id -> Objects.equals(id, editId));
+            if(!isContains) addList.add(editId);
+        }
+        if(addList.size() > 0){
+            filmController.addDirectorToFilms(director, addList);
+        }
+        if(removeList.size() > 0){
+            filmController.removeDirectorFromFilms(director, removeList);
+        }
     }
 
     public Director getEntityById(String id) {
@@ -128,10 +166,6 @@ public class DirectorController implements IEntityController<Director> {
 
     public Director getEntity(int ind) {
         return repository.findAll().get(ind);
-    }
-
-    public void addEntity(IEntity entity) {
-        repository.findAll().add((Director) entity);
     }
 
     public boolean updateRepository() {

@@ -2,6 +2,7 @@ package app.controller.imp;
 
 import app.controller.IEntityController;
 import app.model.IEntity;
+import app.model.director.Director;
 import app.model.genre.Genre;
 import app.repository.imp.GenreRepository;
 
@@ -69,12 +70,48 @@ public class GenreController implements IEntityController<Genre> {
 
     @Override
     public boolean remove(Genre entity) {
-        return repository.findAll().remove(entity);
+        FilmController filmController = new FilmController();
+        repository.findAll().remove(entity);
+        filmController.removeGenreFromAllFilms(entity);
+        return updateRepository();
+    }
+
+    public void addEntity(IEntity entity) {
+        FilmController filmController = new FilmController();
+        Genre genre = new Genre((Genre) entity);
+        filmController.addGenreToFilms(genre , genre.getFilms());
+        getRepository().findAll().add(genre);
+        updateRepository();
     }
 
     @Override
     public boolean edit(Genre entity) {
-        return false;
+        Genre genre = getEntityById(entity.getId());
+        genre.setTittle(entity.getTittle());
+        editEntityInFilms(genre, entity);
+        genre.clearFilms();
+        genre.setFilms(entity.getFilms());
+        return updateRepository();
+    }
+
+    private void editEntityInFilms(Genre genre, Genre editGenre) {
+        FilmController filmController = new FilmController();
+        List<String> addList = new LinkedList<>();
+        List<String> removeList = new LinkedList<>();
+        for(String id : genre.getFilms()){
+            boolean isContains = editGenre.getFilms().stream().anyMatch(editId -> Objects.equals(editId, id));
+            if(!isContains) removeList.add(id);
+        }
+        for(String editId : editGenre.getFilms()){
+            boolean isContains = genre.getFilms().stream().anyMatch(id -> Objects.equals(id, editId));
+            if(!isContains) addList.add(editId);
+        }
+        if(addList.size() > 0){
+            filmController.addGenreToFilms(genre, addList);
+        }
+        if(removeList.size() > 0){
+            filmController.removeGenreFromFilms(genre, removeList);
+        }
     }
 
     public Genre getEntityById(String id) {
@@ -130,9 +167,6 @@ public class GenreController implements IEntityController<Genre> {
         return repository.findAll().get(ind);
     }
 
-    public void addEntity(IEntity entity) {
-        repository.findAll().add((Genre) entity);
-    }
 
     public boolean updateRepository() {
         try {

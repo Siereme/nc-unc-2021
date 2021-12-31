@@ -2,10 +2,7 @@ package app.model.film;
 
 import app.model.IEntity;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /** Film entity
  * @author Vasiliy, Sergey
@@ -25,37 +22,6 @@ public class Film implements IEntity {
 
     private List<String> actors;
 
-    public List<String> getActors() {
-        return actors;
-    }
-
-    public void actorsClear(){ this.actors.clear(); }
-
-    public void setActors(List<String> actors) {
-        this.actors = actors;
-    }
-
-    public List<String> getDirectors() {
-        return directors;
-    }
-
-    public void directorsClear(){ this.directors.clear(); }
-
-    public void setDirectors(List<String> directors) {
-        this.directors = directors;
-    }
-
-    public List<String> getGenres() {
-        return genres;
-    }
-
-    public void genresClear(){ this.genres.clear(); }
-
-    public void setGenres(List<String> newGenres) {
-        System.out.println(newGenres);
-        this.genres.addAll(newGenres);
-        System.out.println(this.genres);
-    }
 
     public Film(){
         id = UUID.randomUUID().toString();
@@ -124,4 +90,42 @@ public class Film implements IEntity {
         this.date = date;
     }
 
+    public List<String> getActors() {
+        return actors;
+    }
+
+    public void actorsClear(){ this.actors.clear(); }
+
+    public void setActors(List<String> actors) {
+        for(String id : actors){
+            boolean isContains = getActors().stream().anyMatch(actor -> Objects.equals(actor, id));
+            if(!isContains) getActors().add(id);
+        }
+    }
+
+    public List<String> getDirectors() {
+        return directors;
+    }
+
+    public void directorsClear(){ this.directors.clear(); }
+
+    public void setDirectors(List<String> directors) {
+        for(String id : directors){
+            boolean isContains = getDirectors().stream().anyMatch(director -> Objects.equals(director, id));
+            if(!isContains) getDirectors().add(id);
+        }
+    }
+
+    public List<String> getGenres() {
+        return genres;
+    }
+
+    public void genresClear(){ this.genres.clear(); }
+
+    public void setGenres(List<String> genres) {
+        for(String id : genres){
+            boolean isContains = getGenres().stream().anyMatch(genre -> Objects.equals(genre, id));
+            if(!isContains) getGenres().add(id);
+        }
+    }
 }

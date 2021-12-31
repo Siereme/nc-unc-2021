@@ -52,6 +52,12 @@ public class Actor implements IEntity {
         this.year = year;
         this.films = new LinkedList<>();
     }
+    public Actor(Actor actor) {
+        this.id = UUID.randomUUID().toString();
+        this.name = actor.getName();
+        this.year = actor.getYear();
+        this.films = actor.getFilms();
+    }
 
     public String getId() {
         return this.id;
@@ -75,6 +81,12 @@ public class Actor implements IEntity {
         return true;
     }
 
+    public void setFilms(List<String> filmId){
+        for(String id : filmId){
+            setFilm(id);
+        }
+    }
+
     public boolean deleteFilm(String filmId){
         for(String id : this.films){
             if(Objects.equals(id, filmId)){
@@ -84,4 +96,6 @@ public class Actor implements IEntity {
         }
         return false;
     }
+
+    public void clearFilms(){ this.films.clear(); }
 }

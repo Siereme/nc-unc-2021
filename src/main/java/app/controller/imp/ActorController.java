@@ -3,7 +3,6 @@ package app.controller.imp;
 import app.controller.IEntityController;
 import app.model.IEntity;
 import app.model.actor.Actor;
-import app.model.genre.Genre;
 import app.repository.imp.ActorRepository;
 
 import java.io.IOException;
@@ -19,6 +18,7 @@ import java.util.Objects;
  * @version 1.0
  * */
 public class ActorController implements IEntityController<Actor> {
+
     public ActorRepository getRepository() {
         return repository;
     }
@@ -89,10 +89,7 @@ public class ActorController implements IEntityController<Actor> {
         return repository.findAll().get(ind);
     }
 
-    public void addEntity(IEntity entity) {
-        repository.findAll().add((Actor) entity);
-        updateRepository();
-    }
+
 
     public boolean updateRepository() {
         try {
@@ -154,6 +151,14 @@ public class ActorController implements IEntityController<Actor> {
         return null;
     }
 
+    public void addEntity(IEntity entity) {
+        FilmController filmController = new FilmController();
+        Actor actor = new Actor((Actor) entity);
+        filmController.addActorToFilms(actor , actor.getFilms());
+        getRepository().findAll().add(actor);
+        updateRepository();
+    }
+
     @Override
     public boolean remove(String id) {
         Actor actor = getEntityById(id);
@@ -162,12 +167,41 @@ public class ActorController implements IEntityController<Actor> {
 
     @Override
     public boolean remove(Actor entity) {
-        return repository.findAll().remove(entity);
+        FilmController filmController = new FilmController();
+        repository.findAll().remove(entity);
+        filmController.removeActorFromAllFilms(entity);
+        return updateRepository();
     }
 
     @Override
     public boolean edit(Actor entity) {
-        return false;
+        Actor actor = getEntityById(entity.getId());
+        actor.setName(entity.getName());
+        actor.setYear(entity.getYear());
+        editEntityInFilms(actor, entity);
+        actor.clearFilms();
+        actor.setFilms(entity.getFilms());
+        return updateRepository();
+    }
+
+    private void editEntityInFilms(Actor actor, Actor editActor) {
+        FilmController filmController = new FilmController();
+        List<String> addList = new LinkedList<>();
+        List<String> removeList = new LinkedList<>();
+        for(String id : actor.getFilms()){
+            boolean isContains = editActor.getFilms().stream().anyMatch(editId -> Objects.equals(editId, id));
+            if(!isContains) removeList.add(id);
+        }
+        for(String editId : editActor.getFilms()){
+            boolean isContains = actor.getFilms().stream().anyMatch(id -> Objects.equals(id, editId));
+            if(!isContains) addList.add(editId);
+        }
+        if(addList.size() > 0){
+            filmController.addActorToFilms(actor, addList);
+        }
+        if(removeList.size() > 0){
+            filmController.removeActorFromFilms(actor, removeList);
+        }
     }
 
     public void setFilmToEntities(String filmId, List<String> actorIds){
