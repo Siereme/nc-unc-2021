@@ -94,6 +94,11 @@ public class GenreController implements IEntityController<Genre> {
         return updateRepository();
     }
 
+    @Override
+    public List<Genre> findAll() {
+        return repository.findAll();
+    }
+
     private void editEntityInFilms(Genre genre, Genre editGenre) {
         FilmController filmController = new FilmController();
         List<String> addList = new LinkedList<>();

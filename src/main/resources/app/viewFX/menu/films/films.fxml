@@ -16,7 +16,7 @@
       <Label layoutX="72.0" layoutY="22.0" prefHeight="17.0" prefWidth="38.0" text="Actor"/>
       <Label layoutX="566.0" layoutY="22.0" text="Director"/>
       <Label layoutX="72.0" layoutY="84.0" text="Genre"/>
-      <FlowPane fx:id="containerControlButton" alignment="CENTER_LEFT" layoutX="566.0" layoutY="108.0"
+      <FlowPane alignment="CENTER_LEFT" layoutX="566.0" layoutY="108.0"
                 nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="360.0" rowValignment="TOP">
          <Button fx:id="searchButton" mnemonicParsing="false" onAction="#search" prefHeight="25.0"
                  prefWidth="107.0" text="Search">
@@ -43,7 +43,7 @@
          <columns>
             <TableColumn prefWidth="75.0" visible="false" maxWidth="30.0" minWidth="30.0" fx:id="select">
             </TableColumn>
-            <TableColumn prefWidth="75.0" text="Title" fx:id="title"/>
+            <TableColumn prefWidth="75.0" text="Tittle" fx:id="tittle"/>
             <TableColumn prefWidth="75.0" text="Date" fx:id="date"/>
             <TableColumn prefWidth="75.0" text="Genres" fx:id="genres"/>
             <TableColumn prefWidth="75.0" text="Actors" fx:id="actors"/>

@@ -28,4 +28,6 @@ module app {
     opens app.viewFX.menu.films.handle to javafx.base, javafx.fxml;
     exports dto.request.imp to javafx.fxml;
     opens dto.request.imp to javafx.base, javafx.fxml;
+    exports app.viewFX.menu.genres to javafx.fxml;
+    opens app.viewFX.menu.genres to javafx.base, javafx.fxml;
 }

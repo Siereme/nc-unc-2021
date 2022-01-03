@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+    fx:controller="app.viewFX.menu.genres.GenresController">
+  <children>
+    <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
+      <children>
+        <Label alignment="CENTER" layoutX="155.0" layoutY="177.0" style="&#10;" text="Genres Table" textAlignment="CENTER" textFill="#9f9f9f" wrapText="false">
+          <font>
+            <Font size="18.0" />
+          </font>
+        </Label>
+            <Button fx:id="searchButton" onAction="#search" layoutX="28.0" layoutY="84.0" mnemonicParsing="false" text="Search" />
+            <Button fx:id="addButton" onAction="#add" layoutX="441.0" layoutY="84.0" mnemonicParsing="false" text="Add" />
+            <Button fx:id="editButton" onAction="#edit" layoutX="507.0" layoutY="84.0" mnemonicParsing="false" text="Edit" />
+            <Button fx:id="removeButton" onAction="#remove" layoutX="574.0" layoutY="84.0" mnemonicParsing="false" text="Remove" />
+            <TextField fx:id="searchTextField" layoutX="107.0" layoutY="84.0" />
+            <TableView fx:id="genreTable" editable="true" layoutX="7.0" layoutY="200.0" prefHeight="200.0" prefWidth="634.0">
+              <columns>
+                  <TableColumn fx:id="select" visible="false" prefWidth="75.0" text="Select" />
+                  <TableColumn fx:id="tittle" prefWidth="558.3999481201172" text="Tittle" />
+              </columns>
+            </TableView>
+      </children>
+    </AnchorPane>
+  </children>
+</VBox>

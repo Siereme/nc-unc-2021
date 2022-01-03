@@ -4,7 +4,7 @@ import app.model.IEntity;
 import client.CommunicationInterface;
 import dto.request.imp.GetEntitiesByNamesRequest;
 import dto.request.imp.GetEntityRequest;
-import dto.response.imp.GetEntitiesByNamesResponse;
+import dto.response.imp.GetEntitiesResponse;
 import dto.response.imp.GetEntityResponse;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,7 +29,7 @@ public class AbstractController<T extends IEntity> {
         LinkedList<T> entities = new LinkedList<>();
         try {
             final CommunicationInterface instance = CommunicationInterface.getInstance();
-            GetEntitiesByNamesResponse entitiesResponse = (GetEntitiesByNamesResponse) instance.exchange(entitiesRequest);
+            GetEntitiesResponse entitiesResponse = (GetEntitiesResponse) instance.exchange(entitiesRequest);
             List<T> entityList = (List<T>) entitiesResponse.getEntities();
             entities.addAll(entityList);
         } catch (IOException | ClassNotFoundException e) {
@@ -67,7 +67,7 @@ public class AbstractController<T extends IEntity> {
         return entities;
     }
 
-    protected AbstractController initializeWindowController(Stage ownerStage, String path, String title) {
+    protected AbstractController initializeWindowController(Stage ownerStage, String path, String tittle) {
         Stage stage1 = new Stage();
         try {
             FXMLLoader loader = new FXMLLoader(this.getClass().getResource(path));
@@ -77,7 +77,7 @@ public class AbstractController<T extends IEntity> {
             stage1.initModality(Modality.APPLICATION_MODAL);
             controller.setStage(stage1);
             stage1.initOwner(ownerStage);
-            stage1.setTitle(title);
+            stage1.setTitle(tittle);
             return controller;
         } catch (IOException e) {
             throw new RuntimeException(e);

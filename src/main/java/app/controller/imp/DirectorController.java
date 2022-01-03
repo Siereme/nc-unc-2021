@@ -95,6 +95,11 @@ public class DirectorController implements IEntityController<Director> {
         return updateRepository();
     }
 
+    @Override
+    public List<Director> findAll() {
+        return repository.findAll();
+    }
+
     private void editEntityInFilms(Director director, Director editDirector) {
         FilmController filmController = new FilmController();
         List<String> addList = new LinkedList<>();

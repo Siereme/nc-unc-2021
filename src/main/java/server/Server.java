@@ -13,15 +13,9 @@ import app.model.film.Film;
 import app.model.genre.Genre;
 import app.model.user.IUser;
 import dto.request.*;
-import dto.request.imp.AddEntityRequest;
-import dto.request.imp.AuthorizationRequest;
-import dto.request.imp.EditEntityRequest;
-import dto.request.imp.FindByFilterRequest;
-import dto.request.imp.GetEntitiesByNamesRequest;
-import dto.request.imp.GetEntityRequest;
-import dto.request.imp.RemoveEntityRequest;
+import dto.request.imp.*;
 import dto.response.imp.GetAuthorizationResponse;
-import dto.response.imp.GetEntitiesByNamesResponse;
+import dto.response.imp.GetEntitiesResponse;
 import dto.response.imp.GetEntityResponse;
 import dto.response.imp.GetFindByFilterResponse;
 import dto.response.Response;
@@ -153,12 +147,14 @@ public class Server {
                 String entityId = ((GetEntityRequest) request).getEntityId();
                 IEntity entity = (IEntity) controller.getEntityById(entityId);
                 return new GetEntityResponse("ok", entity);
-            } else if(request instanceof GetEntitiesByNamesRequest){
+            } else if (request instanceof GetEntitiesByNamesRequest) {
                 List<String> names = ((GetEntitiesByNamesRequest) request).getNames();
                 List<? extends IEntity> entities = controller.getEntitiesByNames(names);
-                return new GetEntitiesByNamesResponse("ok", entities);
-            }
-            else {
+                return new GetEntitiesResponse("ok", entities);
+            } else if (request instanceof GetAllEntitiesRequest) {
+                List entities = controller.findAll();
+                return new GetEntitiesResponse("ok", entities);
+            } else {
                 return new Response("error");
             }
         }

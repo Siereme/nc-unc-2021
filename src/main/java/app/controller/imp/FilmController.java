@@ -414,7 +414,6 @@ public class FilmController implements IEntityController<Film> {
         genreIds.remove(genre.getId());
     }
 
-    // function may be parallel
     public LinkedList<Film> filmsBy(LinkedList<String> actorsId, LinkedList<String> genresId,
                                     LinkedList<String> directorsId) {
         LinkedList<Film> films = new LinkedList<>();
@@ -491,6 +490,11 @@ public class FilmController implements IEntityController<Film> {
         film.genresClear();
         film.setGenres(editFilm.getGenres());
         return updateRepository();
+    }
+
+    @Override
+    public List<Film> findAll() {
+        return repository.findAll();
     }
 
     private Map<List<String>, List<String>> getChangesEntitiesInFilm(List<String> entityIds, List<String> editEntityIds) {

@@ -104,4 +104,7 @@ public interface IEntityController<T extends IEntity> {
     boolean remove(T entity);
 
     boolean edit(T entity);
+
+    List<T> findAll();
+
 }

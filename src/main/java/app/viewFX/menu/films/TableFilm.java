@@ -11,9 +11,9 @@ import java.util.Date;
 import java.util.List;
 
 public class TableFilm{
-    private String id;
+    private final String id;
     private CheckBox checked = new CheckBox();
-    private String title;
+    private String tittle;
     private Date date;
     private ListView<String> genres = new ListView<>();
     private ListView<String> actors = new ListView<>();
@@ -21,9 +21,9 @@ public class TableFilm{
 
     public TableFilm(Film film, List<Genre> genreList, List<Actor> actorList, List<Director> directorList) {
         this.id = film.getId();
-        this.title = film.getTittle();
+        this.tittle = film.getTittle();
         this.date = film.getDate();
-        genreList.forEach(genre -> this.genres.getItems().add("Title: " + genre.getTittle()));
+        genreList.forEach(genre -> this.genres.getItems().add("Tittle: " + genre.getTittle()));
         actorList.forEach(actor -> this.actors.getItems().add("Name: " + actor.getName() + "\n" + "Year: " + actor.getYear()));
         directorList.forEach(director -> this.directors.getItems().add("Name: " + director.getName() + "\n" + "Year: " + director.getYear()));
     }
@@ -40,12 +40,12 @@ public class TableFilm{
         this.checked = checked;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTittle() {
+        return tittle;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setTittle(String tittle) {
+        this.tittle = tittle;
     }
 
     public Date getDate() {

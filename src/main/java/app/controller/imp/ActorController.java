@@ -184,6 +184,11 @@ public class ActorController implements IEntityController<Actor> {
         return updateRepository();
     }
 
+    @Override
+    public List<Actor> findAll() {
+        return repository.findAll();
+    }
+
     private void editEntityInFilms(Actor actor, Actor editActor) {
         FilmController filmController = new FilmController();
         List<String> addList = new LinkedList<>();

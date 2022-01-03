@@ -10,10 +10,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-/** user app.controller
+/**
+ * user app.controller
+ *
  * @author Sergey
  * @version 1.0
- * */
+ */
 public class UserController implements IEntityController<IUser> {
     final UserRepository repository;
 
@@ -49,6 +51,11 @@ public class UserController implements IEntityController<IUser> {
     @Override
     public boolean edit(IUser entity) {
         return false;
+    }
+
+    @Override
+    public List<IUser> findAll() {
+        return repository.findAll();
     }
 
     public UserController() {

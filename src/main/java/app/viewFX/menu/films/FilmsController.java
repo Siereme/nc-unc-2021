@@ -33,13 +33,13 @@ import java.util.ResourceBundle;
 
 public class FilmsController extends AbstractController implements Initializable {
     private List<Film> filmList;
-    final List<TableFilm> films = new LinkedList<>();
+    final List<TableFilm> tableFilmList = new LinkedList<>();
     @FXML
     private TableView<TableFilm> filmTable;
     @FXML
     private TableColumn<TableFilm, Boolean> select;
     @FXML
-    private TableColumn<TableFilm, String> title;
+    private TableColumn<TableFilm, String> tittle;
     @FXML
     private TableColumn<TableFilm, Date> date;
     @FXML
@@ -65,16 +65,16 @@ public class FilmsController extends AbstractController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         getFilms();
-        films.forEach(film -> {
+        tableFilmList.forEach(film -> {
             select.setCellValueFactory(new PropertyValueFactory<>("checked"));
-            title.setCellValueFactory(new PropertyValueFactory<>("title"));
-            title.setCellFactory(TextFieldTableCell.forTableColumn());
+            tittle.setCellValueFactory(new PropertyValueFactory<>("tittle"));
+            tittle.setCellFactory(TextFieldTableCell.forTableColumn());
             date.setCellValueFactory(new PropertyValueFactory<>("date"));
             genres.setCellValueFactory(new PropertyValueFactory<>("genres"));
             actors.setCellValueFactory(new PropertyValueFactory<>("actors"));
             directors.setCellValueFactory(new PropertyValueFactory<>("directors"));
         });
-        ObservableList<TableFilm> observable = FXCollections.observableArrayList(films);
+        ObservableList<TableFilm> observable = FXCollections.observableArrayList(tableFilmList);
         filmTable.setItems(observable);
         filmTable.setFixedCellSize(100.0);
         filmTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -83,7 +83,7 @@ public class FilmsController extends AbstractController implements Initializable
     public void search() {
         getFilms();
         filmTable.getItems().clear();
-        filmTable.getItems().addAll(films);
+        filmTable.getItems().addAll(tableFilmList);
     }
 
     public void add() throws IOException {
@@ -120,7 +120,7 @@ public class FilmsController extends AbstractController implements Initializable
             removeButton.setStyle("");
 
             List<String> removeFilmIds = new ArrayList<>();
-            for (TableFilm film : films) {
+            for (TableFilm film : tableFilmList) {
                 if (film.getChecked().isSelected()) {
                     String film1Id = film.getId();
                     removeFilmIds.add(film1Id);
@@ -148,7 +148,7 @@ public class FilmsController extends AbstractController implements Initializable
             GetFindByFilterResponse getFindByFilterResponse =
                     (GetFindByFilterResponse) CommunicationInterface.getInstance().exchange(findByFilterRequest);
             filmList = getFindByFilterResponse.getFilms();
-            films.clear();
+            tableFilmList.clear();
             List<TableFilm> tableFilms = new ArrayList<>();
             for (Film film : filmList) {
                 List<Genre> genreList = getEntitiesByIds(film.getGenres(), Genre.class);
@@ -157,7 +157,7 @@ public class FilmsController extends AbstractController implements Initializable
                 TableFilm tableFilm = new TableFilm(film, genreList, actorList, directorList);
                 tableFilms.add(tableFilm);
             }
-            films.addAll(tableFilms);
+            tableFilmList.addAll(tableFilms);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
