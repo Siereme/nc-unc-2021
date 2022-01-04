@@ -1,26 +1,28 @@
 package dto.response.imp;
 
+import app.model.IEntity;
 import app.model.film.Film;
 import dto.response.Response;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /** request send list of films to client */
 public class GetFindByFilterResponse extends Response {
 
-    public LinkedList<Film> getFilms() {
-        return films;
+    public LinkedList<? extends IEntity> getEntities() {
+        return entities;
     }
 
-    private final LinkedList<Film> films;
+    private final LinkedList<IEntity> entities = new LinkedList<>();
 
-    public GetFindByFilterResponse(String name, LinkedList<Film> newFilms) {
+    public GetFindByFilterResponse(String name, List<? extends IEntity> newEntities) {
         super(name);
-        films = newFilms;
+        entities.addAll(newEntities);
     }
 
     public String toString() {
-        if (films.isEmpty()) {
+        if (entities.isEmpty()) {
             return "not found";
         } else {
             return "films found!";

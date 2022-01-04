@@ -9,6 +9,7 @@ import app.repository.imp.GenreRepository;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /** Genre app.controller
@@ -97,6 +98,22 @@ public class GenreController implements IEntityController<Genre> {
     @Override
     public List<Genre> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<Genre> findBy(Map<String, List<String>> entityIds) {
+        LinkedList<Genre> genres = new LinkedList<>();
+        if(entityIds.containsKey("genre")){
+            List<String> genreIds = entityIds.get("genre");
+            for(Genre genre : this.getRepository().findAll()){
+                for (String genreId : genreIds) {
+                    if (Objects.equals(genre.getId(), genreId)) {
+                        genres.add(genre);
+                    }
+                }
+            }
+        }
+        return genres;
     }
 
     private void editEntityInFilms(Genre genre, Genre editGenre) {

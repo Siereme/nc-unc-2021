@@ -3,11 +3,13 @@ package app.controller.imp;
 import app.controller.IEntityController;
 import app.model.IEntity;
 import app.model.actor.Actor;
+import app.model.film.Film;
 import app.repository.imp.ActorRepository;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /** Actor app.controller
@@ -187,6 +189,22 @@ public class ActorController implements IEntityController<Actor> {
     @Override
     public List<Actor> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<Actor> findBy(Map<String, List<String>> entityIds) {
+        LinkedList<Actor> actors = new LinkedList<>();
+        if(entityIds.containsKey("actor")){
+            List<String> actorsIds = entityIds.get("actor");
+            for(Actor actor : this.getRepository().findAll()){
+                for (String actorId : actorsIds) {
+                    if (Objects.equals(actor.getId(), actorId)) {
+                        actors.add(actor);
+                    }
+                }
+            }
+        }
+        return actors;
     }
 
     private void editEntityInFilms(Actor actor, Actor editActor) {

@@ -109,23 +109,27 @@ public class Server {
                         ((AuthorizationRequest) request).getPassword());
                 return new GetAuthorizationResponse("ok", user);
             } else if (request instanceof FindByFilterRequest) {
-                FilmController filmController = (FilmController) controller;
+                Map<String, List<String>> entityIds = new HashMap<>();
 
                 LinkedList<String> actorNames = ((FindByFilterRequest) request).getActors();
                 ActorController actorController = new ActorController();
                 LinkedList<String> actorsIds = actorController.getIdsByNames(actorNames);
+                entityIds.put("actor", actorsIds);
+
 
                 LinkedList<String> directorNames = ((FindByFilterRequest) request).getDirectors();
                 DirectorController directorController = new DirectorController();
                 LinkedList<String> directorIds = directorController.getIdsByNames(directorNames);
+                entityIds.put("director", directorIds);
 
                 LinkedList<String> genreNames = ((FindByFilterRequest) request).getGenres();
                 GenreController genreController = new GenreController();
                 LinkedList<String> genreIds = genreController.getIdsByNames(genreNames);
+                entityIds.put("genre", genreIds);
 
-                // в интерфейсе этого метода нет, поэтому пришлось привести к filmController
-                LinkedList<Film> films = filmController.filmsBy(actorsIds, genreIds, directorIds);
-                return new GetFindByFilterResponse("ok", films);
+
+                List entities = controller.findBy(entityIds);
+                return new GetFindByFilterResponse("ok", entities);
             } else if (request instanceof AddEntityRequest) {
                 IEntity entity = ((AddEntityRequest) request).getEntity();
                 controller.addEntity(entity);
