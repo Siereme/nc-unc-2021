@@ -133,7 +133,7 @@ public class Server {
             } else if (request instanceof EditEntityRequest) {
                 IEntity entity = ((EditEntityRequest) request).getEntity();
                 controller.edit(entity);
-                return new Response("the entity was successfully added");
+                return new Response("the entity was successfully edit");
             } else if (request instanceof RemoveEntityRequest) {
                 String entityId = ((RemoveEntityRequest) request).getEntityId();
                 IEntity entity = (IEntity) controller.getEntityById(entityId);

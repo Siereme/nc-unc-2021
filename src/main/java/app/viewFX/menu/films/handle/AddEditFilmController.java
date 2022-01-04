@@ -64,7 +64,7 @@ public class AddEditFilmController extends HandleFilmController {
 
     private void initEmpty() {
         for (int i = 0; i < 6; i++) {
-            genres.getItems().add(new TextField());
+            this.genres.getItems().add(new TextField());
             this.actors.getItems().add(new TextField());
             this.directors.getItems().add(new TextField());
         }
