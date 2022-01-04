@@ -414,30 +414,38 @@ public class FilmController implements IEntityController<Film> {
         genreIds.remove(genre.getId());
     }
 
-    public LinkedList<Film> filmsBy(LinkedList<String> actorsId, LinkedList<String> genresId,
-                                    LinkedList<String> directorsId) {
+    public LinkedList<Film> findBy(Map<String, List<String>> entityIds) {
         LinkedList<Film> films = new LinkedList<>();
         for (Film film : this.getRepository().findAll()) {
             boolean flag = true;
-            for (String actorId : actorsId) {
-                if (!isContainsActor(film, actorId)) {
-                    flag = false;
-                    break;
-                }
-            }
-            if (flag) {
-                for (String genreId : genresId) {
-                    if (!isContainsGenre(film, genreId)) {
+            if(entityIds.containsKey("actor")){
+                List<String> actorsIds = entityIds.get("actor");
+                for (String actorId : actorsIds) {
+                    if (!isContainsActor(film, actorId)) {
                         flag = false;
                         break;
                     }
                 }
             }
-            if (flag) {
-                for (String directorId : directorsId) {
-                    if (!isContainsDirector(film, directorId)) {
-                        flag = false;
-                        break;
+            if(entityIds.containsKey("genre")){
+                if (flag) {
+                    List<String> genresIds = entityIds.get("genre");
+                    for (String genreId : genresIds) {
+                        if (!isContainsGenre(film, genreId)) {
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+            }
+            if(entityIds.containsKey("director")){
+                if (flag) {
+                    List<String> directorsIds = entityIds.get("director");
+                    for (String directorId : directorsIds) {
+                        if (!isContainsDirector(film, directorId)) {
+                            flag = false;
+                            break;
+                        }
                     }
                 }
             }

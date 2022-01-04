@@ -10,6 +10,7 @@ import app.repository.imp.DirectorRepository;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /** Director app.controller
@@ -98,6 +99,22 @@ public class DirectorController implements IEntityController<Director> {
     @Override
     public List<Director> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<Director> findBy(Map<String, List<String>> entityIds) {
+        LinkedList<Director> directors = new LinkedList<>();
+        if(entityIds.containsKey("director")){
+            List<String> directorIds = entityIds.get("director");
+            for(Director director : this.getRepository().findAll()){
+                for (String directorId : directorIds) {
+                    if (Objects.equals(director.getId(), directorId)) {
+                        directors.add(director);
+                    }
+                }
+            }
+        }
+        return directors;
     }
 
     private void editEntityInFilms(Director director, Director editDirector) {

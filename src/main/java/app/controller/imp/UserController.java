@@ -8,6 +8,7 @@ import app.repository.imp.UserRepository;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -56,6 +57,11 @@ public class UserController implements IEntityController<IUser> {
     @Override
     public List<IUser> findAll() {
         return repository.findAll();
+    }
+
+    @Override
+    public List<IUser> findBy(Map<String, List<String>> entityIds) {
+        return null;
     }
 
     public UserController() {

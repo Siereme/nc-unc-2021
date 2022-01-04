@@ -24,12 +24,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class FilmsController extends AbstractController implements Initializable {
     private List<Film> filmList;
@@ -141,13 +136,16 @@ public class FilmsController extends AbstractController implements Initializable
     }
 
     private void getFilms() {
-        FindByFilterRequest findByFilterRequest = new FindByFilterRequest(new LinkedList<>(Collections.singleton(actor.getText())),
-                new LinkedList<>(Collections.singleton(genre.getText())), new LinkedList<>(Collections.singleton(director.getText())),
-                Film.class);
+        HashMap<String, List<String>> entities= new HashMap<>(){{
+            put("actor", new ArrayList<>(Collections.singleton(actor.getText())));
+            put("genre", new ArrayList<>(Collections.singleton(genre.getText())));
+            put("director", new ArrayList<>(Collections.singleton(director.getText())));
+        }};
+        FindByFilterRequest findByFilterRequest = new FindByFilterRequest(entities, Film.class);
         try {
             GetFindByFilterResponse getFindByFilterResponse =
                     (GetFindByFilterResponse) CommunicationInterface.getInstance().exchange(findByFilterRequest);
-            filmList = getFindByFilterResponse.getFilms();
+            filmList = (List<Film>) getFindByFilterResponse.getEntities();
             tableFilmList.clear();
             List<TableFilm> tableFilms = new ArrayList<>();
             for (Film film : filmList) {

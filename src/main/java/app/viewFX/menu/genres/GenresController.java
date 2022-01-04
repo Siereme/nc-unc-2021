@@ -7,8 +7,10 @@ import app.model.genre.Genre;
 import app.viewFX.menu.AbstractController;
 import app.viewFX.menu.films.TableFilm;
 import client.CommunicationInterface;
+import dto.request.imp.FindByFilterRequest;
 import dto.request.imp.GetAllEntitiesRequest;
 import dto.response.imp.GetEntitiesResponse;
+import dto.response.imp.GetFindByFilterResponse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,10 +25,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class GenresController extends AbstractController implements Initializable {
     public void setGenresList(List<Genre> genresList) {
@@ -74,6 +73,16 @@ public class GenresController extends AbstractController implements Initializabl
         String genre = searchTextField.getText();
         // TODO send request, get response
         System.out.println("not implemented");
+
+        Map<String, List<String>> genres = new HashMap<>(){{put("genre", new ArrayList<>(Collections.singleton("Genre2")));}};
+        FindByFilterRequest request = new FindByFilterRequest(genres, Genre.class);
+        try {
+            GetFindByFilterResponse response = (GetFindByFilterResponse) CommunicationInterface.getInstance().exchange(request);
+            System.out.println("______________________________________");
+            System.out.println(response.getEntities());
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public void add(ActionEvent actionEvent) {

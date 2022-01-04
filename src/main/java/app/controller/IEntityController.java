@@ -4,6 +4,7 @@ import app.model.IEntity;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /** Controller Interface
  * @author Vasiliy
@@ -107,4 +108,5 @@ public interface IEntityController<T extends IEntity> {
 
     List<T> findAll();
 
+    List<T> findBy(Map<String, List<String>> entityIds);
 }
