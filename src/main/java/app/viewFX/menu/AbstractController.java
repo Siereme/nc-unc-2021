@@ -67,6 +67,9 @@ public class AbstractController<T extends IEntity> {
         return entities;
     }
 
+
+
+
     protected AbstractController initializeWindowController(Stage ownerStage, String path, String tittle) {
         Stage stage1 = new Stage();
         try {

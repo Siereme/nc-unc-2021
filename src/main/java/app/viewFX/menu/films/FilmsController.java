@@ -30,7 +30,7 @@ public class FilmsController extends AbstractController implements Initializable
     private List<Film> filmList;
     final List<TableFilm> tableFilmList = new LinkedList<>();
     @FXML
-    private TableView<TableFilm> filmTable;
+    private TableView<TableFilm> filmTableView;
     @FXML
     private TableColumn<TableFilm, Boolean> select;
     @FXML
@@ -70,15 +70,15 @@ public class FilmsController extends AbstractController implements Initializable
             directors.setCellValueFactory(new PropertyValueFactory<>("directors"));
         });
         ObservableList<TableFilm> observable = FXCollections.observableArrayList(tableFilmList);
-        filmTable.setItems(observable);
-        filmTable.setFixedCellSize(100.0);
-        filmTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        filmTableView.setItems(observable);
+        filmTableView.setFixedCellSize(100.0);
+        filmTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     public void search() {
         getFilms();
-        filmTable.getItems().clear();
-        filmTable.getItems().addAll(tableFilmList);
+        filmTableView.getItems().clear();
+        filmTableView.getItems().addAll(tableFilmList);
     }
 
     public void add() throws IOException {
@@ -87,8 +87,8 @@ public class FilmsController extends AbstractController implements Initializable
     }
 
     public void edit() throws IOException {
-        if (filmTable.getSelectionModel().getSelectedIndices().size() > 0) {
-            Film editFilm = filmList.get(filmTable.getSelectionModel().getSelectedIndex());
+        if (filmTableView.getSelectionModel().getSelectedIndices().size() > 0) {
+            Film editFilm = filmList.get(filmTableView.getSelectionModel().getSelectedIndex());
             showWindow(editFilm);
         }
     }
@@ -107,11 +107,11 @@ public class FilmsController extends AbstractController implements Initializable
     public void remove() {
         if (!select.isVisible()) {
             select.setVisible(true);
-            filmTable.setEditable(true);
+            filmTableView.setEditable(true);
             removeButton.setStyle("-fx-background-color: #363636; -fx-text-fill: white");
         } else {
             select.setVisible(false);
-            filmTable.setEditable(false);
+            filmTableView.setEditable(false);
             removeButton.setStyle("");
 
             List<String> removeFilmIds = new ArrayList<>();

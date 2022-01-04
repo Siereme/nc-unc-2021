@@ -39,7 +39,7 @@
          <Button fx:id="removeButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false"
                  onAction="#remove" prefHeight="26.0" prefWidth="65.0" text="Remove"/>
       </FlowPane>
-      <TableView layoutX="4.0" layoutY="199.0" minWidth="960.0" prefHeight="380.0" fx:id="filmTable">
+      <TableView layoutX="4.0" layoutY="199.0" minWidth="960.0" prefHeight="380.0" fx:id="filmTableView">
          <columns>
             <TableColumn prefWidth="75.0" visible="false" maxWidth="30.0" minWidth="30.0" fx:id="select">
             </TableColumn>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="app.viewFX.menu.actors.ActorsController">
+    <children>
+        <TableView fx:id="actorTableView" layoutY="200.0" prefHeight="200.0" prefWidth="600.0">
+            <columns>
+                <TableColumn fx:id="select" prefWidth="57.60003662109375" text="Selected" visible="false"/>
+                <TableColumn fx:id="name" prefWidth="152.79998779296875" text="Name"/>
+                <TableColumn fx:id="age" prefWidth="136.0" text="Age"/>
+                <TableColumn fx:id="films" prefWidth="254.39996337890625" text="Films"/>
+            </columns>
+        </TableView>
+        <Button fx:id="addButton" layoutX="357.0" layoutY="82.0" mnemonicParsing="false" text="Add" onAction="#add"/>
+        <Button fx:id="editButton" layoutX="419.0" layoutY="82.0" mnemonicParsing="false" text="Edit" onAction="#edit"/>
+        <Button fx:id="removeButton" layoutX="480.0" layoutY="82.0" mnemonicParsing="false" text="Remove" onAction="#remove"/>
+        <Button fx:id="searchButton" layoutX="26.0" layoutY="82.0" mnemonicParsing="false" text="Search" onAction="#search"/>
+        <TextField layoutX="105.0" layoutY="82.0"/>
+    </children>
+</AnchorPane>

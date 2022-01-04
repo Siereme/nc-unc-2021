@@ -1,14 +1,16 @@
 package app.viewFX.menu.genres;
 
+import app.model.actor.Actor;
 import app.model.film.Film;
 import app.model.genre.Genre;
 import app.viewFX.menu.AbstractController;
-import app.viewFX.menu.films.handle.AddEditFilmController;
+import app.viewFX.menu.actors.TableActor;
 import app.viewFX.menu.genres.handle.AddEditGenreController;
 import client.CommunicationInterface;
 import dto.request.imp.FindByFilterRequest;
 import dto.request.imp.GetAllEntitiesRequest;
 import dto.request.imp.RemoveEntityRequest;
+
 import dto.response.imp.GetEntitiesResponse;
 import dto.response.imp.GetFindByFilterResponse;
 import javafx.collections.FXCollections;
@@ -33,9 +35,9 @@ public class GenresController extends AbstractController implements Initializabl
     }
 
     private List<Genre> genresList;
-    final List<TableGenre> tableGenreList = new LinkedList<>();
+    List<TableGenre> tableGenreList = new LinkedList<>();
     @FXML
-    private TableView<TableGenre> genreTable;
+    private TableView<TableGenre> genreTableView;
     @FXML
     private TableColumn<TableGenre, String> tittle;
     @FXML
@@ -56,8 +58,7 @@ public class GenresController extends AbstractController implements Initializabl
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<Genre> newGenreList = getGenresListFromRepository();
-        setGenresList(newGenreList);
+        this.genresList = getGenresListFromRepository();
         fillTableByGenresList(genresList);
         tableGenreList.forEach(genre -> {
             select.setCellValueFactory(new PropertyValueFactory<>("checked"));
@@ -65,17 +66,17 @@ public class GenresController extends AbstractController implements Initializabl
             tittle.setCellFactory(TextFieldTableCell.forTableColumn());
         });
         ObservableList<TableGenre> observable = FXCollections.observableArrayList(tableGenreList);
-        genreTable.setItems(observable);
-        genreTable.setFixedCellSize(100.0);
-        genreTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        genreTableView.setItems(observable);
+        genreTableView.setFixedCellSize(100.0);
+        genreTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     public void search(ActionEvent actionEvent) {
         String genre = searchTextField.getText();
-        // TODO send request, get response
-        System.out.println("not implemented");
 
-        Map<String, List<String>> genres = new HashMap<>(){{put("genre", new ArrayList<>(Collections.singleton("Genre2")));}};
+        Map<String, List<String>> genres = new HashMap<>() {{
+            put("genre", new ArrayList<>(Collections.singleton(genre)));
+        }};
         FindByFilterRequest request = new FindByFilterRequest(genres, Genre.class);
         try {
             GetFindByFilterResponse response = (GetFindByFilterResponse) CommunicationInterface.getInstance().exchange(request);
@@ -106,8 +107,8 @@ public class GenresController extends AbstractController implements Initializabl
     }
 
     public void edit(ActionEvent actionEvent) throws IOException {
-        if (genreTable.getSelectionModel().getSelectedIndices().size() > 0) {
-            Genre editGenre = genresList.get(genreTable.getSelectionModel().getSelectedIndex());
+        if (genreTableView.getSelectionModel().getSelectedIndices().size() > 0) {
+            Genre editGenre = genresList.get(genreTableView.getSelectionModel().getSelectedIndex());
             showWindow(editGenre);
         }
     }
@@ -115,11 +116,11 @@ public class GenresController extends AbstractController implements Initializabl
     public void remove(ActionEvent actionEvent) {
         if (!select.isVisible()) {
             select.setVisible(true);
-            genreTable.setEditable(true);
+            genreTableView.setEditable(true);
             removeButton.setStyle("-fx-background-color: #363636; -fx-text-fill: white");
         } else {
             select.setVisible(false);
-            genreTable.setEditable(false);
+            genreTableView.setEditable(false);
             removeButton.setStyle("");
 
             List<String> removeGenreIds = new ArrayList<>();
@@ -167,12 +168,19 @@ public class GenresController extends AbstractController implements Initializabl
     }
 
     private void update() {
-        List<Genre> newGenreList = getGenresListFromRepository();
-        setGenresList(newGenreList);
-        fillTableByGenresList(genresList);
-        genreTable.getItems().clear();
-        genreTable.getItems().addAll(tableGenreList);
+        genresList = getGenresListFromRepository();
+        tableGenreList = getTableGenreListFromGenreList(genresList);
+        genreTableView.getItems().clear();
+        genreTableView.getItems().addAll(tableGenreList);
     }
 
+    private List<TableGenre> getTableGenreListFromGenreList(List<Genre> genresList) {
+        List<TableGenre> tableGenres = new ArrayList<>();
+        for (Genre genre : genresList) {
+            TableGenre tableGenre = new TableGenre(genre);
+            tableGenres.add(tableGenre);
+        }
+        return tableGenres;
+    }
 
 }

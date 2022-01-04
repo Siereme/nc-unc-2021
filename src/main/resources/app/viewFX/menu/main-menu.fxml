@@ -14,11 +14,13 @@
                <fx:include source="genres/genres1.fxml"/>
            </Tab>
            <Tab fx:id="tapActors" text="Actors">
-               <fx:include source="films/films.fxml"/>
+               <fx:include source="actors/actors.fxml"/>
            </Tab>
            <Tab fx:id="tapDirectors" text="Directors">
-               <fx:include source="films/films.fxml"/>
+               <fx:include source="directors/directors.fxml"/>
            </Tab>
        </TabPane>
    </top>
+
+
 </BorderPane>

@@ -30,4 +30,10 @@ module app {
     opens dto.request.imp to javafx.base, javafx.fxml;
     exports app.viewFX.menu.genres to javafx.fxml;
     opens app.viewFX.menu.genres to javafx.base, javafx.fxml;
+    exports app.viewFX.menu.genres.handle to javafx.fxml;
+    opens app.viewFX.menu.genres.handle to javafx.base, javafx.fxml;
+    exports app.viewFX.menu.actors to javafx.fxml;
+    opens app.viewFX.menu.actors to javafx.base, javafx.fxml;
+    exports app.viewFX.menu.directors to javafx.fxml;
+    opens app.viewFX.menu.directors to javafx.base, javafx.fxml;
 }

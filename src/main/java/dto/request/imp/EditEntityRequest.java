@@ -5,7 +5,7 @@ import dto.request.Request;
 
 public class EditEntityRequest extends Request {
     public EditEntityRequest(IEntity entity, Class<? extends IEntity> entityType) {
-        setEntityType(entityType);
+        setEntityType(entity.getClass());
         this.entity = entity;
     }
 
