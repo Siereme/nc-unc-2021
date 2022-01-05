@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1"
+ fx:controller="app.viewFX.menu.directors.handle.AddEditDirectorController">
+   <children>
+      <TextField fx:id="nameField" layoutX="74.0" layoutY="103.0" />
+      <Text layoutX="74.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
+      <TextField fx:id="ageField" layoutX="318.0" layoutY="103.0" />
+      <Text layoutX="318.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Age" />
+      <ListView fx:id="filmsListView" layoutX="24.0" layoutY="171.0" prefHeight="200.0" prefWidth="200.0" />
+      <Text layoutX="110.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Films" />
+      <Button fx:id="handleButton" layoutX="272.0" layoutY="345.0" mnemonicParsing="false" text="ok" onAction="#handleDirector"/>
+   </children>
+</AnchorPane>

@@ -36,4 +36,8 @@ module app {
     opens app.viewFX.menu.actors to javafx.base, javafx.fxml;
     exports app.viewFX.menu.directors to javafx.fxml;
     opens app.viewFX.menu.directors to javafx.base, javafx.fxml;
+    exports app.viewFX.menu.actors.handle to javafx.fxml;
+    opens app.viewFX.menu.actors.handle to javafx.base, javafx.fxml;
+    exports app.viewFX.menu.directors.handle to javafx.fxml;
+    opens app.viewFX.menu.directors.handle to javafx.base, javafx.fxml;
 }

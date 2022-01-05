@@ -4,8 +4,10 @@ import app.model.actor.Actor;
 import app.model.film.Film;
 import app.model.genre.Genre;
 import app.viewFX.menu.AbstractController;
+import app.viewFX.menu.actors.handle.AddEditActorController;
 import app.viewFX.menu.films.TableFilm;
 import app.viewFX.menu.genres.TableGenre;
+import app.viewFX.menu.genres.handle.AddEditGenreController;
 import client.CommunicationInterface;
 import dto.request.Request;
 import dto.request.imp.GetAllEntitiesRequest;
@@ -98,31 +100,21 @@ public class ActorsController extends AbstractController implements Initializabl
     private List<TableActor> getTableActorListFromActorList(List<Actor> actorList) throws IOException, ClassNotFoundException {
         List<TableActor> tableActors = new ArrayList<>();
         for (Actor actor : actorList) {
-            List<Film> filmList = getFilmListToActor(actor);
+            List<String> filmIds = actor.getFilms();
+            List<Film> filmList = getEntitiesByIds(filmIds, Film.class);
             TableActor tableActor = new TableActor(actor, filmList);
             tableActors.add(tableActor);
         }
         return tableActors;
     }
 
-    private static List<Film> getFilmListToActor(Actor actor) throws IOException, ClassNotFoundException {
-        List<String> filmIds = actor.getFilms();
-        List<Film> actorFilms = new LinkedList<>();
-        for (String filmId : filmIds) {
-            Request getFilmByIdRequest = new GetEntityRequest(filmId, Film.class);
-            Response getFilmResponse = CommunicationInterface.getInstance().exchange(getFilmByIdRequest);
-            Film film = ((GetEntityResponse<Film>) getFilmResponse).getEntity();
-            actorFilms.add(film);
-        }
-        return actorFilms;
-    }
-
     public void search(ActionEvent actionEvent) {
-        System.out.println("not implemented");
+        // TODO
     }
 
-    public void add(ActionEvent actionEvent) {
-        System.out.println("not implemented");
+    public void add(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
+        showWindow(null);
+        update();
     }
 
     public void remove(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
@@ -156,8 +148,13 @@ public class ActorsController extends AbstractController implements Initializabl
         }
     }
 
-    public void edit(ActionEvent actionEvent) {
-        System.out.println("not implemented");
+    public void edit(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
+        // FIXME
+        if (actorTableView.getSelectionModel().getSelectedIndices().size() > 0) {
+            Actor editActor = actorList.get(actorTableView.getSelectionModel().getSelectedIndex());
+            showWindow(editActor);
+        }
+        update();
     }
 
     private void update() throws IOException, ClassNotFoundException {
@@ -165,6 +162,19 @@ public class ActorsController extends AbstractController implements Initializabl
         tableActorList = getTableActorListFromActorList(actorList);
         actorTableView.getItems().clear();
         actorTableView.getItems().addAll(tableActorList);
+    }
+
+    private void showWindow(Actor actor) throws IOException {
+        System.out.println("showWindow " + actor);
+        String nameOfOperation;
+        if (actor != null) nameOfOperation = "edit actor";
+        else nameOfOperation = "add actor";
+        final AddEditActorController addEditActorController =
+                (AddEditActorController) initializeWindowController(getStage(), "/app/viewFX/menu/actors/handle/handle-actor.fxml", nameOfOperation);
+        addEditActorController.setActor(actor);
+        addEditActorController.init();
+        addEditActorController.getStage().show();
+        addEditActorController.getStage().requestFocus();
     }
 
 }

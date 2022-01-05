@@ -72,6 +72,7 @@ public class GenresController extends AbstractController implements Initializabl
     }
 
     public void search(ActionEvent actionEvent) {
+        // FIXME
         String genre = searchTextField.getText();
 
         Map<String, List<String>> genres = new HashMap<>() {{
@@ -107,10 +108,12 @@ public class GenresController extends AbstractController implements Initializabl
     }
 
     public void edit(ActionEvent actionEvent) throws IOException {
+        // FIXME
         if (genreTableView.getSelectionModel().getSelectedIndices().size() > 0) {
             Genre editGenre = genresList.get(genreTableView.getSelectionModel().getSelectedIndex());
             showWindow(editGenre);
         }
+        update();
     }
 
     public void remove(ActionEvent actionEvent) {

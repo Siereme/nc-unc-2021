@@ -5,6 +5,8 @@ import app.model.director.Director;
 import app.model.film.Film;
 import app.viewFX.menu.AbstractController;
 import app.viewFX.menu.actors.TableActor;
+import app.viewFX.menu.actors.handle.AddEditActorController;
+import app.viewFX.menu.directors.handle.AddEditDirectorController;
 import app.viewFX.menu.films.TableFilm;
 import client.CommunicationInterface;
 import dto.request.Request;
@@ -114,11 +116,12 @@ public class DirectorController extends AbstractController implements Initializa
     }
 
     public void search(ActionEvent actionEvent) {
-        System.out.println("not implemented");
+        // TODO
     }
 
-    public void add(ActionEvent actionEvent) {
-        System.out.println("not implemented");
+    public void add(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
+        showWindow(null);
+        update();
     }
 
     public void remove(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
@@ -159,8 +162,26 @@ public class DirectorController extends AbstractController implements Initializa
         directorTableView.getItems().addAll(tableDirectorList);
     }
 
-    public void edit(ActionEvent actionEvent) {
-        System.out.println("not implemented");
+    public void edit(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
+        // FIXME
+        if (directorTableView.getSelectionModel().getSelectedIndices().size() > 0) {
+            Director director = directorList.get(directorTableView.getSelectionModel().getSelectedIndex());
+            showWindow(director);
+        }
+        update();
+    }
+
+    private void showWindow(Director director) throws IOException {
+        System.out.println("showWindow " + director);
+        String nameOfOperation;
+        if (director != null) nameOfOperation = "edit actor";
+        else nameOfOperation = "add actor";
+        final AddEditDirectorController addEditDirectorController =
+                (AddEditDirectorController) initializeWindowController(getStage(), "/app/viewFX/menu/directors/handle/handle-director.fxml", nameOfOperation);
+        addEditDirectorController.setDirector(director);
+        addEditDirectorController.init();
+        addEditDirectorController.getStage().show();
+        addEditDirectorController.getStage().requestFocus();
     }
 
 }
