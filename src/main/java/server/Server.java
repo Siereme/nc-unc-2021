@@ -90,6 +90,7 @@ public class Server {
 
         static {
             REQUEST_RESOLVER_HASH_MAP_CHECK.put(Film.class, FilmController.class);
+            REQUEST_RESOLVER_HASH_MAP_CHECK.put(RequestFilm.class, FilmController.class);
             REQUEST_RESOLVER_HASH_MAP_CHECK.put(IUser.class, UserController.class);
             REQUEST_RESOLVER_HASH_MAP_CHECK.put(Genre.class, GenreController.class);
             REQUEST_RESOLVER_HASH_MAP_CHECK.put(Actor.class, ActorController.class);
