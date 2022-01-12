@@ -116,6 +116,11 @@ public class GenreController implements IEntityController<Genre> {
         return genres;
     }
 
+    @Override
+    public List<Genre> search(String entityName) {
+        return null;
+    }
+
     private void editEntityInFilms(Genre genre, Genre editGenre) {
         FilmController filmController = new FilmController();
         List<String> addList = new LinkedList<>();

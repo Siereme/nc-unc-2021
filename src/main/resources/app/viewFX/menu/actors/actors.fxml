@@ -22,6 +22,6 @@
         <Button fx:id="editButton" layoutX="419.0" layoutY="82.0" mnemonicParsing="false" text="Edit" onAction="#edit"/>
         <Button fx:id="removeButton" layoutX="480.0" layoutY="82.0" mnemonicParsing="false" text="Remove" onAction="#remove"/>
         <Button fx:id="searchButton" layoutX="26.0" layoutY="82.0" mnemonicParsing="false" text="Search" onAction="#search"/>
-        <TextField layoutX="105.0" layoutY="82.0"/>
+        <TextField fx:id="actorName" layoutX="105.0" layoutY="82.0"/>
     </children>
 </AnchorPane>

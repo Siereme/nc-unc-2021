@@ -457,7 +457,10 @@ public class FilmController implements IEntityController<Film> {
         return films;
     }
 
-
+    @Override
+    public List<Film> search(String entityName) {
+        return null;
+    }
 
 
     @Override

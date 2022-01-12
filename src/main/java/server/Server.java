@@ -14,10 +14,7 @@ import app.model.genre.Genre;
 import app.model.user.IUser;
 import dto.request.*;
 import dto.request.imp.*;
-import dto.response.imp.GetAuthorizationResponse;
-import dto.response.imp.GetEntitiesResponse;
-import dto.response.imp.GetEntityResponse;
-import dto.response.imp.GetFindByFilterResponse;
+import dto.response.imp.*;
 import dto.response.Response;
 
 import java.io.IOException;
@@ -159,6 +156,10 @@ public class Server {
             } else if (request instanceof GetAllEntitiesRequest) {
                 List entities = controller.findAll();
                 return new GetEntitiesResponse("ok", entities);
+            } else if (request instanceof SearchEntityRequest) {
+                String entityName = ((SearchEntityRequest) request).getEntityName();
+                List entities = controller.search(entityName);
+                return new GetSearchEntityResponse("ok", entities);
             } else {
                 return new Response("error");
             }

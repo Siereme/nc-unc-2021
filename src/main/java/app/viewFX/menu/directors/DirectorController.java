@@ -13,18 +13,17 @@ import dto.request.Request;
 import dto.request.imp.GetAllEntitiesRequest;
 import dto.request.imp.GetEntityRequest;
 import dto.request.imp.RemoveEntityRequest;
+import dto.request.imp.SearchEntityRequest;
 import dto.response.Response;
 import dto.response.imp.GetEntitiesResponse;
 import dto.response.imp.GetEntityResponse;
+import dto.response.imp.GetSearchEntityResponse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
@@ -35,6 +34,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 public class DirectorController extends AbstractController implements Initializable {
+
     public DirectorController() {
 
     }
@@ -60,25 +60,23 @@ public class DirectorController extends AbstractController implements Initializa
     private Button removeButton;
     @FXML
     private Button editButton;
+    @FXML
+    private TextField directorNameTextField;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.directorList = getDirectorListFromRepository();
-        try {
-            this.tableDirectorList = getTableDirectorListFromDirectorList(this.directorList);
-            tableDirectorList.forEach(genre -> {
-                select.setCellValueFactory(new PropertyValueFactory<>("checked"));
-                name.setCellValueFactory(new PropertyValueFactory<>("name"));
-                age.setCellValueFactory(new PropertyValueFactory<>("age"));
-                films.setCellValueFactory(new PropertyValueFactory<>("films"));
-            });
-            ObservableList<TableDirector> observable = FXCollections.observableArrayList(tableDirectorList);
-            directorTableView.setItems(observable);
-            directorTableView.setFixedCellSize(100.0);
-            directorTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.tableDirectorList = getTableDirectorListFromDirectorList(this.directorList);
+        tableDirectorList.forEach(genre -> {
+            select.setCellValueFactory(new PropertyValueFactory<>("checked"));
+            name.setCellValueFactory(new PropertyValueFactory<>("name"));
+            age.setCellValueFactory(new PropertyValueFactory<>("age"));
+            films.setCellValueFactory(new PropertyValueFactory<>("films"));
+        });
+        ObservableList<TableDirector> observable = FXCollections.observableArrayList(tableDirectorList);
+        directorTableView.setItems(observable);
+        directorTableView.setFixedCellSize(100.0);
+        directorTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private List<Director> getDirectorListFromRepository() {
@@ -93,7 +91,7 @@ public class DirectorController extends AbstractController implements Initializa
         return null;
     }
 
-    private List<TableDirector> getTableDirectorListFromDirectorList(List<Director> directorList) throws IOException, ClassNotFoundException {
+    private List<TableDirector> getTableDirectorListFromDirectorList(List<Director> directorList){
         List<TableDirector> tableDirectors = new ArrayList<>();
         for (Director director : directorList) {
             List<Film> filmList = getFilmListToDirector(director);
@@ -103,20 +101,40 @@ public class DirectorController extends AbstractController implements Initializa
         return tableDirectors;
     }
 
-    private static List<Film> getFilmListToDirector(Director director) throws IOException, ClassNotFoundException {
+    private static List<Film> getFilmListToDirector(Director director){
         List<String> filmIds = director.getFilms();
         List<Film> directorFilms = new LinkedList<>();
         for (String filmId : filmIds) {
             Request getFilmByIdRequest = new GetEntityRequest(filmId, Film.class);
-            Response getFilmResponse = CommunicationInterface.getInstance().exchange(getFilmByIdRequest);
-            Film film = ((GetEntityResponse<Film>) getFilmResponse).getEntity();
-            directorFilms.add(film);
+            try {
+                Response getFilmResponse = CommunicationInterface.getInstance().exchange(getFilmByIdRequest);
+                Film film = ((GetEntityResponse<Film>) getFilmResponse).getEntity();
+                directorFilms.add(film);
+            }
+            catch (IOException | ClassNotFoundException e){
+                e.printStackTrace();
+            }
         }
         return directorFilms;
     }
 
     public void search(ActionEvent actionEvent) {
-        // TODO
+        List<Director> directorList = new LinkedList<>();
+        String directorName = directorNameTextField.getText();
+        Request searchRequest = new SearchEntityRequest(directorName, Director.class);
+        try {
+            Response response = CommunicationInterface.getInstance().exchange(searchRequest);
+            directorList = (List<Director>) ((GetSearchEntityResponse) response).getEntities();
+            System.out.println(response);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        this.directorList = directorList;
+        this.tableDirectorList = getTableDirectorListFromDirectorList(this.directorList);
+        ObservableList<TableDirector> observable = FXCollections.observableArrayList(tableDirectorList);
+        directorTableView.setItems(observable);
+        directorTableView.setFixedCellSize(100.0);
+        directorTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     public void add(ActionEvent actionEvent) throws IOException, ClassNotFoundException {

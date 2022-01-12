@@ -7,6 +7,7 @@ import client.CommunicationInterface;
 import dto.request.Request;
 import dto.request.imp.AddEntityRequest;
 import dto.request.imp.EditEntityRequest;
+import dto.request.imp.RemoveEntityRequest;
 import dto.request.imp.RequestFilm;
 import dto.response.Response;
 import javafx.collections.FXCollections;
@@ -38,6 +39,7 @@ public class AddEditGenreController extends HandleGenreController {
     }
 
     private Genre genre;
+    // private String oldId;
 
     private boolean editMode;
 
@@ -54,6 +56,7 @@ public class AddEditGenreController extends HandleGenreController {
 
     private void initGenre() {
         this.tittle.setText(genre.getTittle());
+        // oldId = genre.getId();
     }
 
     private void initEmpty() {
@@ -74,22 +77,23 @@ public class AddEditGenreController extends HandleGenreController {
     public void handleGenre(ActionEvent event) {
         Genre genre = createGenre();
         if (editMode) {
-            Request editRequest = new EditEntityRequest(genre, Genre.class);
+            String removeEntityId = this.genre.getId();
+            Request removeRequest = new RemoveEntityRequest(removeEntityId, this.genre.getClass());
             try {
-                Response response = CommunicationInterface.getInstance().exchange(editRequest);
+                Response response = CommunicationInterface.getInstance().exchange(removeRequest);
                 System.out.println(response);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        } else {
-            Request addRequest = new AddEntityRequest(genre, Genre.class);
-            try {
-                Response response =
-                        CommunicationInterface.getInstance().exchange(addRequest);
-                System.out.println(response);
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+
+        }
+        Request addRequest = new AddEntityRequest(genre, Genre.class);
+        try {
+            Response response =
+                    CommunicationInterface.getInstance().exchange(addRequest);
+            System.out.println(response);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
         closeStage(event);
     }

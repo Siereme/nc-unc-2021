@@ -72,20 +72,9 @@ public class GenresController extends AbstractController implements Initializabl
     }
 
     public void search(ActionEvent actionEvent) {
-        // FIXME
+        // TODO
         String genre = searchTextField.getText();
 
-        Map<String, List<String>> genres = new HashMap<>() {{
-            put("genre", new ArrayList<>(Collections.singleton(genre)));
-        }};
-        FindByFilterRequest request = new FindByFilterRequest(genres, Genre.class);
-        try {
-            GetFindByFilterResponse response = (GetFindByFilterResponse) CommunicationInterface.getInstance().exchange(request);
-            System.out.println("______________________________________");
-            System.out.println(response.getEntities());
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
     }
 
     private void showWindow(Genre genre) throws IOException {
@@ -108,7 +97,6 @@ public class GenresController extends AbstractController implements Initializabl
     }
 
     public void edit(ActionEvent actionEvent) throws IOException {
-        // FIXME
         if (genreTableView.getSelectionModel().getSelectedIndices().size() > 0) {
             Genre editGenre = genresList.get(genreTableView.getSelectionModel().getSelectedIndex());
             showWindow(editGenre);

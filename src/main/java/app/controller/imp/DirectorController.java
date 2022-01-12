@@ -13,13 +13,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** Director app.controller
+/**
+ * Director app.controller
+ *
+ * @author Vasiliy
+ * @version 1.0
  * @see IEntityController
  * @see Director
  * @see DirectorRepository
- * @author Vasiliy
- * @version 1.0
- * */
+ */
 public class DirectorController implements IEntityController<Director> {
 
     public DirectorRepository getRepository() {
@@ -80,7 +82,7 @@ public class DirectorController implements IEntityController<Director> {
     public void addEntity(IEntity entity) {
         FilmController filmController = new FilmController();
         Director director = new Director((Director) entity);
-        filmController.addDirectorToFilms(director , director.getFilms());
+        filmController.addDirectorToFilms(director, director.getFilms());
         getRepository().findAll().add(director);
         updateRepository();
     }
@@ -104,9 +106,9 @@ public class DirectorController implements IEntityController<Director> {
     @Override
     public List<Director> findBy(Map<String, List<String>> entityIds) {
         LinkedList<Director> directors = new LinkedList<>();
-        if(entityIds.containsKey("director")){
+        if (entityIds.containsKey("director")) {
             List<String> directorIds = entityIds.get("director");
-            for(Director director : this.getRepository().findAll()){
+            for (Director director : this.getRepository().findAll()) {
                 for (String directorId : directorIds) {
                     if (Objects.equals(director.getId(), directorId)) {
                         directors.add(director);
@@ -117,22 +119,31 @@ public class DirectorController implements IEntityController<Director> {
         return directors;
     }
 
+    @Override
+    public List<Director> search(String entityName) {
+        List<Director> directors = new LinkedList<>();
+        for (Director director : repository.findAll()) {
+            if (director.getName().contains(entityName)) directors.add(director);
+        }
+        return directors;
+    }
+
     private void editEntityInFilms(Director director, Director editDirector) {
         FilmController filmController = new FilmController();
         List<String> addList = new LinkedList<>();
         List<String> removeList = new LinkedList<>();
-        for(String id : director.getFilms()){
+        for (String id : director.getFilms()) {
             boolean isContains = editDirector.getFilms().stream().anyMatch(editId -> Objects.equals(editId, id));
-            if(!isContains) removeList.add(id);
+            if (!isContains) removeList.add(id);
         }
-        for(String editId : editDirector.getFilms()){
+        for (String editId : editDirector.getFilms()) {
             boolean isContains = director.getFilms().stream().anyMatch(id -> Objects.equals(id, editId));
-            if(!isContains) addList.add(editId);
+            if (!isContains) addList.add(editId);
         }
-        if(addList.size() > 0){
+        if (addList.size() > 0) {
             filmController.addDirectorToFilms(director, addList);
         }
-        if(removeList.size() > 0){
+        if (removeList.size() > 0) {
             filmController.removeDirectorFromFilms(director, removeList);
         }
     }
@@ -220,9 +231,9 @@ public class DirectorController implements IEntityController<Director> {
         return ids;
     }
 
-    public void setFilmToEntities(String filmId, List<String> directorIds){
-        if(directorIds.size() > 0){
-            for(String id : directorIds){
+    public void setFilmToEntities(String filmId, List<String> directorIds) {
+        if (directorIds.size() > 0) {
+            for (String id : directorIds) {
                 Director director = getEntityById(id);
                 director.setFilm(filmId);
             }
@@ -230,9 +241,9 @@ public class DirectorController implements IEntityController<Director> {
         }
     }
 
-    public void deleteFilmFromEntities(String filmId, List<String> directorIds){
-        if(directorIds.size() > 0){
-            for(String id : directorIds){
+    public void deleteFilmFromEntities(String filmId, List<String> directorIds) {
+        if (directorIds.size() > 0) {
+            for (String id : directorIds) {
                 Director director = getEntityById(id);
                 director.deleteFilm(filmId);
             }
@@ -240,8 +251,8 @@ public class DirectorController implements IEntityController<Director> {
         }
     }
 
-    public void deleteFilmFromEntities(String filmId){
-        for(Director director : repository.findAll()){
+    public void deleteFilmFromEntities(String filmId) {
+        for (Director director : repository.findAll()) {
             director.deleteFilm(filmId);
         }
         updateRepository();

@@ -207,6 +207,11 @@ public class ActorController implements IEntityController<Actor> {
         return actors;
     }
 
+    @Override
+    public List<Actor> search(String entityName) {
+        return null;
+    }
+
     private void editEntityInFilms(Actor actor, Actor editActor) {
         FilmController filmController = new FilmController();
         List<String> addList = new LinkedList<>();
@@ -253,6 +258,8 @@ public class ActorController implements IEntityController<Actor> {
         }
         updateRepository();
     }
+
+
 
 
 

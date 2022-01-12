@@ -64,6 +64,11 @@ public class UserController implements IEntityController<IUser> {
         return null;
     }
 
+    @Override
+    public List<IUser> search(String entityName) {
+        return null;
+    }
+
     public UserController() {
         this.repository = new UserRepository();
     }

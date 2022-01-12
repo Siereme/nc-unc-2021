@@ -6,6 +6,7 @@ import client.CommunicationInterface;
 import dto.request.Request;
 import dto.request.imp.AddEntityRequest;
 import dto.request.imp.EditEntityRequest;
+import dto.request.imp.RemoveEntityRequest;
 import dto.response.Response;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,8 +24,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AddEditDirectorController extends HandleDirectorController{
-    public AddEditDirectorController(){
+public class AddEditDirectorController extends HandleDirectorController {
+    public AddEditDirectorController() {
 
     }
 
@@ -104,23 +105,23 @@ public class AddEditDirectorController extends HandleDirectorController{
     public void handleDirector(ActionEvent actionEvent) {
         Director director = createDirector();
         if (editMode) {
-            Request editRequest = new EditEntityRequest(director, Director.class);
+            String removeEntityId = this.director.getId();
+            Request removeRequest = new RemoveEntityRequest(removeEntityId, this.director.getClass());
             try {
-                Response response = CommunicationInterface.getInstance().exchange(editRequest);
+                Response response = CommunicationInterface.getInstance().exchange(removeRequest);
                 System.out.println(response);
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-        } else {
-            Request addRequest = new AddEntityRequest(director, Director.class);
-            try {
-                Response response = CommunicationInterface.getInstance().exchange(addRequest);
-                System.out.println(response);
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
         }
+        Request addRequest = new AddEntityRequest(director, Director.class);
+        try {
+            Response response = CommunicationInterface.getInstance().exchange(addRequest);
+            System.out.println(response);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
         closeStage(actionEvent);
     }
 }

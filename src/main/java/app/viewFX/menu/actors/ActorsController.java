@@ -21,20 +21,16 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ActorsController extends AbstractController implements Initializable {
+
+
     public ActorsController() {
 
     }
@@ -64,6 +60,8 @@ public class ActorsController extends AbstractController implements Initializabl
     private Button removeButton;
     @FXML
     private Button editButton;
+    @FXML
+    private TextField actorName;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -110,6 +108,7 @@ public class ActorsController extends AbstractController implements Initializabl
 
     public void search(ActionEvent actionEvent) {
         // TODO
+
     }
 
     public void add(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
@@ -149,7 +148,6 @@ public class ActorsController extends AbstractController implements Initializabl
     }
 
     public void edit(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
-        // FIXME
         if (actorTableView.getSelectionModel().getSelectedIndices().size() > 0) {
             Actor editActor = actorList.get(actorTableView.getSelectionModel().getSelectedIndex());
             showWindow(editActor);

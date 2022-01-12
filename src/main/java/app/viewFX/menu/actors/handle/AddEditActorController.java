@@ -6,6 +6,7 @@ import client.CommunicationInterface;
 import dto.request.Request;
 import dto.request.imp.AddEntityRequest;
 import dto.request.imp.EditEntityRequest;
+import dto.request.imp.RemoveEntityRequest;
 import dto.response.Response;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -100,15 +101,18 @@ public class AddEditActorController extends HandleActorController {
 
     public void handleActor(ActionEvent actionEvent) {
         Actor actor = createActor();
+        // if edit: 1) remove old entity 2) add new entity
         if (editMode) {
-            Request editRequest = new EditEntityRequest(actor, Actor.class);
+            String removeEntityId = this.actor.getId();
+            Request removeRequest = new RemoveEntityRequest(removeEntityId, this.actor.getClass());
             try {
-                Response response = CommunicationInterface.getInstance().exchange(editRequest);
+                Response response = CommunicationInterface.getInstance().exchange(removeRequest);
                 System.out.println(response);
-            } catch (IOException | ClassNotFoundException e) {
+            }
+            catch (IOException | ClassNotFoundException e){
                 e.printStackTrace();
             }
-        } else {
+        }
             Request addRequest = new AddEntityRequest(actor, Actor.class);
             try {
                 Response response = CommunicationInterface.getInstance().exchange(addRequest);
@@ -116,8 +120,6 @@ public class AddEditActorController extends HandleActorController {
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
-
-        }
         closeStage(actionEvent);
     }
 

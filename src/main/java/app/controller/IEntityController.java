@@ -109,4 +109,7 @@ public interface IEntityController<T extends IEntity> {
     List<T> findAll();
 
     List<T> findBy(Map<String, List<String>> entityIds);
+
+    List<T> search(String entityName);
+
 }
