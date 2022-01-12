@@ -2,6 +2,7 @@ package app.controller.imp;
 
 import app.controller.IEntityController;
 import app.model.IEntity;
+import app.model.actor.Actor;
 import app.model.director.Director;
 import app.model.genre.Genre;
 import app.repository.imp.GenreRepository;
@@ -12,13 +13,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/** Genre app.controller
+/**
+ * Genre app.controller
+ *
+ * @author Vasiliy
+ * @version 1.0
  * @see Genre
  * @see IEntityController
  * @see GenreRepository
- * @author Vasiliy
- * @version 1.0
- * */
+ */
 public class GenreController implements IEntityController<Genre> {
 
     public GenreRepository getRepository() {
@@ -80,7 +83,7 @@ public class GenreController implements IEntityController<Genre> {
     public void addEntity(IEntity entity) {
         FilmController filmController = new FilmController();
         Genre genre = new Genre((Genre) entity);
-        filmController.addGenreToFilms(genre , genre.getFilms());
+        filmController.addGenreToFilms(genre, genre.getFilms());
         getRepository().findAll().add(genre);
         updateRepository();
     }
@@ -103,9 +106,9 @@ public class GenreController implements IEntityController<Genre> {
     @Override
     public List<Genre> findBy(Map<String, List<String>> entityIds) {
         LinkedList<Genre> genres = new LinkedList<>();
-        if(entityIds.containsKey("genre")){
+        if (entityIds.containsKey("genre")) {
             List<String> genreIds = entityIds.get("genre");
-            for(Genre genre : this.getRepository().findAll()){
+            for (Genre genre : this.getRepository().findAll()) {
                 for (String genreId : genreIds) {
                     if (Objects.equals(genre.getId(), genreId)) {
                         genres.add(genre);
@@ -118,25 +121,30 @@ public class GenreController implements IEntityController<Genre> {
 
     @Override
     public List<Genre> search(String entityName) {
-        return null;
+        System.out.println("searching...");
+        List<Genre> genres = new LinkedList<>();
+        for (Genre genre : repository.findAll()) {
+            if (genre.getTittle().contains(entityName)) genres.add(genre);
+        }
+        return genres;
     }
 
     private void editEntityInFilms(Genre genre, Genre editGenre) {
         FilmController filmController = new FilmController();
         List<String> addList = new LinkedList<>();
         List<String> removeList = new LinkedList<>();
-        for(String id : genre.getFilms()){
+        for (String id : genre.getFilms()) {
             boolean isContains = editGenre.getFilms().stream().anyMatch(editId -> Objects.equals(editId, id));
-            if(!isContains) removeList.add(id);
+            if (!isContains) removeList.add(id);
         }
-        for(String editId : editGenre.getFilms()){
+        for (String editId : editGenre.getFilms()) {
             boolean isContains = genre.getFilms().stream().anyMatch(id -> Objects.equals(id, editId));
-            if(!isContains) addList.add(editId);
+            if (!isContains) addList.add(editId);
         }
-        if(addList.size() > 0){
+        if (addList.size() > 0) {
             filmController.addGenreToFilms(genre, addList);
         }
-        if(removeList.size() > 0){
+        if (removeList.size() > 0) {
             filmController.removeGenreFromFilms(genre, removeList);
         }
     }
@@ -219,9 +227,9 @@ public class GenreController implements IEntityController<Genre> {
         return ids;
     }
 
-    public void setFilmToEntities(String filmId, List<String> genreIds){
-        if(genreIds.size() > 0){
-            for(String id : genreIds){
+    public void setFilmToEntities(String filmId, List<String> genreIds) {
+        if (genreIds.size() > 0) {
+            for (String id : genreIds) {
                 Genre genre = getEntityById(id);
                 genre.setFilm(filmId);
             }
@@ -229,17 +237,18 @@ public class GenreController implements IEntityController<Genre> {
         }
     }
 
-    public void deleteFilmFromEntities(String filmId, List<String> genreIds){
-        if(genreIds.size() > 0){
-            for(String id : genreIds){
+    public void deleteFilmFromEntities(String filmId, List<String> genreIds) {
+        if (genreIds.size() > 0) {
+            for (String id : genreIds) {
                 Genre genre = getEntityById(id);
                 genre.deleteFilm(filmId);
             }
             updateRepository();
         }
     }
-    public void deleteFilmFromEntities(String filmId){
-        for(Genre genre : repository.findAll()){
+
+    public void deleteFilmFromEntities(String filmId) {
+        for (Genre genre : repository.findAll()) {
             genre.deleteFilm(filmId);
         }
         updateRepository();

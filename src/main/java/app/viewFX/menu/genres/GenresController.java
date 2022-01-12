@@ -1,18 +1,17 @@
 package app.viewFX.menu.genres;
 
-import app.model.actor.Actor;
-import app.model.film.Film;
 import app.model.genre.Genre;
 import app.viewFX.menu.AbstractController;
-import app.viewFX.menu.actors.TableActor;
 import app.viewFX.menu.genres.handle.AddEditGenreController;
 import client.CommunicationInterface;
-import dto.request.imp.FindByFilterRequest;
+import dto.request.Request;
 import dto.request.imp.GetAllEntitiesRequest;
 import dto.request.imp.RemoveEntityRequest;
 
+import dto.request.imp.SearchEntityRequest;
+import dto.response.Response;
 import dto.response.imp.GetEntitiesResponse;
-import dto.response.imp.GetFindByFilterResponse;
+import dto.response.imp.GetSearchEntityResponse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -51,7 +50,7 @@ public class GenresController extends AbstractController implements Initializabl
     @FXML
     private Button searchButton;
     @FXML
-    private TextField searchTextField;
+    private TextField genreNameTextField;
 
     public GenresController() throws IOException {
     }
@@ -72,8 +71,22 @@ public class GenresController extends AbstractController implements Initializabl
     }
 
     public void search(ActionEvent actionEvent) {
-        // TODO
-        String genre = searchTextField.getText();
+        List<Genre> genres = new LinkedList<>();
+        String genreName = genreNameTextField.getText();
+        Request searchRequest = new SearchEntityRequest(genreName, Genre.class);
+        try {
+            Response response = CommunicationInterface.getInstance().exchange(searchRequest);
+            genres = (List<Genre>) ((GetSearchEntityResponse) response).getEntities();
+            System.out.println(response);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        this.genresList = genres;
+        this.tableGenreList = getTableGenreListFromGenreList(this.genresList);
+        ObservableList<TableGenre> observable = FXCollections.observableArrayList(tableGenreList);
+        genreTableView.setItems(observable);
+        genreTableView.setFixedCellSize(100.0);
+        genreTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
     }
 

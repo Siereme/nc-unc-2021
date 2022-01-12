@@ -16,7 +16,7 @@ public class SearchEntityRequest extends Request {
     }
 
     public String toString() {
-        return "SearchEntityRequest " + entityType.getName();
+        return "SearchEntityRequest: name " + entityName + " type: " + entityType.getName();
     }
 
 }

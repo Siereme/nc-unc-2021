@@ -23,7 +23,7 @@
             <Button fx:id="addButton" onAction="#add" layoutX="441.0" layoutY="84.0" mnemonicParsing="false" text="Add" />
             <Button fx:id="editButton" onAction="#edit" layoutX="507.0" layoutY="84.0" mnemonicParsing="false" text="Edit" />
             <Button fx:id="removeButton" onAction="#remove" layoutX="574.0" layoutY="84.0" mnemonicParsing="false" text="Remove" />
-            <TextField fx:id="searchTextField" layoutX="107.0" layoutY="84.0" />
+            <TextField fx:id="genreNameTextField" layoutX="107.0" layoutY="84.0" />
             <TableView fx:id="genreTableView" editable="true" layoutX="7.0" layoutY="200.0" prefHeight="200.0" prefWidth="634.0">
               <columns>
                   <TableColumn fx:id="select" visible="false" prefWidth="75.0" text="Select" />

@@ -1,21 +1,20 @@
 package app.viewFX.menu.actors;
 
 import app.model.actor.Actor;
+import app.model.director.Director;
 import app.model.film.Film;
-import app.model.genre.Genre;
 import app.viewFX.menu.AbstractController;
 import app.viewFX.menu.actors.handle.AddEditActorController;
+import app.viewFX.menu.directors.TableDirector;
 import app.viewFX.menu.films.TableFilm;
-import app.viewFX.menu.genres.TableGenre;
-import app.viewFX.menu.genres.handle.AddEditGenreController;
 import client.CommunicationInterface;
 import dto.request.Request;
 import dto.request.imp.GetAllEntitiesRequest;
-import dto.request.imp.GetEntityRequest;
 import dto.request.imp.RemoveEntityRequest;
+import dto.request.imp.SearchEntityRequest;
 import dto.response.Response;
 import dto.response.imp.GetEntitiesResponse;
-import dto.response.imp.GetEntityResponse;
+import dto.response.imp.GetSearchEntityResponse;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -61,26 +60,22 @@ public class ActorsController extends AbstractController implements Initializabl
     @FXML
     private Button editButton;
     @FXML
-    private TextField actorName;
+    private TextField actorNameTextField;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.actorList = getActorListFromRepository();
-        try {
-            this.tableActorList = getTableActorListFromActorList(this.actorList);
-            tableActorList.forEach(genre -> {
-                select.setCellValueFactory(new PropertyValueFactory<>("checked"));
-                name.setCellValueFactory(new PropertyValueFactory<>("name"));
-                age.setCellValueFactory(new PropertyValueFactory<>("age"));
-                films.setCellValueFactory(new PropertyValueFactory<>("films"));
-            });
-            ObservableList<TableActor> observable = FXCollections.observableArrayList(tableActorList);
-            actorTableView.setItems(observable);
-            actorTableView.setFixedCellSize(100.0);
-            actorTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        this.tableActorList = getTableActorListFromActorList(this.actorList);
+        tableActorList.forEach(genre -> {
+            select.setCellValueFactory(new PropertyValueFactory<>("checked"));
+            name.setCellValueFactory(new PropertyValueFactory<>("name"));
+            age.setCellValueFactory(new PropertyValueFactory<>("age"));
+            films.setCellValueFactory(new PropertyValueFactory<>("films"));
+        });
+        ObservableList<TableActor> observable = FXCollections.observableArrayList(tableActorList);
+        actorTableView.setItems(observable);
+        actorTableView.setFixedCellSize(100.0);
+        actorTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     private List<Actor> getActorListFromRepository() {
@@ -95,7 +90,7 @@ public class ActorsController extends AbstractController implements Initializabl
         return null;
     }
 
-    private List<TableActor> getTableActorListFromActorList(List<Actor> actorList) throws IOException, ClassNotFoundException {
+    private List<TableActor> getTableActorListFromActorList(List<Actor> actorList)  {
         List<TableActor> tableActors = new ArrayList<>();
         for (Actor actor : actorList) {
             List<String> filmIds = actor.getFilms();
@@ -107,7 +102,22 @@ public class ActorsController extends AbstractController implements Initializabl
     }
 
     public void search(ActionEvent actionEvent) {
-        // TODO
+        List<Actor> actorList = new LinkedList<>();
+        String actorName = actorNameTextField.getText();
+        Request searchRequest = new SearchEntityRequest(actorName, Actor.class);
+        try {
+            Response response = CommunicationInterface.getInstance().exchange(searchRequest);
+            actorList = (List<Actor>) ((GetSearchEntityResponse) response).getEntities();
+            System.out.println(response);
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        this.actorList = actorList;
+        this.tableActorList = getTableActorListFromActorList(this.actorList);
+        ObservableList<TableActor> observable = FXCollections.observableArrayList(tableActorList);
+        actorTableView.setItems(observable);
+        actorTableView.setFixedCellSize(100.0);
+        actorTableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
     }
 

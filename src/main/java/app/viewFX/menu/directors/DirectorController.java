@@ -181,7 +181,6 @@ public class DirectorController extends AbstractController implements Initializa
     }
 
     public void edit(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
-        // FIXME
         if (directorTableView.getSelectionModel().getSelectedIndices().size() > 0) {
             Director director = directorList.get(directorTableView.getSelectionModel().getSelectedIndex());
             showWindow(director);
