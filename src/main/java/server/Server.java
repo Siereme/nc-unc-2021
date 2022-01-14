@@ -16,6 +16,8 @@ import dto.request.*;
 import dto.request.imp.*;
 import dto.response.imp.*;
 import dto.response.Response;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -33,12 +35,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
+    private static final Logger logger = Logger.getLogger(Server.class.getName());
     private static final ExecutorService pool = Executors.newFixedThreadPool(10);
 
     public static void main(String[] args) throws IOException {
+        BasicConfigurator.configure();
         int PORT = 7777;
         ServerSocket ss = new ServerSocket(PORT);
-        System.out.println("ServerSocket awaiting connections...");
+        logger.info("ServerSocket awaiting connections...");
 
         while (!ss.isClosed()) {
             Socket client = ss.accept();
@@ -62,7 +66,7 @@ public class Server {
 
         @Override
         public void run() {
-            System.out.println("Connection from " + client);
+            logger.info("Connection from " + client);
             try {
                 final OutputStream outputStream = client.getOutputStream();
                 ObjectOutputStream dos = new ObjectOutputStream(outputStream);
@@ -71,11 +75,11 @@ public class Server {
 
                 while (!client.isClosed()) {
                     final Request request = (Request) dis.readObject();
-                    System.out.println("handling request " + request);
+                    logger.info("handling request " + request);
                     //do some logic
                     final Response response = respond(request);
                     dos.writeObject(response);
-                    System.out.println(" response sent");
+                    logger.info(" response sent");
                 }
             } catch (IOException | ClassNotFoundException | InvocationTargetException | NoSuchMethodException | InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();

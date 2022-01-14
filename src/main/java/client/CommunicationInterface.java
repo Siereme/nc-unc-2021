@@ -2,6 +2,9 @@ package client;
 
 import dto.request.Request;
 import dto.response.Response;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
+import server.Server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -16,8 +19,11 @@ public class CommunicationInterface {
 
     private static CommunicationInterface communicationInterface;
 
+    private static final Logger logger = Logger.getLogger(Server.class.getName());
+
     public static CommunicationInterface getInstance() {
         if (communicationInterface == null) {
+            BasicConfigurator.configure();
             communicationInterface = new CommunicationInterface();
         }
         return communicationInterface;
@@ -27,7 +33,7 @@ public class CommunicationInterface {
 
         try {
             Socket socket = new Socket(LOCALHOST, PORT);
-            System.out.println("connection established");
+            logger.info("connection established");
             dis = new ObjectInputStream(socket.getInputStream());
             dos = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
@@ -36,10 +42,10 @@ public class CommunicationInterface {
     }
 
     public Response exchange(Request request) throws IOException, ClassNotFoundException {
-        System.out.println("request sent : " + request);
+        logger.info("request sent : " + request);
         dos.writeObject(request);
         final Response commandResponse = (Response) dis.readObject();
-        System.out.println("response received " + commandResponse);
+        logger.info("response received " + commandResponse);
         return commandResponse;
     }
 
