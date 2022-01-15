@@ -21,7 +21,7 @@ public class FilmController {
     private final Logger logger = Logger.getLogger(FilmController.class.getName());
 
 
-    @GetMapping(value = "/find")
+    @GetMapping(value = "/all")
     public String get (ModelMap model){
         List<Film> films = repository.findAll();
         model.addAttribute("title", "Films");
@@ -30,7 +30,7 @@ public class FilmController {
         return "films";
     }
 
-    @PostMapping(path="/find")
+    @PostMapping(value="/find")
     public String get (@ModelAttribute Film requestFilm, ModelMap model){
         List<Film> findFilm = new ArrayList<>();
         for(Film film : repository.findAll()){

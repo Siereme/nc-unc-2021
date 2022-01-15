@@ -1,0 +1,9 @@
+.modal{
+    width: 500px;
+    height: 300px;
+    position: fixed;
+    left: calc(50% - 250px);
+    top: calc(50% - 150px);
+    background: white;
+    border: 1px solid #cccc;
+}
