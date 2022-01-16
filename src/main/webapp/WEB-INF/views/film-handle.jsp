@@ -7,15 +7,19 @@
     <link href="<c:url value="/resources/css/film-handle.css" />" rel="stylesheet">
 </head>
 <body>
-    <h2>Handle</h2>
     <div class="modal">
-        <h2>${modalTitle}<h2>
-        <form action="add" method="post">
-            <p>
-                <span>Title<span>
-                <input name="tittle" />
-            </p>
-        </form>
+        <h2 class="header-title">${modalTitle}</h2>
+        <div class="form-container">
+            <form action="../${eventType}" method="post">
+                <p>
+                    <span>Title</span>
+                    <input type="hidden" name="id" value="${film.getId()}"/>
+                    <input name="tittle" value="${film.getTittle()}"/>
+                </p>
+
+                <input type="submit" class="submit-button" value="${modalTitle}" />
+            </form>
+        </div>
     </div>
 </body>
 </html>

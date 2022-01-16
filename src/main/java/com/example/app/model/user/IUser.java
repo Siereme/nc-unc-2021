@@ -12,7 +12,7 @@ public interface IUser extends IEntity {
     /** Method gets user id
      * @return user id
      * */
-    String getId();
+    int getId();
 
     /** Method gets user name
      * @return string value of the username

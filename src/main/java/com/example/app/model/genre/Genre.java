@@ -11,21 +11,19 @@ import java.util.UUID;
  * */
 public class Genre implements IEntity {
 
-    private final String id;
+    private int id;
 
     private String tittle;
 
     public Genre(){
-        id = UUID.randomUUID().toString();
-        tittle = "Unknown";
+        tittle = "";
     }
 
     public Genre(String newGener) {
-        id = UUID.randomUUID().toString();
         tittle = newGener;
     }
 
-    public String getId() {
+    public int getId() {
         return this.id;
     }
 

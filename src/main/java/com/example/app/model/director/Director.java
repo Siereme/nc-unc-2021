@@ -13,7 +13,7 @@ import java.util.UUID;
  * */
 public class Director implements IEntity {
 
-    private final String id;
+    private int id;
 
     public void setName(String name) {
         this.name = name;
@@ -32,28 +32,25 @@ public class Director implements IEntity {
 
 
     public Director(){
-        this.id = UUID.randomUUID().toString();
-        this.name = "Unknown";
-        this.year = "Unknown";
+        this.name = "";
+        this.year = "";
         this.films = new LinkedList<>();
     }
 
     public Director(String name) {
-        this.id = UUID.randomUUID().toString();
         this.name = name;
-        this.year = "Unknown";
+        this.year = "";
         this.films = new LinkedList<>();
     }
 
 
     public Director(String name, String year) {
-        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.year = year;
         this.films = new LinkedList<>();
     }
 
-    public String getId() {
+    public int getId() {
         return this.id;
     }
 

@@ -13,7 +13,7 @@ import java.util.UUID;
  * */
 public class Actor implements IEntity {
 
-    private final String id;
+    private int id;
 
     private String name;
 
@@ -32,27 +32,30 @@ public class Actor implements IEntity {
 
 
     public Actor(){
-        this.id = UUID.randomUUID().toString();
-        this.name = "Unknown";
-        this.year = "Unknown";
+        this.name = "";
+        this.year = "";
         this.films = new LinkedList<String>();
     }
 
     public Actor(String name) {
-        this.id = UUID.randomUUID().toString();
         this.name = name;
-        this.year = "Unknown";
+        this.year = "";
         this.films = new LinkedList<String>();
     }
 
     public Actor(String name, String year) {
-        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.year = year;
         this.films = new LinkedList<String>();
     }
 
-    public String getId() {
+    public Actor(int id, String name, String year) {
+        this.id = id;
+        this.name = name;
+        this.year = year;
+    }
+
+    public int getId() {
         return this.id;
     }
 

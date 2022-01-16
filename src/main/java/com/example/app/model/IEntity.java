@@ -23,5 +23,5 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     }
 )
 public interface IEntity {
-    String getId();
+    int getId();
 }

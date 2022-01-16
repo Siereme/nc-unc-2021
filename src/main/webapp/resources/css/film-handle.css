@@ -7,3 +7,17 @@
     background: white;
     border: 1px solid #cccc;
 }
+.modal .header-title{
+    padding-left: 40px;
+}
+.modal .form-container{
+    padding: 0 40px;
+}
+.modal .form-container p span{
+    padding-right: 20px;
+}
+.modal .form-container .submit-button{
+    margin-top: 20px;
+    width: 80px;
+    height: 30px;
+}

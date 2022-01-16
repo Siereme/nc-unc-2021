@@ -13,13 +13,12 @@
     <div class="search-container">
         <form id="find" action="find" method="post"></form>
         <form id="findAll" action="all" method="get"></form>
-        <form id="handle" action="/films/film-handle" method="get"></form>
+        <form id="add" action="film-handle/add" method="post"></form>
         <input name="tittle" form="find"/>
         <p>
             <input type="submit" name="find" value="Find" form="find"  />
             <input type="submit" name="find" value="Find All" form="findAll"  />
-            <input type="submit" value="Add" form="handle" />
-            <input type="submit" value="Edit" form="handle" />
+            <input type="submit" value="Add" form="add" />
         </p>
     </div>
 
@@ -29,12 +28,26 @@
                     <div>Id</div>
                     <div>Title</div>
                     <div>Date</div>
+                    <div class="handle-header">Handle</div>
             </li>
             <c:forEach var="film" items="${films}">
                     <li class="body">
                         <div>${film.getId()}</div>
                         <div>${film.getTittle()}</div>
                         <div>${film.getDate()}</div>
+                        <div class="handle-button">
+                            <form action="film-handle/edit" method="post">
+                                <input type="hidden" name="id" value="${film.getId()}" />
+                                <input type="hidden" name="tittle" value="${film.getTittle()}" />
+                                <input type="submit" value="Edit" />
+                            </form>
+                        </div>
+                        <div class="handle-button">
+                            <form action="delete" method="post">
+                                <input type="hidden" name="id" value="${film.getId()}" />
+                                <input type="submit" value="Delete" />
+                            </form>
+                        </div>
                     </li>
             </c:forEach>
         </ul>

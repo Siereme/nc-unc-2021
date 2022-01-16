@@ -33,6 +33,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/main").setViewName("main");
         registry.addViewController("/films").setViewName("films");
         registry.addViewController("/films/film-handle").setViewName("film-handle");
+//        registry.addViewController("/films/film-handle/{spring:\\\\w+}").setViewName("film-handle");
     }
 
     @Override

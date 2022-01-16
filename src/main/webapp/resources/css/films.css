@@ -26,3 +26,9 @@
     padding: 10px 0;
     text-align: center;
 }
+.handle-button{
+    max-width: 80px;
+}
+body .films-grid .handle-header{
+    max-width: 160px;
+}

@@ -22,7 +22,7 @@ public class FilmsRepository implements IRepository {
         return jdbcTemplate.query(
                 "SELECT * FROM film",
                 (rs, rowNum) -> new Film(
-                    rs.getString("filmId"),
+                    rs.getInt("filmId"),
                     rs.getString("tittle"),
                     rs.getDate("date"))
                 );
@@ -30,17 +30,24 @@ public class FilmsRepository implements IRepository {
 
     public void add(Film film){
         jdbcTemplate.update(
-                "INSERT INTO film VALUES(?, ?, ?)",
-                film.getId(),
+                "INSERT INTO film(tittle, date) VALUES(?, ?)",
                 film.getTittle(),
                 film.getDate()
         );
     }
 
-    public void delete(String filmId){
+    public void delete(int filmId){
         jdbcTemplate.update(
-                "DELETE FROM film WHERE filmId = ?",
+                "DELETE FROM film WHERE filmId=?",
                 filmId
+        );
+    }
+
+    public void edit(Film film) {
+        jdbcTemplate.update(
+                "UPDATE film SET tittle=? WHERE filmId=?",
+                film.getTittle(),
+                film.getId()
         );
     }
 

@@ -12,7 +12,7 @@ import java.util.UUID;
  * */
 @JsonTypeName("admin")
 public class Admin implements IUser {
-    private final String id;
+    private int id;
 
     private String name;
 
@@ -22,19 +22,17 @@ public class Admin implements IUser {
     private final Boolean isAdmin = true;
 
     public Admin() {
-        this.id = UUID.randomUUID().toString();
-        this.name = "Unknown";
-        this.password = "None";
+        this.name = "";
+        this.password = "";
     }
 
     public Admin(String name, String password) {
-        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.password = password;
     }
 
     @Override
-    public String getId(){
+    public int getId(){
         return this.id;
     }
 

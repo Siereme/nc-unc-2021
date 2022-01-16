@@ -15,7 +15,7 @@ import java.util.UUID;
 @JsonTypeName("visitor")
 public class Visitor implements IUser, IEntity {
     /** Поле первичный ключ - id пользователя */
-    private final String id;
+    private int id;
 
     /** Поле имя пользователя */
     private String name;
@@ -28,19 +28,17 @@ public class Visitor implements IUser, IEntity {
     private final Boolean isAdmin = false;
 
     public Visitor() {
-        this.id = UUID.randomUUID().toString();
-        this.name = "Unknown";
-        this.password = "None";
+        this.name = "";
+        this.password = "";
     }
 
     public Visitor(String name, String password) {
-        this.id = UUID.randomUUID().toString();
         this.name = name;
         this.password = password;
     }
 
     @Override
-    public String getId(){
+    public int getId(){
         return this.id;
     }
 

@@ -4,7 +4,6 @@ import com.example.app.model.IEntity;
 
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.UUID;
 
 /** Film entity
  * @author Vasiliy, Sergey
@@ -13,7 +12,7 @@ import java.util.UUID;
 
 public class Film implements IEntity {
 
-    private final String id;
+    private int id;
 
     private String tittle;
 
@@ -52,8 +51,7 @@ public class Film implements IEntity {
     }
 
     public Film(){
-        id = UUID.randomUUID().toString();
-        tittle = "Unknown";
+        tittle = "";
         date = new Date();
         genres = new LinkedList<>();
         directors = new LinkedList<>();
@@ -61,7 +59,6 @@ public class Film implements IEntity {
     }
 
     public Film(String newTittle){
-        id = UUID.randomUUID().toString();
         tittle = newTittle;
         date = new Date();
         genres = new LinkedList<>();
@@ -70,9 +67,9 @@ public class Film implements IEntity {
     }
 
 
+
     public Film(String newTittle, Date newDate, LinkedList<String> newGenres, LinkedList<String> newDirectors,
                 LinkedList<String> newActors) {
-        id = UUID.randomUUID().toString();
         tittle = newTittle;
         date = newDate;
         genres = newGenres;
@@ -80,7 +77,7 @@ public class Film implements IEntity {
         actors = newActors;
     }
 
-    public Film(String id, String tittle, Date date) {
+    public Film(int id, String tittle, Date date) {
         this.id = id;
         this.tittle = tittle;
         this.date = date;
@@ -89,8 +86,21 @@ public class Film implements IEntity {
         actors = new LinkedList<>();
     }
 
-    public String getId() {
+    public Film(int id, String tittle) {
+        this.id = id;
+        this.tittle = tittle;
+        this.date = new Date();
+        genres = new LinkedList<>();
+        directors = new LinkedList<>();
+        actors = new LinkedList<>();
+    }
+
+    public int getId() {
         return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTittle() {

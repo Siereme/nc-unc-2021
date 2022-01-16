@@ -7,11 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -46,16 +45,36 @@ public class FilmController {
         return null;
     }
 
-    @PostMapping(value = "/post",
-            consumes = "application/json",
-            produces = "application/json")
-    public void add(@RequestBody Film film){
-        repository.add(film);
+    @PostMapping(value = "/film-handle/{commandType}")
+    public String renderHandlePage(@ModelAttribute Film film, ModelMap model, @PathVariable String commandType){
+        if(Objects.equals(commandType, "add")){
+            model.addAttribute("modalTitle", "Add");
+            model.addAttribute("eventType", "add");
+        }
+        if(Objects.equals(commandType, "edit")){
+            model.addAttribute("modalTitle", "Edit");
+            model.addAttribute("eventType", "edit");
+            model.addAttribute("film", film);
+        }
+        return "film-handle";
     }
 
-    @DeleteMapping(value = "/delete/{filmId}")
-    public void delete(@PathVariable String filmId){
-        repository.delete(filmId);
+    @PostMapping(value = "/delete")
+    public RedirectView delete(@ModelAttribute Film film){
+        repository.delete(film.getId());
+        return new RedirectView("all");
+    }
+
+    @PostMapping(value = "/add")
+    public RedirectView add(@ModelAttribute Film film){
+        repository.add(film);
+        return new RedirectView("all");
+    }
+
+    @PostMapping(value = "/edit")
+    public RedirectView edit(@ModelAttribute Film film){
+        repository.edit(film);
+        return new RedirectView("all");
     }
 
     @Autowired
