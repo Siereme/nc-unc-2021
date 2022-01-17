@@ -44,7 +44,8 @@ public class Director implements IEntity {
     }
 
 
-    public Director(String name, String year) {
+    public Director(int id, String name, String year) {
+        this.id = id;
         this.name = name;
         this.year = year;
         this.films = new LinkedList<>();

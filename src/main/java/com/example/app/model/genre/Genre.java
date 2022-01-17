@@ -19,7 +19,8 @@ public class Genre implements IEntity {
         tittle = "";
     }
 
-    public Genre(String newGener) {
+    public Genre(int id, String newGener) {
+        this.id = id;
         tittle = newGener;
     }
 

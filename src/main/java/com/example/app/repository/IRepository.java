@@ -12,6 +12,13 @@ public interface IRepository<T> {
      * */
     List<T> findAll();
 
+    void add(T entity);
+
+    void delete(int id);
+
+    void edit(T entity);
+
+
 //    /** Method serializes app.repository **/
 //    void serialize();
 //

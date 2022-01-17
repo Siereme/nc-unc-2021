@@ -13,9 +13,7 @@ import java.util.List;
  * @version 1.0
  * */
 @Repository
-public class FilmsRepository implements IRepository {
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+public class FilmsRepository extends AbstractRepository<Film> {
 
 
     public List<Film> findAll() {
@@ -26,6 +24,11 @@ public class FilmsRepository implements IRepository {
                     rs.getString("tittle"),
                     rs.getDate("date"))
                 );
+    }
+
+    @Override
+    public int size() {
+        return 0;
     }
 
     public void add(Film film){
@@ -51,8 +54,4 @@ public class FilmsRepository implements IRepository {
         );
     }
 
-    @Override
-    public int size() {
-        return 0;
-    }
 }
