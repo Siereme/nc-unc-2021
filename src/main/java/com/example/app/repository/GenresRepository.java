@@ -1,10 +1,8 @@
 package com.example.app.repository;
 
-import com.example.app.model.film.Film;
 import com.example.app.model.genre.Genre;
 import org.springframework.stereotype.Repository;
 
-import java.util.LinkedList;
 import java.util.List;
 
 @Repository
@@ -31,7 +29,26 @@ public class GenresRepository extends AbstractRepository<Genre> {
     }
 
     @Override
+    public List<Genre> findByName(String name) {
+/*        return jdbcTemplate.query("Select * from genre where name = ?", rs -> {
+            Map<Integer, Genre> map = new HashMap<>();
+            while (rs.next()) {
+                int id = rs.getInt("genreId");
+                String tittle = rs.getString("tittle");
+                Genre genre = new Genre(id, tittle);
+                if (!map.containsKey(genre.getId())) {
+                    map.put(genre.getId(), genre);
+                }
+            }
+            return new ArrayList<>(map.values());
+        }, name);*/
+
+        return jdbcTemplate.query("Select * from genre where name = ?",
+                (rs, rowNum) -> new Genre(rs.getInt("genreId"), rs.getString("tittle")), name);
+    }
+
+    @Override
     public int size() {
-        return 0;
+        return jdbcTemplate.queryForObject("SELECT count(*) FROM genre", Integer.class);
     }
 }

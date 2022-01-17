@@ -18,6 +18,8 @@ public interface IRepository<T> {
 
     void edit(T entity);
 
+    List<T> findByName(String name);
+
 
 //    /** Method serializes app.repository **/
 //    void serialize();
