@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 /** Actor entity
  * @author Vasiliy, Sergey
@@ -40,6 +39,13 @@ public class Actor implements IEntity {
     public Actor(String name) {
         this.name = name;
         this.year = "";
+        this.films = new LinkedList<String>();
+    }
+
+    public Actor(int id, String name) {
+        this.id = id;
+        this.name = name;
+        this.year = year;
         this.films = new LinkedList<String>();
     }
 

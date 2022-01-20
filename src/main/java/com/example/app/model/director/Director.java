@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.UUID;
 
 /** Director entity
  * @author Vasiliy, Sergey
@@ -43,6 +42,13 @@ public class Director implements IEntity {
         this.films = new LinkedList<>();
     }
 
+    public Director(int id, String name) {
+        this.id = id;
+        this.name = name;
+        this.year = "";
+        this.films = new LinkedList<>();
+    }
+
 
     public Director(int id, String name, String year) {
         this.id = id;
@@ -50,6 +56,7 @@ public class Director implements IEntity {
         this.year = year;
         this.films = new LinkedList<>();
     }
+
 
     public int getId() {
         return this.id;

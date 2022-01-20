@@ -4,7 +4,6 @@ package com.example.app.model.genre;
 import com.example.app.model.IEntity;
 
 import java.util.Objects;
-import java.util.UUID;
 
 /** Genre entity
  * @author Vasiliy, Sergey
@@ -23,6 +22,7 @@ public class Genre implements IEntity {
         this.id = id;
         tittle = newGener;
     }
+
 
     public int getId() {
         return this.id;
