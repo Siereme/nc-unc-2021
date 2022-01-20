@@ -1,9 +1,14 @@
 package com.example.app.model.film;
 
 import com.example.app.model.IEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 /** Film entity
  * @author Vasiliy, Sergey
@@ -16,35 +21,36 @@ public class Film implements IEntity {
 
     private String tittle;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
-    private final LinkedList<String> genres;
+    private List<Integer> genres;
 
-    private LinkedList<String> directors;
+    private LinkedList<Integer> directors;
 
-    private LinkedList<String> actors;
+    private LinkedList<Integer> actors;
 
-    public LinkedList<String> getActors() {
+    public LinkedList<Integer> getActors() {
         return actors;
     }
 
-    public void setActors(LinkedList<String> actors) {
+    public void setActors(LinkedList<Integer> actors) {
         this.actors = actors;
     }
 
-    public LinkedList<String> getDirectors() {
+    public LinkedList<Integer> getDirectors() {
         return directors;
     }
 
-    public void setDirectors(LinkedList<String> directors) {
+    public void setDirectors(LinkedList<Integer> directors) {
         this.directors = directors;
     }
 
-    public LinkedList<String> getGenres() {
+    public List<Integer> getGenres() {
         return genres;
     }
 
-    public void setGenres(LinkedList<String> newGenres) {
+    public void setGenres(LinkedList<Integer> newGenres) {
         System.out.println(newGenres);
         this.genres.addAll(newGenres);
         System.out.println(this.genres);
@@ -68,8 +74,8 @@ public class Film implements IEntity {
 
 
 
-    public Film(String newTittle, Date newDate, LinkedList<String> newGenres, LinkedList<String> newDirectors,
-                LinkedList<String> newActors) {
+    public Film(String newTittle, Date newDate, List<Integer> newGenres, LinkedList<Integer> newDirectors,
+                LinkedList<Integer> newActors) {
         tittle = newTittle;
         date = newDate;
         genres = newGenres;
@@ -116,7 +122,22 @@ public class Film implements IEntity {
     }
 
     public void setDate(Date date) {
-        this.date = date;
+        if(date != null){
+            this.date = date;
+        }
+        else{
+            this.date = new Date();
+        }
     }
 
+    public void setDate(String date) throws ParseException {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        this.date = dateFormat.parse(date);
+    }
+
+    public void removeGenres(List<Integer> ids){
+        for(int id : ids){
+            this.genres.removeIf(genreId -> genreId == id);
+        }
+    }
 }

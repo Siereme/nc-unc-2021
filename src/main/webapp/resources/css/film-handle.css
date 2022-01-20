@@ -1,4 +1,6 @@
-.modal{
+.handle-container{
+    display:flex;
+    flex-direction: column;
     width: 500px;
     height: 300px;
     position: fixed;
@@ -6,18 +8,32 @@
     top: calc(50% - 150px);
     background: white;
     border: 1px solid #cccc;
+    border-radius: 0.25rem;
 }
-.modal .header-title{
-    padding-left: 40px;
+
+form{
+    flex-grow: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
-.modal .form-container{
-    padding: 0 40px;
-}
-.modal .form-container p span{
-    padding-right: 20px;
-}
-.modal .form-container .submit-button{
+.handle-container .submit-button{
+    margin: 0 auto;
     margin-top: 20px;
     width: 80px;
-    height: 30px;
 }
+.dropdown-menu{
+    padding-top: 0;
+}
+.dropdown-menu .dropdown-toggle{
+    display: block;
+    margin: 0 auto;
+}
+.dropdown-menu .submit-item a{
+    display: block;
+    width: 90px;
+    margin: 0 auto;
+    margin-top: 8px;
+}
+

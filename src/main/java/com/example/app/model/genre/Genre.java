@@ -23,6 +23,11 @@ public class Genre implements IEntity {
         tittle = newGener;
     }
 
+    public Genre(int id, String newGener) {
+        this.id = id;
+        tittle = newGener;
+    }
+
     public int getId() {
         return this.id;
     }

@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
+import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -32,15 +33,15 @@ public class WebConfig implements WebMvcConfigurer {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/main").setViewName("main");
         registry.addViewController("/films").setViewName("films");
-        registry.addViewController("/films/film-handle").setViewName("film-handle");
-//        registry.addViewController("/films/film-handle/{spring:\\\\w+}").setViewName("film-handle");
+        registry.addViewController("/films/handle").setViewName("film-handle");
     }
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry
                 .addResourceHandler("/resources/**")
-                .addResourceLocations("/resources/");
+                .addResourceLocations("/resources/")
+                .setCacheControl(CacheControl.noCache());;
     }
 
 }

@@ -43,8 +43,22 @@ public class Director implements IEntity {
         this.films = new LinkedList<>();
     }
 
+    public Director(int id, String name) {
+        this.id = id;
+        this.name = name;
+        this.year = "";
+        this.films = new LinkedList<>();
+    }
+
 
     public Director(String name, String year) {
+        this.name = name;
+        this.year = year;
+        this.films = new LinkedList<>();
+    }
+
+    public Director(int id, String name, String year) {
+        this.id = id;
         this.name = name;
         this.year = year;
         this.films = new LinkedList<>();

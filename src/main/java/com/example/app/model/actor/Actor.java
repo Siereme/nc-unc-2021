@@ -43,6 +43,13 @@ public class Actor implements IEntity {
         this.films = new LinkedList<String>();
     }
 
+    public Actor(int id, String name) {
+        this.id = id;
+        this.name = name;
+        this.year = year;
+        this.films = new LinkedList<String>();
+    }
+
     public Actor(String name, String year) {
         this.name = name;
         this.year = year;
