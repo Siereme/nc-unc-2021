@@ -20,24 +20,6 @@ public interface IRepository<T> {
 
     List<T> findByName(String name);
 
-
-//    /** Method serializes app.repository **/
-//    void serialize();
-//
-//    /** Method deserializes app.repository
-//     * @return list of the entities with type T
-//     * */
-//    List<T> deserialize();
-//
-//    /** Method deserializes app.repository
-//     * @param file - object gets app.repository from the file
-//     * @return list of the entities with type T
-//     * */
-//    List<T> deserialize(String file);
-//
-//    /** Method gets size - count of app.repository elements
-//     * @return count of app.repository elements
-//     * */
     int size();
 
 

@@ -4,7 +4,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Handle Page</title>
-    <link href="<c:url value="/resources/css/film-handle.css" />" rel="stylesheet">
+    <link href="<c:url value="/src/main/webapp/resources/css/film-handle.css" />" rel="stylesheet">
 </head>
 <body>
     <div class="modal">

@@ -5,7 +5,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Films Page</title>
-    <link href="<c:url value="/resources/css/films.css" />" rel="stylesheet">
+    <link href="<c:url value="/src/main/webapp/resources/css/films.css" />" rel="stylesheet">
 </head>
 <body>
     <h2>${title}</h2>

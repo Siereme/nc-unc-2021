@@ -1,13 +1,9 @@
 package com.example.app.repository;
 
 import com.example.app.model.actor.Actor;
-import com.example.app.model.film.Film;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public class ActorsRepository extends AbstractRepository<Actor> {
@@ -16,7 +12,7 @@ public class ActorsRepository extends AbstractRepository<Actor> {
     @Override
     public List<Actor> findAll() {
         return jdbcTemplate.query("SELECT * FROM actor",
-                (rs, rowNum) -> new Actor(rs.getInt("actorId"), rs.getString("name"), rs.getString("year")));
+                (rs, rowNum) -> new Actor(rs.getInt("actor_id"), rs.getString("name"), rs.getString("year")));
     }
 
     @Override
@@ -26,12 +22,12 @@ public class ActorsRepository extends AbstractRepository<Actor> {
 
     @Override
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM actor WHERE actorId=?", id);
+        jdbcTemplate.update("DELETE FROM actor WHERE actor_id=?", id);
     }
 
     @Override
     public void edit(Actor entity) {
-        jdbcTemplate.update("UPDATE film SET name=?, year=? WHERE filmId=?", entity.getName(), entity.getYear(),
+        jdbcTemplate.update("UPDATE film SET name=?, year=? WHERE actor_id=?", entity.getName(), entity.getYear(),
                 entity.getId());
     }
 
@@ -52,7 +48,7 @@ public class ActorsRepository extends AbstractRepository<Actor> {
         }, name);*/
 
         return jdbcTemplate.query("Select * from actor where name = ?",
-                (rs, rowNum) -> new Actor(rs.getInt("actorId"), rs.getString("name"), rs.getString("year")), name);
+                (rs, rowNum) -> new Actor(rs.getInt("actor_id"), rs.getString("name"), rs.getString("year")), name);
 
     }
 

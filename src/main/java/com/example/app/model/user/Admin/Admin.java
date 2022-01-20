@@ -4,14 +4,12 @@ import com.example.app.model.user.IUser;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-import java.util.UUID;
-
 /** Administrator entity
  * @author Sergey
  * @version 1.0
  * */
 @JsonTypeName("admin")
-public class Admin implements IUser {
+public class Admin  {
     private int id;
 
     private String name;
@@ -31,32 +29,26 @@ public class Admin implements IUser {
         this.password = password;
     }
 
-    @Override
     public int getId(){
         return this.id;
     }
 
-    @Override
-    public String getName() {
+    public String getUsername() {
         return this.name;
     }
 
-    @Override
-    public void setName(String name) {
-        this.name = name;
+    public void setUsername(String username) {
+        this.name = username;
     }
 
-    @Override
     public String getPassword() {
         return this.password;
     }
 
-    @Override
     public void setPassword(String password) {
         this.password = password;
     }
 
-    @Override
     @JsonProperty("isAdmin")
     public Boolean isAdmin(){
         return this.isAdmin;
