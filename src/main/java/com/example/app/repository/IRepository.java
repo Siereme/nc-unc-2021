@@ -12,14 +12,6 @@ public interface IRepository<T> {
      * */
     List<T> findAll();
 
-    void add(T entity);
-
-    void delete(int id);
-
-    void edit(T entity);
-
-    List<T> findByName(String name);
-
 
 //    /** Method serializes app.repository **/
 //    void serialize();
