@@ -11,40 +11,29 @@
 <body>
     <jsp:include page="header.jsp" />
     <div class="films-grid-container">
-        <table class="table text-center">
-          <thead class="bg-light">
+        <h2>Genres</h2>
+        <table class="table">
+          <thead class="bg-dark text-light">
             <tr>
               <th scope="col">Id</th>
               <th scope="col">Title</th>
               <th scope="col">Date</th>
               <th scope="col">Genres</th>
-              <th scope="col">
-                <div class="d-flex justify-content-center">Actors</div>
-                <div class="row">
-                    <div class="col">Name</div>
-                    <div class="col">Year</div>
-                </div>
-              </th>
-              <th scope="d-flex justify-content-center">
-                <div class="d-flex justify-content-center">Directors</div>
-                <div class="row">
-                    <div class="col">Name</div>
-                    <div class="col">Year</div>
-                </div>
-             </th>
+              <th scope="col">Actors</th>
+              <th scope="col">Directors</th>
               <th scope="col" colspan="2">Handle</th>
             </tr>
           </thead>
           <tbody>
-              <c:forEach var="film" items="${films}" varStatus="loop">
+              <c:forEach var="film" items="${films}">
                 <tr>
-                  <th class="align-middle" scope="row">${film.getId()}</th>
-                  <td class="align-middle">${film.getTittle()}</td>
-                  <td class="align-middle">${film.getDate()}</td>
-                  <td class="px-0">
-                    <table class="table m-0">
+                  <th scope="row">${film.getId()}</th>
+                  <td class="simple-data">${film.getTittle()}</td>
+                  <td class="simple-data">${film.getDate()}</td>
+                  <td class="table-data">
+                    <table class="table">
                         <tbody>
-                            <c:forEach var="genre" items="${genres.get(loop.index)}">
+                            <c:forEach var="genre" items="${genres.get(film.getId())}">
                                 <tr>
                                     <td>${genre.getTittle()}</td>
                                 </tr>
@@ -52,40 +41,40 @@
                         </tbody>
                     </table>
                   </td>
-                  <td class="px-0">
+                  <td class="table-data">
                     <table class="table">
                         <tbody>
-                            <c:forEach var="actor" items="${actors.get(loop.index)}">
+                            <c:forEach var="actor" items="${actors.get(film.getId())}">
                                 <tr>
-                                    <td class="w-50">${actor.getName()}</td>
-                                    <td class="w-50">${actor.getYear()}</td>
+                                    <td>${actor.getName()}</td>
+                                    <td>${actor.getYear()}</td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
                   </td>
-                  <td class="px-0">
+                  <td class="table-data">
                     <table class="table">
                         <tbody>
-                            <c:forEach var="director" items="${directors.get(loop.index)}">
+                            <c:forEach var="director" items="${directors.get(film.getId())}">
                                 <tr>
-                                    <td class="w-50">${director.getName()}</td>
-                                    <td class="w-50">${director.getYear()}</td>
+                                    <td>${director.getName()}</td>
+                                    <td>${director.getYear()}</td>
                                 </tr>
                             </c:forEach>
                         </tbody>
                     </table>
                   </td>
-                  <td class="align-middle col-1">
+                  <td class="simple-data">
                       <form action="handle/page-edit" method="post">
                           <input type="hidden" name="id" value="${film.getId()}" />
                           <input type="hidden" name="tittle" value="${film.getTittle()}" />
-                          <input type="submit" class="btn btn-outline-dark" value="Edit" />
+                          <input type="submit" value="Edit" />
                       </form>
                   </td>
-                  <td class="align-middle col-1">
+                  <td class="simple-data">
                       <form action="handle/delete/${film.getId()}" method="post">
-                          <input type="submit" class="btn btn-outline-dark" value="Delete" />
+                          <input type="submit" value="Delete" />
                       </form>
                   </td>
                 </tr>

@@ -4,18 +4,16 @@ import com.example.app.model.actor.Actor;
 import com.example.app.model.director.Director;
 import com.example.app.model.film.Film;
 import com.example.app.model.genre.Genre;
-import com.example.app.repository.ActorsRepository;
-import com.example.app.repository.DirectorsRepository;
-import com.example.app.repository.FilmsRepository;
-import com.example.app.repository.GenresRepository;
+import com.example.app.repository.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
-import java.text.ParseException;
+
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 @Controller
@@ -27,23 +25,30 @@ public class FilmController {
     @GetMapping(value = "/all")
     public String get (ModelMap model){
         List<Film> films = repository.findAll();
+        List<List<Genre>> genres = films.stream().map(film -> genresRepository.find(film.getGenres())).collect(Collectors.toList());
+        List<List<Actor>> actors = films.stream().map(film -> actorsRepository.find(film.getActors())).collect(Collectors.toList());
+        List<List<Director>> directors = films.stream().map(film -> directorsRepository.find(film.getDirectors())).collect(Collectors.toList());
         model.addAttribute("title", "Films");
         model.addAttribute("films", films);
+        model.addAttribute("genres", genres);
+        model.addAttribute("actors", actors);
+        model.addAttribute("directors", directors);
         logger.info("Show all films");
         return "films";
     }
 
     @PostMapping(value="/find")
     public String get (@ModelAttribute Film requestFilm, ModelMap model){
-        List<Film> findFilm = new ArrayList<>();
-        for(Film film : repository.findAll()){
-            if(Objects.equals(film.getTittle(), requestFilm.getTittle())){
-                findFilm.add(film);
-            }
-        }
+        List<Film> findFilm = repository.findByTitles(Collections.singletonList(requestFilm.getTittle()));
         if(findFilm.size() > 0){
+            List<List<Genre>> genres = findFilm.stream().map(film -> genresRepository.find(film.getGenres())).collect(Collectors.toList());
+            List<List<Actor>> actors = findFilm.stream().map(film -> actorsRepository.find(film.getActors())).collect(Collectors.toList());
+            List<List<Director>> directors = findFilm.stream().map(film -> directorsRepository.find(film.getDirectors())).collect(Collectors.toList());
             model.addAttribute("title", "Films");
             model.addAttribute("films", findFilm);
+            model.addAttribute("genres", genres);
+            model.addAttribute("actors", actors);
+            model.addAttribute("directors", directors);
             return "films";
         }
         return null;
@@ -90,7 +95,7 @@ public class FilmController {
     }
 
     @PostMapping(value = "/handle/add")
-    public RedirectView add(@ModelAttribute Film film) throws ParseException {
+    public RedirectView add(@ModelAttribute Film film) {
         repository.add(film);
         return new RedirectView("../all");
     }

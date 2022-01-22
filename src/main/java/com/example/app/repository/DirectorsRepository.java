@@ -22,7 +22,8 @@ public class DirectorsRepository implements IRepository{
                 "SELECT * FROM director",
                 (rs, rowNum) -> new Director(
                         rs.getInt("directorId"),
-                        rs.getString("name")
+                        rs.getString("name"),
+                        rs.getString("year")
                 )
         );
     }
@@ -34,7 +35,8 @@ public class DirectorsRepository implements IRepository{
                 parameters,
                 (rs, rowNum) -> new Director(
                         rs.getInt("directorId"),
-                        rs.getString("name")
+                        rs.getString("name"),
+                        rs.getString("year")
                 )
         );
     }

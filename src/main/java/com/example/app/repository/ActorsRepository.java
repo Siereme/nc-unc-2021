@@ -24,7 +24,8 @@ public class ActorsRepository implements IRepository{
                 "SELECT * FROM actor",
                 (rs, rowNum) -> new Actor(
                         rs.getInt("actorId"),
-                        rs.getString("name")
+                        rs.getString("name"),
+                        rs.getString("year")
                 )
         );
     }
@@ -36,7 +37,8 @@ public class ActorsRepository implements IRepository{
                 parameters,
                 (rs, rowNum) -> new Actor(
                         rs.getInt("actorId"),
-                        rs.getString("name")
+                        rs.getString("name"),
+                        rs.getString("year")
                 )
         );
     }

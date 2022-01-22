@@ -3,12 +3,11 @@ package com.example.app.model.film;
 import com.example.app.model.IEntity;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.sql.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /** Film entity
  * @author Vasiliy, Sergey
@@ -34,16 +33,16 @@ public class Film implements IEntity {
         return actors;
     }
 
-    public void setActors(LinkedList<Integer> actors) {
-        this.actors = actors;
+    public void setActors(List<Integer> actors) {
+        this.actors.addAll(actors);
     }
 
     public LinkedList<Integer> getDirectors() {
         return directors;
     }
 
-    public void setDirectors(LinkedList<Integer> directors) {
-        this.directors = directors;
+    public void setDirectors(List<Integer> directors) {
+        this.directors.addAll(directors);
     }
 
     public List<Integer> getGenres() {
@@ -53,6 +52,12 @@ public class Film implements IEntity {
     public void setGenres(LinkedList<Integer> newGenres) {
         System.out.println(newGenres);
         this.genres.addAll(newGenres);
+        System.out.println(this.genres);
+    }
+
+    public void setGenres(List<Integer> newGenres) {
+        System.out.println(newGenres);
+        this.genres.addAll((Collection<? extends Integer>) newGenres);
         System.out.println(this.genres);
     }
 
