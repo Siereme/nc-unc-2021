@@ -6,7 +6,7 @@
     <title>Handle Page</title>
     <link href="<c:url value="/resources/bootstrap-5.0.2-dist/css/bootstrap.min.css" />" rel="stylesheet">
     <script src="<c:url value="/resources/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js" />"></script>
-    <link href="<c:url value="/resources/css/film-handle.css" />" rel="stylesheet">
+    <link href="<c:url value="/resources/css/handle.css" />" rel="stylesheet">
 
 </head>
 <body>
@@ -31,7 +31,7 @@
                       <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         Genres
                       </button>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <ul class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton1">
                         <select class="form-select" multiple aria-label="multiple select example" name="genres">
                             <c:forEach var="genre" items="${genreFilmList}">
                                 <option value="${genre.getId()}" selected>${genre.getTittle()}</option>
@@ -49,7 +49,7 @@
                       <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         Actors
                       </button>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <ul class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton1">
                         <select class="form-select" multiple aria-label="multiple select example" name="actors">
                             <c:forEach var="actor" items="${actorFilmList}">
                                 <option value="${actor.getId()}" selected>${actor.getName()}</option>
@@ -67,7 +67,7 @@
                       <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         Directors
                       </button>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                      <ul class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton1">
                         <select class="form-select" multiple aria-label="multiple select example" name="directors">
                             <c:forEach var="director" items="${directorFilmList}">
                                 <option value="${director.getId()}" selected>${director.getName()}</option>

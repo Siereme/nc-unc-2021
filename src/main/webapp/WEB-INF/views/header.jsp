@@ -1,29 +1,72 @@
 <form id="find" action="find" method="post"></form>
 <form id="findAll" action="all" method="get"></form>
 <form id="add" action="handle/page-add" method="post"></form>
-
+<%
+    String classList = "";
+    String path = "";
+%>
 <header>
     <div class="px-3 py-2 bg-dark text-white">
       <div class="container mw-100 p-0">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end">
           <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
             <li>
-              <a href="http://localhost:8080/films/all" class="nav-link text-secondary">
+                <%
+                   classList = "nav-link";
+                   path = (String) request.getAttribute("javax.servlet.forward.request_uri");
+                   if (path.equals("/films/all")) {
+                     classList += " text-secondary";
+                   }
+                   else{
+                     classList += " text-white";
+                   }
+                %>
+              <a href="http://localhost:8080/films/all" class="<%=classList%>">
                 Films
               </a>
             </li>
             <li>
-              <a href="http://localhost:8080/genres" class="nav-link text-white">
+                <%
+                   classList = "nav-link";
+                   path = (String) request.getAttribute("javax.servlet.forward.request_uri");
+                   if (path.equals("/genres/all")) {
+                     classList += " text-secondary";
+                   }
+                   else{
+                     classList += " text-white";
+                   }
+                %>
+              <a href="http://localhost:8080/genres/all" class="<%=classList%>">
                 Genres
               </a>
             </li>
             <li>
-              <a href="#" class="nav-link text-white">
+                <%
+                   classList = "nav-link";
+                   path = (String) request.getAttribute("javax.servlet.forward.request_uri");
+                   if (path.equals("/actors/all")) {
+                     classList += " text-secondary";
+                   }
+                   else{
+                     classList += " text-white";
+                   }
+                %>
+              <a href="#" class="<%=classList%>">
                 Actors
               </a>
             </li>
             <li>
-              <a href="#" class="nav-link text-white">
+                <%
+                   classList = "nav-link";
+                   path = (String) request.getAttribute("javax.servlet.forward.request_uri");
+                   if (path.equals("/directors/all")) {
+                     classList += " text-secondary";
+                   }
+                   else{
+                     classList += " text-white";
+                   }
+                %>
+              <a href="#" class="<%=classList%>">
                 Directors
               </a>
             </li>

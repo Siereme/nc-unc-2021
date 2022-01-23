@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -29,6 +30,7 @@ public class DirectorsRepository implements IRepository{
     }
 
     public List<Director> find(List<Integer> ids) {
+        if(ids.size() < 1) return new ArrayList<>();
         SqlParameterSource parameters = new MapSqlParameterSource("ids", ids);
         NamedParameterJdbcTemplate parameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
         return parameterJdbcTemplate.query("SELECT * FROM director WHERE directorId IN (:ids)",

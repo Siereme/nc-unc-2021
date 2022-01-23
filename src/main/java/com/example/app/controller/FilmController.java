@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.*;
@@ -28,7 +29,6 @@ public class FilmController {
         List<List<Genre>> genres = films.stream().map(film -> genresRepository.find(film.getGenres())).collect(Collectors.toList());
         List<List<Actor>> actors = films.stream().map(film -> actorsRepository.find(film.getActors())).collect(Collectors.toList());
         List<List<Director>> directors = films.stream().map(film -> directorsRepository.find(film.getDirectors())).collect(Collectors.toList());
-        model.addAttribute("title", "Films");
         model.addAttribute("films", films);
         model.addAttribute("genres", genres);
         model.addAttribute("actors", actors);
@@ -38,20 +38,19 @@ public class FilmController {
     }
 
     @PostMapping(value="/find")
-    public String get (@ModelAttribute Film requestFilm, ModelMap model){
+    public ModelAndView get (@ModelAttribute Film requestFilm, ModelMap model){
         List<Film> findFilm = repository.findByTitles(Collections.singletonList(requestFilm.getTittle()));
         if(findFilm.size() > 0){
             List<List<Genre>> genres = findFilm.stream().map(film -> genresRepository.find(film.getGenres())).collect(Collectors.toList());
             List<List<Actor>> actors = findFilm.stream().map(film -> actorsRepository.find(film.getActors())).collect(Collectors.toList());
             List<List<Director>> directors = findFilm.stream().map(film -> directorsRepository.find(film.getDirectors())).collect(Collectors.toList());
-            model.addAttribute("title", "Films");
             model.addAttribute("films", findFilm);
             model.addAttribute("genres", genres);
             model.addAttribute("actors", actors);
             model.addAttribute("directors", directors);
-            return "films";
+            return new ModelAndView("films", model);
         }
-        return null;
+        return new ModelAndView("redirect:/films/all");
     }
 
     @PostMapping(value = "/handle/{commandType}")
@@ -89,21 +88,21 @@ public class FilmController {
     }
 
     @PostMapping(value = "/handle/delete/{id}")
-    public RedirectView delete(@PathVariable int id){
+    public ModelAndView delete(@PathVariable int id){
         repository.delete(id);
-        return new RedirectView("../../all");
+        return new ModelAndView("redirect:/films/all");
     }
 
     @PostMapping(value = "/handle/add")
-    public RedirectView add(@ModelAttribute Film film) {
+    public ModelAndView add(@ModelAttribute Film film) {
         repository.add(film);
-        return new RedirectView("../all");
+        return new ModelAndView("redirect:/films/all");
     }
 
     @PostMapping(value = "/handle/edit")
-    public RedirectView edit(@ModelAttribute Film film){
+    public ModelAndView edit(@ModelAttribute Film film){
         repository.edit(film);
-        return new RedirectView("../all");
+        return new ModelAndView("redirect:/films/all");
     }
 
     @Autowired
