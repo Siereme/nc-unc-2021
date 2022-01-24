@@ -19,7 +19,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public static BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
-
     }
 
     @Override
@@ -28,7 +27,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                // only for
+                // only for unauthorized
                 .antMatchers("/registration").not().fullyAuthenticated()
                 // only for admin
                 .antMatchers("/admin/**").hasRole("ADMIN")
@@ -40,13 +39,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 // log in
                 .formLogin()
                 .loginPage("/login")
-                // main page
+                // to main page after successful log in
                 .defaultSuccessUrl("/main")
                 .permitAll()
                 .and()
                 .logout()
                 .permitAll()
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/main");
     }
 
     @Autowired

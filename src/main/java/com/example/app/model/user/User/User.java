@@ -32,6 +32,7 @@ public class User implements IEntity, UserDetails {
     }
 
     public User(int id, String name, String password) {
+        this.id = id;
         this.username = name;
         this.password = password;
     }
@@ -47,7 +48,7 @@ public class User implements IEntity, UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return roles;
+        return getRoles();
     }
 
     @Override

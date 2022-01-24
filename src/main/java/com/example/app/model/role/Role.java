@@ -4,6 +4,11 @@ import org.springframework.security.core.GrantedAuthority;
 
 public class Role implements GrantedAuthority {
 
+    public Role(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     private int id;
 
     public int getId() {

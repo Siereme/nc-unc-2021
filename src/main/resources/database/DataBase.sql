@@ -158,12 +158,12 @@ CREATE TABLE IF NOT EXISTS `data_base`.`user_role` (
   CONSTRAINT `fk_user_role_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `data_base`.`user` (`user_id`)
-    ON DELETE NO ACTION
+    ON DELETE cascade
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_role_role1`
     FOREIGN KEY (`role_id`)
     REFERENCES `data_base`.`role` (`role_id`)
-    ON DELETE NO ACTION
+    ON DELETE cascade
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
@@ -286,8 +286,8 @@ COMMIT;
 -- -----------------------------------------------------
 START TRANSACTION;
 USE `data_base`;
-INSERT INTO `data_base`.`user` (`user_id`, `username`, `password`) VALUES (1, 'user1', '0a041b9462caa4a31bac3567e0b6e6fd9100787db2ab433d96f6d178cabfce90');
-INSERT INTO `data_base`.`user` (`user_id`, `username`, `password`) VALUES (2, 'admin1', '25f43b1486ad95a1398e3eeb3d83bc4010015fcc9bedb35b432e00298d5021f7');
+INSERT INTO `data_base`.`user` (`user_id`, `username`, `password`) VALUES (1, 'user1', '$2a$10$iQ1oGcgr8TFOHgXIYtBGb.AGdEY38/Jd77MsOd7dQvpF6FmolrD1C');
+INSERT INTO `data_base`.`user` (`user_id`, `username`, `password`) VALUES (2, 'admin1', '$2a$10$BSi916s9DsdYYTq7asxfA.00RRDi4IYwNwgraCgzku5AjwxwXZcDW');
 
 COMMIT;
 

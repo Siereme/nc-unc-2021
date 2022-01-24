@@ -14,11 +14,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class RegistrationController {
     private final Logger logger = Logger.getLogger(RegistrationController.class.getName());
 
+    @Autowired
+    private UserRepository repository = new UserRepository();
+
+
+
     @GetMapping("/registration")
     public String registration(Model model) {
-        model.addAttribute("userForm", new User());
+        User user = new User();
+        model.addAttribute("userForm", user);
 
-        return "registration.jsp";
+        return "registration";
     }
 
     @PostMapping("/registration")
@@ -26,19 +32,17 @@ public class RegistrationController {
 
         if (!userForm.getPassword().equals(userForm.getPasswordConfirm())){
             model.addAttribute("passwordError", "passwords don't match");
-            return "registration.jsp";
+            return "registration";
         }
         if (!repository.saveUser(userForm)){
             model.addAttribute("usernameError", "a user with this name already exists");
-            return "registration.jsp";
+            return "registration";
         }
 
         return "redirect:/";
     }
 
 
-    @Autowired
-    private UserRepository repository = new UserRepository();
 
 
 
