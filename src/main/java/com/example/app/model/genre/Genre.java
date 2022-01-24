@@ -3,6 +3,8 @@ package com.example.app.model.genre;
 
 import com.example.app.model.IEntity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /** Genre entity
@@ -18,14 +20,27 @@ public class Genre implements IEntity {
         tittle = "";
     }
 
+    List<Integer> films;
+
+
     public Genre(int id, String newGener) {
         this.id = id;
         tittle = newGener;
+        this.films = new ArrayList<>();
     }
 
+    public Genre(int id, String tittle, List<Integer> filmIds) {
+        this.id = id;
+        this.tittle = tittle;
+        this.films = filmIds;
+    }
 
     public int getId() {
         return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTittle() {
@@ -34,6 +49,14 @@ public class Genre implements IEntity {
 
     public void setTittle(String tittle) {
         this.tittle = tittle;
+    }
+
+    public List<Integer> getFilms() {
+        return films;
+    }
+
+    public void setFilms(List<Integer> films) {
+        this.films = films;
     }
 
     @Override
