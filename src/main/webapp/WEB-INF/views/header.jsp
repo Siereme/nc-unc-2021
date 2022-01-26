@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <form id="find" action="find" method="post"></form>
 <form id="findAll" action="all" method="get"></form>
 <form id="add" action="handle/page-add" method="post"></form>
@@ -51,7 +52,7 @@
                      classList += " text-white";
                    }
                 %>
-              <a href="#" class="<%=classList%>">
+              <a href="http://localhost:8080/actors/all" class="<%=classList%>">
                 Actors
               </a>
             </li>
@@ -66,7 +67,7 @@
                      classList += " text-white";
                    }
                 %>
-              <a href="#" class="<%=classList%>">
+              <a href="http://localhost:8080/directors/all" class="<%=classList%>">
                 Directors
               </a>
             </li>
@@ -84,8 +85,16 @@
         </form>
 
         <div class="text-end">
-          <button type="button" class="btn btn-light text-dark me-2">Login</button>
-          <button type="button" class="btn btn-primary">Sign-up</button>
+            <sec:authorize access="!isAuthenticated()">
+                <button onclick="window.location.href = '/login'" type="button" class="btn btn-light text-dark me-2">Log in</button>
+                <button onclick="window.location.href = '/registration'" type="button" class="btn btn-primary">Sign-up</button>
+            </sec:authorize>
+            <sec:authorize access="isAuthenticated()">
+                <button onclick="window.location.href = '/logout'" type="button" class="btn btn-light text-dark-me-2">Log out</button>
+                <sec:authorize access="hasRole('ADMIN')">
+                    <button onclick="window.location.href = '/admin'" type="button" class="btn btn-light text-dark-me-2">Users</button>
+                </sec:authorize>
+            </sec:authorize>
         </div>
       </div>
     </div>

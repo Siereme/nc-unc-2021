@@ -40,12 +40,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/login")
                 // to main page after successful log in
-                .defaultSuccessUrl("/main")
+                .defaultSuccessUrl("/films/all")
                 .permitAll()
                 .and()
                 .logout()
                 .permitAll()
-                .logoutSuccessUrl("/main");
+                .logoutSuccessUrl("/films");
     }
 
     @Autowired

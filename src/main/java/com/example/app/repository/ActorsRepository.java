@@ -61,11 +61,24 @@ public class ActorsRepository extends AbstractRepository<Actor> {
     @Override
     public List<Actor> findByName(String name) {
         return jdbcTemplate.query("Select * from actor where name = ?",
-                ((rs, rowNum) -> new Actor(rs.getInt("actor_id"), rs.getString("name"), rs.getString("year"))));
+                ((rs, rowNum) -> new Actor(rs.getInt("actor_id"), rs.getString("name"), rs.getString("year"))), name);
+    }
+
+    public List<Film> findFilmsByActorId(Integer actorId) {
+        return jdbcTemplate.query(
+                "SELECT f.film_id as f_id, f.tittle as f_tittle, f.date as f_date FROM data_base.actor a\n"
+                        + "join film_actor fa on fa.actor_id = a.actor_id\n" + "join film f on f.film_id = fa.film_id\n"
+                        + "where a.actor_id = ?",
+                (rs, rowNum) -> new Film(rs.getInt("f_id"), rs.getString("f_tittle"), rs.getDate("f_date")), actorId);
     }
 
     @Override
     public int size() {
         return jdbcTemplate.queryForObject("SELECT count(*) FROM actor", Integer.class);
     }
+
+/*    public List<Actor> findByContains(String name) {
+        return jdbcTemplate.query("Select * from actor where name like '?%'",
+                ((rs, rowNum) -> new Actor(rs.getInt("actor_id"), rs.getString("name"), rs.getString("year"))), name);
+    }*/
 }

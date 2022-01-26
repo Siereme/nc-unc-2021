@@ -15,8 +15,12 @@ import java.util.List;
 public class UserRepository extends AbstractRepository<User> implements UserDetailsService {
     @Override
     public List<User> findAll() {
-        return jdbcTemplate.query("SELECT * FROM user",
+        List<User> users = jdbcTemplate.query("SELECT * FROM user",
                 (rs, rowNum) -> new User(rs.getInt("user_id"), rs.getString("username"), rs.getString("password")));
+        for (User user : users) {
+            getRolesForUser(user);
+        }
+        return users;
     }
 
     @Override
