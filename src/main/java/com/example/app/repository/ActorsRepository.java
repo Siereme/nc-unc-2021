@@ -16,7 +16,7 @@ import java.util.List;
 
 @Repository
 public class ActorsRepository extends AbstractRepository<Actor> {
-
+    @Override
     public List<Actor> findAll() {
         return jdbcTemplate.query("SELECT * FROM actor",
                 (rs, rowNum) -> new Actor(rs.getInt("actor_id"), rs.getString("name"), rs.getString("year")));
