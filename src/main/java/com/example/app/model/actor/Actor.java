@@ -19,8 +19,16 @@ public class Actor implements IEntity {
 
     private String year;
 
+    public List<Integer> getFilms() {
+        return films;
+    }
+
+    public void setFilms(List<Integer> films) {
+        this.films = films;
+    }
+
     @JsonProperty("films")
-    private List<String> films;
+    private List<Integer> films;
 
     public void setName(String name) {
         this.name = name;
@@ -34,32 +42,33 @@ public class Actor implements IEntity {
     public Actor(){
         this.name = "";
         this.year = "";
-        this.films = new LinkedList<String>();
+        this.films = new LinkedList<Integer>();
     }
 
     public Actor(String name) {
         this.name = name;
         this.year = "";
-        this.films = new LinkedList<String>();
+        this.films = new LinkedList<Integer>();
     }
 
     public Actor(int id, String name) {
         this.id = id;
         this.name = name;
         this.year = year;
-        this.films = new LinkedList<String>();
+        this.films = new LinkedList<Integer>();
     }
 
     public Actor(String name, String year) {
         this.name = name;
         this.year = year;
-        this.films = new LinkedList<String>();
+        this.films = new LinkedList<Integer>();
     }
 
     public Actor(int id, String name, String year) {
         this.id = id;
         this.name = name;
         this.year = year;
+        this.films = new LinkedList<Integer>();
     }
 
     public int getId() {

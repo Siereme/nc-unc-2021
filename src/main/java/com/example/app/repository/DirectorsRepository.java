@@ -43,6 +43,11 @@ public class DirectorsRepository extends AbstractRepository<Director> {
 
     public void add(Director director) {
         jdbcTemplate.update("INSERT INTO director(name, year) VALUES(?, ?)", director.getName(), director.getYear());
+        List<Integer> filmsId = director.getFilms();
+        Integer directorId = jdbcTemplate.queryForObject("Select max(director_id) from director", Integer.TYPE);
+        for (Integer filmId : filmsId) {
+            jdbcTemplate.update("INSERT INTO film_director(film_id, director_id) values (?,?)", filmId, directorId);
+        }
     }
 
     public void delete(int directorId) {
@@ -56,15 +61,17 @@ public class DirectorsRepository extends AbstractRepository<Director> {
     @Override
     public List<Director> findByName(String name) {
         return jdbcTemplate.query("Select * from director where name = ?",
-                ((rs, rowNum) -> new Director(rs.getInt("director_id"), rs.getString("name"), rs.getString("year"))), name);
+                ((rs, rowNum) -> new Director(rs.getInt("director_id"), rs.getString("name"), rs.getString("year"))),
+                name);
     }
 
-    public List<Film> findFilmsByDirectorId(Integer directorId){
+    public List<Film> findFilmsByDirectorId(Integer directorId) {
         return jdbcTemplate.query(
                 "SELECT f.film_id as f_id, f.tittle as f_tittle, f.date as f_date FROM data_base.director d\n"
-                        + "join film_director fa on fa.director_id = d.director_id\n" + "join film f on f.film_id = fa.film_id\n"
-                        + "where d.director_id = ?",
-                (rs, rowNum) -> new Film(rs.getInt("f_id"), rs.getString("f_tittle"), rs.getDate("f_date")), directorId);
+                        + "join film_director fa on fa.director_id = d.director_id\n"
+                        + "join film f on f.film_id = fa.film_id\n" + "where d.director_id = ?",
+                (rs, rowNum) -> new Film(rs.getInt("f_id"), rs.getString("f_tittle"), rs.getDate("f_date")),
+                directorId);
     }
 
     @Override
