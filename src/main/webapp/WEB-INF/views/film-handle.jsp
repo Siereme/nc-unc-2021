@@ -12,7 +12,7 @@
 <body>
     <div class="handle-container">
         <h2 class="card-header">${modalTitle}</h2>
-        <form action="../${eventType}" method="post">
+        <form action="${eventType}" method="post">
             <div class="row">
                 <div class="col-6">
                     <span>Title</span>

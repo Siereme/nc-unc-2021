@@ -39,8 +39,8 @@ public class GenreController {
     }
 
     @PostMapping(value="/find")
-    public ModelAndView get (@ModelAttribute Genre requestGenre, ModelMap model){
-        List<Genre> genres = repository.findByTitles(Collections.singletonList(requestGenre.getTittle()));
+    public ModelAndView get (@RequestParam String tittle, ModelMap model){
+        List<Genre> genres = repository.findByTitles(Collections.singletonList(tittle));
 
         if(genres.size() > 0){
             List<List<Film>> films = genres.stream().map(genre -> filmsRepository.find(genre.getFilms())).collect(Collectors.toList());
@@ -57,7 +57,7 @@ public class GenreController {
         if(Objects.equals(commandType, "page-add")){
             model.addAttribute("filmList", filmList);
             model.addAttribute("modalTitle", "Add");
-            model.addAttribute("eventType", "/handle/add");
+            model.addAttribute("eventType", "add");
         }
         if(Objects.equals(commandType, "page-edit")){;
             List<Film> filmGenreList = filmsRepository.findByGenres(Collections.singletonList(genre.getId()));
@@ -67,7 +67,7 @@ public class GenreController {
             model.addAttribute("filmGenreList", filmGenreList);
             model.addAttribute("filmList", filmList);
             model.addAttribute("modalTitle", "Edit");
-            model.addAttribute("eventType", "/handle/edit");
+            model.addAttribute("eventType", "edit");
             model.addAttribute("genre", genre);
         }
         return "genre-handle";

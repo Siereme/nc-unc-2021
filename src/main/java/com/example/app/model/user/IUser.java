@@ -20,9 +20,9 @@ public interface IUser extends IEntity {
     String getName();
 
     /** Method sets username
-     * @param name - new value of the username
+     * @param username - new value of the username
      * */
-    void setName(String name);
+    void setUsername(String username);
 
     /** Method gets user password
      * @return string value of the user password

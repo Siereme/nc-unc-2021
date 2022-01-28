@@ -12,24 +12,14 @@ public interface IRepository<T> {
      * */
     List<T> findAll();
 
+    void add(T entity);
 
-//    /** Method serializes app.repository **/
-//    void serialize();
-//
-//    /** Method deserializes app.repository
-//     * @return list of the entities with type T
-//     * */
-//    List<T> deserialize();
-//
-//    /** Method deserializes app.repository
-//     * @param file - object gets app.repository from the file
-//     * @return list of the entities with type T
-//     * */
-//    List<T> deserialize(String file);
-//
-//    /** Method gets size - count of app.repository elements
-//     * @return count of app.repository elements
-//     * */
+    void delete(int id);
+
+    void edit(T entity);
+
+    List<T> findByName(String name);
+
     int size();
 
 

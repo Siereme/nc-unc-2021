@@ -55,6 +55,10 @@ public class Genre implements IEntity {
         return films;
     }
 
+    public void setGenre(int filmId) {
+        this.films.add(filmId);
+    }
+
     public void setFilms(List<Integer> films) {
         this.films = films;
     }
@@ -83,4 +87,5 @@ public class Genre implements IEntity {
         sb.append("Tittle: ").append(tittle).append("\n");
         return new String(sb);
     }
+
 }

@@ -37,8 +37,16 @@ public class Film implements IEntity {
         this.actors.addAll(actors);
     }
 
-    public LinkedList<Integer> getDirectors() {
+    public void setActor(int actorId) {
+        this.actors.add(actorId);
+    }
+
+    public List<Integer> getDirectors() {
         return directors;
+    }
+
+    public void setDirector(int directorId) {
+        this.directors.add(directorId);
     }
 
     public void setDirectors(List<Integer> directors) {
@@ -49,16 +57,12 @@ public class Film implements IEntity {
         return genres;
     }
 
-    public void setGenres(LinkedList<Integer> newGenres) {
-        System.out.println(newGenres);
-        this.genres.addAll(newGenres);
-        System.out.println(this.genres);
+    public void setGenre(int genreId) {
+        this.genres.add(genreId);
     }
 
     public void setGenres(List<Integer> newGenres) {
-        System.out.println(newGenres);
         this.genres.addAll((Collection<? extends Integer>) newGenres);
-        System.out.println(this.genres);
     }
 
     public Film(){
@@ -133,11 +137,6 @@ public class Film implements IEntity {
         else{
             this.date = new Date();
         }
-    }
-
-    public void setDate(String date) throws ParseException {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        this.date = dateFormat.parse(date);
     }
 
     public void removeGenres(List<Integer> ids){
