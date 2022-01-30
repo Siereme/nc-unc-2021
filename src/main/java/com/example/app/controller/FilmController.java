@@ -7,19 +7,28 @@ import com.example.app.model.genre.Genre;
 import com.example.app.repository.*;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
 
-
+@Validated
 @Controller
 @RequestMapping(path = "/films")
-public class FilmController {
+public class FilmController implements WebMvcConfigurer {
     private final Logger logger = Logger.getLogger(FilmController.class.getName());
 
 
@@ -38,7 +47,7 @@ public class FilmController {
     }
 
     @PostMapping(value="/find")
-    public ModelAndView get (@RequestParam String tittle, ModelMap model){
+    public ModelAndView get (@RequestParam("tittle") @NotBlank String tittle, ModelMap model) throws ConstraintViolationException{
         List<Film> findFilm = repository.findByTitles(Collections.singletonList(tittle));
         if(findFilm.size() > 0){
             List<List<Genre>> genres = findFilm.stream().map(film -> genresRepository.find(film.getGenres())).collect(Collectors.toList());
@@ -54,7 +63,7 @@ public class FilmController {
     }
 
     @PostMapping(value = "/handle/{commandType}")
-    public String renderHandlePage(@ModelAttribute Film film, ModelMap model, @PathVariable String commandType){
+    public String renderHandlePage(@ModelAttribute Film film, ModelMap model, @PathVariable("commandType") @NotBlank String commandType){
         List<Genre> genreList = genresRepository.findAll();
         List<Actor> actorList = actorsRepository.findAll();
         List<Director> directorList = directorsRepository.findAll();
@@ -88,20 +97,33 @@ public class FilmController {
     }
 
     @PostMapping(value = "/handle/delete/{id}")
-    public ModelAndView delete(@PathVariable int id){
+    public ModelAndView delete(@PathVariable("id") @NotNull int id){
         repository.delete(id);
         return new ModelAndView("redirect:/films/all");
     }
 
     @PostMapping(value = "/handle/add")
-    public ModelAndView add(@ModelAttribute Film film) {
+    public String add(@Validated @ModelAttribute Film film, BindingResult result, ModelMap map){
+        if(result.hasErrors()){
+            map.addAttribute("result", result);
+            return renderHandlePage(film, map, "page-add");
+        }
         repository.add(film);
-        return new ModelAndView("redirect:/films/all");
+        return "redirect:/films/all";
     }
 
     @PostMapping(value = "/handle/edit")
-    public ModelAndView edit(@ModelAttribute Film film){
+    public String edit(@Validated @ModelAttribute Film film, BindingResult result, ModelMap map){
+        if(result.hasErrors()){
+            map.addAttribute("result", result);
+            return renderHandlePage(film, map, "page-edit");
+        }
         repository.edit(film);
+        return "redirect:/films/all";
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ModelAndView handleConstraintViolationException(ConstraintViolationException e) {
         return new ModelAndView("redirect:/films/all");
     }
 

@@ -10,6 +10,11 @@
 
 </head>
 <body>
+      <div class="error-block">
+          <c:forEach var="error" items="${result.getAllErrors()}">
+              <p class="text-danger m-0">${error.getDefaultMessage()}</p>
+          </c:forEach>
+      </div>
     <div class="handle-container">
         <h2 class="card-header">${modalTitle}</h2>
         <form action="${eventType}" method="post">
@@ -21,10 +26,10 @@
                 </div>
                 <div class="col-4 d-flex justify-content-center align-items-end">
                     <div class="genres">
-                      <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Films
                       </button>
-                      <ul class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton1">
+                      <ul class="dropdown-menu p-0">
                         <select class="form-select" multiple aria-label="multiple select example" name="films">
                             <c:forEach var="film" items="${filmGenreList}">
                                 <option value="${film.getId()}" selected>${film.getTittle()}</option>

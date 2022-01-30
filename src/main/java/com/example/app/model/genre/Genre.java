@@ -3,6 +3,8 @@ package com.example.app.model.genre;
 
 import com.example.app.model.IEntity;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -14,13 +16,16 @@ public class Genre implements IEntity {
 
     private int id;
 
+    @NotBlank(message = "Title cannot be empty")
     private String tittle;
+
+    @NotEmpty(message = "Film list cannot be empty")
+    List<Integer> films;
 
     public Genre(){
         tittle = "";
+        films = new ArrayList<>();
     }
-
-    List<Integer> films;
 
 
     public Genre(int id, String newGener) {
@@ -55,7 +60,7 @@ public class Genre implements IEntity {
         return films;
     }
 
-    public void setGenre(int filmId) {
+    public void addFilm(int filmId) {
         this.films.add(filmId);
     }
 

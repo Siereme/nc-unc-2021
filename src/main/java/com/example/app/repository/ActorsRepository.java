@@ -1,7 +1,6 @@
 package com.example.app.repository;
 
 import com.example.app.model.actor.Actor;
-import com.example.app.model.director.Director;
 import com.example.app.model.film.Film;
 import com.example.app.model.genre.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +28,13 @@ public class ActorsRepository extends AbstractRepository<Actor> {
         if (ids.size() < 1) {
             return new ArrayList<>();
         }
-        SqlParameterSource parameters = new MapSqlParameterSource("ids", ids);
-        NamedParameterJdbcTemplate parameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
+        parameters.addValue("ids", ids);
         return parameterJdbcTemplate.query("SELECT * FROM actor WHERE actor_id IN (:ids)", parameters,
                 (rs, rowNum) -> new Actor(rs.getInt("actor_id"), rs.getString("name"), rs.getString("year")));
     }
 
     public List<Actor> findByFilms(List<Integer> ids) {
-        SqlParameterSource parameters = new MapSqlParameterSource("ids", ids);
-        NamedParameterJdbcTemplate parameterJdbcTemplate = new NamedParameterJdbcTemplate(jdbcTemplate.getDataSource());
+        parameters.addValue("ids", ids);
         return parameterJdbcTemplate.query("SELECT actor.actor_id, actor.name, actor.year FROM actor "
                         + "INNER JOIN film_actor ON actor.actor_id=film_actor.actor_id " + "WHERE film_actor.film_id IN (:ids)",
                 parameters,

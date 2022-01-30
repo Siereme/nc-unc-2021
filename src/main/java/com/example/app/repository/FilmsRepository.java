@@ -1,10 +1,8 @@
 package com.example.app.repository;
 
-import com.example.app.model.IParticipatesFilm;
 import com.example.app.model.film.Film;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.*;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -27,24 +25,30 @@ public class FilmsRepository extends AbstractRepository<Film> {
     }
 
     public List<Film> find(List<Integer> ids) {
-        SqlParameterSource parameters = new MapSqlParameterSource("ids", ids);
+        if(ids != null && ids.size() < 1){
+            return Collections.emptyList();
+        }
+
+        parameters.addValue("ids", ids);
         return parameterJdbcTemplate.query("SELECT film.film_id, film.tittle, film.date, "
-                + "film_genre.genre_id, film_actor.actor_id, film_director.director_id " + "FROM film "
+                + "film_genre.genre_id, film_actor.actor_id, film_director.director_id "
+                + "FROM film "
                 + "LEFT JOIN film_genre ON film.film_id=film_genre.film_id "
                 + "LEFT JOIN film_actor ON film.film_id=film_actor.film_id "
                 + "LEFT JOIN film_director ON film.film_id=film_director.film_id "
-                + "WHERE film.film_id IN (:ids) OR COALESCE(:ids) IS NULL", parameters, new QueryRowMapper());
+                + "WHERE film.film_id IN (:ids) OR COALESCE(:ids) IS NULL",
+                parameters, new QueryRowMapper());
     }
 
-    private final static class QueryRowMapper implements ResultSetExtractor<List<Film>> {
+    private final static class QueryRowMapper implements ResultSetExtractor<List<Film>>{
         @Override
         public List<Film> extractData(ResultSet rs) throws SQLException, DataAccessException {
             Map<Integer, Film> filmMap = new HashMap<>();
             Film film;
-            while (rs.next()) {
+            while (rs.next()){
                 int id = rs.getInt("film.film_id");
                 film = filmMap.get(id);
-                if (film == null) {
+                if(film == null){
                     film = new Film();
                     film.setId(id);
                     film.setTittle(rs.getString("film.tittle"));
@@ -55,28 +59,29 @@ public class FilmsRepository extends AbstractRepository<Film> {
                     filmMap.put(id, film);
                 }
                 int genreId = rs.getInt("film_genre.genre_id");
-                if (genreId > 0) {
+                if(genreId > 0){
                     film.addGenre(genreId);
                 }
                 int actorId = rs.getInt("film_actor.actor_id");
-                if (actorId > 0) {
-                    film.setActor(actorId);
+                if(actorId > 0){
+                    film.addActor(actorId);
                 }
                 int directorId = rs.getInt("film_director.director_id");
-                if (directorId > 0) {
-                    film.setDirector(directorId);
+                if(directorId > 0){
+                    film.addDirector(directorId);
                 }
             }
             return new ArrayList<>(filmMap.values());
         }
     }
 
+
     public List<Film> findByTitles(List<String> titles) {
         if (titles == null || titles.size() < 1) {
             return new ArrayList<>();
         }
 
-        SqlParameterSource parameters = new MapSqlParameterSource("titles", titles);
+        parameters.addValue("titles", titles);
         List<Integer> filmIds =
                 parameterJdbcTemplate.query("SELECT film_id FROM film WHERE tittle IN (:titles)", parameters,
                         (rs, rowNum) -> rs.getInt("film_id"));
@@ -88,7 +93,7 @@ public class FilmsRepository extends AbstractRepository<Film> {
             return new ArrayList<>();
         }
 
-        SqlParameterSource parameters = new MapSqlParameterSource("ids", ids);
+        parameters.addValue("ids", ids);
         return parameterJdbcTemplate.query("SELECT film.film_id, film.tittle FROM film "
                         + "INNER JOIN film_genre ON film.film_id=film_genre.film_id " + "WHERE film_genre.genre_id IN (:ids)",
                 parameters, (rs, rowNum) -> new Film(rs.getInt("film.film_id"), rs.getString("film.tittle")));
@@ -111,6 +116,7 @@ public class FilmsRepository extends AbstractRepository<Film> {
         addEntitiesIds("actor", filmId, film.getActors());
         addEntitiesIds("director", filmId, film.getDirectors());
     }
+    
 
     private void addEntitiesIds(String entity, int filmId, List<Integer> entityIds) {
         if (entityIds == null || entityIds.size() < 1) {
@@ -120,7 +126,7 @@ public class FilmsRepository extends AbstractRepository<Film> {
         jdbcTemplate.batchUpdate(query, new BatchEntitiesSetter(filmId, entityIds));
     }
 
-    private void deleteEntitiesIds(String entity, int filmId, List<Integer> entityIds) {
+    private void deleteEntitiesIds(String entity, int filmId, List<Integer> entityIds){
         if (entityIds == null || entityIds.size() < 1) {
             return;
         }
@@ -168,8 +174,7 @@ public class FilmsRepository extends AbstractRepository<Film> {
     }
 
     public void edit(Film film) {
-        jdbcTemplate.update("UPDATE film set tittle=?, date=? WHERE film_id=?", film.getTittle(), film.getDate(),
-                film.getId());
+        jdbcTemplate.update("UPDATE film set tittle=?, date=? WHERE film_id=?", film.getTittle(), film.getDate(), film.getId());
 
         List<Integer> genres = getEntitiesIds("genre", film.getId());
         List<Integer> actors = getEntitiesIds("actor", film.getId());
@@ -183,6 +188,7 @@ public class FilmsRepository extends AbstractRepository<Film> {
         List<Integer> removeActors = getEditEntitiesIds(film.getActors(), actors);
         List<Integer> removeDirectors = getEditEntitiesIds(film.getDirectors(), directors);
 
+
         deleteEntitiesIds("genre", film.getId(), removeGenres);
         deleteEntitiesIds("actor", film.getId(), removeActors);
         deleteEntitiesIds("director", film.getId(), removeDirectors);
@@ -191,6 +197,7 @@ public class FilmsRepository extends AbstractRepository<Film> {
         addEntitiesIds("actor", film.getId(), addActors);
         addEntitiesIds("director", film.getId(), addDirector);
     }
+
 
     public void delete(int filmId) {
         jdbcTemplate.update("DELETE FROM film WHERE film_id=?", filmId);

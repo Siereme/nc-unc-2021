@@ -10,7 +10,17 @@
     border: 1px solid #cccc;
     border-radius: 0.25rem;
 }
-
+.error-block{
+    width: 500px;
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    position: fixed;
+    left: calc(50% - 250px);
+    top: calc(50% - 275px);
+    padding-left: 5px;
+}
 form{
     flex-grow: 1;
     padding: 16px;
