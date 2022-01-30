@@ -46,7 +46,7 @@ public class GenreController {
 
     @PostMapping(value="/find")
     public ModelAndView get (@RequestParam @NotBlank String tittle, ModelMap model){
-        List<Genre> genres = repository.findByTitles(Collections.singletonList(tittle));
+        List<Genre> genres = repository.findByContains(tittle);
 
         if(genres.size() > 0){
             List<List<Film>> films = genres.stream().map(genre -> filmsRepository.find(genre.getFilms())).collect(Collectors.toList());

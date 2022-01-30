@@ -1,14 +1,15 @@
 package com.example.app.repository;
 
+import com.example.app.model.actor.Actor;
 import com.example.app.model.director.Director;
 import com.example.app.model.film.Film;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -91,5 +92,14 @@ public class DirectorsRepository extends AbstractRepository<Director> {
     @Override
     public int size() {
         return jdbcTemplate.queryForObject("SELECT count(*) FROM director", Integer.class);
+    }
+
+    @Override
+    public List<Director> findByContains(String name) {
+        return parameterJdbcTemplate.query("Select * from director where name like :name ESCAPE '!'",
+                Collections.singletonMap("name", '%'+name + '%'),
+                (rs, rowNum) -> new Director(rs.getInt("director_id"),
+                        rs.getString("name"),
+                        rs.getString("year")));
     }
 }

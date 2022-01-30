@@ -55,7 +55,7 @@ public class DirectorController {
 
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam String tittle, ModelMap model) {
-        List<Director> directorList = repository.findByName(tittle);
+        List<Director> directorList = repository.findByContains(tittle);
         if (directorList == null || directorList.isEmpty()) {
             return new ModelAndView("redirect:/directors/all");
         } else {

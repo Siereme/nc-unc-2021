@@ -37,4 +37,9 @@ public class RoleRepository extends AbstractRepository<Role> {
     public int size() {
         return jdbcTemplate.queryForObject("Select count(*) from role", Integer.TYPE);
     }
+
+    @Override
+    public List<Role> findByContains(String name) {
+        return null;
+    }
 }

@@ -56,6 +56,11 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
         return jdbcTemplate.queryForObject("SELECT count(*) FROM user", Integer.class);
     }
 
+    @Override
+    public List<User> findByContains(String name) {
+        return null;
+    }
+
     public boolean saveUser(User user) {
         String userName = user.getUsername();
         List<User> users = findByName(userName);

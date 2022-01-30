@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -97,8 +98,11 @@ public class ActorsRepository extends AbstractRepository<Actor> {
     }
 
     public List<Actor> findByContains(String name) {
-        return jdbcTemplate.query("Select * from actor where contains (name, ?)",
-                ((rs, rowNum) -> new Actor(rs.getInt("actor_id"), rs.getString("name"), rs.getString("year"))), name);
+        return parameterJdbcTemplate.query("Select * from actor where name like :name ESCAPE '!'",
+                Collections.singletonMap("name", '%'+name + '%'),
+                (rs, rowNum) -> new Actor(rs.getInt("actor_id"),
+                        rs.getString("name"),
+                        rs.getString("year")));
     }
 
     @Autowired

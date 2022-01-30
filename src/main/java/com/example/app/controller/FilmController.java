@@ -48,7 +48,7 @@ public class FilmController implements WebMvcConfigurer {
 
     @PostMapping(value="/find")
     public ModelAndView get (@RequestParam("tittle") @NotBlank String tittle, ModelMap model) throws ConstraintViolationException{
-        List<Film> findFilm = repository.findByTitles(Collections.singletonList(tittle));
+        List<Film> findFilm = repository.findByContains(tittle);
         if(findFilm.size() > 0){
             List<List<Genre>> genres = findFilm.stream().map(film -> genresRepository.find(film.getGenres())).collect(Collectors.toList());
             List<List<Actor>> actors = findFilm.stream().map(film -> actorsRepository.find(film.getActors())).collect(Collectors.toList());

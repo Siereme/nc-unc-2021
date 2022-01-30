@@ -22,5 +22,7 @@ public interface IRepository<T> {
 
     int size();
 
+    List<T> findByContains(String name);
+
 
 }

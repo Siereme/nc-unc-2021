@@ -1,5 +1,6 @@
 package com.example.app.repository;
 
+import com.example.app.model.actor.Actor;
 import com.example.app.model.genre.Genre;
 import org.apache.log4j.Logger;
 import org.springframework.dao.DataAccessException;
@@ -23,26 +24,25 @@ public class GenresRepository extends AbstractRepository<Genre> {
     }
 
     public List<Genre> find(List<Integer> ids) {
-        if(ids != null && ids.size() < 1){
+        if (ids != null && ids.size() < 1) {
             return Collections.emptyList();
         }
 
         parameters.addValue("ids", ids);
-        return parameterJdbcTemplate.query(
-                "SELECT genre.genre_id, genre.tittle, film_genre.film_id "
-                        + "FROM genre LEFT JOIN film_genre ON genre.genre_id=film_genre.genre_id "
-                        + "WHERE genre.genre_id IN (:ids) OR COALESCE(:ids) IS NULL", parameters, new QueryRowMapper());
+        return parameterJdbcTemplate.query("SELECT genre.genre_id, genre.tittle, film_genre.film_id "
+                + "FROM genre LEFT JOIN film_genre ON genre.genre_id=film_genre.genre_id "
+                + "WHERE genre.genre_id IN (:ids) OR COALESCE(:ids) IS NULL", parameters, new QueryRowMapper());
     }
 
-    public final class QueryRowMapper implements ResultSetExtractor<List<Genre>>{
+    public final class QueryRowMapper implements ResultSetExtractor<List<Genre>> {
         @Override
         public List<Genre> extractData(ResultSet rs) throws SQLException, DataAccessException {
             Map<Integer, Genre> genreMap = new HashMap<>();
             Genre genre;
-            while (rs.next()){
+            while (rs.next()) {
                 int id = rs.getInt("genre.genre_id");
                 genre = genreMap.get(id);
-                if(genre == null){
+                if (genre == null) {
                     genre = new Genre();
                     genre.setId(id);
                     genre.setTittle(rs.getString("genre.tittle"));
@@ -50,7 +50,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
                     genreMap.put(id, genre);
                 }
                 int filmId = rs.getInt("film_genre.film_id");
-                if(filmId > 0){
+                if (filmId > 0) {
                     genre.addFilm(filmId);
                 }
             }
@@ -96,8 +96,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
         addEntitiesIds(genreId, genre.getFilms());
     }
 
-
-    private void addEntitiesIds(int filmId, List<Integer> entityIds){
+    private void addEntitiesIds(int filmId, List<Integer> entityIds) {
         if (entityIds == null || entityIds.size() < 1) {
             return;
         }
@@ -105,7 +104,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
         jdbcTemplate.batchUpdate(query, new BatchEntitiesSetter(filmId, entityIds));
     }
 
-    private void deleteEntitiesIds(int filmId, List<Integer> entityIds){
+    private void deleteEntitiesIds(int filmId, List<Integer> entityIds) {
         if (entityIds == null || entityIds.size() < 1) {
             return;
         }
@@ -113,7 +112,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
         jdbcTemplate.batchUpdate(query, new BatchEntitiesSetter(filmId, entityIds));
     }
 
-    private final static class BatchEntitiesSetter implements BatchPreparedStatementSetter{
+    private final static class BatchEntitiesSetter implements BatchPreparedStatementSetter {
 
         private int genreId;
         private List<Integer> entityIds;
@@ -135,12 +134,11 @@ public class GenresRepository extends AbstractRepository<Genre> {
         }
     }
 
-
     private List<Integer> getEditEntitiesIds(List<Integer> editIds, List<Integer> ids) {
         List<Integer> editList = new ArrayList<>();
-        for(int id : ids){
+        for (int id : ids) {
             boolean isContains = editIds.stream().anyMatch(editId -> id == editId);
-            if(!isContains){
+            if (!isContains) {
                 editList.add(id);
             }
         }
@@ -174,5 +172,12 @@ public class GenresRepository extends AbstractRepository<Genre> {
     @Override
     public int size() {
         return jdbcTemplate.queryForObject("SELECT count(*) FROM genre", Integer.class);
+    }
+
+    @Override
+    public List<Genre> findByContains(String name) {
+        return parameterJdbcTemplate.query("Select * from genre where genre.tittle like :name ESCAPE '!'",
+                Collections.singletonMap("name", '%' + name + '%'),
+                (rs, rowNum) -> new Genre(rs.getInt("genre_id"), rs.getString("tittle")));
     }
 }

@@ -1,8 +1,11 @@
 package com.example.app.repository;
 
+import com.example.app.model.IParticipatesFilm;
+import com.example.app.model.actor.Actor;
 import com.example.app.model.film.Film;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.*;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -212,6 +215,15 @@ public class FilmsRepository extends AbstractRepository<Film> {
     @Override
     public int size() {
         return jdbcTemplate.queryForObject("SELECT count(*) FROM film", Integer.class);
+    }
+
+    @Override
+    public List<Film> findByContains(String name) {
+        return parameterJdbcTemplate.query("Select * from film where film.tittle like :name ESCAPE '!'",
+                Collections.singletonMap("name", '%'+name + '%'),
+                (rs, rowNum) -> new Film(rs.getInt("film_id"),
+                        rs.getString("tittle"),
+                        rs.getDate("date")));
     }
 
     /**
