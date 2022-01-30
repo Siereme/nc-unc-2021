@@ -3,7 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-
+/src/main/webapp/resources/bootstrap-5.0.2-dist/
 ### STS ###
 .apt_generated
 .classpath
