@@ -26,8 +26,16 @@ public class Director implements IEntity {
 
     private String year;
 
+    public List<Integer> getFilms() {
+        return films;
+    }
+
+    public void setFilms(List<Integer> films) {
+        this.films = films;
+    }
+
     @JsonProperty("films")
-    private List<String> films;
+    private List<Integer> films;
 
 
     public Director(){

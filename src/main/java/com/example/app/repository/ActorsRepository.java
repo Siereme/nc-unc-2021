@@ -34,6 +34,11 @@ public class ActorsRepository extends AbstractRepository<Actor> {
 
     public void add(Actor actor) {
         jdbcTemplate.update("INSERT INTO actor(name, year) VALUES(?, ?)", actor.getName(), actor.getYear());
+        List<Integer> filmsId = actor.getFilms();
+        Integer actorId = jdbcTemplate.queryForObject("Select max(actor_id) from actor", Integer.TYPE);
+        for (Integer filmId : filmsId) {
+            jdbcTemplate.update("INSERT INTO film_actor(film_id, actor_id) values (?,?)", filmId, actorId);
+        }
     }
 
     public void delete(int actorId) {
