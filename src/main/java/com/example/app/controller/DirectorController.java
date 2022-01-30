@@ -73,7 +73,8 @@ public class DirectorController {
     }
 
     @PostMapping(value = "/handle/{commandType}")
-    public String renderHandlePage(@ModelAttribute Director director, ModelMap model, @PathVariable String commandType) {
+    public String renderHandlePage(@ModelAttribute Director director, ModelMap model,
+                                   @PathVariable String commandType) {
         List<Film> films = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("filmList", films);
@@ -81,11 +82,12 @@ public class DirectorController {
             model.addAttribute("eventType", "handle/add");
         }
         if (Objects.equals(commandType, "page-edit")) {
-            List<Film> actorFilmList = repository.findFilmsByDirectorId(director.getId());
+            List<Film> filmsByDirectorId = repository.findFilmsByDirectorId(director.getId());
+            films.removeIf(film -> filmsByDirectorId.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
             model.addAttribute("filmList", films);
-            model.addAttribute("directorFilmList", actorFilmList);
+            model.addAttribute("directorFilmList", filmsByDirectorId);
             model.addAttribute("modalTitle", "Edit");
-            model.addAttribute("eventType", "/handle/edit");
+            model.addAttribute("eventType", "handle/edit");
             model.addAttribute("director", director);
         }
         return "director-handle";
@@ -98,10 +100,9 @@ public class DirectorController {
     }
 
     @PostMapping(value = "/handle/edit")
-    public ModelAndView edit(@ModelAttribute Director director){
+    public ModelAndView edit(@ModelAttribute Director director) {
         repository.edit(director);
         return new ModelAndView("redirect:/directors/all");
     }
-
 
 }

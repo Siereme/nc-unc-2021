@@ -92,7 +92,7 @@ public class GenreController {
     }
 
     @Autowired
-    private GenresRepository repository = new GenresRepository();
+    private GenresRepository repository;
     @Autowired
-    private FilmsRepository filmsRepository = new FilmsRepository();
+    private FilmsRepository filmsRepository;
 }

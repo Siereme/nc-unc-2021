@@ -1,6 +1,7 @@
 package com.example.app.model.actor;
 
 import com.example.app.model.IEntity;
+import com.example.app.model.IParticipatesFilm;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.LinkedList;
@@ -11,7 +12,11 @@ import java.util.Objects;
  * @author Vasiliy, Sergey
  * @version 1.0
  * */
-public class Actor implements IEntity {
+public class Actor implements IEntity, IParticipatesFilm {
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     private int id;
 
@@ -42,33 +47,32 @@ public class Actor implements IEntity {
     public Actor(){
         this.name = "";
         this.year = "";
-        this.films = new LinkedList<Integer>();
+        this.films = new LinkedList<>();
     }
 
     public Actor(String name) {
         this.name = name;
         this.year = "";
-        this.films = new LinkedList<Integer>();
+        this.films = new LinkedList<>();
     }
 
     public Actor(int id, String name) {
         this.id = id;
         this.name = name;
-        this.year = year;
-        this.films = new LinkedList<Integer>();
+        this.films = new LinkedList<>();
     }
 
     public Actor(String name, String year) {
         this.name = name;
         this.year = year;
-        this.films = new LinkedList<Integer>();
+        this.films = new LinkedList<>();
     }
 
     public Actor(int id, String name, String year) {
         this.id = id;
         this.name = name;
         this.year = year;
-        this.films = new LinkedList<Integer>();
+        this.films = new LinkedList<>();
     }
 
     public int getId() {

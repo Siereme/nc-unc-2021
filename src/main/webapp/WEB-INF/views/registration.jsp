@@ -30,7 +30,7 @@
         </div>
         <button type="submit">Create an account!</button>
     </form:form>
-    <a href="/main">Main</a>
+    <a href="/films">Back</a>
 </div>
 </body>
 </html>

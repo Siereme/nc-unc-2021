@@ -39,6 +39,14 @@
                         </tbody>
                     </table>
                 </th>
+                <td class="align-middle col-1">
+                    <form action="handle/page-edit" method="post">
+                        <input type="hidden" name="id" value="${director.getId()}"/>
+                        <input type="hidden" name="name" value="${director.getName()}"/>
+                        <input type="hidden" name="year" value="${director.getYear()}">
+                        <input type="submit" class="btn btn-outline-dark" value="Edit"/>
+                    </form>
+                </td>
                 <sec:authorize access="hasRole('ADMIN')">
                     <td class="align-middle col-1">
                         <form action="handle/delete/${director.getId()}" method="post">

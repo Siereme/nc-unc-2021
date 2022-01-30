@@ -9,10 +9,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class ActorsRepository extends AbstractRepository<Actor> {
@@ -42,9 +45,10 @@ public class ActorsRepository extends AbstractRepository<Actor> {
     }
 
     public void add(Actor actor) {
-        jdbcTemplate.update("INSERT INTO actor(name, year) VALUES(?, ?)", actor.getName(), actor.getYear());
+        KeyHolder holder = new GeneratedKeyHolder();
+        jdbcTemplate.update("INSERT INTO actor(name, year) VALUES(?, ?)", actor.getName(), actor.getYear(), holder);
         List<Integer> filmsId = actor.getFilms();
-        Integer actorId = jdbcTemplate.queryForObject("Select max(actor_id) from actor", Integer.TYPE);
+        Integer actorId = Objects.requireNonNull(holder.getKey()).intValue();
         for (Integer filmId : filmsId) {
             jdbcTemplate.update("INSERT INTO film_actor(film_id, actor_id) values (?,?)", filmId, actorId);
         }
@@ -60,7 +64,20 @@ public class ActorsRepository extends AbstractRepository<Actor> {
     }
 
     public void edit(Actor actor) {
-        jdbcTemplate.update("UPDATE actor SET name=? WHERE actor_id=?", actor.getName(), actor.getId());
+        String newName = actor.getName();
+        String newYear = actor.getYear();
+        Integer actorId = actor.getId();
+        jdbcTemplate.update("UPDATE actor SET name = ?, year = ? WHERE actor_id=?", newName, newYear, actorId);
+        List<Integer> filmListToDelete = filmsRepository.findFilmsToDelete(actor, "film_actor", "actor_id");
+        List<Integer> filmListToAdd = filmsRepository.findFilmsToAdd(actor, "film_actor", "actor_id");
+        for (Integer filmId : filmListToDelete) {
+            jdbcTemplate.update("delete from film_actor where actor_id = ? and film_id = ?", actorId, filmId);
+        }
+
+        for (Integer filmId : filmListToAdd) {
+            jdbcTemplate.update("insert into film_actor(film_id, actor_id) values (?,?)", filmId, actorId);
+        }
+
     }
 
     @Override
@@ -82,8 +99,12 @@ public class ActorsRepository extends AbstractRepository<Actor> {
         return jdbcTemplate.queryForObject("SELECT count(*) FROM actor", Integer.class);
     }
 
-/*    public List<Actor> findByContains(String name) {
-        return jdbcTemplate.query("Select * from actor where name like '?%'",
+    public List<Actor> findByContains(String name) {
+        return jdbcTemplate.query("Select * from actor where contains (name, ?)",
                 ((rs, rowNum) -> new Actor(rs.getInt("actor_id"), rs.getString("name"), rs.getString("year"))), name);
-    }*/
+    }
+
+    @Autowired
+    FilmsRepository filmsRepository;
+
 }

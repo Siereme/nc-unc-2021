@@ -14,7 +14,7 @@ public class AdminController {
     private final Logger logger = Logger.getLogger(AdminController.class.getName());
 
     @Autowired
-    private final UserRepository repository = new UserRepository();
+    private UserRepository repository;
 
     @GetMapping("/admin")
     public String userList(Model model) {

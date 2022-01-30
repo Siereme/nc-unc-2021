@@ -57,7 +57,7 @@ public class Film implements IEntity {
         return genres;
     }
 
-    public void setGenre(int genreId) {
+    public void addGenre(int genreId) {
         this.genres.add(genreId);
     }
 

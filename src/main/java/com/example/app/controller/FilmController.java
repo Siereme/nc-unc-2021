@@ -106,11 +106,11 @@ public class FilmController {
     }
 
     @Autowired
-    private FilmsRepository repository = new FilmsRepository();
+    private FilmsRepository repository;
     @Autowired
-    GenresRepository genresRepository = new GenresRepository();
+    GenresRepository genresRepository;
     @Autowired
-    ActorsRepository actorsRepository = new ActorsRepository();
+    ActorsRepository actorsRepository;
     @Autowired
-    DirectorsRepository directorsRepository = new DirectorsRepository();
+    DirectorsRepository directorsRepository;
 }

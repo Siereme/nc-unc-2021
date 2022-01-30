@@ -15,7 +15,7 @@ public class RegistrationController {
     private final Logger logger = Logger.getLogger(RegistrationController.class.getName());
 
     @Autowired
-    private UserRepository repository = new UserRepository();
+    private UserRepository repository;
 
 
 

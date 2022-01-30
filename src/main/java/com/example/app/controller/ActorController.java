@@ -26,10 +26,10 @@ public class ActorController {
     private final Logger logger = Logger.getLogger(ActorController.class.getName());
 
     @Autowired
-    private ActorsRepository repository = new ActorsRepository();
+    private ActorsRepository repository;
 
     @Autowired
-    private FilmsRepository filmsRepository = new FilmsRepository();
+    private FilmsRepository filmsRepository;
 
     @GetMapping(value = "/all")
     public String get(ModelMap model) {
@@ -54,7 +54,7 @@ public class ActorController {
 
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam String tittle, ModelMap model) {
-        List<Actor> actorList = repository.findByName(tittle);
+        List<Actor> actorList = repository.findByContains(tittle);
         if (actorList == null || actorList.isEmpty()) {
             return new ModelAndView("redirect:/actors/all");
         } else {
@@ -81,10 +81,13 @@ public class ActorController {
         }
         if (Objects.equals(commandType, "page-edit")) {
             List<Film> actorFilmList = repository.findFilmsByActorId(actor.getId());
+            // we delete entities that are both there and there in films
+            // ( удаляем из списка всех фильмов те, в которых актер участвовал)
+            films.removeIf(film -> actorFilmList.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
             model.addAttribute("filmList", films);
             model.addAttribute("actorFilmList", actorFilmList);
             model.addAttribute("modalTitle", "Edit");
-            model.addAttribute("eventType", "/handle/edit");
+            model.addAttribute("eventType", "handle/edit");
             model.addAttribute("actor", actor);
         }
         return "actor-handle";

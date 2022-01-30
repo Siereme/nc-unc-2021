@@ -9,13 +9,19 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class DirectorsRepository extends AbstractRepository<Director> {
+
+    @Autowired
+    FilmsRepository filmsRepository;
 
     public List<Director> findAll() {
         return jdbcTemplate.query("SELECT * FROM director",
@@ -42,9 +48,10 @@ public class DirectorsRepository extends AbstractRepository<Director> {
     }
 
     public void add(Director director) {
-        jdbcTemplate.update("INSERT INTO director(name, year) VALUES(?, ?)", director.getName(), director.getYear());
+        KeyHolder holder = new GeneratedKeyHolder();
+        jdbcTemplate.update("INSERT INTO director(name, year) VALUES(?, ?)", director.getName(), director.getYear(), holder);
         List<Integer> filmsId = director.getFilms();
-        Integer directorId = jdbcTemplate.queryForObject("Select max(director_id) from director", Integer.TYPE);
+        Integer directorId = Objects.requireNonNull(holder.getKey()).intValue();
         for (Integer filmId : filmsId) {
             jdbcTemplate.update("INSERT INTO film_director(film_id, director_id) values (?,?)", filmId, directorId);
         }
@@ -55,7 +62,21 @@ public class DirectorsRepository extends AbstractRepository<Director> {
     }
 
     public void edit(Director director) {
-        jdbcTemplate.update("UPDATE director SET name=? WHERE director_id=?", director.getName(), director.getId());
+        String newName = director.getName();
+        String newYear = director.getYear();
+        Integer directorId = director.getId();
+        jdbcTemplate.update("UPDATE director SET name=?, year = ? WHERE director_id=?", newName, newYear, directorId);
+
+        List<Integer> filmListToDelete = filmsRepository.findFilmsToDelete(director, "film_director", "director_id");
+        List<Integer> filmListToAdd = filmsRepository.findFilmsToAdd(director, "film_director", "director_id");
+        for (Integer filmId : filmListToDelete) {
+            jdbcTemplate.update("delete from film_director where director_id = ? and film_id = ?", directorId, filmId);
+        }
+
+        for (Integer filmId : filmListToAdd) {
+            jdbcTemplate.update("insert into film_director(film_id, director_id) values (?,?)", filmId, directorId);
+        }
+
     }
 
     @Override

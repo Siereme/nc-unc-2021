@@ -1,6 +1,7 @@
 package com.example.app.model.director;
 
 import com.example.app.model.IEntity;
+import com.example.app.model.IParticipatesFilm;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.LinkedList;
@@ -10,7 +11,7 @@ import java.util.List;
  * @author Vasiliy, Sergey
  * @version 1.0
  * */
-public class Director implements IEntity {
+public class Director implements IEntity, IParticipatesFilm {
 
     private int id;
 
@@ -37,8 +38,7 @@ public class Director implements IEntity {
     @JsonProperty("films")
     private List<Integer> films;
 
-
-    public Director(){
+    public Director() {
         this.name = "";
         this.year = "";
         this.films = new LinkedList<>();
@@ -57,14 +57,12 @@ public class Director implements IEntity {
         this.films = new LinkedList<>();
     }
 
-
     public Director(int id, String name, String year) {
         this.id = id;
         this.name = name;
         this.year = year;
         this.films = new LinkedList<>();
     }
-
 
     public int getId() {
         return this.id;
@@ -76,6 +74,10 @@ public class Director implements IEntity {
 
     public String getYear() {
         return this.year;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
 }
