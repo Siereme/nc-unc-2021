@@ -12,15 +12,21 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@Validated
 @Controller
 @RequestMapping(path = "/genres")
 public class GenreController {
@@ -39,7 +45,7 @@ public class GenreController {
     }
 
     @PostMapping(value="/find")
-    public ModelAndView get (@RequestParam String tittle, ModelMap model){
+    public ModelAndView get (@RequestParam @NotBlank String tittle, ModelMap model){
         List<Genre> genres = repository.findByTitles(Collections.singletonList(tittle));
 
         if(genres.size() > 0){
@@ -52,7 +58,7 @@ public class GenreController {
     }
 
     @PostMapping(value = "/handle/{commandType}")
-    public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model, @PathVariable String commandType){
+    public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model, @Valid @PathVariable String commandType){
         List<Film> filmList = filmsRepository.findAll();
         if(Objects.equals(commandType, "page-add")){
             model.addAttribute("filmList", filmList);
@@ -74,22 +80,37 @@ public class GenreController {
     }
 
     @PostMapping(value = "/handle/delete/{id}")
-    public ModelAndView delete(@PathVariable int id){
+    public ModelAndView delete(@Valid @PathVariable int id){
         repository.delete(id);
         return new ModelAndView("redirect:/genres/all");
     }
 
     @PostMapping(value = "/handle/add")
-    public ModelAndView add(@ModelAttribute Genre genre) {
+    public String add(@Validated @ModelAttribute Genre genre, BindingResult result, ModelMap map) {
+        if(result.hasErrors()){
+            map.addAttribute("result", result);
+            return renderHandlePage(genre, map, "page-add");
+        }
         repository.add(genre);
+        return "redirect:/genres/all";
+    }
+
+
+    @PostMapping(value = "/handle/edit")
+    public String edit(@Validated @ModelAttribute Genre genre, BindingResult result, ModelMap map) {
+        if(result.hasErrors()){
+            map.addAttribute("result", result);
+            return renderHandlePage(genre, map, "page-edit");
+        }
+        repository.edit(genre);
+        return "redirect:/genres/all";
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ModelAndView handleConstraintViolationException(ConstraintViolationException e) {
         return new ModelAndView("redirect:/genres/all");
     }
 
-    @PostMapping(value = "/handle/edit")
-    public ModelAndView edit(@ModelAttribute Genre genre){
-        repository.edit(genre);
-        return new ModelAndView("redirect:/genres/all");
-    }
 
     @Autowired
     private GenresRepository repository = new GenresRepository();

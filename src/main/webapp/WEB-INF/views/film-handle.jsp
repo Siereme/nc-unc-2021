@@ -10,14 +10,20 @@
 
 </head>
 <body>
+      <div class="error-block">
+          <c:forEach var="error" items="${result.getAllErrors()}">
+              <p class="text-danger m-0">${error.getDefaultMessage()}</p>
+          </c:forEach>
+      </div>
     <div class="handle-container">
         <h2 class="card-header">${modalTitle}</h2>
         <form action="${eventType}" method="post">
             <div class="row">
                 <div class="col-6">
                     <span>Title</span>
+                    <form:errors path="name" />
                     <input type="hidden" name="id" value="${film.getId()}"/>
-                    <input class="form-control" name="tittle" value="${film.getTittle()}"/>
+                    <input class="form-control" name="tittle" value="${film.getTittle()}" />
                 </div>
                 <div class="col-6">
                     <label for="startDate">Date</label>
@@ -28,10 +34,10 @@
             <div class="row">
                 <div class="col-4">
                     <div class="genres">
-                      <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Genres
                       </button>
-                      <ul class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton1">
+                      <ul class="dropdown-menu p-0">
                         <select class="form-select" multiple aria-label="multiple select example" name="genres">
                             <c:forEach var="genre" items="${genreFilmList}">
                                 <option value="${genre.getId()}" selected>${genre.getTittle()}</option>
@@ -46,10 +52,10 @@
 
                 <div class="col-4">
                     <div class="actors">
-                      <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Actors
                       </button>
-                      <ul class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton1">
+                      <ul class="dropdown-menu p-0">
                         <select class="form-select" multiple aria-label="multiple select example" name="actors">
                             <c:forEach var="actor" items="${actorFilmList}">
                                 <option value="${actor.getId()}" selected>${actor.getName()}</option>
@@ -64,10 +70,10 @@
 
                 <div class="col-4">
                     <div class="directors">
-                      <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                      <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Directors
                       </button>
-                      <ul class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton1">
+                      <ul class="dropdown-menu p-0">
                         <select class="form-select" multiple aria-label="multiple select example" name="directors">
                             <c:forEach var="director" items="${directorFilmList}">
                                 <option value="${director.getId()}" selected>${director.getName()}</option>

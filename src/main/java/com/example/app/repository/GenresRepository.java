@@ -6,7 +6,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -24,7 +23,11 @@ public class GenresRepository extends AbstractRepository<Genre> {
     }
 
     public List<Genre> find(List<Integer> ids) {
-        MapSqlParameterSource parameters = new MapSqlParameterSource("ids", ids);
+        if(ids != null && ids.size() < 1){
+            return Collections.emptyList();
+        }
+
+        parameters.addValue("ids", ids);
         return parameterJdbcTemplate.query(
                 "SELECT genre.genre_id, genre.tittle, film_genre.film_id "
                         + "FROM genre LEFT JOIN film_genre ON genre.genre_id=film_genre.genre_id "
@@ -48,7 +51,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
                 }
                 int filmId = rs.getInt("film_genre.film_id");
                 if(filmId > 0){
-                    genre.setGenre(filmId);
+                    genre.addFilm(filmId);
                 }
             }
             return new ArrayList<>(genreMap.values());
@@ -60,7 +63,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
             return new ArrayList<>();
         }
 
-        SqlParameterSource parameters = new MapSqlParameterSource("titles", titles);
+        parameters.addValue("titles", titles);
         List<Integer> genreIds =
                 parameterJdbcTemplate.query("SELECT genre_id FROM genre WHERE tittle IN (:titles)", parameters,
                         (rs, rowNum) -> rs.getInt("genre_id"));
@@ -72,7 +75,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
             return new ArrayList<>();
         }
 
-        SqlParameterSource parameters = new MapSqlParameterSource("ids", ids);
+        parameters.addValue("ids", ids);
         return parameterJdbcTemplate.query("SELECT genre.genre_id, genre.tittle FROM genre "
                         + "LEFT JOIN film_genre ON genre.genre_id=film_genre.genre_id " + "WHERE film_genre.film_id IN (:ids)",
                 parameters, (rs, rowNum) -> new Genre(rs.getInt("genre_id"), rs.getString("tittle")));
@@ -147,9 +150,9 @@ public class GenresRepository extends AbstractRepository<Genre> {
     public void edit(Genre genre) {
         jdbcTemplate.update("UPDATE genre set tittle=? WHERE genre_id=?", genre.getTittle(), genre.getId());
 
-        SqlParameterSource parameter = new MapSqlParameterSource("id", genre.getId());
+        parameters.addValue("id", genre.getId());
         String query = "SELECT film_id FROM film_genre WHERE genre_id=:id";
-        List<Integer> genres = parameterJdbcTemplate.queryForList(query, parameter, Integer.class);
+        List<Integer> genres = parameterJdbcTemplate.queryForList(query, parameters, Integer.class);
 
         List<Integer> addFilms = getEditEntitiesIds(genres, genre.getFilms());
         List<Integer> removeFilms = getEditEntitiesIds(genre.getFilms(), genres);

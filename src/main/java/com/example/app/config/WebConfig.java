@@ -36,7 +36,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addViewController("/films").setViewName("films");
         registry.addViewController("/films/handle").setViewName("film-handle");
         registry.addViewController("/genres").setViewName("genres");
-        registry.addViewController("/genres/all").setViewName("genres");
         registry.addViewController("/directors").setViewName("directors");
     }
 
@@ -45,7 +44,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry
                 .addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/")
-                .setCacheControl(CacheControl.noCache());;
+                .setCacheControl(CacheControl.noCache());
     }
-
 }

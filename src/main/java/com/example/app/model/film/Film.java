@@ -3,10 +3,7 @@ package com.example.app.model.film;
 import com.example.app.model.IEntity;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Array;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import javax.validation.constraints.*;
 import java.util.*;
 
 /** Film entity
@@ -16,28 +13,34 @@ import java.util.*;
 
 public class Film implements IEntity {
 
+    @NotNull
     private int id;
 
+    @NotBlank(message = "Tittle cannot be empty")
     private String tittle;
 
+    @NotNull(message = "Date cannot be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
+    @NotEmpty(message = "Genre list cannot be empty")
     private List<Integer> genres;
 
-    private LinkedList<Integer> directors;
+    @NotEmpty(message = "Director list cannot be empty")
+    private List<Integer> directors;
 
-    private LinkedList<Integer> actors;
+    @NotEmpty(message = "Actor list cannot be empty")
+    private List<Integer> actors;
 
-    public LinkedList<Integer> getActors() {
+    public List<Integer> getActors() {
         return actors;
     }
 
     public void setActors(List<Integer> actors) {
-        this.actors.addAll(actors);
+        this.actors = actors;
     }
 
-    public void setActor(int actorId) {
+    public void addActor(int actorId) {
         this.actors.add(actorId);
     }
 
@@ -45,29 +48,29 @@ public class Film implements IEntity {
         return directors;
     }
 
-    public void setDirector(int directorId) {
+    public void addDirector(int directorId) {
         this.directors.add(directorId);
     }
 
     public void setDirectors(List<Integer> directors) {
-        this.directors.addAll(directors);
+        this.directors = directors;
     }
 
     public List<Integer> getGenres() {
         return genres;
     }
 
-    public void setGenre(int genreId) {
+    public void addGenre(int genreId) {
         this.genres.add(genreId);
     }
 
     public void setGenres(List<Integer> newGenres) {
-        this.genres.addAll((Collection<? extends Integer>) newGenres);
+        this.genres = newGenres;
     }
 
     public Film(){
         tittle = "";
-        date = new Date();
+        date = null;
         genres = new LinkedList<>();
         directors = new LinkedList<>();
         actors = new LinkedList<>();
@@ -104,7 +107,7 @@ public class Film implements IEntity {
     public Film(int id, String tittle) {
         this.id = id;
         this.tittle = tittle;
-        this.date = new Date();
+        this.date = null;
         genres = new LinkedList<>();
         directors = new LinkedList<>();
         actors = new LinkedList<>();
@@ -131,17 +134,6 @@ public class Film implements IEntity {
     }
 
     public void setDate(Date date) {
-        if(date != null){
-            this.date = date;
-        }
-        else{
-            this.date = new Date();
-        }
-    }
-
-    public void removeGenres(List<Integer> ids){
-        for(int id : ids){
-            this.genres.removeIf(genreId -> genreId == id);
-        }
+        this.date = new Date();
     }
 }

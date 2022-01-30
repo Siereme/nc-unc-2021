@@ -1,73 +1,31 @@
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <form id="find" action="find" method="post"></form>
 <form id="findAll" action="all" method="get"></form>
 <form id="add" action="handle/page-add" method="post"></form>
-<%
-    String classList = "";
-    String path = "";
-%>
+<% String currentPage = (String) request.getAttribute("javax.servlet.forward.request_uri"); %>
 <header>
     <div class="px-3 py-2 bg-dark text-white">
       <div class="container mw-100 p-0">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end">
           <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
             <li>
-                <%
-                   classList = "nav-link";
-                   path = (String) request.getAttribute("javax.servlet.forward.request_uri");
-                   if (path.equals("/films/all")) {
-                     classList += " text-secondary";
-                   }
-                   else{
-                     classList += " text-white";
-                   }
-                %>
-              <a href="http://localhost:8080/films/all" class="<%=classList%>">
+              <a href="/films/all" class="nav-link ${currentPage.contains('/films/all') ? ' text-secondary' : ' text-white'}">
                 Films
               </a>
             </li>
             <li>
-                <%
-                   classList = "nav-link";
-                   path = (String) request.getAttribute("javax.servlet.forward.request_uri");
-                   if (path.equals("/genres/all")) {
-                     classList += " text-secondary";
-                   }
-                   else{
-                     classList += " text-white";
-                   }
-                %>
-              <a href="http://localhost:8080/genres/all" class="<%=classList%>">
+              <a href="/genres/all" class="nav-link ${currentPage.contains('/genres/all') ? 'text-secondary' : 'text-white'}">
                 Genres
               </a>
             </li>
             <li>
-                <%
-                   classList = "nav-link";
-                   path = (String) request.getAttribute("javax.servlet.forward.request_uri");
-                   if (path.equals("/actors/all")) {
-                     classList += " text-secondary";
-                   }
-                   else{
-                     classList += " text-white";
-                   }
-                %>
-              <a href="http://localhost:8080/actors/all" class="<%=classList%>">
+              <a href="/actors/all" class="nav-link ${currentPage.contains('/actors/all') ? ' text-secondary' : ' text-white'}">
                 Actors
               </a>
             </li>
             <li>
-                <%
-                   classList = "nav-link";
-                   path = (String) request.getAttribute("javax.servlet.forward.request_uri");
-                   if (path.equals("/directors/all")) {
-                     classList += " text-secondary";
-                   }
-                   else{
-                     classList += " text-white";
-                   }
-                %>
-              <a href="http://localhost:8080/directors/all" class="<%=classList%>">
+              <a href="/directors/all" class="nav-link ${currentPage.contains('/directors/all') ? ' text-secondary' : ' text-white'}">
                 Directors
               </a>
             </li>

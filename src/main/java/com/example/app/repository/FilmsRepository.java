@@ -3,7 +3,6 @@ package com.example.app.repository;
 import com.example.app.model.film.Film;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.*;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -26,7 +25,11 @@ public class FilmsRepository extends AbstractRepository<Film> {
     }
 
     public List<Film> find(List<Integer> ids) {
-        SqlParameterSource parameters = new MapSqlParameterSource("ids", ids);
+        if(ids != null && ids.size() < 1){
+            return Collections.emptyList();
+        }
+
+        parameters.addValue("ids", ids);
         return parameterJdbcTemplate.query("SELECT film.film_id, film.tittle, film.date, "
                 + "film_genre.genre_id, film_actor.actor_id, film_director.director_id "
                 + "FROM film "
@@ -57,15 +60,15 @@ public class FilmsRepository extends AbstractRepository<Film> {
                 }
                 int genreId = rs.getInt("film_genre.genre_id");
                 if(genreId > 0){
-                    film.setGenre(genreId);
+                    film.addGenre(genreId);
                 }
                 int actorId = rs.getInt("film_actor.actor_id");
                 if(actorId > 0){
-                    film.setActor(actorId);
+                    film.addActor(actorId);
                 }
                 int directorId = rs.getInt("film_director.director_id");
                 if(directorId > 0){
-                    film.setDirector(directorId);
+                    film.addDirector(directorId);
                 }
             }
             return new ArrayList<>(filmMap.values());
@@ -78,7 +81,7 @@ public class FilmsRepository extends AbstractRepository<Film> {
             return new ArrayList<>();
         }
 
-        SqlParameterSource parameters = new MapSqlParameterSource("titles", titles);
+        parameters.addValue("titles", titles);
         List<Integer> filmIds =
                 parameterJdbcTemplate.query("SELECT film_id FROM film WHERE tittle IN (:titles)", parameters,
                         (rs, rowNum) -> rs.getInt("film_id"));
@@ -90,7 +93,7 @@ public class FilmsRepository extends AbstractRepository<Film> {
             return new ArrayList<>();
         }
 
-        SqlParameterSource parameters = new MapSqlParameterSource("ids", ids);
+        parameters.addValue("ids", ids);
         return parameterJdbcTemplate.query("SELECT film.film_id, film.tittle FROM film "
                         + "INNER JOIN film_genre ON film.film_id=film_genre.film_id " + "WHERE film_genre.genre_id IN (:ids)",
                 parameters, (rs, rowNum) -> new Film(rs.getInt("film.film_id"), rs.getString("film.tittle")));
@@ -154,9 +157,9 @@ public class FilmsRepository extends AbstractRepository<Film> {
     }
 
     public List<Integer> getEntitiesIds(String entity, int filmId){
-        SqlParameterSource parameter = new MapSqlParameterSource("id", filmId);
+        parameters.addValue("id", filmId);
         String query = "SELECT " + entity + "_id FROM film_" + entity + " WHERE film_id=:id";
-        return  parameterJdbcTemplate.queryForList(query, parameter, Integer.class);
+        return  parameterJdbcTemplate.queryForList(query, parameters, Integer.class);
     }
 
     private List<Integer> getEditEntitiesIds(List<Integer> editIds, List<Integer> ids) {
