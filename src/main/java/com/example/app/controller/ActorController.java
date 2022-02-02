@@ -8,18 +8,19 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.ConstraintViolationException;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+@Validated
 @Controller
 @RequestMapping(path = "/actors")
 public class ActorController {
@@ -47,13 +48,13 @@ public class ActorController {
     }
 
     @PostMapping(value = "/handle/delete/{id}")
-    public ModelAndView delete(@PathVariable int id) {
+    public ModelAndView delete(@PathVariable @NotNull int id) {
         repository.delete(id);
         return new ModelAndView("redirect:/actors/all");
     }
 
     @PostMapping(value = "/find")
-    public ModelAndView get(@RequestParam String tittle, ModelMap model) {
+    public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
         List<Actor> actorList = repository.findByContains(tittle);
         if (actorList == null || actorList.isEmpty()) {
             return new ModelAndView("redirect:/actors/all");
@@ -72,7 +73,7 @@ public class ActorController {
     }
 
     @PostMapping(value = "/handle/{commandType}")
-    public String renderHandlePage(@ModelAttribute Actor actor, ModelMap model, @PathVariable String commandType) {
+    public String renderHandlePage(@ModelAttribute Actor actor, ModelMap model, @PathVariable @NotBlank String commandType) {
         List<Film> films = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("filmList", films);
@@ -94,14 +95,27 @@ public class ActorController {
     }
 
     @PostMapping(value = "/handle/add")
-    public ModelAndView add(@ModelAttribute Actor actor) {
+    public String add(@Validated @ModelAttribute Actor actor, BindingResult result, ModelMap map) {
+        if(result.hasErrors()){
+            map.addAttribute("result", result);
+            return renderHandlePage(actor, map, "page-add");
+        }
         repository.add(actor);
-        return new ModelAndView("redirect:/actors/all");
+        return "redirect:/actors/all";
     }
 
     @PostMapping(value = "/handle/edit")
-    public ModelAndView edit(@ModelAttribute Actor actor){
+    public String edit(@Validated @ModelAttribute Actor actor, BindingResult result, ModelMap map){
+        if(result.hasErrors()){
+            map.addAttribute("result", result);
+            return renderHandlePage(actor, map, "page-edit");
+        }
         repository.edit(actor);
+        return "redirect:/actors/all";
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ModelAndView handleConstraintViolationException(ConstraintViolationException e) {
         return new ModelAndView("redirect:/actors/all");
     }
 

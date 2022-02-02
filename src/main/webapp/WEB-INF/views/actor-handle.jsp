@@ -4,12 +4,17 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Handle Page</title>
-    <link href="<c:url value="/src/main/webapp/resources/bootstrap-5.0.2-dist/css/bootstrap.min.css" />" rel="stylesheet">
-    <script src="<c:url value="/src/main/webapp/resources/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js" />"></script>
-    <link href="<c:url value="/src/main/webapp/resources/css/handle.css" />" rel="stylesheet">
+    <link href="<c:url value="/resources/bootstrap-5.0.2-dist/css/bootstrap.min.css" />" rel="stylesheet">
+    <script src="<c:url value="/resources/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js" />"></script>
+    <link href="<c:url value="/resources/css/handle.css" />" rel="stylesheet">
 
 </head>
 <body>
+<div class="error-block">
+  <c:forEach var="error" items="${result.getAllErrors()}">
+      <p class="text-danger m-0">${error.getDefaultMessage()}</p>
+  </c:forEach>
+</div>
 <div class="handle-container">
     <h2 class="card-header">${modalTitle}</h2>
     <form action="../${eventType}" method="post">

@@ -125,7 +125,7 @@ public class FilmsRepository extends AbstractRepository<Film> {
         if (entityIds == null || entityIds.size() < 1) {
             return;
         }
-        String query = "INSERT INTO film " + entity + "(film_id, " + entity + "_id) VALUES (?, ?)";
+        String query = String.format("INSERT INTO film_%s (film_id, %s_id) VALUES (?, ?)", entity, entity);
         jdbcTemplate.batchUpdate(query, new BatchEntitiesSetter(filmId, entityIds));
     }
 
@@ -133,14 +133,14 @@ public class FilmsRepository extends AbstractRepository<Film> {
         if (entityIds == null || entityIds.size() < 1) {
             return;
         }
-        String query = "DELETE FROM film " + entity + " WHERE film_id=? AND " + entity + " id=?";
+        String query = String.format("DELETE FROM film_%s WHERE film_id=? AND %s_id=?", entity, entity);
         jdbcTemplate.batchUpdate(query, new BatchEntitiesSetter(filmId, entityIds));
     }
 
     private final static class BatchEntitiesSetter implements BatchPreparedStatementSetter {
 
-        private int filmId;
-        private List<Integer> entityIds;
+        private final int filmId;
+        private final List<Integer> entityIds;
 
         public BatchEntitiesSetter(int filmId, List<Integer> entityIds) {
             this.filmId = filmId;
@@ -161,7 +161,7 @@ public class FilmsRepository extends AbstractRepository<Film> {
 
     public List<Integer> getEntitiesIds(String entity, int filmId) {
         SqlParameterSource parameter = new MapSqlParameterSource("id", filmId);
-        String query = "SELECT " + entity + " id FROM film " + entity + " WHERE film_id=:id";
+        String query = String.format("SELECT %s_id FROM film_%s WHERE film_id=:id", entity, entity);
         return parameterJdbcTemplate.queryForList(query, parameter, Integer.class);
     }
 

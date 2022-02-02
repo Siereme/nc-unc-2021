@@ -114,8 +114,8 @@ public class GenresRepository extends AbstractRepository<Genre> {
 
     private final static class BatchEntitiesSetter implements BatchPreparedStatementSetter {
 
-        private int genreId;
-        private List<Integer> entityIds;
+        private final int genreId;
+        private final List<Integer> entityIds;
 
         public BatchEntitiesSetter(int genreId, List<Integer> entityIds) {
             this.genreId = genreId;

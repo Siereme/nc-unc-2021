@@ -5,6 +5,7 @@ import com.example.app.model.film.Film;
 import com.example.app.model.genre.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -12,6 +13,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,7 +46,16 @@ public class ActorsRepository extends AbstractRepository<Actor> {
 
     public void add(Actor actor) {
         KeyHolder holder = new GeneratedKeyHolder();
-        jdbcTemplate.update("INSERT INTO actor(name, year) VALUES(?, ?)", actor.getName(), actor.getYear(), holder);
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps = connection.prepareStatement("INSERT INTO actor(name, year) VALUES(?, ?)",
+                        Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, actor.getName());
+                ps.setString(2, actor.getYear());
+                return ps;
+            }
+        }, holder);
         List<Integer> filmsId = actor.getFilms();
         Integer actorId = Objects.requireNonNull(holder.getKey()).intValue();
         for (Integer filmId : filmsId) {

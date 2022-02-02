@@ -4,6 +4,8 @@ import com.example.app.model.IEntity;
 import com.example.app.model.IParticipatesFilm;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -19,12 +21,14 @@ public class Director implements IEntity, IParticipatesFilm {
         this.name = name;
     }
 
+    @NotBlank(message = "Name cannot be empty")
     private String name;
 
     public void setYear(String year) {
         this.year = year;
     }
 
+    @NotBlank(message = "Year cannot be empty")
     private String year;
 
     public List<Integer> getFilms() {
@@ -35,7 +39,7 @@ public class Director implements IEntity, IParticipatesFilm {
         this.films = films;
     }
 
-    @JsonProperty("films")
+    @NotEmpty(message = "Film list cannot be empty")
     private List<Integer> films;
 
     public Director() {

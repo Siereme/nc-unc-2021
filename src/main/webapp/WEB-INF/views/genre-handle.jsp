@@ -4,9 +4,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Handle Page</title>
-    <link href="<c:url value="/src/main/webapp/resources/bootstrap-5.0.2-dist/css/bootstrap.min.css" />" rel="stylesheet">
-    <script src="<c:url value="/src/main/webapp/resources/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js" />"></script>
-    <link href="<c:url value="/src/main/webapp/resources/css/style.css" />" rel="stylesheet">
+    <link href="<c:url value="/resources/bootstrap-5.0.2-dist/css/bootstrap.min.css" />" rel="stylesheet">
+    <script src="<c:url value="/resources/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js" />"></script>
+    <link href="<c:url value="/resources/css/handle.css" />" rel="stylesheet">
 
 </head>
 <body>

@@ -4,10 +4,12 @@ import com.example.app.model.actor.Actor;
 import com.example.app.model.director.Director;
 import com.example.app.model.film.Film;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -43,7 +45,16 @@ public class DirectorsRepository extends AbstractRepository<Director> {
 
     public void add(Director director) {
         KeyHolder holder = new GeneratedKeyHolder();
-        jdbcTemplate.update("INSERT INTO director(name, year) VALUES(?, ?)", director.getName(), director.getYear(), holder);
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                PreparedStatement ps = connection.prepareStatement("INSERT INTO director(name, year) VALUES(?, ?)",
+                        Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, director.getName());
+                ps.setString(2, director.getYear());
+                return ps;
+            }
+        }, holder);
         List<Integer> filmsId = director.getFilms();
         Integer directorId = Objects.requireNonNull(holder.getKey()).intValue();
         for (Integer filmId : filmsId) {
