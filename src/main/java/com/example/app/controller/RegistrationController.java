@@ -30,6 +30,17 @@ public class RegistrationController {
     @PostMapping("/registration")
     public String addUser(@ModelAttribute("userForm") User userForm, Model model) {
 
+        String username = userForm.getUsername();
+        if(username.length() < 3) {
+            model.addAttribute("usernameError", "username must contain at least 3 characters");
+            return "registration";
+        }
+        String password = userForm.getPassword();
+        if(password.length() < 6){
+            model.addAttribute("passwordError", "password must contain at least 6 characters");
+            return "registration";
+        }
+
         if (!userForm.getPassword().equals(userForm.getPasswordConfirm())){
             model.addAttribute("passwordError", "passwords don't match");
             return "registration";

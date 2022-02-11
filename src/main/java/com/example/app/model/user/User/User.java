@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Set;
 
@@ -18,8 +19,10 @@ import java.util.Set;
 public class User implements IEntity, UserDetails {
     private int id;
 
+    @Size(min =2,message = "at least 5 characters")
     private String username;
 
+    @Size(min =2,message = "at least 5 characters")
     private String password;
 
     private String passwordConfirm;
