@@ -10,7 +10,9 @@
     <link href="<c:url value="/src/main/webapp/resources/css/style.css" />" rel="stylesheet">
 </head>
 <body>
-<jsp:include page="header.jsp"/>
+<jsp:include page="header.jsp">
+    <jsp:param name="json" value="${json}"/>
+</jsp:include>
 <div class="films-grid-container">
     <table class="table text-center">
         <thead class="bg-light">

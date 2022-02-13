@@ -1,15 +1,18 @@
 package com.example.app.controller;
 
+import com.example.app.controller.serialize.AbstractSerializeController;
+import com.example.app.controller.serialize.imp.FilmSerializeController;
 import com.example.app.model.actor.Actor;
 import com.example.app.model.director.Director;
 import com.example.app.model.film.Film;
 import com.example.app.model.genre.Genre;
-import com.example.app.repository.*;
+import com.example.app.repository.ActorsRepository;
+import com.example.app.repository.DirectorsRepository;
+import com.example.app.repository.FilmsRepository;
+import com.example.app.repository.GenresRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -18,11 +21,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import javax.validation.ConstraintViolationException;
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Validated
@@ -30,6 +33,7 @@ import java.util.stream.Collectors;
 @RequestMapping(path = "/films")
 public class FilmController implements WebMvcConfigurer {
     private final Logger logger = Logger.getLogger(FilmController.class.getName());
+    private final String filePath = "src/main/resources/database/Films.json";
 
 
     @GetMapping(value = "/all")
@@ -42,6 +46,7 @@ public class FilmController implements WebMvcConfigurer {
         model.addAttribute("genres", genres);
         model.addAttribute("actors", actors);
         model.addAttribute("directors", directors);
+        model.addAttribute("json", "../serialize/films");
         logger.info("Show all films");
         return "films";
     }
@@ -57,6 +62,7 @@ public class FilmController implements WebMvcConfigurer {
             model.addAttribute("genres", genres);
             model.addAttribute("actors", actors);
             model.addAttribute("directors", directors);
+            model.addAttribute("json", "../serialize/films");
             return new ModelAndView("films", model);
         }
         return new ModelAndView("redirect:/films/all");
@@ -128,7 +134,7 @@ public class FilmController implements WebMvcConfigurer {
     }
 
     @Autowired
-    private FilmsRepository repository;
+    FilmsRepository repository;
     @Autowired
     GenresRepository genresRepository;
     @Autowired

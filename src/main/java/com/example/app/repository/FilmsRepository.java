@@ -62,15 +62,18 @@ public class FilmsRepository extends AbstractRepository<Film> {
                     filmMap.put(id, film);
                 }
                 int genreId = rs.getInt("film_genre.genre_id");
-                if(genreId > 0){
+                boolean hasGenre = film.getGenres().stream().anyMatch(filmGenreId -> filmGenreId == genreId);
+                if(genreId > 0 && !hasGenre){
                     film.addGenre(genreId);
                 }
                 int actorId = rs.getInt("film_actor.actor_id");
-                if(actorId > 0){
+                boolean hasActor = film.getActors().stream().anyMatch(filmActorId -> filmActorId == actorId);
+                if(actorId > 0 && !hasActor){
                     film.addActor(actorId);
                 }
                 int directorId = rs.getInt("film_director.director_id");
-                if(directorId > 0){
+                boolean hasDirector = film.getDirectors().stream().anyMatch(filmDirectorId -> filmDirectorId == directorId);
+                if(directorId > 0 && !hasDirector){
                     film.addDirector(directorId);
                 }
             }

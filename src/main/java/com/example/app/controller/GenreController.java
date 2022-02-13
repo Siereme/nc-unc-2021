@@ -40,6 +40,7 @@ public class GenreController {
 
         model.addAttribute("genres", genres);
         model.addAttribute("films", films);
+        model.addAttribute("json", "../serialize/genres");
         logger.info("Show all films");
         return "genres";
     }
@@ -52,6 +53,7 @@ public class GenreController {
             List<List<Film>> films = genres.stream().map(genre -> filmsRepository.find(genre.getFilms())).collect(Collectors.toList());
             model.addAttribute("genres", genres);
             model.addAttribute("films", films);
+            model.addAttribute("json", "../serialize/genres");
             return new ModelAndView("genres", model);
         }
         return new ModelAndView("redirect:/genres/all");
@@ -116,4 +118,5 @@ public class GenreController {
     private GenresRepository repository;
     @Autowired
     private FilmsRepository filmsRepository;
+
 }

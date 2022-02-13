@@ -5,11 +5,12 @@
 <form id="find" action="find" method="post"></form>
 <form id="findAll" action="all" method="get"></form>
 <form id="add" action="handle/page-add" method="post"></form>
+<form id="import" action="${json}/import" method="post" enctype="multipart/form-data"></form>
 
 <header>
-    <div class="px-3 py-2 bg-dark text-white">
+    <div class="px-3 pe-4 py-2 bg-dark text-white">
       <div class="container mw-100 p-0">
-        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-end">
+        <div class="d-flex flex-wrap align-items-center justify-content-between">
           <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
             <li>
               <a href="/films/all" class="nav-link ${currentPage.contains('/films/all') ? ' text-secondary' : ' text-white'}">
@@ -32,6 +33,18 @@
               </a>
             </li>
           </ul>
+          <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
+              <sec:authorize access="!isAuthenticated()">
+                  <li><button onclick="window.location.href = '/login'" type="button" class="btn btn-primary text-dark-me-2 me-2">Log in</button></li>
+                  <li><button onclick="window.location.href = '/registration'" type="button" class="btn btn-primary">Sign-up</button></li>
+              </sec:authorize>
+              <sec:authorize access="isAuthenticated()">
+                  <li><button onclick="window.location.href = '/logout'" type="button" class="btn btn-primary text-dark-me-2 me-2">Log out</button></li>
+                  <sec:authorize access="hasRole('ADMIN')">
+                      <li><button onclick="window.location.href = '/admin'" type="button" class="btn btn-light text-dark-me-2">Users</button></li>
+                  </sec:authorize>
+              </sec:authorize>
+          </ul>
         </div>
       </div>
     </div>
@@ -44,15 +57,14 @@
             <input type="submit" class="btn btn-outline-dark  ms-2" value="Add" form="add" />
         </form>
 
-        <div class="text-end">
-            <sec:authorize access="!isAuthenticated()">
-                <button onclick="window.location.href = '/login'" type="button" class="btn btn-light text-dark me-2">Log in</button>
-                <button onclick="window.location.href = '/registration'" type="button" class="btn btn-primary">Sign-up</button>
-            </sec:authorize>
+        <div class="text-end d-flex align-items-center">
             <sec:authorize access="isAuthenticated()">
-                <button onclick="window.location.href = '/logout'" type="button" class="btn btn-light text-dark-me-2">Log out</button>
                 <sec:authorize access="hasRole('ADMIN')">
-                    <button onclick="window.location.href = '/admin'" type="button" class="btn btn-light text-dark-me-2">Users</button>
+                    <a href="${json}/export" download class="btn btn-outline-dark text-decoration-none">Export json file</a>
+                    <div class="d-flex ms-3">
+                      <input class="btn btn-outline-dark me-2" value="Import json file" type="submit" form="import" />
+                      <input class="form-control" type="file" id="formFile" name="file" form="import">
+                    </div>
                 </sec:authorize>
             </sec:authorize>
         </div>
