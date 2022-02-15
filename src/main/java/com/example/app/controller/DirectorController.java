@@ -118,7 +118,7 @@ public class DirectorController {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ModelAndView handleConstraintViolationException(ConstraintViolationException e) {
-        return new ModelAndView("redirect:/actors/all");
+        return new ModelAndView("redirect:/directors/all");
     }
 
 }

@@ -1,1 +1,1 @@
-[{"id":1,"tittle":"genre1","films":[1]},{"id":2,"tittle":"genre2","films":[1]},{"id":3,"tittle":"genre3","films":[1,2]},{"id":4,"tittle":"crime","films":[3,4]},{"id":5,"tittle":"love story","films":[5]},{"id":6,"tittle":"comedy","films":[6]},{"id":7,"tittle":"drama","films":[6]}]
+[{"id":1,"tittle":"genre1","films":[1,41]},{"id":2,"tittle":"genre2","films":[1,41]},{"id":3,"tittle":"genre3","films":[1,2]},{"id":4,"tittle":"crime","films":[3,4]},{"id":5,"tittle":"love story","films":[5]},{"id":6,"tittle":"comedy","films":[43]},{"id":7,"tittle":"drama","films":[43]}]

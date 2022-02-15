@@ -3,9 +3,12 @@ package com.example.app.controller.serialize.imp;
 import com.example.app.controller.serialize.AbstractSerializeController;
 import com.example.app.model.film.Film;
 import com.example.app.repository.FilmsRepository;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/serialize/films")
@@ -15,5 +18,15 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
     @Autowired
     public FilmSerializeController(FilmsRepository repository) {
         super(repository, FILM_FILE_PATH);
+    }
+
+    @Override
+    protected TypeReference<List<Film>> getRef() {
+        return new TypeReference<List<Film>>() {};
+    }
+
+    @Override
+    protected String getRedirectPath() {
+        return "/films/all";
     }
 }
