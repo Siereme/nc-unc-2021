@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Validated
 @Controller
@@ -39,9 +40,9 @@ public class DirectorController {
         model.addAttribute("directors", directorList);
         List<List<Film>> listListFilms = new LinkedList<>();
         for (Director director : directorList) {
-            Integer id = director.getId();
-            List<Film> films = repository.findFilmsByDirectorId(id);
-            listListFilms.add(films);
+            Set<Film> filmSet = director.getFilms();
+            List<Film> filmList = new LinkedList<>(filmSet);
+            listListFilms.add(filmList);
         }
         model.addAttribute("films", listListFilms);
         model.addAttribute("json", "../serialize/directors");
@@ -98,7 +99,7 @@ public class DirectorController {
 
     @PostMapping(value = "/handle/add")
     public String add(@Validated @ModelAttribute Director director, BindingResult result, ModelMap map) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             map.addAttribute("result", result);
             return renderHandlePage(director, map, "page-add");
         }
@@ -108,7 +109,7 @@ public class DirectorController {
 
     @PostMapping(value = "/handle/edit")
     public String edit(@Validated @ModelAttribute Director director, BindingResult result, ModelMap map) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             map.addAttribute("result", result);
             return renderHandlePage(director, map, "page-edit");
         }

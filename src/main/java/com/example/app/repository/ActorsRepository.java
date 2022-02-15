@@ -23,8 +23,7 @@ import java.util.Objects;
 public class ActorsRepository extends AbstractRepository<Actor> {
     @Override
     public List<Actor> findAll() {
-        return jdbcTemplate.query("SELECT * FROM actor",
-                (rs, rowNum) -> new Actor(rs.getInt("actor_id"), rs.getString("name"), rs.getString("year")));
+        return entityManager.createNamedQuery("Actor.findAllWithFilm", Actor.class).getResultList();
     }
 
     public List<Actor> find(List<Integer> ids) {
@@ -45,7 +44,7 @@ public class ActorsRepository extends AbstractRepository<Actor> {
     }
 
     public void add(Actor actor) {
-        KeyHolder holder = new GeneratedKeyHolder();
+/*        KeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -60,11 +59,14 @@ public class ActorsRepository extends AbstractRepository<Actor> {
         Integer actorId = Objects.requireNonNull(holder.getKey()).intValue();
         for (Integer filmId : filmsId) {
             jdbcTemplate.update("INSERT INTO film_actor(film_id, actor_id) values (?,?)", filmId, actorId);
-        }
+        }*/
     }
 
     public void delete(int actorId) {
-        jdbcTemplate.update("DELETE FROM actor WHERE actor_id=?", actorId);
+        Actor actor = entityManager.find(Actor.class, actorId);
+        entityManager.getTransaction().begin();
+        entityManager.remove(actor);
+        entityManager.getTransaction().commit();
     }
 
     public void delete(List<Integer> ids) {
@@ -96,11 +98,15 @@ public class ActorsRepository extends AbstractRepository<Actor> {
     }
 
     public List<Film> findFilmsByActorId(Integer actorId) {
-        return jdbcTemplate.query(
+/*        return jdbcTemplate.query(
                 "SELECT f.film_id as f_id, f.tittle as f_tittle, f.date as f_date FROM data_base.actor a\n"
                         + "join film_actor fa on fa.actor_id = a.actor_id\n" + "join film f on f.film_id = fa.film_id\n"
                         + "where a.actor_id = ?",
-                (rs, rowNum) -> new Film(rs.getInt("f_id"), rs.getString("f_tittle"), rs.getDate("f_date")), actorId);
+                (rs, rowNum) -> new Film(rs.getInt("f_id"), rs.getString("f_tittle"), rs.getDate("f_date")), actorId);*/
+        return entityManager.createNativeQuery(
+                "SELECT f.film_id as film_id, f.tittle as tittle, f.date as date FROM data_base.actor a\n"
+                        + "join film_actor fa on fa.actor_id = a.actor_id\n" + "join film f on f.film_id = fa.film_id\n"
+                        + "where a.actor_id = :actorId", Film.class).setParameter("actorId", actorId).getResultList();
     }
 
     @Override
@@ -108,12 +114,11 @@ public class ActorsRepository extends AbstractRepository<Actor> {
         return jdbcTemplate.queryForObject("SELECT count(*) FROM actor", Integer.class);
     }
 
+    //fixme ;(
     public List<Actor> findByContains(String name) {
-        return parameterJdbcTemplate.query("Select * from actor where name like :name ESCAPE '!'",
-                Collections.singletonMap("name", '%'+name + '%'),
-                (rs, rowNum) -> new Actor(rs.getInt("actor_id"),
-                        rs.getString("name"),
-                        rs.getString("year")));
+        return entityManager.createQuery("select a from Actor a join fetch a.films where a.name like :name ESCAPE '!'", Actor.class)
+                .setParameter("name",Collections.singletonMap("name", '%' + name + '%'))
+                .getResultList();
     }
 
     @Autowired

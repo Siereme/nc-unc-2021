@@ -1,43 +1,71 @@
 package com.example.app.model.genre;
 
-
 import com.example.app.model.IEntity;
+import com.example.app.model.film.Film;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /** Genre entity
  * @author Vasiliy, Sergey
  * */
+
+@Entity
+@Table(name = "genre")
+@NamedQueries({
+        @NamedQuery(name="Genre.findAllWithFilm",
+        query = "select distinct g from Genre g left join fetch g.films")
+})
 public class Genre implements IEntity {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "genre_id")
     private int id;
 
-    @NotBlank(message = "Title cannot be empty")
-    private String tittle;
-
-    @NotEmpty(message = "Film list cannot be empty")
-    List<Integer> films;
-
-    public Genre(){
-        tittle = "";
-        films = new ArrayList<>();
+    public Set<Film> getFilms() {
+        return films;
     }
 
+    public void setFilms(Set<Film> films) {
+        this.films = films;
+    }
+
+    @NotBlank(message = "Title cannot be empty")
+    @Column(name = "tittle")
+    private String tittle;
+
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "film_genre", joinColumns = @JoinColumn(name = "genre_id"),
+            inverseJoinColumns = @JoinColumn(name = "film_id"))
+    public Set<Film> films;
+
+    public Genre() {
+        tittle = "";
+    }
 
     public Genre(int id, String newGener) {
         this.id = id;
         tittle = newGener;
-        this.films = new ArrayList<>();
     }
 
-    public Genre(int id, String tittle, List<Integer> filmIds) {
+    public Genre(int id, String tittle, List<Film> filmIds) {
         this.id = id;
         this.tittle = tittle;
-        this.films = filmIds;
     }
 
     public int getId() {
@@ -54,18 +82,6 @@ public class Genre implements IEntity {
 
     public void setTittle(String tittle) {
         this.tittle = tittle;
-    }
-
-    public List<Integer> getFilms() {
-        return films;
-    }
-
-    public void addFilm(int filmId) {
-        this.films.add(filmId);
-    }
-
-    public void setFilms(List<Integer> films) {
-        this.films = films;
     }
 
     @Override

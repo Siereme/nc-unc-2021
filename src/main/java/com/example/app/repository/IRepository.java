@@ -1,5 +1,6 @@
 package com.example.app.repository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 /** Repository interface
@@ -12,6 +13,7 @@ public interface IRepository<T> {
      * */
     List<T> findAll();
 
+    @Transactional
     void add(T entity);
 
     void delete(int id);

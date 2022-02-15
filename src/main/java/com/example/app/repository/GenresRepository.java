@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.PersistenceContext;
 import java.sql.*;
 import java.util.*;
 
@@ -20,7 +21,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
     private final Logger logger = Logger.getLogger(GenresRepository.class.getName());
 
     public List<Genre> findAll() {
-        return find(null);
+        return entityManager.createNamedQuery("Genre.findAllWithFilm", Genre.class).getResultList();
     }
 
     public List<Genre> find(List<Integer> ids) {
@@ -28,16 +29,17 @@ public class GenresRepository extends AbstractRepository<Genre> {
             return Collections.emptyList();
         }
 
-        parameters.addValue("ids", ids);
-        return parameterJdbcTemplate.query("SELECT genre.genre_id, genre.tittle, film_genre.film_id "
-                + "FROM genre LEFT JOIN film_genre ON genre.genre_id=film_genre.genre_id "
-                + "WHERE genre.genre_id IN (:ids) OR COALESCE(:ids) IS NULL", parameters, new QueryRowMapper());
+        return entityManager.createNativeQuery("SELECT genre.genre_id, genre.tittle, film_genre.film_id "
+                        + "FROM genre LEFT JOIN film_genre ON genre.genre_id=film_genre.genre_id "
+                        + "WHERE genre.genre_id IN (:ids) OR COALESCE(:ids) IS NULL", Genre.class).setParameter("ids", ids)
+                .getResultList();
+
     }
 
     public final class QueryRowMapper implements ResultSetExtractor<List<Genre>> {
         @Override
         public List<Genre> extractData(ResultSet rs) throws SQLException, DataAccessException {
-            Map<Integer, Genre> genreMap = new HashMap<>();
+/*            Map<Integer, Genre> genreMap = new HashMap<>();
             Genre genre;
             while (rs.next()) {
                 int id = rs.getInt("genre.genre_id");
@@ -54,7 +56,8 @@ public class GenresRepository extends AbstractRepository<Genre> {
                     genre.addFilm(filmId);
                 }
             }
-            return new ArrayList<>(genreMap.values());
+            return new ArrayList<>(genreMap.values());*/
+            return null;
         }
     }
 
@@ -63,11 +66,9 @@ public class GenresRepository extends AbstractRepository<Genre> {
             return new ArrayList<>();
         }
 
-        parameters.addValue("titles", titles);
-        List<Integer> genreIds =
-                parameterJdbcTemplate.query("SELECT genre_id FROM genre WHERE tittle IN (:titles)", parameters,
-                        (rs, rowNum) -> rs.getInt("genre_id"));
-        return find(genreIds);
+        return entityManager.createNativeQuery("SELECT genre_id, tittle FROM genre WHERE tittle IN (:titles)",
+                Genre.class).setParameter("titles", titles).getResultList();
+
     }
 
     public List<Genre> findByFilms(List<Integer> ids) {
@@ -82,7 +83,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
     }
 
     public void add(Genre genre) {
-        KeyHolder holder = new GeneratedKeyHolder();
+      /*  KeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -93,7 +94,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
             }
         }, holder);
         int genreId = Objects.requireNonNull(holder.getKey()).intValue();
-        addEntitiesIds(genreId, genre.getFilms());
+        addEntitiesIds(genreId, genre.getFilms());*/
     }
 
     private void addEntitiesIds(int filmId, List<Integer> entityIds) {
@@ -146,7 +147,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
     }
 
     public void edit(Genre genre) {
-        jdbcTemplate.update("UPDATE genre set tittle=? WHERE genre_id=?", genre.getTittle(), genre.getId());
+/*        jdbcTemplate.update("UPDATE genre set tittle=? WHERE genre_id=?", genre.getTittle(), genre.getId());
 
         parameters.addValue("id", genre.getId());
         String query = "SELECT film_id FROM film_genre WHERE genre_id=:id";
@@ -156,17 +157,20 @@ public class GenresRepository extends AbstractRepository<Genre> {
         List<Integer> removeFilms = getEditEntitiesIds(genre.getFilms(), genres);
 
         deleteEntitiesIds(genre.getId(), removeFilms);
-        addEntitiesIds(genre.getId(), addFilms);
+        addEntitiesIds(genre.getId(), addFilms);*/
     }
 
     public void delete(int genreId) {
-        jdbcTemplate.update("DELETE FROM genre WHERE genre_id=?", genreId);
+        Genre genre = entityManager.find(Genre.class, genreId);
+        entityManager.getTransaction().begin();
+        entityManager.remove(genre);
+        entityManager.getTransaction().commit();
     }
 
     @Override
     public List<Genre> findByName(String name) {
-        return jdbcTemplate.query("Select * from genre where tittle = ?",
-                ((rs, rowNum) -> new Genre(rs.getInt("genre_id"), rs.getString("tittle"))));
+        return entityManager.createNativeQuery("Select genre_id, tittle from genre where tittle =: name", Genre.class)
+                .setParameter("name", name).getResultList();
     }
 
     @Override
@@ -176,8 +180,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
 
     @Override
     public List<Genre> findByContains(String name) {
-        return parameterJdbcTemplate.query("Select * from genre where genre.tittle like :name ESCAPE '!'",
-                Collections.singletonMap("name", '%' + name + '%'),
-                (rs, rowNum) -> new Genre(rs.getInt("genre_id"), rs.getString("tittle")));
+        return entityManager.createNativeQuery("Select * from genre where genre.tittle like :name ESCAPE '!'",
+                Genre.class).setParameter("name", Collections.singletonMap("name", '%' + name + '%')).getResultList();
     }
 }

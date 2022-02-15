@@ -1,8 +1,23 @@
 package com.example.app.model.film;
 
 import com.example.app.model.IEntity;
+import com.example.app.model.actor.Actor;
+import com.example.app.model.director.Director;
+import com.example.app.model.genre.Genre;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.*;
 import java.util.*;
 
@@ -11,111 +26,37 @@ import java.util.*;
  * @version 1.0
  * */
 
+@Entity
+@Table(name = "film")
+@NamedQueries({
+        @NamedQuery(name = "Film.findAllWithAll",
+        query = "SELECT distinct f from Film f "
+                + "left join fetch f.actors a "
+                + "left join fetch f.directors d "
+                + "left join fetch f.genres g"
+        ),
+        @NamedQuery(name = "Film.findById",
+        query = "SELECT distinct f FROM Film f "
+                + "left join fetch f.actors a "
+                + "left join fetch f.directors d "
+                + "left join fetch f.genres g "
+                + "where f.id = :id"
+        )
+})
 public class Film implements IEntity {
 
-    @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "film_id")
     private int id;
 
-    @NotBlank(message = "Tittle cannot be empty")
+    @Column(name = "tittle")
     private String tittle;
 
     @NotNull(message = "Date cannot be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Column(name = "date")
     private Date date;
-
-    @NotEmpty(message = "Genre list cannot be empty")
-    private List<Integer> genres;
-
-    @NotEmpty(message = "Director list cannot be empty")
-    private List<Integer> directors;
-
-    @NotEmpty(message = "Actor list cannot be empty")
-    private List<Integer> actors;
-
-    public List<Integer> getActors() {
-        return actors;
-    }
-
-    public void setActors(List<Integer> actors) {
-        this.actors = actors;
-    }
-
-    public void addActor(int actorId) {
-        this.actors.add(actorId);
-    }
-
-    public List<Integer> getDirectors() {
-        return directors;
-    }
-
-    public void addDirector(int directorId) {
-        this.directors.add(directorId);
-    }
-
-    public void setDirectors(List<Integer> directors) {
-        this.directors = directors;
-    }
-
-    public List<Integer> getGenres() {
-        return genres;
-    }
-
-    public void addGenre(int genreId) {
-        this.genres.add(genreId);
-    }
-
-    public void setGenres(List<Integer> newGenres) {
-        this.genres = newGenres;
-    }
-
-    public Film(){
-        tittle = "";
-        date = null;
-        genres = new LinkedList<>();
-        directors = new LinkedList<>();
-        actors = new LinkedList<>();
-    }
-
-    public Film(String newTittle){
-        tittle = newTittle;
-        date = new Date();
-        genres = new LinkedList<>();
-        directors = new LinkedList<>();
-        actors = new LinkedList<>();
-    }
-
-
-
-    public Film(String newTittle, Date newDate, List<Integer> newGenres, LinkedList<Integer> newDirectors,
-                LinkedList<Integer> newActors) {
-        tittle = newTittle;
-        date = newDate;
-        genres = newGenres;
-        directors = newDirectors;
-        actors = newActors;
-    }
-
-    public Film(int id, String tittle, Date date) {
-        this.id = id;
-        this.tittle = tittle;
-        this.date = date;
-        genres = new LinkedList<>();
-        directors = new LinkedList<>();
-        actors = new LinkedList<>();
-    }
-
-    public Film(int id, String tittle) {
-        this.id = id;
-        this.tittle = tittle;
-        this.date = null;
-        genres = new LinkedList<>();
-        directors = new LinkedList<>();
-        actors = new LinkedList<>();
-    }
-
-    public int getId() {
-        return this.id;
-    }
 
     public void setId(int id) {
         this.id = id;
@@ -134,6 +75,67 @@ public class Film implements IEntity {
     }
 
     public void setDate(Date date) {
-        this.date = new Date();
+        this.date = date;
+    }
+
+    public Set<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(Set<Actor> actors) {
+        this.actors = actors;
+    }
+
+    public Set<Director> getDirectors() {
+        return directors;
+    }
+
+    public void setDirectors(Set<Director> directors) {
+        this.directors = directors;
+    }
+
+    public Set<Genre> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
+    }
+
+    @NotEmpty(message = "Actor list cannot be empty")
+    @ManyToMany
+    @JoinTable(name = "film_actor",
+    joinColumns = @JoinColumn(name = "film_id"),
+            inverseJoinColumns = @JoinColumn(name = "actor_id"))
+    public Set<Actor> actors;
+
+    @NotEmpty(message = "Director list cannot be empty")
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(name = "film_director",
+            joinColumns = @JoinColumn(name = "film_id"),
+            inverseJoinColumns = @JoinColumn(name = "director_id"))
+    public Set<Director> directors;
+
+    @NotEmpty(message = "Genre list cannot be empty")
+    @ManyToMany
+    @JoinTable(name = "film_genre",
+            joinColumns = @JoinColumn(name = "film_id"),
+            inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    public Set<Genre> genres;
+
+    public Film(){
+
+    }
+
+    public Film(int film_id, String tittle, Date date){
+        this.id = film_id;
+        this.tittle = tittle;
+        this.date = date;
+    }
+
+
+    @Override
+    public int getId() {
+        return id;
     }
 }

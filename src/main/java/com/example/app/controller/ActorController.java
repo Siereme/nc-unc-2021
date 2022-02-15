@@ -19,6 +19,7 @@ import javax.validation.constraints.NotNull;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Validated
 @Controller
@@ -38,9 +39,9 @@ public class ActorController {
         model.addAttribute("actors", actorList);
         List<List<Film>> listListFilms = new LinkedList<>();
         for (Actor actor : actorList) {
-            Integer id = actor.getId();
-            List<Film> films = repository.findFilmsByActorId(id);
-            listListFilms.add(films);
+            Set<Film> filmSet = actor.getFilms();
+            List<Film> filmList = new LinkedList<>(filmSet);
+            listListFilms.add(filmList);
         }
         model.addAttribute("films", listListFilms);
         model.addAttribute("json", "../serialize/actors");
@@ -63,9 +64,9 @@ public class ActorController {
             model.addAttribute("actors", actorList);
             List<List<Film>> listListFilms = new LinkedList<>();
             for (Actor actor1 : actorList) {
-                Integer id = actor1.getId();
-                List<Film> films = repository.findFilmsByActorId(id);
-                listListFilms.add(films);
+                Set<Film> filmSet = actor1.getFilms();
+                List<Film> filmList1 = new LinkedList<>(filmSet);
+                listListFilms.add(filmList1);
             }
             model.addAttribute("films", listListFilms);
             model.addAttribute("json", "../serialize/actors");
@@ -75,7 +76,8 @@ public class ActorController {
     }
 
     @PostMapping(value = "/handle/{commandType}")
-    public String renderHandlePage(@ModelAttribute Actor actor, ModelMap model, @PathVariable @NotBlank String commandType) {
+    public String renderHandlePage(@ModelAttribute Actor actor, ModelMap model,
+                                   @PathVariable @NotBlank String commandType) {
         List<Film> films = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("filmList", films);
@@ -98,7 +100,7 @@ public class ActorController {
 
     @PostMapping(value = "/handle/add")
     public String add(@Validated @ModelAttribute Actor actor, BindingResult result, ModelMap map) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             map.addAttribute("result", result);
             return renderHandlePage(actor, map, "page-add");
         }
@@ -107,8 +109,8 @@ public class ActorController {
     }
 
     @PostMapping(value = "/handle/edit")
-    public String edit(@Validated @ModelAttribute Actor actor, BindingResult result, ModelMap map){
-        if(result.hasErrors()){
+    public String edit(@Validated @ModelAttribute Actor actor, BindingResult result, ModelMap map) {
+        if (result.hasErrors()) {
             map.addAttribute("result", result);
             return renderHandlePage(actor, map, "page-edit");
         }

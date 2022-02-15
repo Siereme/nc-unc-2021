@@ -1,37 +1,50 @@
 package com.example.app.repository;
 
-import com.example.app.model.role.Role;
 import com.example.app.model.user.User.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashSet;
+import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
+import java.math.BigInteger;
+import java.util.LinkedList;
 import java.util.List;
 
 @Repository
 public class UserRepository extends AbstractRepository<User> implements UserDetailsService {
+
+    @Lazy
+    @Autowired
+    private UserRepository userRepository;
+
     @Override
     public List<User> findAll() {
-        List<User> users = jdbcTemplate.query("SELECT * FROM user",
-                (rs, rowNum) -> new User(rs.getInt("user_id"), rs.getString("username"), rs.getString("password")));
-        for (User user : users) {
-            getRolesForUser(user);
-        }
-        return users;
+        return entityManager.createNamedQuery("User.findAllWithRoles", User.class).getResultList();
     }
 
     @Override
+    @Transactional
     public void add(User entity) {
-        jdbcTemplate.update("INSERT INTO user(username, password) VALUES(?, ?)", entity.getUsername(),
-                entity.getPassword());
+        entityManager.getTransaction().begin();
+        entityManager.persist(entity);
+        entityManager.getTransaction().commit();
+/*        jdbcTemplate.update("INSERT INTO user(username, password) VALUES(?, ?)", entity.getUsername(),
+                entity.getPassword());*/
     }
 
+    @Transactional
     @Override
     public void delete(int id) {
-        jdbcTemplate.update("DELETE FROM user WHERE user_id=?", id);
+        User user = entityManager.find(User.class, id);
+/*        entityManager.getTransaction().begin();
+        entityManager.remove(user);
+        entityManager.getTransaction().commit();*/
+        entityManager.remove(user);
     }
 
     @Override
@@ -41,19 +54,26 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
     }
 
     @Override
-    public List<User> findByName(String name) {
-        List<User> users = jdbcTemplate.query("SELECT * FROM data_base.user where username = ?",
-                (rs, rowNum) -> new User(rs.getInt("user_id"), rs.getString("username"), rs.getString("password")),
-                name);
-        for (User user : users) {
-            getRolesForUser(user);
+    public List<User> findByName(String username) {
+
+        // ?...
+        try {
+            // TODO
+            User user = (User) entityManager.createQuery(
+                            "select distinct u from User u left join fetch u.roles where u.username = :name")
+                    .setParameter("name", username).getResultList();
+            List<User> users = new LinkedList<>();
+            users.add(user);
+            return users;
+        } catch (NoResultException e) {
+            // или вернуть пустую коллекцию
+            return null;
         }
-        return users;
     }
 
     @Override
     public int size() {
-        return jdbcTemplate.queryForObject("SELECT count(*) FROM user", Integer.class);
+        return (int) entityManager.createNativeQuery("SELECT count(*) FROM user", Integer.class).getSingleResult();
     }
 
     @Override
@@ -63,28 +83,17 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
 
     public boolean saveUser(User user) {
         String userName = user.getUsername();
-        List<User> users = findByName(userName);
-        if (!users.isEmpty()) {
-            return false;
+        if (!(userRepository.isUserExist(userName))) {
+            String password = user.getPassword();
+
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String hashedPassword = passwordEncoder.encode(password);
+            user.setPassword(hashedPassword);
+
+            add(user);
+            return true;
         }
-
-        String password = user.getPassword();
-
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String hashedPassword = passwordEncoder.encode(password);
-        user.setPassword(hashedPassword);
-
-        add(user);
-        return true;
-    }
-
-    private void getRolesForUser(User user) {
-        int id = user.getId();
-        List<Role> roles = jdbcTemplate.query(
-                "SELECT r.role_id , r.name FROM data_base.role r join user_role ur on ur.role_id = r.role_id where user_id = ?",
-                ((rs, rowNum) -> new Role(rs.getInt("role_id"), rs.getString("name"))), id);
-        HashSet<Role> roleSet = new HashSet<>(roles);
-        user.setRoles(roleSet);
+        return false;
     }
 
     @Override
@@ -95,4 +104,13 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
         }
         return users.get(0);
     }
+
+    public boolean isUserExist(String userName) {
+        BigInteger count =
+                (BigInteger) entityManager.createNativeQuery("Select count(*) from user where username = :username")
+                        .setParameter("username", userName).getSingleResult();
+        // передаю спасибо https://stackoverflow.com/questions/31072498/how-to-check-if-a-biginteger-is-null
+        return !BigInteger.ZERO.equals(count);
+    }
+
 }

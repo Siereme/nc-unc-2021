@@ -4,6 +4,7 @@ import com.example.app.model.user.User.User;
 import com.example.app.repository.UserRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class RegistrationController {
     private final Logger logger = Logger.getLogger(RegistrationController.class.getName());
 
+    @Lazy
     @Autowired
     private UserRepository repository;
 
@@ -50,7 +52,7 @@ public class RegistrationController {
             return "registration";
         }
 
-        return "redirect:/";
+        return "redirect:/login";
     }
 
 

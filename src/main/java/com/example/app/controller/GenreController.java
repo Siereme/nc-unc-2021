@@ -22,8 +22,10 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Validated
@@ -36,8 +38,12 @@ public class GenreController {
     @GetMapping(value = "/all")
     public String get (ModelMap model){
         List<Genre> genres = repository.findAll();
-        List<List<Film>> films = genres.stream().map(genre -> filmsRepository.find(genre.getFilms())).collect(Collectors.toList());
-
+        List<List<Film>> films = new LinkedList<>();
+        for(Genre genre : genres){
+            Set<Film> filmSet = genre.films;
+            List<Film> filmList = new LinkedList<>(filmSet);
+            films.add(filmList);
+        }
         model.addAttribute("genres", genres);
         model.addAttribute("films", films);
         model.addAttribute("json", "../serialize/genres");
@@ -47,7 +53,7 @@ public class GenreController {
 
     @PostMapping(value="/find")
     public ModelAndView get (@RequestParam @NotBlank String tittle, ModelMap model){
-        List<Genre> genres = repository.findByContains(tittle);
+/*        List<Genre> genres = repository.findByContains(tittle);
 
         if(genres.size() > 0){
             List<List<Film>> films = genres.stream().map(genre -> filmsRepository.find(genre.getFilms())).collect(Collectors.toList());
@@ -56,7 +62,8 @@ public class GenreController {
             model.addAttribute("json", "../serialize/genres");
             return new ModelAndView("genres", model);
         }
-        return new ModelAndView("redirect:/genres/all");
+        return new ModelAndView("redirect:/genres/all");*/
+        return null;
     }
 
     @PostMapping(value = "/handle/{commandType}")
@@ -118,5 +125,4 @@ public class GenreController {
     private GenresRepository repository;
     @Autowired
     private FilmsRepository filmsRepository;
-
 }

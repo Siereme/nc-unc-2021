@@ -22,8 +22,7 @@ public class DirectorsRepository extends AbstractRepository<Director> {
     FilmsRepository filmsRepository;
 
     public List<Director> findAll() {
-        return jdbcTemplate.query("SELECT * FROM director",
-                (rs, rowNum) -> new Director(rs.getInt("director_id"), rs.getString("name"), rs.getString("year")));
+        return entityManager.createNamedQuery("Director.findAllWithFilm", Director.class).getResultList();
     }
 
     public List<Director> find(List<Integer> ids) {
@@ -44,7 +43,7 @@ public class DirectorsRepository extends AbstractRepository<Director> {
     }
 
     public void add(Director director) {
-        KeyHolder holder = new GeneratedKeyHolder();
+/*        KeyHolder holder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
@@ -59,11 +58,14 @@ public class DirectorsRepository extends AbstractRepository<Director> {
         Integer directorId = Objects.requireNonNull(holder.getKey()).intValue();
         for (Integer filmId : filmsId) {
             jdbcTemplate.update("INSERT INTO film_director(film_id, director_id) values (?,?)", filmId, directorId);
-        }
+        }*/
     }
 
     public void delete(int directorId) {
-        jdbcTemplate.update("DELETE FROM director WHERE director_id=?", directorId);
+        Director director = entityManager.find(Director.class, directorId);
+        entityManager.getTransaction().begin();
+        entityManager.remove(director);
+        entityManager.getTransaction().commit();
     }
 
     public void edit(Director director) {
@@ -92,12 +94,11 @@ public class DirectorsRepository extends AbstractRepository<Director> {
     }
 
     public List<Film> findFilmsByDirectorId(Integer directorId) {
-        return jdbcTemplate.query(
-                "SELECT f.film_id as f_id, f.tittle as f_tittle, f.date as f_date FROM data_base.director d\n"
-                        + "join film_director fa on fa.director_id = d.director_id\n"
-                        + "join film f on f.film_id = fa.film_id\n" + "where d.director_id = ?",
-                (rs, rowNum) -> new Film(rs.getInt("f_id"), rs.getString("f_tittle"), rs.getDate("f_date")),
-                directorId);
+        return entityManager.createNativeQuery(
+                        "SELECT f.film_id as film_id, f.tittle as tittle, f.date as date FROM data_base.director d\n"
+                                + "join film_director fa on fa.director_id = d.director_id\n"
+                                + "join film f on f.film_id = fa.film_id\n" + "where d.director_id = :directorId", Film.class)
+                .setParameter("directorId", directorId).getResultList();
     }
 
     @Override
@@ -108,9 +109,7 @@ public class DirectorsRepository extends AbstractRepository<Director> {
     @Override
     public List<Director> findByContains(String name) {
         return parameterJdbcTemplate.query("Select * from director where name like :name ESCAPE '!'",
-                Collections.singletonMap("name", '%'+name + '%'),
-                (rs, rowNum) -> new Director(rs.getInt("director_id"),
-                        rs.getString("name"),
-                        rs.getString("year")));
+                Collections.singletonMap("name", '%' + name + '%'),
+                (rs, rowNum) -> new Director(rs.getInt("director_id"), rs.getString("name"), rs.getString("year")));
     }
 }
