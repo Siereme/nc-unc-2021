@@ -9,9 +9,9 @@ import com.example.app.model.user.User.User;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        property = "type")
+//@JsonTypeInfo(
+//        use = JsonTypeInfo.Id.NAME,
+//        property = "type")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = User.class, name = "visitor"),
         @JsonSubTypes.Type(value = Genre.class, name = "genre"),
@@ -20,6 +20,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = Film.class, name = "film"),
     }
 )
-public interface IEntity {
+public interface IEntity{
     int getId();
 }

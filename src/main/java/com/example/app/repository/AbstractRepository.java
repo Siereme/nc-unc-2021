@@ -16,4 +16,5 @@ public abstract class AbstractRepository<T> implements IRepository<T> {
     protected NamedParameterJdbcTemplate parameterJdbcTemplate;
 
     protected MapSqlParameterSource parameters = new MapSqlParameterSource();
+
 }

@@ -44,6 +44,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 // to main page after successful log in
                 .defaultSuccessUrl("/films/all", true)
+//                .defaultSuccessUrl("/serialize/", true)
                 .permitAll()
                 .and()
                 .logout()

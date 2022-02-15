@@ -43,6 +43,7 @@ public class ActorController {
             listListFilms.add(films);
         }
         model.addAttribute("films", listListFilms);
+        model.addAttribute("json", "../serialize/actors");
         logger.info("show all actors");
         return "actors";
     }
@@ -67,6 +68,7 @@ public class ActorController {
                 listListFilms.add(films);
             }
             model.addAttribute("films", listListFilms);
+            model.addAttribute("json", "../serialize/actors");
             logger.info("show all actors");
             return new ModelAndView("actors", model);
         }

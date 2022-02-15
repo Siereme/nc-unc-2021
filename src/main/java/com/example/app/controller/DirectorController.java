@@ -44,6 +44,7 @@ public class DirectorController {
             listListFilms.add(films);
         }
         model.addAttribute("films", listListFilms);
+        model.addAttribute("json", "../serialize/directors");
         logger.info("show all directors");
         return "directors";
     }
@@ -68,6 +69,7 @@ public class DirectorController {
                 listListFilms.add(films);
             }
             model.addAttribute("films", listListFilms);
+            model.addAttribute("json", "../serialize/directors");
             logger.info("show all directors");
             return new ModelAndView("directors", model);
         }
@@ -116,7 +118,7 @@ public class DirectorController {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ModelAndView handleConstraintViolationException(ConstraintViolationException e) {
-        return new ModelAndView("redirect:/actors/all");
+        return new ModelAndView("redirect:/directors/all");
     }
 
 }
