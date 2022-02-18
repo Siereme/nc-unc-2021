@@ -1,11 +1,20 @@
 package com.app.model.director;
 
 import com.app.model.IEntity;
-import com.app.model.IParticipatesFilm;
-import com.app.model.film.Film;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.*;
+import com.app.model.film.Film;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
@@ -22,7 +31,7 @@ import java.util.Set;
         @NamedQuery(name="Director.findAllWithFilm",
                 query = "select distinct d from Director d left join fetch d.films")
 })
-public class Director implements IEntity, IParticipatesFilm {
+public class Director implements IEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,11 +55,7 @@ public class Director implements IEntity, IParticipatesFilm {
     private String year;
 
     @NotEmpty(message = "Film list cannot be empty")
-    @ManyToMany(cascade = {
-            CascadeType.ALL
-    })
-
-    @JsonBackReference
+    @ManyToMany
     @JoinTable(name = "film_director",
     joinColumns = @JoinColumn(name = "director_id"),
             inverseJoinColumns = @JoinColumn(name = "film_id"))
@@ -108,13 +113,5 @@ public class Director implements IEntity, IParticipatesFilm {
 
     public Set<Film> getFilms() {
         return films;
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        sb.append("ID: ").append(id).append(" ");
-        sb.append("Name: ").append(name).append(" ");
-        return new String(sb);
     }
 }

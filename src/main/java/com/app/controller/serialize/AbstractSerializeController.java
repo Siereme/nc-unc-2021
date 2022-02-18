@@ -12,15 +12,11 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.*;
 import java.util.List;
@@ -29,14 +25,16 @@ import java.util.stream.Collectors;
 @Validated
 public abstract class AbstractSerializeController<T extends IEntity> {
     private final Logger logger = Logger.getLogger(FilmController.class.getName());
-    protected String filePath;
-    protected AbstractRepository<T> repository;
+    private final String filePath;
+    private final AbstractRepository<T> repository;
 
-    protected abstract void getRepository();
-    protected abstract void getFilePath();
+    public AbstractSerializeController(AbstractRepository<T> repository, String filePath) {
+        this.repository = repository;
+        this.filePath = filePath;
+    }
+
     protected abstract TypeReference<List<T>> getRef();
     protected abstract String getRedirectPath();
-    protected abstract List<String> checkErrors(List<T> entityList);
 
     @RequestMapping(value = "/export")
     public ResponseEntity<Resource> exportJsonFile() throws IOException {
@@ -64,16 +62,9 @@ public abstract class AbstractSerializeController<T extends IEntity> {
     @RequestMapping("/import")
     public ModelAndView importJsonFile(@RequestParam("file") MultipartFile file) throws IOException {
         try {
-
             TypeReference<List<T>> typeReference = getRef();
             ByteArrayInputStream json = new ByteArrayInputStream(file.getBytes());
             List<T> fileEntityList = mapper.readerFor(typeReference).readValue(json);
-
-            List<String> errorMessages = checkErrors(fileEntityList);
-            if(errorMessages.size() > 0){
-                return new ModelAndView("redirect:" + getRedirectPath());
-            }
-
             List<T> entityList = repository.findAll();
 
             List<T> addEntityList =

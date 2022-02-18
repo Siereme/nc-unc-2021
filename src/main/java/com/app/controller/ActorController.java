@@ -1,9 +1,9 @@
 package com.app.controller;
 
 import com.app.model.actor.Actor;
-import com.app.model.film.Film;
 import com.app.repository.ActorsRepository;
 import com.app.repository.FilmsRepository;
+import com.app.model.film.Film;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
