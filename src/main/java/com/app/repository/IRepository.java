@@ -1,6 +1,7 @@
 package com.app.repository;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 /** Repository interface
@@ -16,8 +17,10 @@ public interface IRepository<T> {
     @Transactional
     void add(T entity);
 
+    @Transactional
     void delete(int id);
 
+    @Transactional
     void edit(T entity);
 
     List<T> findByName(String name);

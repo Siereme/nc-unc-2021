@@ -85,7 +85,8 @@ public class ActorController {
             model.addAttribute("eventType", "handle/add");
         }
         if (Objects.equals(commandType, "page-edit")) {
-            List<Film> actorFilmList = repository.findFilmsByActorId(actor.getId());
+            Set<Film> filmSet = actor.getFilms();
+            List<Film> actorFilmList = new LinkedList<>(filmSet);
             // we delete entities that are both there and there in films
             // ( удаляем из списка всех фильмов те, в которых актер участвовал)
             films.removeIf(film -> actorFilmList.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));

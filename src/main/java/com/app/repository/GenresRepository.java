@@ -6,6 +6,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.*;
 import java.util.*;
@@ -74,7 +75,13 @@ public class GenresRepository extends AbstractRepository<Genre> {
     }
 
     public void add(Genre genre) {
+        entityManager.persist(genre);
+    }
 
+    @Override
+    public void delete(int id) {
+        Genre genre = entityManager.find(Genre.class, id);
+        entityManager.remove(genre);
     }
 
     private void addEntitiesIds(int filmId, List<Integer> entityIds) {
@@ -120,13 +127,6 @@ public class GenresRepository extends AbstractRepository<Genre> {
 
     public void edit(Genre genre) {
 
-    }
-
-    public void delete(int genreId) {
-        Genre genre = entityManager.find(Genre.class, genreId);
-        entityManager.getTransaction().begin();
-        entityManager.remove(genre);
-        entityManager.getTransaction().commit();
     }
 
     @Override

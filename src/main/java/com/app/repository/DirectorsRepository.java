@@ -28,14 +28,13 @@ public class DirectorsRepository extends AbstractRepository<Director> {
     }
 
     public void add(Director director) {
-
+        entityManager.persist(director);
     }
 
-    public void delete(int directorId) {
-        Director director = entityManager.find(Director.class, directorId);
-        entityManager.getTransaction().begin();
+    @Override
+    public void delete(int id) {
+        Director director = entityManager.find(Director.class, id);
         entityManager.remove(director);
-        entityManager.getTransaction().commit();
     }
 
     public void edit(Director director) {

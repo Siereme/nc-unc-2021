@@ -1,14 +1,7 @@
 package com.app.repository;
 
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.annotation.Resource;
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -26,6 +19,13 @@ public abstract class AbstractRepository<T> implements IRepository<T> {
 
     @PersistenceContext
     protected EntityManager entityManager;
+
+/*    @Override
+    @Transactional
+    public void delete(int id) {
+        IEntity entity = entityManager.find(IEntity.class, id);
+        entityManager.remove(entity);
+    }*/
 
 /*    @Autowired
     protected SessionFactory sessionFactory;

@@ -65,13 +65,21 @@ public class FilmController implements WebMvcConfigurer {
             throws ConstraintViolationException {
         List<Film> findFilm = repository.findByContains(tittle);
         if (findFilm.size() > 0) {
-/*            List<List<Genre>> genres = findFilm.stream().map(film -> genresRepository.find(film.getGenres())).collect(Collectors.toList());
-            List<List<Actor>> actors = findFilm.stream().map(film -> actorsRepository.find(film.getActors())).collect(Collectors.toList());
-            List<List<Director>> directors = findFilm.stream().map(film -> directorsRepository.find(film.getDirectors())).collect(Collectors.toList());
+            List<List<Genre>> genres = new LinkedList<>();
+            List<List<Actor>> actors = new LinkedList<>();
+            List<List<Director>> directors = new LinkedList<>();
+            for (Film film : findFilm) {
+                List<Genre> genreList = new LinkedList<>(film.genres);
+                genres.add(genreList);
+                List<Actor> actorList = new LinkedList<>(film.actors);
+                actors.add(actorList);
+                List<Director> directorList = new LinkedList<>(film.directors);
+                directors.add(directorList);
+            }
             model.addAttribute("films", findFilm);
             model.addAttribute("genres", genres);
             model.addAttribute("actors", actors);
-            model.addAttribute("directors", directors);*/
+            model.addAttribute("directors", directors);
 
             model.addAttribute("json", "../serialize/films");
             return new ModelAndView("films", model);
@@ -93,10 +101,10 @@ public class FilmController implements WebMvcConfigurer {
             model.addAttribute("eventType", "add");
         }
         if (Objects.equals(commandType, "page-edit")) {
-            ;
-            List<Genre> genreFilmList = genresRepository.findByFilms(Collections.singletonList(film.getId()));
-            List<Actor> actorFilmList = actorsRepository.findByFilms(Collections.singletonList(film.getId()));
-            List<Director> directorFilmList = directorsRepository.findByFilms(Collections.singletonList(film.getId()));
+
+            List<Genre> genreFilmList = new LinkedList<>(film.genres);
+            List<Actor> actorFilmList = new LinkedList<>(film.actors);
+            List<Director> directorFilmList = new LinkedList<>(film.directors);
 
             genreList.removeIf(
                     genre -> genreFilmList.stream().anyMatch(filmGenre -> filmGenre.getId() == genre.getId()));

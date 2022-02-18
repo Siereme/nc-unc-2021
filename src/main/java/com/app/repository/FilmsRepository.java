@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
+import java.math.BigInteger;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -82,11 +83,18 @@ public class FilmsRepository extends AbstractRepository<Film> {
     }
 
     public List<Film> findByGenres(List<Integer> ids) {
-        return null;
+        return entityManager.createQuery("select f from Film f where f.genres in :ids").setParameter("ids", ids)
+                .getResultList();
     }
 
     public void add(Film film) {
+        entityManager.persist(film);
+    }
 
+    @Override
+    public void delete(int id) {
+        Film film = entityManager.find(Film.class, id);
+        entityManager.remove(film);
     }
 
     private void addEntitiesIds(String entity, int filmId, List<Integer> entityIds) {
@@ -138,21 +146,17 @@ public class FilmsRepository extends AbstractRepository<Film> {
 
     }
 
-    public void delete(int filmId) {
-        Film film = entityManager.find(Film.class, filmId);
-        entityManager.getTransaction().begin();
-        entityManager.remove(film);
-        entityManager.getTransaction().commit();
-    }
-
     @Override
     public List<Film> findByName(String name) {
-        return null;
+        return entityManager.createQuery("select f from Film f where f.tittle =:name").setParameter("name", name)
+                .getResultList();
     }
 
     @Override
     public int size() {
-        return 0;
+        BigInteger bigInteger =
+                (BigInteger) entityManager.createNativeQuery("select count(*) from film").getSingleResult();
+        return bigInteger.intValue();
     }
 
     @Override

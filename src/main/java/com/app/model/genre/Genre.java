@@ -52,7 +52,7 @@ public class Genre implements IEntity {
     @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "film_genre", joinColumns = @JoinColumn(name = "genre_id"),
             inverseJoinColumns = @JoinColumn(name = "film_id"))
-    public Set<Film> films;
+    private Set<Film> films;
 
     public Genre() {
         tittle = "";

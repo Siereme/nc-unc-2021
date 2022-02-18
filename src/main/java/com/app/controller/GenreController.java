@@ -28,13 +28,12 @@ import java.util.Set;
 public class GenreController {
     private final Logger logger = Logger.getLogger(FilmController.class.getName());
 
-
     @GetMapping(value = "/all")
-    public String get (ModelMap model){
+    public String get(ModelMap model) {
         List<Genre> genres = repository.findAll();
         List<List<Film>> films = new LinkedList<>();
-        for(Genre genre : genres){
-            Set<Film> filmSet = genre.films;
+        for (Genre genre : genres) {
+            Set<Film> filmSet = genre.getFilms();
             List<Film> filmList = new LinkedList<>(filmSet);
             films.add(filmList);
         }
@@ -45,31 +44,36 @@ public class GenreController {
         return "genres";
     }
 
-    @PostMapping(value="/find")
-    public ModelAndView get (@RequestParam @NotBlank String tittle, ModelMap model){
-/*        List<Genre> genres = repository.findByContains(tittle);
+    @PostMapping(value = "/find")
+    public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
+        List<Genre> genres = repository.findByContains(tittle);
 
-        if(genres.size() > 0){
-            List<List<Film>> films = genres.stream().map(genre -> filmsRepository.find(genre.getFilms())).collect(Collectors.toList());
+        if (genres.size() > 0) {
+            List<List<Film>> films = new LinkedList<>();
+            for (Genre genre : genres) {
+                films.add(new LinkedList<>(genre.getFilms()));
+            }
             model.addAttribute("genres", genres);
             model.addAttribute("films", films);
             model.addAttribute("json", "../serialize/genres");
             return new ModelAndView("genres", model);
         }
-        return new ModelAndView("redirect:/genres/all");*/
-        return null;
+        return new ModelAndView("redirect:/genres/all");
     }
 
     @PostMapping(value = "/handle/{commandType}")
-    public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model, @Valid @PathVariable String commandType){
+    public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model,
+                                   @Valid @PathVariable String commandType) {
         List<Film> filmList = filmsRepository.findAll();
-        if(Objects.equals(commandType, "page-add")){
+        if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("filmList", filmList);
             model.addAttribute("modalTitle", "Add");
             model.addAttribute("eventType", "add");
         }
-        if(Objects.equals(commandType, "page-edit")){;
-            List<Film> filmGenreList = filmsRepository.findByGenres(Collections.singletonList(genre.getId()));
+        if (Objects.equals(commandType, "page-edit")) {
+
+            Set<Film> filmSet = genre.getFilms();
+            List<Film> filmGenreList = new LinkedList<>(filmSet);
 
             filmList.removeIf(film -> filmGenreList.stream().anyMatch(filmGenre -> filmGenre.getId() == film.getId()));
 
@@ -83,14 +87,14 @@ public class GenreController {
     }
 
     @PostMapping(value = "/handle/delete/{id}")
-    public ModelAndView delete(@Valid @PathVariable int id){
+    public ModelAndView delete(@Valid @PathVariable int id) {
         repository.delete(id);
         return new ModelAndView("redirect:/genres/all");
     }
 
     @PostMapping(value = "/handle/add")
     public String add(@Validated @ModelAttribute Genre genre, BindingResult result, ModelMap map) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             map.addAttribute("result", result);
             return renderHandlePage(genre, map, "page-add");
         }
@@ -98,10 +102,9 @@ public class GenreController {
         return "redirect:/genres/all";
     }
 
-
     @PostMapping(value = "/handle/edit")
     public String edit(@Validated @ModelAttribute Genre genre, BindingResult result, ModelMap map) {
-        if(result.hasErrors()){
+        if (result.hasErrors()) {
             map.addAttribute("result", result);
             return renderHandlePage(genre, map, "page-edit");
         }
@@ -113,7 +116,6 @@ public class GenreController {
     public ModelAndView handleConstraintViolationException(ConstraintViolationException e) {
         return new ModelAndView("redirect:/genres/all");
     }
-
 
     @Autowired
     private GenresRepository repository;

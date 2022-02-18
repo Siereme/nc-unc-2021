@@ -54,7 +54,6 @@ public class Director implements IEntity {
     @Column(name = "year")
     private String year;
 
-    @NotEmpty(message = "Film list cannot be empty")
     @ManyToMany
     @JoinTable(name = "film_director",
     joinColumns = @JoinColumn(name = "director_id"),

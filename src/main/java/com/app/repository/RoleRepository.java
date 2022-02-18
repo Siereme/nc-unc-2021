@@ -19,7 +19,8 @@ public class RoleRepository extends AbstractRepository<Role> {
 
     @Override
     public void delete(int id) {
-        // jdbcTemplate.update("delete from role where role_id = ?", id);
+        Role role = entityManager.find(Role.class, id);
+        entityManager.remove(role);
     }
 
     @Override
@@ -29,8 +30,8 @@ public class RoleRepository extends AbstractRepository<Role> {
 
     @Override
     public List<Role> findByName(String name) {
-        return (List<Role>) entityManager.createNativeQuery("Select role_id, name from role where name = :name", Role.class)
-                .setParameter("name", name).getResultList();
+        return (List<Role>) entityManager.createNativeQuery("Select role_id, name from role where name = :name",
+                Role.class).setParameter("name", name).getResultList();
     }
 
     @Override

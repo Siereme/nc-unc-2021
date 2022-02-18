@@ -8,7 +8,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
+
 import org.springframework.transaction.annotation.Transactional;
+
 import java.math.BigInteger;
 import java.util.List;
 
@@ -31,10 +33,10 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
                 entity.getPassword());*/
     }
 
-    @Transactional
     @Override
     public void delete(int id) {
-        entityManager.remove(entityManager.find(User.class, id));
+        User user = entityManager.find(User.class, id);
+        entityManager.remove(user);
     }
 
     @Override

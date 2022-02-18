@@ -64,9 +64,9 @@ public class DirectorController {
             model.addAttribute("directors", directorList);
             List<List<Film>> listListFilms = new LinkedList<>();
             for (Director director : directorList) {
-                Integer id = director.getId();
-                List<Film> films = repository.findFilmsByDirectorId(id);
-                listListFilms.add(films);
+                Set<Film> filmSet = director.getFilms();
+                List<Film> filmList = new LinkedList<>(filmSet);
+                listListFilms.add(filmList);
             }
             model.addAttribute("films", listListFilms);
             model.addAttribute("json", "../serialize/directors");
@@ -85,7 +85,8 @@ public class DirectorController {
             model.addAttribute("eventType", "handle/add");
         }
         if (Objects.equals(commandType, "page-edit")) {
-            List<Film> filmsByDirectorId = repository.findFilmsByDirectorId(director.getId());
+            Set<Film> filmSet = director.getFilms();
+            List<Film> filmsByDirectorId = new LinkedList<>(filmSet);
             films.removeIf(film -> filmsByDirectorId.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
             model.addAttribute("filmList", films);
             model.addAttribute("directorFilmList", filmsByDirectorId);
