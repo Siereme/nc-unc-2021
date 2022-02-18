@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +26,7 @@ import java.util.Set;
 @Controller
 @RequestMapping(path = "/actors")
 public class ActorController {
-    private final Logger logger = Logger.getLogger(ActorController.class.getName());
+    private static final Logger logger = Logger.getLogger(ActorController.class);
 
     @Autowired
     private ActorsRepository repository;
@@ -35,13 +36,11 @@ public class ActorController {
 
     @GetMapping(value = "/all")
     public String get(ModelMap model) {
-        List<Actor> actorList = repository.findAll();
+        Collection<Actor> actorList = repository.findAll();
         model.addAttribute("actors", actorList);
-        List<List<Film>> listListFilms = new LinkedList<>();
+        Collection<Collection<Film>> listListFilms = new LinkedList<>();
         for (Actor actor : actorList) {
-            Set<Film> filmSet = actor.getFilms();
-            List<Film> filmList = new LinkedList<>(filmSet);
-            listListFilms.add(filmList);
+            listListFilms.add(actor.getFilms());
         }
         model.addAttribute("films", listListFilms);
         model.addAttribute("json", "../serialize/actors");
@@ -57,16 +56,14 @@ public class ActorController {
 
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
-        List<Actor> actorList = repository.findByContains(tittle);
+        Collection<Actor> actorList = repository.findByContains(tittle);
         if (actorList == null || actorList.isEmpty()) {
             return new ModelAndView("redirect:/actors/all");
         } else {
             model.addAttribute("actors", actorList);
-            List<List<Film>> listListFilms = new LinkedList<>();
+            Collection<Collection<Film>> listListFilms = new LinkedList<>();
             for (Actor actor1 : actorList) {
-                Set<Film> filmSet = actor1.getFilms();
-                List<Film> filmList1 = new LinkedList<>(filmSet);
-                listListFilms.add(filmList1);
+                listListFilms.add(actor1.getFilms());
             }
             model.addAttribute("films", listListFilms);
             model.addAttribute("json", "../serialize/actors");
@@ -78,15 +75,14 @@ public class ActorController {
     @PostMapping(value = "/handle/{commandType}")
     public String renderHandlePage(@ModelAttribute Actor actor, ModelMap model,
                                    @PathVariable @NotBlank String commandType) {
-        List<Film> films = filmsRepository.findAll();
+        Collection<Film> films = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("filmList", films);
             model.addAttribute("modalTitle", "Add");
             model.addAttribute("eventType", "handle/add");
         }
         if (Objects.equals(commandType, "page-edit")) {
-            Set<Film> filmSet = actor.getFilms();
-            List<Film> actorFilmList = new LinkedList<>(filmSet);
+            Collection<Film> actorFilmList = actor.getFilms();
             // we delete entities that are both there and there in films
             // ( удаляем из списка всех фильмов те, в которых актер участвовал)
             films.removeIf(film -> actorFilmList.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));

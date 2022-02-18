@@ -13,7 +13,7 @@ import java.util.*;
 
 @Repository
 public class GenresRepository extends AbstractRepository<Genre> {
-    private final Logger logger = Logger.getLogger(GenresRepository.class.getName());
+    private static final Logger logger = Logger.getLogger(GenresRepository.class);
 
     public List<Genre> findAll() {
         return entityManager.createNamedQuery("Genre.findAllWithFilm", Genre.class).getResultList();

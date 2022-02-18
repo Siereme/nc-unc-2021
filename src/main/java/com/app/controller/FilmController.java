@@ -21,6 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -31,25 +32,19 @@ import java.util.Set;
 @Controller
 @RequestMapping(path = "/films")
 public class FilmController implements WebMvcConfigurer {
-    private final Logger logger = Logger.getLogger(FilmController.class.getName());
+    private static final Logger logger = Logger.getLogger(FilmController.class);
     private final String filePath = "src/main/resources/database/Films.json";
 
     @GetMapping(value = "/all")
     public String get(ModelMap model) {
-        List<Film> films = repository.findAll();
-        List<List<Genre>> genres = new LinkedList<>();
-        List<List<Director>> directors = new LinkedList<>();
-        List<List<Actor>> actors = new LinkedList<>();
+        Collection<Film> films = repository.findAll();
+        Collection<Collection<Genre>> genres = new LinkedList<>();
+        Collection<Collection<Director>> directors = new LinkedList<>();
+        Collection<Collection<Actor>> actors = new LinkedList<>();
         for (Film film : films) {
-            Set<Genre> genreSet = film.genres;
-            List<Genre> genreList = new LinkedList<>(genreSet);
-            genres.add(genreList);
-            Set<Director> directorSet = film.directors;
-            List<Director> directorList = new LinkedList<>(directorSet);
-            directors.add(directorList);
-            Set<Actor> actorSet = film.actors;
-            List<Actor> actorList = new LinkedList<>(actorSet);
-            actors.add(actorList);
+            genres.add(film.getGenres());
+            directors.add(film.getDirectors());
+            actors.add(film.getActors());
         }
         model.addAttribute("films", films);
         model.addAttribute("genres", genres);
@@ -63,18 +58,15 @@ public class FilmController implements WebMvcConfigurer {
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam("tittle") @NotBlank String tittle, ModelMap model)
             throws ConstraintViolationException {
-        List<Film> findFilm = repository.findByContains(tittle);
+        Collection<Film> findFilm = repository.findByContains(tittle);
         if (findFilm.size() > 0) {
-            List<List<Genre>> genres = new LinkedList<>();
-            List<List<Actor>> actors = new LinkedList<>();
-            List<List<Director>> directors = new LinkedList<>();
+            Collection<Collection<Genre>> genres = new LinkedList<>();
+            Collection<Collection<Actor>> actors = new LinkedList<>();
+            Collection<Collection<Director>> directors = new LinkedList<>();
             for (Film film : findFilm) {
-                List<Genre> genreList = new LinkedList<>(film.genres);
-                genres.add(genreList);
-                List<Actor> actorList = new LinkedList<>(film.actors);
-                actors.add(actorList);
-                List<Director> directorList = new LinkedList<>(film.directors);
-                directors.add(directorList);
+                genres.add(film.getGenres());
+                actors.add(film.getActors());
+                directors.add(film.getDirectors());
             }
             model.addAttribute("films", findFilm);
             model.addAttribute("genres", genres);
@@ -90,9 +82,9 @@ public class FilmController implements WebMvcConfigurer {
     @PostMapping(value = "/handle/{commandType}")
     public String renderHandlePage(@ModelAttribute Film film, ModelMap model,
                                    @PathVariable("commandType") @NotBlank String commandType) {
-        List<Genre> genreList = genresRepository.findAll();
-        List<Actor> actorList = actorsRepository.findAll();
-        List<Director> directorList = directorsRepository.findAll();
+        Collection<Genre> genreList = genresRepository.findAll();
+        Collection<Actor> actorList = actorsRepository.findAll();
+        Collection<Director> directorList = directorsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("genreList", genreList);
             model.addAttribute("actorList", actorList);
@@ -102,9 +94,9 @@ public class FilmController implements WebMvcConfigurer {
         }
         if (Objects.equals(commandType, "page-edit")) {
 
-            List<Genre> genreFilmList = new LinkedList<>(film.genres);
-            List<Actor> actorFilmList = new LinkedList<>(film.actors);
-            List<Director> directorFilmList = new LinkedList<>(film.directors);
+            Collection<Genre> genreFilmList = film.getGenres();
+            Collection<Actor> actorFilmList = film.getActors();
+            Collection<Director> directorFilmList = film.getDirectors();
 
             genreList.removeIf(
                     genre -> genreFilmList.stream().anyMatch(filmGenre -> filmGenre.getId() == genre.getId()));

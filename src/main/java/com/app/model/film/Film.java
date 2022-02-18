@@ -108,21 +108,21 @@ public class Film implements IEntity {
     @JoinTable(name = "film_actor",
     joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "actor_id"))
-    public Set<Actor> actors;
+    private Set<Actor> actors;
 
     // @NotEmpty(message = "Director list cannot be empty")
     @ManyToMany
     @JoinTable(name = "film_director",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "director_id"))
-    public Set<Director> directors;
+    private Set<Director> directors;
 
     // @NotEmpty(message = "Genre list cannot be empty")
     @ManyToMany
     @JoinTable(name = "film_genre",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    public Set<Genre> genres;
+    private Set<Genre> genres;
 
     public Film(){
 

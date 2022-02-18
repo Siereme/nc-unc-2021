@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class UserController {
 
-    private final Logger logger = Logger.getLogger(UserController.class.getName());
+    private static final Logger logger = Logger.getLogger(UserController.class);
 
     @Autowired
     private UserRepository repository;

@@ -93,7 +93,10 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
         List<Genre> checkGenres = genresRepository.find(genreIds);
 
         List<Integer> actorIds = getEntityIds(deserializeActors);
-        List<Actor> checkActors = actorsRepository.find(actorIds);
+        /*List<Actor> checkActors = actorsRepository.find(actorIds);
+*/
+        // TODO
+        List<Actor> checkActors = new LinkedList<>();
 
         List<Integer> directorIds = getEntityIds(deserializeDirectors);
         List<Director> checkDirectors = directorsRepository.find(directorIds);
