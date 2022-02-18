@@ -7,12 +7,14 @@
     <title>Films Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="<c:url value="/resources/bootstrap-5.0.2-dist/js/bootstrap.bundle.min.js" />"></script>
     <link href="<c:url value="/src/main/webapp/resources/css/style.css" />" rel="stylesheet">
 </head>
 <body>
 <jsp:include page="header.jsp">
     <jsp:param name="json" value="${json}"/>
 </jsp:include>
+
 <div class="films-grid-container">
     <table class="table text-center">
         <thead class="bg-light">
@@ -98,5 +100,37 @@
         </tbody>
     </table>
 </div>
+<c:if test="${serializeErrors}">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Errors</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <ul class="list-group">
+                  <c:forEach var="error" items="${serializeErrors}">
+                      <li><p class="list-group-item text-danger m-0">${error}</p></li>
+                  </c:forEach>
+              </ul>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+        window.onload = () => {
+            if(document.getElementById("exampleModal")){
+                var myModal = new bootstrap.Modal(document.getElementById("exampleModal"));
+                myModal.show()
+            }
+        }
+    </script>
+</c:if>
+
 </body>
 </html>

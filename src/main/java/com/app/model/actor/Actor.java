@@ -1,19 +1,11 @@
 package com.app.model.actor;
 
 import com.app.model.IEntity;
+import com.app.model.IParticipatesFilm;
 import com.app.model.film.Film;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 /** Actor entity
@@ -26,7 +18,7 @@ import java.util.Set;
         @NamedQuery(name="Actor.findAllWithFilm",
                 query = "select distinct a from Actor a left join fetch a.films")
 })
-public class Actor implements IEntity {
+public class Actor implements IEntity, IParticipatesFilm {
 
     public void setId(int id) {
         this.id = id;
@@ -47,6 +39,7 @@ public class Actor implements IEntity {
     @Column(name = "year")
     private String year;
 
+    @JsonBackReference
     @ManyToMany
     @JoinTable(name = "film_actor",
     joinColumns = @JoinColumn(name = "actor_id"),
@@ -99,9 +92,17 @@ public class Actor implements IEntity {
     public String getYear() {
         return this.year;
     }
-
     public Set<Film> getFilms(){
         return films;
+    }
+
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("ID: ").append(id).append(" ");
+        sb.append("Name: ").append(name).append(" ");
+        return new String(sb);
     }
 
 }

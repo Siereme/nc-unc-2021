@@ -1,8 +1,8 @@
 package com.app.controller;
 
-import com.app.repository.FilmsRepository;
 import com.app.model.film.Film;
 import com.app.model.genre.Genre;
+import com.app.repository.FilmsRepository;
 import com.app.repository.GenresRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Validated
 @Controller

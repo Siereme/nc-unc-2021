@@ -2,11 +2,11 @@ package com.app.controller;
 
 import com.app.model.actor.Actor;
 import com.app.model.director.Director;
+import com.app.model.film.Film;
 import com.app.model.genre.Genre;
+import com.app.repository.ActorsRepository;
 import com.app.repository.DirectorsRepository;
 import com.app.repository.FilmsRepository;
-import com.app.model.film.Film;
-import com.app.repository.ActorsRepository;
 import com.app.repository.GenresRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +18,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
-@Validated
 @Controller
 @RequestMapping(path = "/films")
 public class FilmController implements WebMvcConfigurer {

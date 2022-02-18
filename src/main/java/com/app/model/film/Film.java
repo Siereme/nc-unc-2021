@@ -6,20 +6,11 @@ import com.app.model.director.Director;
 import com.app.model.genre.Genre;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.validation.constraints.*;
-import java.util.*;
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
+import java.util.Set;
 
 /** Film entity
  * @author Vasiliy, Sergey
@@ -46,7 +37,7 @@ import java.util.*;
 public class Film implements IEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "film_id")
     private int id;
 
@@ -102,6 +93,7 @@ public class Film implements IEntity {
         this.genres = genres;
     }
 
+//    @JsonManagedReference
     @NotEmpty(message = "Actor list cannot be empty")
     @ManyToMany
     @JoinTable(name = "film_actor",
@@ -109,13 +101,15 @@ public class Film implements IEntity {
             inverseJoinColumns = @JoinColumn(name = "actor_id"))
     public Set<Actor> actors;
 
+//    @JsonManagedReference
     @NotEmpty(message = "Director list cannot be empty")
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "film_director",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "director_id"))
     public Set<Director> directors;
 
+//    @JsonManagedReference
     @NotEmpty(message = "Genre list cannot be empty")
     @ManyToMany
     @JoinTable(name = "film_genre",
@@ -137,5 +131,14 @@ public class Film implements IEntity {
     @Override
     public int getId() {
         return id;
+    }
+
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("ID: ").append(id).append(" ");
+        sb.append("Tittle: ").append(tittle).append(" ");
+        return new String(sb);
     }
 }

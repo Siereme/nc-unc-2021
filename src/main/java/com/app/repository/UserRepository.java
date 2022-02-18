@@ -1,6 +1,8 @@
 package com.app.repository;
 
 import com.app.model.user.User.User;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,13 +10,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.NoResultException;
-import org.springframework.transaction.annotation.Transactional;
+import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.List;
 
-@Transactional
 @Repository
 public class UserRepository extends AbstractRepository<User> implements UserDetailsService {
+
+    @Lazy
+    @Autowired
+    private UserRepository userRepository;
+
 
     @Override
     public List<User> findAll() {
@@ -34,26 +40,50 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
     @Transactional
     @Override
     public void delete(int id) {
-        entityManager.remove(entityManager.find(User.class, id));
+        User user = entityManager.find(User.class, id);
+/*        entityManager.getTransaction().begin();
+        entityManager.remove(user);
+        entityManager.getTransaction().commit();*/
+        entityManager.remove(user);
     }
 
     @Override
     public void edit(User entity) {
-
+        jdbcTemplate.update("UPDATE user SET username=?, password=? WHERE user_id=?", entity.getUsername(),
+                entity.getPassword());
     }
 
     @Override
     public List<User> findByName(String username) {
 
         try {
-            return (List<User>) entityManager.createQuery(
+            List<User> users =  entityManager.createQuery(
                             "select distinct u from User u left join fetch u.roles where u.username = :name")
                     .setParameter("name", username).getResultList();
+            return users;
         } catch (NoResultException e) {
             // или вернуть пустую коллекцию
             return null;
         }
     }
+
+//    @Override
+//    public List<User> findByName(String username) {
+//
+//        // ?...
+//        try {
+//            // TODO
+//            User user = (User) entityManager.createQuery(
+//                            "select distinct u from User u left join fetch u.roles where u.username = :name")
+//                    .setParameter("name", username).getResultList();
+//            List<User> users = new LinkedList<>();
+//            users.add(user);
+//            return users;
+//        } catch (NoResultException e) {
+//            // или вернуть пустую коллекцию
+//            return null;
+//        }
+//    }
 
     @Override
     public int size() {
@@ -67,7 +97,7 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
 
     public boolean saveUser(User user) {
         String userName = user.getUsername();
-        if (!(isUserExist(userName))) {
+        if (!(userRepository.isUserExist(userName))) {
             String password = user.getPassword();
 
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
