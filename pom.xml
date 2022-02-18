@@ -145,16 +145,6 @@
 			<version>${hibernate-version}</version>
 		</dependency>
 		<!--END Hibernate -->
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<version>1.4</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-			<version>2.2.6.RELEASE</version>
-		</dependency>
     </dependencies>
 
 
