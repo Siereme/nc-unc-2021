@@ -1,5 +1,6 @@
 package com.app.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -31,26 +32,33 @@ public class SpringConfig {
         }
     }*/
 
+    /*    private Properties hibernateProperties() throws IOException {
+            Properties hibernateProp = new Properties();
+            hibernateProp.load(new FileInputStream(new File("C:\\IDEA_Projects\\nc-unc-2021\\target\\classes\\META-INF\\persistence.xml")));
+            return hibernateProp;
+        }
 
-/*    private Properties hibernateProperties() throws IOException {
-        Properties hibernateProp = new Properties();
-        hibernateProp.load(new FileInputStream(new File("C:\\IDEA_Projects\\nc-unc-2021\\target\\classes\\META-INF\\persistence.xml")));
-        return hibernateProp;
-    }
+        @Bean
+        public SessionFactory sessionFactory() throws IOException {
+            LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+            sessionFactoryBean.setPackagesToScan("com.app.model");
+            sessionFactoryBean.setHibernateProperties(hibernateProperties());
+            sessionFactoryBean.afterPropertiesSet();
+            return sessionFactoryBean.getObject();
+        }
 
-    @Bean
-    public SessionFactory sessionFactory() throws IOException {
-        LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
-        sessionFactoryBean.setPackagesToScan("com.app.model");
-        sessionFactoryBean.setHibernateProperties(hibernateProperties());
-        sessionFactoryBean.afterPropertiesSet();
-        return sessionFactoryBean.getObject();
-    }
+        @Bean
+        public PlatformTransactionManager transactionManager() throws IOException {
+            return new HibernateTransactionManager();
+        }*/
+    @Value("${spring.datasource.url}")
+    private String url;
 
-    @Bean
-    public PlatformTransactionManager transactionManager() throws IOException {
-        return new HibernateTransactionManager();
-    }*/
+    @Value("${spring.datasource.username}")
+    private String username;
+
+    @Value("${spring.datasource.password}")
+    private String password;
 
     @Bean
     public DataSource dataSource() {
@@ -65,14 +73,12 @@ public class SpringConfig {
         dataSource.setValidationQuery("SELECT 1");
         return dataSource;*/
         try {
-            SimpleDriverDataSource dataSource =
-                    new SimpleDriverDataSource();
-            Class<? extends Driver> driver =
-                    (Class<? extends Driver>) Class.forName("com.mysql.jdbc.Driver");
+            SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+            Class<? extends Driver> driver = (Class<? extends Driver>) Class.forName("com.mysql.jdbc.Driver");
             dataSource.setDriverClass(driver);
-            dataSource.setUrl("jdbc:mysql://localhost:3306/data_base");
-            dataSource.setUsername("root");
-            dataSource.setPassword("ubuntu");
+            dataSource.setUrl(url);
+            dataSource.setUsername(username);
+            dataSource.setPassword(password);
             return dataSource;
         } catch (Exception e) {
             return null;
@@ -148,8 +154,7 @@ public class SpringConfig {
 
     @Bean
     public EntityManagerFactory entityManagerFactory() {
-        LocalContainerEntityManagerFactoryBean factoryBean =
-                new LocalContainerEntityManagerFactoryBean();
+        LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
         factoryBean.setPackagesToScan("com.app.model");
         factoryBean.setDataSource(dataSource());
         factoryBean.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
