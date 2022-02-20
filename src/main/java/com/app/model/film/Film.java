@@ -4,20 +4,10 @@ import com.app.model.IEntity;
 import com.app.model.actor.Actor;
 import com.app.model.director.Director;
 import com.app.model.genre.Genre;
+import com.fasterxml.jackson.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.*;
 
@@ -41,6 +31,13 @@ import java.util.*;
                 + "left join fetch f.directors d "
                 + "left join fetch f.genres g "
                 + "where f.id = :id"
+        ),
+        @NamedQuery(name = "Film.findAllWithAllByIds",
+                query = "SELECT distinct f from Film f "
+                        + "left join fetch f.actors a "
+                        + "left join fetch f.directors d "
+                        + "left join fetch f.genres g "
+                        + "where f.id in :ids"
         )
 })
 public class Film implements IEntity {
@@ -103,21 +100,22 @@ public class Film implements IEntity {
         this.genres = genres;
     }
 
-    // @NotEmpty(message = "Actor list cannot be empty")
+
+    @JsonIgnoreProperties(value = "films", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_actor",
-    joinColumns = @JoinColumn(name = "film_id"),
+            joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "actor_id"))
     private Set<Actor> actors;
 
-    // @NotEmpty(message = "Director list cannot be empty")
+    @JsonIgnoreProperties(value = "films", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_director",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "director_id"))
     private Set<Director> directors;
 
-    // @NotEmpty(message = "Genre list cannot be empty")
+    @JsonIgnoreProperties(value = "films", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_genre",
             joinColumns = @JoinColumn(name = "film_id"),
@@ -128,8 +126,7 @@ public class Film implements IEntity {
 
     }
 
-    public Film(int film_id, String tittle, Date date){
-        this.id = film_id;
+    public Film(String tittle, Date date){
         this.tittle = tittle;
         this.date = date;
     }
@@ -138,5 +135,29 @@ public class Film implements IEntity {
     @Override
     public int getId() {
         return id;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Objects.hashCode(id);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object object){
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Film film = (Film) object;
+        return getId() == film.getId();
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("ID: ").append(id).append(" ");
+        sb.append("Tittle: ").append(tittle).append(" ");
+        return new String(sb);
     }
 }

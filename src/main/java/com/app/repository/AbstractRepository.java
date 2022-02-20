@@ -20,6 +20,8 @@ public abstract class AbstractRepository<T> implements IRepository<T> {
     @PersistenceContext
     protected EntityManager entityManager;
 
+    public abstract T findById(int id);
+
 /*    @Override
     @Transactional
     public void delete(int id) {

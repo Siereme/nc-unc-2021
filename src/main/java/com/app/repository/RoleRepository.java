@@ -45,4 +45,9 @@ public class RoleRepository extends AbstractRepository<Role> {
     public List<Role> findByContains(String name) {
         return null;
     }
+
+    @Override
+    public Role findById(int id) {
+        return null;
+    }
 }

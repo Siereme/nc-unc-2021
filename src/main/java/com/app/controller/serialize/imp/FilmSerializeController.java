@@ -59,22 +59,6 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
     }
 
 
-    private List<Integer> getEntityIds(List<? extends IEntity> entityList){
-        return entityList.stream()
-                .map(IEntity::getId)
-                .distinct()
-                .collect(Collectors.toList());
-    }
-
-    private List<String> getErrorMessages(List<Integer> entityIds, List<? extends IEntity> deserializeEntities, List<? extends IEntity> checkEntities){
-        return entityIds.stream()
-                .filter(id -> checkEntities.stream().noneMatch(entity -> id == entity.getId()))
-                .map(id -> deserializeEntities.stream().filter(entity -> id == entity.getId()).findAny().orElse(null))
-                .filter(Objects::nonNull)
-                .map(entity -> entity.getClass().getSimpleName() + " " + entity.toString() + " " + "is not found")
-                .collect(Collectors.toList());
-    }
-
     @Override
     protected List<String> checkErrors(List<Film> filmList) {
         List<String> errors = new LinkedList<>();
@@ -93,11 +77,7 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
         List<Genre> checkGenres = genresRepository.find(genreIds);
 
         List<Integer> actorIds = getEntityIds(deserializeActors);
-        /*List<Actor> checkActors = actorsRepository.find(actorIds);
-*/
-        // TODO
-        List<Actor> checkActors = new LinkedList<>();
-
+        List<Actor> checkActors = actorsRepository.find(actorIds);
         List<Integer> directorIds = getEntityIds(deserializeDirectors);
         List<Director> checkDirectors = directorsRepository.find(directorIds);
 
@@ -109,7 +89,7 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
             List<String> errorActorsMessages = getErrorMessages(actorIds, deserializeActors, checkActors);
             errors.addAll(errorActorsMessages);
         }
-        if(actorIds.size() != checkActors.size()){
+        if(directorIds.size() != checkDirectors.size()){
             List<String> errorActorsMessages = getErrorMessages(directorIds, deserializeDirectors, checkDirectors);
             errors.addAll(errorActorsMessages);
         }
