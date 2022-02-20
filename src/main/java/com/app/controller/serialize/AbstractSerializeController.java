@@ -12,18 +12,17 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.transaction.Transactional;
 import java.io.*;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Validated
@@ -38,6 +37,24 @@ public abstract class AbstractSerializeController<T extends IEntity> {
     protected abstract String getRedirectPath();
     protected abstract List<String> checkErrors(List<T> entityList);
 
+    protected List<Integer> getEntityIds(List<? extends IEntity> entityList){
+        return entityList.stream()
+                .map(IEntity::getId)
+                .distinct()
+                .collect(Collectors.toList());
+    }
+
+    protected List<String> getErrorMessages(List<Integer> entityIds, List<? extends IEntity> deserializeEntities, List<? extends IEntity> checkEntities){
+        return entityIds.stream()
+                .filter(id -> checkEntities.stream().noneMatch(entity -> id == entity.getId()))
+                .map(id -> deserializeEntities.stream().filter(entity -> id == entity.getId()).findAny().orElse(null))
+                .filter(Objects::nonNull)
+                .map(entity -> entity.getClass().getSimpleName() + " " + entity.toString() + " " + "is not found")
+                .collect(Collectors.toList());
+    }
+
+
+    @Transactional
     @RequestMapping(value = "/export")
     public ResponseEntity<Resource> exportJsonFile() throws IOException {
         List<T> entityList = repository.findAll();
@@ -61,6 +78,7 @@ public abstract class AbstractSerializeController<T extends IEntity> {
                 .body(resource);
     }
 
+    @Transactional
     @RequestMapping("/import")
     public ModelAndView importJsonFile(@RequestParam("file") MultipartFile file) throws IOException {
         try {
@@ -76,22 +94,14 @@ public abstract class AbstractSerializeController<T extends IEntity> {
 
             List<T> entityList = repository.findAll();
 
-            List<T> addEntityList =
-                    fileEntityList.stream().filter(
-                            fileEntity -> entityList.stream().allMatch(entity -> entity.getId() != fileEntity.getId())
-                    ).collect(Collectors.toList());
+            List<T> addEntityList = new LinkedList<>(fileEntityList);
+            addEntityList.removeAll(entityList);
 
-            List<T> editEntityList =
-                    fileEntityList.stream().filter(
-                            fileEntity -> addEntityList.stream().allMatch(entity -> entity.getId() != fileEntity.getId())
-                    ).collect(Collectors.toList());
+            List<T> editEntityList = new LinkedList<>(fileEntityList);
+            editEntityList.removeAll(addEntityList);
 
-            if(!addEntityList.isEmpty()){
-                addEntityList.forEach(repository::add);
-            }
-            if(!editEntityList.isEmpty()){
-                editEntityList.forEach(repository::edit);
-            }
+            addEntityList.forEach(repository::add);
+            editEntityList.forEach(repository::edit);
         } catch (Exception ex){
             logger.error(ex);
         }

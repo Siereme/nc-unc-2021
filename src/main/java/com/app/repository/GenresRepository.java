@@ -24,36 +24,11 @@ public class GenresRepository extends AbstractRepository<Genre> {
             return Collections.emptyList();
         }
 
-        return entityManager.createNativeQuery("SELECT genre.genre_id, genre.tittle, film_genre.film_id "
-                        + "FROM genre LEFT JOIN film_genre ON genre.genre_id=film_genre.genre_id "
-                        + "WHERE genre.genre_id IN (:ids) OR COALESCE(:ids) IS NULL", Genre.class).setParameter("ids", ids)
+        return entityManager.createNamedQuery("Genre.findAllWithFilmByIds")
+                .setParameter("ids", ids)
                 .getResultList();
 
-    }
 
-    public final class QueryRowMapper implements ResultSetExtractor<List<Genre>> {
-        @Override
-        public List<Genre> extractData(ResultSet rs) throws SQLException, DataAccessException {
-/*            Map<Integer, Genre> genreMap = new HashMap<>();
-            Genre genre;
-            while (rs.next()) {
-                int id = rs.getInt("genre.genre_id");
-                genre = genreMap.get(id);
-                if (genre == null) {
-                    genre = new Genre();
-                    genre.setId(id);
-                    genre.setTittle(rs.getString("genre.tittle"));
-                    genre.setFilms(new ArrayList<>());
-                    genreMap.put(id, genre);
-                }
-                int filmId = rs.getInt("film_genre.film_id");
-                if (filmId > 0) {
-                    genre.addFilm(filmId);
-                }
-            }
-            return new ArrayList<>(genreMap.values());*/
-            return null;
-        }
     }
 
     public List<Genre> findByTitles(List<String> titles) {
@@ -66,14 +41,6 @@ public class GenresRepository extends AbstractRepository<Genre> {
 
     }
 
-    public List<Genre> findByFilms(List<Integer> ids) {
-        if (ids == null || ids.size() < 1) {
-            return new ArrayList<>();
-        }
-
-        return null;
-    }
-
     public void add(Genre genre) {
         entityManager.persist(genre);
     }
@@ -84,49 +51,9 @@ public class GenresRepository extends AbstractRepository<Genre> {
         entityManager.remove(genre);
     }
 
-    private void addEntitiesIds(int filmId, List<Integer> entityIds) {
-
-    }
-
-    private void deleteEntitiesIds(int filmId, List<Integer> entityIds) {
-
-    }
-
-    private final static class BatchEntitiesSetter implements BatchPreparedStatementSetter {
-
-        private final int genreId;
-        private final List<Integer> entityIds;
-
-        public BatchEntitiesSetter(int genreId, List<Integer> entityIds) {
-            this.genreId = genreId;
-            this.entityIds = entityIds;
-        }
-
-        @Override
-        public void setValues(PreparedStatement ps, int i) throws SQLException {
-            ps.setInt(1, entityIds.get(i));
-            ps.setInt(2, genreId);
-        }
-
-        @Override
-        public int getBatchSize() {
-            return entityIds.size();
-        }
-    }
-
-    private List<Integer> getEditEntitiesIds(List<Integer> editIds, List<Integer> ids) {
-        List<Integer> editList = new ArrayList<>();
-        for (int id : ids) {
-            boolean isContains = editIds.stream().anyMatch(editId -> id == editId);
-            if (!isContains) {
-                editList.add(id);
-            }
-        }
-        return editList;
-    }
 
     public void edit(Genre genre) {
-
+        entityManager.merge(genre);
     }
 
     @Override

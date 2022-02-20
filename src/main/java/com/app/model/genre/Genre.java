@@ -1,9 +1,9 @@
 package com.app.model.genre;
 
 import com.app.model.IEntity;
+import com.app.model.actor.Actor;
 import com.app.model.film.Film;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,12 +28,15 @@ import java.util.Set;
 @Table(name = "genre")
 @NamedQueries({
         @NamedQuery(name="Genre.findAllWithFilm",
-        query = "select distinct g from Genre g left join fetch g.films")
+        query = "select distinct g from Genre g left join fetch g.films"),
+        @NamedQuery(name="Genre.findAllWithFilmByIds",
+                query = "select distinct g from Genre g left join fetch g.films where g.id in :ids")
 })
+
 public class Genre implements IEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "genre_id")
     private int id;
 
@@ -49,7 +52,7 @@ public class Genre implements IEntity {
     @Column(name = "tittle")
     private String tittle;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany
     @JoinTable(name = "film_genre", joinColumns = @JoinColumn(name = "genre_id"),
             inverseJoinColumns = @JoinColumn(name = "film_id"))
     private Set<Film> films;
@@ -85,15 +88,11 @@ public class Genre implements IEntity {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        Genre genre = (Genre) o;
-        return Objects.equals(tittle, genre.tittle);
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Genre genre = (Genre) object;
+        return getId() == genre.getId();
     }
 
     @Override
@@ -104,8 +103,8 @@ public class Genre implements IEntity {
     @Override
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        sb.append("ID: ").append(id).append("\n");
-        sb.append("Tittle: ").append(tittle).append("\n");
+        sb.append("ID: ").append(id).append(" ");
+        sb.append("Tittle: ").append(tittle).append(" ");
         return new String(sb);
     }
 

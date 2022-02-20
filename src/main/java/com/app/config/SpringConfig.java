@@ -71,8 +71,8 @@ public class SpringConfig {
                     (Class<? extends Driver>) Class.forName("com.mysql.jdbc.Driver");
             dataSource.setDriverClass(driver);
             dataSource.setUrl("jdbc:mysql://localhost:3306/data_base");
-            dataSource.setUsername("root");
-            dataSource.setPassword("ubuntu");
+            dataSource.setUsername("user");
+            dataSource.setPassword("8528");
             return dataSource;
         } catch (Exception e) {
             return null;

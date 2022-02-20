@@ -3,17 +3,7 @@ package com.app.model.actor;
 import com.app.model.IEntity;
 import com.app.model.film.Film;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Set;
 
 /** Actor entity
@@ -24,8 +14,11 @@ import java.util.Set;
 @Table(name = "actor")
 @NamedQueries({
         @NamedQuery(name="Actor.findAllWithFilm",
-                query = "select distinct a from Actor a left join fetch a.films")
-})
+                query = "select distinct a from Actor a left join fetch a.films"),
+        @NamedQuery(name="Actor.findAllWithFilmByIds",
+                        query = "select distinct a from Actor a left join fetch a.films where a.id in :ids")
+    }
+)
 public class Actor implements IEntity {
 
     public void setId(int id) {
@@ -37,7 +30,7 @@ public class Actor implements IEntity {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "actor_id")
     private int id;
 
@@ -102,6 +95,23 @@ public class Actor implements IEntity {
 
     public Set<Film> getFilms(){
         return films;
+    }
+
+
+    @Override
+    public boolean equals(Object object){
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Actor actor = (Actor) object;
+        return getId() == actor.getId();
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("ID: ").append(id).append(" ");
+        sb.append("Name: ").append(name).append(" ");
+        return new String(sb);
     }
 
 }

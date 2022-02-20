@@ -16,7 +16,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,12 +28,15 @@ import java.util.Set;
 @Table(name = "director")
 @NamedQueries({
         @NamedQuery(name="Director.findAllWithFilm",
-                query = "select distinct d from Director d left join fetch d.films")
+                query = "select distinct d from Director d left join fetch d.films"),
+        @NamedQuery(name="Director.findAllWithFilmByIds",
+                query = "select distinct d from Director d left join fetch d.films where d.id in :ids")
 })
+
 public class Director implements IEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "director_id")
     private int id;
 
@@ -112,5 +114,22 @@ public class Director implements IEntity {
 
     public Set<Film> getFilms() {
         return films;
+    }
+
+
+    @Override
+    public boolean equals(Object object){
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Director director = (Director) object;
+        return getId() == director.getId();
+    }
+
+    @Override
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("ID: ").append(id).append(" ");
+        sb.append("Name: ").append(name).append(" ");
+        return new String(sb);
     }
 }
