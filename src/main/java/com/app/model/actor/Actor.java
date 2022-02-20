@@ -1,9 +1,13 @@
 package com.app.model.actor;
 
+import com.app.config.converter.imp.IdToFilmConverter;
 import com.app.model.IEntity;
 import com.app.model.film.Film;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import java.util.Objects;
 import java.util.Set;
 
 /** Actor entity
@@ -16,7 +20,12 @@ import java.util.Set;
         @NamedQuery(name="Actor.findAllWithFilm",
                 query = "select distinct a from Actor a left join fetch a.films"),
         @NamedQuery(name="Actor.findAllWithFilmByIds",
-                        query = "select distinct a from Actor a left join fetch a.films where a.id in :ids")
+                        query = "select distinct a from Actor a left join fetch a.films where a.id in :ids"),
+        @NamedQuery(name = "Actor.findById",
+                query = "SELECT distinct a FROM Actor a "
+                        + "left join fetch a.films f "
+                        + "where a.id = :id"
+        )
     }
 )
 public class Actor implements IEntity {
@@ -30,7 +39,7 @@ public class Actor implements IEntity {
     }
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "actor_id")
     private int id;
 
@@ -40,6 +49,9 @@ public class Actor implements IEntity {
     @Column(name = "year")
     private String year;
 
+    @NotEmpty(message = "Film list cannot be empty")
+    @Convert(converter = IdToFilmConverter.class)
+    @JsonIgnoreProperties(value = "actors", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_actor",
     joinColumns = @JoinColumn(name = "actor_id"),
@@ -65,21 +77,21 @@ public class Actor implements IEntity {
         this.year = "";
     }
 
-    public Actor(int actor_id, String name) {
-        this.id = actor_id;
-        this.name = name;
-    }
+//    public Actor(int actor_id, String name) {
+//        this.id = actor_id;
+//        this.name = name;
+//    }
 
     public Actor(String name, String year) {
         this.name = name;
         this.year = year;
     }
 
-    public Actor(int actor_id, String name, String year) {
-        this.id = actor_id;
-        this.name = name;
-        this.year = year;
-    }
+//    public Actor(int actor_id, String name, String year) {
+//        this.id = actor_id;
+//        this.name = name;
+//        this.year = year;
+//    }
 
     public int getId() {
         return this.id;
@@ -97,6 +109,14 @@ public class Actor implements IEntity {
         return films;
     }
 
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Objects.hashCode(id);
+        return result;
+    }
 
     @Override
     public boolean equals(Object object){

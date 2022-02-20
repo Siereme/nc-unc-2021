@@ -1,5 +1,6 @@
 package com.app.repository;
 
+import com.app.model.actor.Actor;
 import com.app.model.director.Director;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,11 @@ public class DirectorsRepository extends AbstractRepository<Director> {
 
     public List<Director> findAll() {
         return entityManager.createNamedQuery("Director.findAllWithFilm", Director.class).getResultList();
+    }
+
+    @Override
+    public Director findById(int id) {
+        return entityManager.createNamedQuery("Director.findById", Director.class).setParameter("id", id).getSingleResult();
     }
 
     public List<Director> find(List<Integer> ids) {
@@ -52,4 +58,5 @@ public class DirectorsRepository extends AbstractRepository<Director> {
     public List<Director> findByContains(String name) {
         return null;
     }
+
 }

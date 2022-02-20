@@ -3,6 +3,7 @@ package com.app.model.director;
 import com.app.model.IEntity;
 
 import com.app.model.film.Film;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /** Director entity
@@ -30,13 +32,18 @@ import java.util.Set;
         @NamedQuery(name="Director.findAllWithFilm",
                 query = "select distinct d from Director d left join fetch d.films"),
         @NamedQuery(name="Director.findAllWithFilmByIds",
-                query = "select distinct d from Director d left join fetch d.films where d.id in :ids")
+                query = "select distinct d from Director d left join fetch d.films where d.id in :ids"),
+        @NamedQuery(name = "Director.findById",
+                query = "SELECT distinct d FROM Director d "
+                        + "left join fetch d.films f "
+                        + "where d.id = :id"
+        )
 })
 
 public class Director implements IEntity {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "director_id")
     private int id;
 
@@ -56,6 +63,7 @@ public class Director implements IEntity {
     @Column(name = "year")
     private String year;
 
+    @JsonIgnoreProperties(value = "directors", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_director",
     joinColumns = @JoinColumn(name = "director_id"),
@@ -74,15 +82,14 @@ public class Director implements IEntity {
         this.films = new HashSet<>();
     }
 
-    public Director(int id, String name) {
-        this.id = id;
-        this.name = name;
-        this.year = "";
-        this.films = new HashSet<>();
-    }
+//    public Director(int id, String name) {
+//        this.id = id;
+//        this.name = name;
+//        this.year = "";
+//        this.films = new HashSet<>();
+//    }
 
-    public Director(int id, String name, String year) {
-        this.id = id;
+    public Director(String name, String year) {
         this.name = name;
         this.year = year;
         this.films = new HashSet<>();
@@ -116,6 +123,14 @@ public class Director implements IEntity {
         return films;
     }
 
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Objects.hashCode(id);
+        return result;
+    }
 
     @Override
     public boolean equals(Object object){

@@ -23,6 +23,8 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
         return entityManager.createNamedQuery("User.findAllWithRoles", User.class).getResultList();
     }
 
+
+
     @Override
     @Transactional
     public void add(User entity) {
@@ -99,4 +101,8 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
         return !BigInteger.ZERO.equals(count);
     }
 
+    @Override
+    public User findById(int id) {
+        return null;
+    }
 }

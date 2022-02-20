@@ -19,6 +19,11 @@ public class GenresRepository extends AbstractRepository<Genre> {
         return entityManager.createNamedQuery("Genre.findAllWithFilm", Genre.class).getResultList();
     }
 
+    @Override
+    public Genre findById(int id) {
+        return entityManager.createNamedQuery("Genre.findById", Genre.class).setParameter("id", id).getSingleResult();
+    }
+
     public List<Genre> find(List<Integer> ids) {
         if (ids != null && ids.size() < 1) {
             return Collections.emptyList();

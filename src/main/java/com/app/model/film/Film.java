@@ -7,17 +7,7 @@ import com.app.model.genre.Genre;
 import com.fasterxml.jackson.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.*;
 
@@ -50,14 +40,10 @@ import java.util.*;
                         + "where f.id in :ids"
         )
 })
-@JsonIdentityInfo(
-        scope = Film.class,
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Film implements IEntity {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "film_id")
     private int id;
 
@@ -114,30 +100,22 @@ public class Film implements IEntity {
         this.genres = genres;
     }
 
-    @JsonIdentityInfo(
-            scope = Actor.class,
-            generator = ObjectIdGenerators.PropertyGenerator.class,
-            property = "id")
+
+    @JsonIgnoreProperties(value = "films", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_actor",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "actor_id"))
     private Set<Actor> actors;
 
-    @JsonIdentityInfo(
-            scope = Director.class,
-            generator = ObjectIdGenerators.PropertyGenerator.class,
-            property = "id")
+    @JsonIgnoreProperties(value = "films", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_director",
             joinColumns = @JoinColumn(name = "film_id"),
             inverseJoinColumns = @JoinColumn(name = "director_id"))
     private Set<Director> directors;
 
-    @JsonIdentityInfo(
-            scope = Genre.class,
-            generator = ObjectIdGenerators.PropertyGenerator.class,
-            property = "id")
+    @JsonIgnoreProperties(value = "films", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_genre",
             joinColumns = @JoinColumn(name = "film_id"),
@@ -148,8 +126,7 @@ public class Film implements IEntity {
 
     }
 
-    public Film(int film_id, String tittle, Date date){
-        this.id = film_id;
+    public Film(String tittle, Date date){
         this.tittle = tittle;
         this.date = date;
     }
@@ -160,7 +137,13 @@ public class Film implements IEntity {
         return id;
     }
 
-
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Objects.hashCode(id);
+        return result;
+    }
 
     @Override
     public boolean equals(Object object){

@@ -3,6 +3,7 @@ package com.app.model.genre;
 import com.app.model.IEntity;
 import com.app.model.actor.Actor;
 import com.app.model.film.Film;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,13 +31,18 @@ import java.util.Set;
         @NamedQuery(name="Genre.findAllWithFilm",
         query = "select distinct g from Genre g left join fetch g.films"),
         @NamedQuery(name="Genre.findAllWithFilmByIds",
-                query = "select distinct g from Genre g left join fetch g.films where g.id in :ids")
+                query = "select distinct g from Genre g left join fetch g.films where g.id in :ids"),
+        @NamedQuery(name = "Genre.findById",
+                query = "SELECT distinct g FROM Genre g "
+                        + "left join fetch g.films f "
+                        + "where g.id = :id"
+        )
 })
 
 public class Genre implements IEntity {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "genre_id")
     private int id;
 
@@ -52,6 +58,7 @@ public class Genre implements IEntity {
     @Column(name = "tittle")
     private String tittle;
 
+    @JsonIgnoreProperties(value = "genres", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_genre", joinColumns = @JoinColumn(name = "genre_id"),
             inverseJoinColumns = @JoinColumn(name = "film_id"))
@@ -61,13 +68,11 @@ public class Genre implements IEntity {
         tittle = "";
     }
 
-    public Genre(int id, String newGener) {
-        this.id = id;
+    public Genre(String newGener) {
         tittle = newGener;
     }
 
-    public Genre(int id, String tittle, List<Film> filmIds) {
-        this.id = id;
+    public Genre(String tittle, List<Film> filmIds) {
         this.tittle = tittle;
     }
 
@@ -97,7 +102,10 @@ public class Genre implements IEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(tittle);
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + Objects.hashCode(id);
+        return result;
     }
 
     @Override

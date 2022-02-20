@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.model.film.Film;
+import org.hibernate.Hibernate;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.ResultSetExtractor;
