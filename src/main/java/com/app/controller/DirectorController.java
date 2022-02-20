@@ -76,6 +76,8 @@ public class DirectorController {
     public String renderHandlePage(@ModelAttribute Director director, ModelMap model,
                                    @PathVariable @NotBlank String commandType) {
         List<Film> films = filmsRepository.findAll();
+        int id = director.getId();
+        director = repository.findById(id);
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("filmList", films);
             model.addAttribute("modalTitle", "Add");

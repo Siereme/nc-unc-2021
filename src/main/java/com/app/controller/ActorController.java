@@ -76,6 +76,8 @@ public class ActorController {
     public String renderHandlePage(@ModelAttribute Actor actor, ModelMap model,
                                    @PathVariable @NotBlank String commandType) {
         Collection<Film> films = filmsRepository.findAll();
+        int id = actor.getId();
+        actor = repository.findById(id);
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("filmList", films);
             model.addAttribute("modalTitle", "Add");

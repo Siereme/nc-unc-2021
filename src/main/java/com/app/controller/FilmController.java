@@ -85,6 +85,8 @@ public class FilmController implements WebMvcConfigurer {
         Collection<Genre> genreList = genresRepository.findAll();
         Collection<Actor> actorList = actorsRepository.findAll();
         Collection<Director> directorList = directorsRepository.findAll();
+        int id = film.getId();
+        film = repository.findById(id);
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("genreList", genreList);
             model.addAttribute("actorList", actorList);

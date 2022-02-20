@@ -14,7 +14,7 @@ public class RoleRepository extends AbstractRepository<Role> {
 
     @Override
     public void add(Role entity) {
-        // jdbcTemplate.update("insert into role(role_id, name) VALUES (?, ?)", entity.getId(), entity.getName());
+
     }
 
     @Override
@@ -25,7 +25,7 @@ public class RoleRepository extends AbstractRepository<Role> {
 
     @Override
     public void edit(Role entity) {
-        // jdbcTemplate.update("update role set role_id = ?, name = ?", entity.getId(), entity.getName());
+
     }
 
     @Override

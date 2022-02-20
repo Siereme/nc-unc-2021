@@ -85,6 +85,7 @@
                     <form action="handle/page-edit" method="post">
                         <input type="hidden" name="id" value="${film.getId()}"/>
                         <input type="hidden" name="tittle" value="${film.getTittle()}"/>
+                        <input type="hidden" name="data" value="${film.getDate()}">
                         <input type="submit" class="btn btn-outline-dark" value="Edit"/>
                     </form>
                 </td>

@@ -63,6 +63,8 @@ public class GenreController {
     @PostMapping(value = "/handle/{commandType}")
     public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model,
                                    @Valid @PathVariable String commandType) {
+        int id = genre.getId();
+        genre = repository.findById(id);
         Collection<Film> filmList = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("filmList", filmList);
