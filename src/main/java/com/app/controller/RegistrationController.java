@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class RegistrationController {
-    private final Logger logger = Logger.getLogger(RegistrationController.class.getName());
+    private static final Logger logger = Logger.getLogger(RegistrationController.class);
 
     @Lazy
     @Autowired

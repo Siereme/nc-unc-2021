@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Validated
 public abstract class AbstractSerializeController<T extends IEntity> {
-    private final Logger logger = Logger.getLogger(FilmController.class.getName());
+    private static final Logger logger = Logger.getLogger(FilmController.class);
     protected String filePath;
     protected AbstractRepository<T> repository;
 

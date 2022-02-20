@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class AdminController {
-    private final Logger logger = Logger.getLogger(AdminController.class.getName());
+    private static final Logger logger = Logger.getLogger(AdminController.class);
 
     @Autowired
     private UserRepository repository;

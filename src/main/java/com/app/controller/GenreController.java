@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,16 +27,14 @@ import java.util.Set;
 @Controller
 @RequestMapping(path = "/genres")
 public class GenreController {
-    private final Logger logger = Logger.getLogger(FilmController.class.getName());
+    private static final Logger logger = Logger.getLogger(FilmController.class);
 
     @GetMapping(value = "/all")
     public String get(ModelMap model) {
-        List<Genre> genres = repository.findAll();
-        List<List<Film>> films = new LinkedList<>();
+        Collection<Genre> genres = repository.findAll();
+        Collection<Collection<Film>> films = new LinkedList<>();
         for (Genre genre : genres) {
-            Set<Film> filmSet = genre.getFilms();
-            List<Film> filmList = new LinkedList<>(filmSet);
-            films.add(filmList);
+            films.add(genre.getFilms());
         }
         model.addAttribute("genres", genres);
         model.addAttribute("films", films);
@@ -46,12 +45,12 @@ public class GenreController {
 
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
-        List<Genre> genres = repository.findByContains(tittle);
+        Collection<Genre> genres = repository.findByContains(tittle);
 
         if (genres.size() > 0) {
-            List<List<Film>> films = new LinkedList<>();
+            Collection<Collection<Film>> films = new LinkedList<>();
             for (Genre genre : genres) {
-                films.add(new LinkedList<>(genre.getFilms()));
+                films.add(genre.getFilms());
             }
             model.addAttribute("genres", genres);
             model.addAttribute("films", films);
@@ -64,7 +63,7 @@ public class GenreController {
     @PostMapping(value = "/handle/{commandType}")
     public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model,
                                    @Valid @PathVariable String commandType) {
-        List<Film> filmList = filmsRepository.findAll();
+        Collection<Film> filmList = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("filmList", filmList);
             model.addAttribute("modalTitle", "Add");
@@ -72,8 +71,7 @@ public class GenreController {
         }
         if (Objects.equals(commandType, "page-edit")) {
 
-            Set<Film> filmSet = genre.getFilms();
-            List<Film> filmGenreList = new LinkedList<>(filmSet);
+            Collection<Film> filmGenreList = genre.getFilms();
 
             filmList.removeIf(film -> filmGenreList.stream().anyMatch(filmGenre -> filmGenre.getId() == film.getId()));
 

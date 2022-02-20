@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +26,7 @@ import java.util.Set;
 @Controller
 @RequestMapping(path = "/directors")
 public class DirectorController {
-    private final Logger logger = Logger.getLogger(DirectorController.class.getName());
+    private static final Logger logger = Logger.getLogger(DirectorController.class);
 
     @Autowired
     private DirectorsRepository repository = new DirectorsRepository();
@@ -35,13 +36,11 @@ public class DirectorController {
 
     @GetMapping(value = "/all")
     public String get(ModelMap model) {
-        List<Director> directorList = repository.findAll();
+        Collection<Director> directorList = repository.findAll();
         model.addAttribute("directors", directorList);
-        List<List<Film>> listListFilms = new LinkedList<>();
+        Collection<Collection<Film>> listListFilms = new LinkedList<>();
         for (Director director : directorList) {
-            Set<Film> filmSet = director.getFilms();
-            List<Film> filmList = new LinkedList<>(filmSet);
-            listListFilms.add(filmList);
+            listListFilms.add(director.getFilms());
         }
         model.addAttribute("films", listListFilms);
         model.addAttribute("json", "../serialize/directors");
@@ -57,16 +56,14 @@ public class DirectorController {
 
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
-        List<Director> directorList = repository.findByContains(tittle);
+        Collection<Director> directorList = repository.findByContains(tittle);
         if (directorList == null || directorList.isEmpty()) {
             return new ModelAndView("redirect:/directors/all");
         } else {
             model.addAttribute("directors", directorList);
-            List<List<Film>> listListFilms = new LinkedList<>();
+            Collection<Collection<Film>> listListFilms = new LinkedList<>();
             for (Director director : directorList) {
-                Set<Film> filmSet = director.getFilms();
-                List<Film> filmList = new LinkedList<>(filmSet);
-                listListFilms.add(filmList);
+                listListFilms.add(director.getFilms());
             }
             model.addAttribute("films", listListFilms);
             model.addAttribute("json", "../serialize/directors");
@@ -85,8 +82,7 @@ public class DirectorController {
             model.addAttribute("eventType", "handle/add");
         }
         if (Objects.equals(commandType, "page-edit")) {
-            Set<Film> filmSet = director.getFilms();
-            List<Film> filmsByDirectorId = new LinkedList<>(filmSet);
+            Collection<Film> filmsByDirectorId = director.getFilms();
             films.removeIf(film -> filmsByDirectorId.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
             model.addAttribute("filmList", films);
             model.addAttribute("directorFilmList", filmsByDirectorId);
