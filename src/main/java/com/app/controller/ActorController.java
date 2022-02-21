@@ -28,6 +28,17 @@ import java.util.Set;
 public class ActorController {
     private static final Logger logger = Logger.getLogger(ActorController.class);
 
+    private void getActorsAndFilmsList(Collection<Actor> actorCollection, ModelMap model) {
+        model.addAttribute("actors", actorCollection);
+        Collection<Collection<Film>> listListFilms = new LinkedList<>();
+        for (Actor actor : actorCollection) {
+            listListFilms.add(actor.getFilms());
+        }
+        model.addAttribute("films", listListFilms);
+        model.addAttribute("json", "../serialize/actors");
+        logger.info("show all actors");
+    }
+
     @Autowired
     private ActorsRepository repository;
 
@@ -37,14 +48,7 @@ public class ActorController {
     @GetMapping(value = "/all")
     public String get(ModelMap model) {
         Collection<Actor> actorList = repository.findAll();
-        model.addAttribute("actors", actorList);
-        Collection<Collection<Film>> listListFilms = new LinkedList<>();
-        for (Actor actor : actorList) {
-            listListFilms.add(actor.getFilms());
-        }
-        model.addAttribute("films", listListFilms);
-        model.addAttribute("json", "../serialize/actors");
-        logger.info("show all actors");
+        getActorsAndFilmsList(actorList, model);
         return "actors";
     }
 
@@ -60,14 +64,7 @@ public class ActorController {
         if (actorList == null || actorList.isEmpty()) {
             return new ModelAndView("redirect:/actors/all");
         } else {
-            model.addAttribute("actors", actorList);
-            Collection<Collection<Film>> listListFilms = new LinkedList<>();
-            for (Actor actor1 : actorList) {
-                listListFilms.add(actor1.getFilms());
-            }
-            model.addAttribute("films", listListFilms);
-            model.addAttribute("json", "../serialize/actors");
-            logger.info("show all actors");
+            getActorsAndFilmsList(actorList, model);
             return new ModelAndView("actors", model);
         }
     }

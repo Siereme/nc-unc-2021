@@ -34,17 +34,21 @@ public class DirectorController {
     @Autowired
     private FilmsRepository filmsRepository = new FilmsRepository();
 
-    @GetMapping(value = "/all")
-    public String get(ModelMap model) {
-        Collection<Director> directorList = repository.findAll();
-        model.addAttribute("directors", directorList);
+    private void getDirectorsAndFilmsList(Collection<Director> directorCollection, ModelMap model) {
+        model.addAttribute("directors", directorCollection);
         Collection<Collection<Film>> listListFilms = new LinkedList<>();
-        for (Director director : directorList) {
+        for (Director director : directorCollection) {
             listListFilms.add(director.getFilms());
         }
         model.addAttribute("films", listListFilms);
         model.addAttribute("json", "../serialize/directors");
         logger.info("show all directors");
+    }
+
+    @GetMapping(value = "/all")
+    public String get(ModelMap model) {
+        Collection<Director> directorList = repository.findAll();
+        getDirectorsAndFilmsList(directorList, model);
         return "directors";
     }
 
@@ -60,14 +64,7 @@ public class DirectorController {
         if (directorList == null || directorList.isEmpty()) {
             return new ModelAndView("redirect:/directors/all");
         } else {
-            model.addAttribute("directors", directorList);
-            Collection<Collection<Film>> listListFilms = new LinkedList<>();
-            for (Director director : directorList) {
-                listListFilms.add(director.getFilms());
-            }
-            model.addAttribute("films", listListFilms);
-            model.addAttribute("json", "../serialize/directors");
-            logger.info("show all directors");
+            getDirectorsAndFilmsList(directorList, model);
             return new ModelAndView("directors", model);
         }
     }

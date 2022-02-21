@@ -32,13 +32,7 @@ public class GenreController {
     @GetMapping(value = "/all")
     public String get(ModelMap model) {
         Collection<Genre> genres = repository.findAll();
-        Collection<Collection<Film>> films = new LinkedList<>();
-        for (Genre genre : genres) {
-            films.add(genre.getFilms());
-        }
-        model.addAttribute("genres", genres);
-        model.addAttribute("films", films);
-        model.addAttribute("json", "../serialize/genres");
+        getGenresAndFilms(model, genres);
         logger.info("Show all films");
         return "genres";
     }
@@ -48,16 +42,20 @@ public class GenreController {
         Collection<Genre> genres = repository.findByContains(tittle);
 
         if (genres.size() > 0) {
-            Collection<Collection<Film>> films = new LinkedList<>();
-            for (Genre genre : genres) {
-                films.add(genre.getFilms());
-            }
-            model.addAttribute("genres", genres);
-            model.addAttribute("films", films);
-            model.addAttribute("json", "../serialize/genres");
+            getGenresAndFilms(model, genres);
             return new ModelAndView("genres", model);
         }
         return new ModelAndView("redirect:/genres/all");
+    }
+
+    private void getGenresAndFilms(ModelMap model, Collection<Genre> genres) {
+        Collection<Collection<Film>> films = new LinkedList<>();
+        for (Genre genre : genres) {
+            films.add(genre.getFilms());
+        }
+        model.addAttribute("genres", genres);
+        model.addAttribute("films", films);
+        model.addAttribute("json", "../serialize/genres");
     }
 
     @PostMapping(value = "/handle/{commandType}")
