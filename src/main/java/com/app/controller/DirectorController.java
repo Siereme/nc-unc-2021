@@ -73,14 +73,14 @@ public class DirectorController {
     public String renderHandlePage(@ModelAttribute Director director, ModelMap model,
                                    @PathVariable @NotBlank String commandType) {
         List<Film> films = filmsRepository.findAll();
-        int id = director.getId();
-        director = repository.findById(id);
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("filmList", films);
             model.addAttribute("modalTitle", "Add");
             model.addAttribute("eventType", "handle/add");
         }
         if (Objects.equals(commandType, "page-edit")) {
+            int id = director.getId();
+            director = repository.findById(id);
             Collection<Film> filmsByDirectorId = director.getFilms();
             films.removeIf(film -> filmsByDirectorId.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
             model.addAttribute("filmList", films);

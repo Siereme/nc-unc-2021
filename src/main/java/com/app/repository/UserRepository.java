@@ -23,14 +23,10 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
         return entityManager.createNamedQuery("User.findAllWithRoles", User.class).getResultList();
     }
 
-
-
     @Override
     @Transactional
     public void add(User entity) {
-        entityManager.getTransaction().begin();
         entityManager.persist(entity);
-        entityManager.getTransaction().commit();
 /*        jdbcTemplate.update("INSERT INTO user(username, password) VALUES(?, ?)", entity.getUsername(),
                 entity.getPassword());*/
     }

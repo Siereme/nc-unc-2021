@@ -73,14 +73,14 @@ public class ActorController {
     public String renderHandlePage(@ModelAttribute Actor actor, ModelMap model,
                                    @PathVariable @NotBlank String commandType) {
         Collection<Film> films = filmsRepository.findAll();
-        int id = actor.getId();
-        actor = repository.findById(id);
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("filmList", films);
             model.addAttribute("modalTitle", "Add");
             model.addAttribute("eventType", "handle/add");
         }
         if (Objects.equals(commandType, "page-edit")) {
+            int id = actor.getId();
+            actor = repository.findById(id);
             Collection<Film> actorFilmList = actor.getFilms();
             // we delete entities that are both there and there in films
             // ( удаляем из списка всех фильмов те, в которых актер участвовал)
