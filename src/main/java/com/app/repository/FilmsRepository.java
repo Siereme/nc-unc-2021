@@ -1,5 +1,6 @@
 package com.app.repository;
 
+import com.app.model.actor.Actor;
 import com.app.model.film.Film;
 import org.hibernate.Hibernate;
 import org.springframework.dao.DataAccessException;
@@ -60,7 +61,7 @@ public class FilmsRepository extends AbstractRepository<Film> {
 
     @Override
     public List<Film> findByName(String name) {
-        return entityManager.createQuery("select f from Film f where f.tittle =:name").setParameter("name", name)
+        return entityManager.createQuery("select distinct f from Film f where f.tittle =:name").setParameter("name", name)
                 .getResultList();
     }
 
@@ -73,7 +74,12 @@ public class FilmsRepository extends AbstractRepository<Film> {
 
     @Override
     public List<Film> findByContains(String name) {
-        return null;
+        return entityManager.createQuery("select distinct f from Film f "
+                        + "left join fetch f.actors "
+                        + "left join fetch f.genres "
+                        + "left join fetch f.directors "
+                        + "where f.tittle like :name ESCAPE '!'",
+                Film.class).setParameter("name", '%' + name + '%').getResultList();
     }
 
 }

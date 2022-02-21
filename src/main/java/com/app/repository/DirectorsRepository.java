@@ -1,6 +1,5 @@
 package com.app.repository;
 
-import com.app.model.actor.Actor;
 import com.app.model.director.Director;
 import org.springframework.stereotype.Repository;
 
@@ -10,14 +9,14 @@ import java.util.List;
 @Repository
 public class DirectorsRepository extends AbstractRepository<Director> {
 
-
     public List<Director> findAll() {
         return entityManager.createNamedQuery("Director.findAllWithFilm", Director.class).getResultList();
     }
 
     @Override
     public Director findById(int id) {
-        return entityManager.createNamedQuery("Director.findById", Director.class).setParameter("id", id).getSingleResult();
+        return entityManager.createNamedQuery("Director.findById", Director.class).setParameter("id", id)
+                .getSingleResult();
     }
 
     public List<Director> find(List<Integer> ids) {
@@ -25,9 +24,7 @@ public class DirectorsRepository extends AbstractRepository<Director> {
             return Collections.emptyList();
         }
 
-        return entityManager.createNamedQuery("Director.findAllWithFilmByIds")
-                .setParameter("ids", ids)
-                .getResultList();
+        return entityManager.createNamedQuery("Director.findAllWithFilmByIds").setParameter("ids", ids).getResultList();
     }
 
     public void add(Director director) {
@@ -56,7 +53,9 @@ public class DirectorsRepository extends AbstractRepository<Director> {
 
     @Override
     public List<Director> findByContains(String name) {
-        return null;
+        return entityManager.createQuery(
+                "select distinct d from Director d left join fetch d.films where d.name like :name ESCAPE '!'",
+                Director.class).setParameter("name", '%' + name + '%').getResultList();
     }
 
 }

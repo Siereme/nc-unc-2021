@@ -14,6 +14,7 @@ public class UserController {
     @Autowired
     private UserRepository repository;
 
+    // root page
     @GetMapping("/")
     public String redirect() {
         return "films";

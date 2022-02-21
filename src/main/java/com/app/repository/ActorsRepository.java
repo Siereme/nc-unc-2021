@@ -58,7 +58,7 @@ public class ActorsRepository extends AbstractRepository<Actor> {
 
     @Override
     public List<Actor> findByName(String name) {
-        return entityManager.createQuery("select a from Actor a where a.name = :name").setParameter("name", name)
+        return entityManager.createQuery("select distinct a from Actor a where a.name = :name").setParameter("name", name)
                 .getResultList();
     }
 
@@ -69,9 +69,8 @@ public class ActorsRepository extends AbstractRepository<Actor> {
         return bigInteger.intValue();
     }
 
-    //fixme ;(
     public List<Actor> findByContains(String name) {
-        return entityManager.createQuery("select a from Actor a join fetch a.films where a.name like :name ESCAPE '!'",
+        return entityManager.createQuery("select distinct a from Actor a left join fetch a.films where a.name like :name ESCAPE '!'",
                 Actor.class).setParameter("name", '%' + name + '%').getResultList();
     }
 

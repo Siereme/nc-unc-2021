@@ -29,10 +29,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
             return Collections.emptyList();
         }
 
-        return entityManager.createNamedQuery("Genre.findAllWithFilmByIds")
-                .setParameter("ids", ids)
-                .getResultList();
-
+        return entityManager.createNamedQuery("Genre.findAllWithFilmByIds").setParameter("ids", ids).getResultList();
 
     }
 
@@ -56,7 +53,6 @@ public class GenresRepository extends AbstractRepository<Genre> {
         entityManager.remove(genre);
     }
 
-
     public void edit(Genre genre) {
         entityManager.merge(genre);
     }
@@ -74,7 +70,8 @@ public class GenresRepository extends AbstractRepository<Genre> {
 
     @Override
     public List<Genre> findByContains(String name) {
-        return entityManager.createNativeQuery("Select * from genre where genre.tittle like :name ESCAPE '!'",
-                Genre.class).setParameter("name", Collections.singletonMap("name", '%' + name + '%')).getResultList();
+        return entityManager.createQuery(
+                "select distinct g from Genre g left join fetch g.films where g.tittle like :name ESCAPE '!'",
+                Genre.class).setParameter("name", '%' + name + '%').getResultList();
     }
 }
