@@ -44,7 +44,7 @@ public class GenreSerializeController extends AbstractSerializeController<Genre>
 
     @Override
     protected String getRedirectPath() {
-        return "/genres/all";
+        return "redirect:/genres";
     }
 
     @Override

@@ -1,19 +1,10 @@
 package com.app.repository;
 
-import com.app.model.actor.Actor;
 import com.app.model.film.Film;
-import org.hibernate.Hibernate;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;
 import java.math.BigInteger;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,7 +33,6 @@ public class FilmsRepository extends AbstractRepository<Film> {
                 .setParameter("ids", ids)
                 .getResultList();
     }
-
 
     public void add(Film film) {
         entityManager.persist(film);

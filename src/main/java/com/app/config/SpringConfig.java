@@ -51,7 +51,7 @@ public class SpringConfig {
     @Bean
     public Properties hibernateProperties() {
         Properties hibernateProp = new Properties();
-        hibernateProp.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        hibernateProp.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
         hibernateProp.put("hibernate.show_sql", "true");
         hibernateProp.put("hibernate.hbm2ddl.auto", "update");
         hibernateProp.put("hibernate.format_sql", "true");

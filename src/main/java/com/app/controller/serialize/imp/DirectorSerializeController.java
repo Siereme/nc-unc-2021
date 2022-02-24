@@ -44,7 +44,7 @@ public class DirectorSerializeController extends AbstractSerializeController<Dir
 
     @Override
     protected String getRedirectPath() {
-        return "/directors/all";
+        return "redirect:/directors";
     }
 
     @Override

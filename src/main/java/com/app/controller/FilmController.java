@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -31,6 +32,7 @@ import java.util.Set;
 @Validated
 @Controller
 @RequestMapping(path = "/films")
+@SessionAttributes("errors")
 public class FilmController implements WebMvcConfigurer {
     private static final Logger logger = Logger.getLogger(FilmController.class);
     private final String filePath = "src/main/resources/database/Films.json";
@@ -53,6 +55,15 @@ public class FilmController implements WebMvcConfigurer {
         model.addAttribute("json", "../serialize/films");
         logger.info("Show all films");
         return "films";
+    }
+
+    @GetMapping(value = "/errors")
+    public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model, SessionStatus sessionStatus) {
+        if(!errors.isEmpty()){
+            model.addAttribute("errors", errors);
+            sessionStatus.setComplete();
+        }
+        return get(model);
     }
 
     @PostMapping(value = "/find")

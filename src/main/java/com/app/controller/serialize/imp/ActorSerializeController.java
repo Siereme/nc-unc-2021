@@ -45,7 +45,7 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
 
     @Override
     protected String getRedirectPath() {
-        return "/actors/all";
+        return "redirect:/actors";
     }
 
     @Override

@@ -11,11 +11,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -26,6 +28,7 @@ import java.util.Set;
 @Validated
 @Controller
 @RequestMapping(path = "/genres")
+@SessionAttributes("errors")
 public class GenreController {
     private static final Logger logger = Logger.getLogger(FilmController.class);
 
@@ -35,6 +38,15 @@ public class GenreController {
         getGenresAndFilms(model, genres);
         logger.info("Show all films");
         return "genres";
+    }
+
+    @GetMapping(value = "/errors")
+    public String getWithErrors(@ModelAttribute("errors") @NotEmpty List<String> errors, ModelMap model, SessionStatus sessionStatus) {
+        if(!errors.isEmpty()){
+            model.addAttribute("errors", errors);
+            sessionStatus.setComplete();
+        }
+        return get(model);
     }
 
     @PostMapping(value = "/find")

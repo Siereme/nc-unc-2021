@@ -55,7 +55,7 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
 
     @Override
     protected String getRedirectPath() {
-        return "/films/all";
+        return "redirect:/films";
     }
 
 

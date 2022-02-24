@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.ConstraintViolationException;
@@ -25,6 +26,7 @@ import java.util.Set;
 @Validated
 @Controller
 @RequestMapping(path = "/actors")
+@SessionAttributes("errors")
 public class ActorController {
     private static final Logger logger = Logger.getLogger(ActorController.class);
 
@@ -50,6 +52,15 @@ public class ActorController {
         Collection<Actor> actorList = repository.findAll();
         getActorsAndFilmsList(actorList, model);
         return "actors";
+    }
+
+    @GetMapping(value = "/errors")
+    public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model, SessionStatus sessionStatus) {
+        if(!errors.isEmpty()){
+            model.addAttribute("errors", errors);
+            sessionStatus.setComplete();
+        }
+        return get(model);
     }
 
     @PostMapping(value = "/handle/delete/{id}")

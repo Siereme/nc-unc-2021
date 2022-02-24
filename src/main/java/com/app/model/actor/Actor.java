@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -49,8 +50,6 @@ public class Actor implements IEntity {
     @Column(name = "year")
     private String year;
 
-    @NotEmpty(message = "Film list cannot be empty")
-    @Convert(converter = IdToFilmConverter.class)
     @JsonIgnoreProperties(value = "actors", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_actor",
@@ -85,6 +84,7 @@ public class Actor implements IEntity {
     public Actor(String name, String year) {
         this.name = name;
         this.year = year;
+        this.films = new HashSet<>();
     }
 
 //    public Actor(int actor_id, String name, String year) {

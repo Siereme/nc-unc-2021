@@ -101,11 +101,10 @@
         </tbody>
     </table>
 </div>
-<c:if test="${serializeErrors}">
+<c:if test="${errors != null && !errors.isEmpty()}">
     <jsp:include page="errors-modal.jsp">
-        <jsp:param name="errors" value="${serializeErrors}"/>
+        <jsp:param name="errors" value="${errors}"/>
     </jsp:include>
 </c:if>
-
 </body>
 </html>

@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.transaction.Transactional;
 import java.io.*;
@@ -80,7 +82,7 @@ public abstract class AbstractSerializeController<T extends IEntity> {
 
     @Transactional
     @RequestMapping("/import")
-    public ModelAndView importJsonFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public ModelAndView importJsonFile(@RequestParam("file") MultipartFile file, RedirectAttributes attributes) throws IOException {
         try {
 
             TypeReference<List<T>> typeReference = getRef();
@@ -89,23 +91,25 @@ public abstract class AbstractSerializeController<T extends IEntity> {
 
             List<String> errorMessages = checkErrors(fileEntityList);
             if(errorMessages.size() > 0){
-                return new ModelAndView("redirect:" + getRedirectPath());
+                attributes.addFlashAttribute("errors", errorMessages);
+                return new ModelAndView(getRedirectPath() + "/errors");
             }
 
-            List<T> entityList = repository.findAll();
-
-            List<T> addEntityList = new LinkedList<>(fileEntityList);
-            addEntityList.removeAll(entityList);
-
-            List<T> editEntityList = new LinkedList<>(fileEntityList);
-            editEntityList.removeAll(addEntityList);
-
-            addEntityList.forEach(repository::add);
-            editEntityList.forEach(repository::edit);
+//            List<T> entityList = repository.findAll();
+//
+//            List<T> addEntityList = new LinkedList<>(fileEntityList);
+//            addEntityList.removeAll(entityList);
+//
+//            List<T> editEntityList = new LinkedList<>(fileEntityList);
+//            editEntityList.removeAll(addEntityList);
+//
+//            addEntityList.forEach(repository::edit);
+//            editEntityList.forEach(repository::edit);
+            fileEntityList.forEach(repository::edit);
         } catch (Exception ex){
             logger.error(ex);
         }
-        return new ModelAndView("redirect:" + getRedirectPath());
+        return new ModelAndView(getRedirectPath() + "/all");
     }
 
     @Autowired
