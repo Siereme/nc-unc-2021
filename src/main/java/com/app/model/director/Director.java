@@ -128,7 +128,9 @@ public class Director implements IEntity {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Director director = (Director) object;
-        return getId() == director.getId();
+        if(getId() != director.getId()) return false;
+        if(!Objects.equals(getName(), director.getName())) return false;
+        return Objects.equals(getYear(), director.getYear());
     }
 
     @Override

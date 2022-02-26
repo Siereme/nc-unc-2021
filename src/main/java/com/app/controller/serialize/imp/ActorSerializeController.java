@@ -59,10 +59,9 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
         List<Integer> filmIds = getEntityIds(deserializeFilms);
         List<Film> checkFilms = filmsRepository.find(filmIds);
 
-        if(filmIds.size() != checkFilms.size()){
-            List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
-            errors.addAll(errorFilmsMessages);
-        }
+        List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
+        errors.addAll(errorFilmsMessages);
+
         return errors;
     }
 

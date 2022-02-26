@@ -150,7 +150,9 @@ public class Film implements IEntity {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Film film = (Film) object;
-        return getId() == film.getId();
+        if(getId() != film.getId()) return false;
+        if(getDate().compareTo(film.getDate()) != 0) return false;
+        return Objects.equals(getTittle(), film.getTittle());
     }
 
     @Override

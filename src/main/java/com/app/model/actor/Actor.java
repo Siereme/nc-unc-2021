@@ -123,7 +123,9 @@ public class Actor implements IEntity {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Actor actor = (Actor) object;
-        return getId() == actor.getId();
+        if(getId() != actor.getId()) return false;
+        if(!Objects.equals(getName(), actor.getName())) return false;
+        return Objects.equals(getYear(), actor.getYear());
     }
 
     @Override

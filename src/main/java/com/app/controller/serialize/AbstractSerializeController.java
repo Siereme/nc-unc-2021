@@ -22,6 +22,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.transaction.Transactional;
 import java.io.*;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -48,9 +49,9 @@ public abstract class AbstractSerializeController<T extends IEntity> {
 
     protected List<String> getErrorMessages(List<Integer> entityIds, List<? extends IEntity> deserializeEntities, List<? extends IEntity> checkEntities){
         return entityIds.stream()
-                .filter(id -> checkEntities.stream().noneMatch(entity -> id == entity.getId()))
-                .map(id -> deserializeEntities.stream().filter(entity -> id == entity.getId()).findAny().orElse(null))
+                .map(id -> deserializeEntities.stream().filter(entity -> id == entity.getId()).findFirst().orElse(null))
                 .filter(Objects::nonNull)
+                .filter(entity -> checkEntities.stream().noneMatch(checkEntity -> checkEntity.equals(entity)))
                 .map(entity -> entity.getClass().getSimpleName() + " " + entity.toString() + " " + "is not found")
                 .collect(Collectors.toList());
     }
@@ -95,6 +96,8 @@ public abstract class AbstractSerializeController<T extends IEntity> {
                 return new ModelAndView(getRedirectPath() + "/errors");
             }
 
+            fileEntityList.forEach(repository::edit);
+
 //            List<T> entityList = repository.findAll();
 //
 //            List<T> addEntityList = new LinkedList<>(fileEntityList);
@@ -105,9 +108,10 @@ public abstract class AbstractSerializeController<T extends IEntity> {
 //
 //            addEntityList.forEach(repository::edit);
 //            editEntityList.forEach(repository::edit);
-            fileEntityList.forEach(repository::edit);
         } catch (Exception ex){
             logger.error(ex);
+            attributes.addFlashAttribute("errors", Collections.singletonList(ex));
+            return new ModelAndView(getRedirectPath() + "/errors");
         }
         return new ModelAndView(getRedirectPath() + "/all");
     }

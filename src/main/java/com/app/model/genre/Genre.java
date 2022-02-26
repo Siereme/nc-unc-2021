@@ -89,7 +89,8 @@ public class Genre implements IEntity {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Genre genre = (Genre) object;
-        return getId() == genre.getId();
+        if(getId() != genre.getId()) return false;
+        return Objects.equals(getTittle(), genre.getTittle());
     }
 
     @Override
