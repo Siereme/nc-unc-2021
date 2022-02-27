@@ -1,7 +1,6 @@
 package com.app.controller.serialize.imp;
 
 import com.app.controller.serialize.AbstractSerializeController;
-import com.app.model.actor.Actor;
 import com.app.model.film.Film;
 import com.app.model.genre.Genre;
 import com.app.repository.FilmsRepository;
@@ -18,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/serialize/genres")
 public class GenreSerializeController extends AbstractSerializeController<Genre> {
-    private final String filePath = "src/main/resources/database/Genres.json";
 
     @Autowired
     private GenresRepository genresRepository;
@@ -34,7 +32,7 @@ public class GenreSerializeController extends AbstractSerializeController<Genre>
     @Override
     @PostConstruct
     protected void getFilePath() {
-        super.filePath = filePath;
+        super.filePath = "src/main/resources/database/Genres.json";
     }
 
     @Override
@@ -49,7 +47,6 @@ public class GenreSerializeController extends AbstractSerializeController<Genre>
 
     @Override
     protected List<String> checkErrors(List<Genre> genreList) {
-        List<String> errors = new LinkedList<>();
 
         List<Film> deserializeFilms = new LinkedList<>();
 
@@ -59,8 +56,7 @@ public class GenreSerializeController extends AbstractSerializeController<Genre>
         List<Film> checkFilms = filmsRepository.find(filmIds);
 
         List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
-        errors.addAll(errorFilmsMessages);
 
-        return errors;
+        return new LinkedList<>(errorFilmsMessages);
     }
 }

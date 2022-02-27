@@ -2,9 +2,7 @@ package com.app.controller.serialize.imp;
 
 import com.app.controller.serialize.AbstractSerializeController;
 import com.app.model.actor.Actor;
-import com.app.model.director.Director;
 import com.app.model.film.Film;
-import com.app.model.genre.Genre;
 import com.app.repository.ActorsRepository;
 import com.app.repository.FilmsRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -19,7 +17,6 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/serialize/actors")
 public class ActorSerializeController extends AbstractSerializeController<Actor> {
-    private final String filePath = "src/main/resources/database/Actors.json";
 
     @Autowired
     private ActorsRepository actorsRepository;
@@ -35,7 +32,7 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
     @Override
     @PostConstruct
     protected void getFilePath() {
-        super.filePath = filePath;
+        super.filePath = "src/main/resources/database/Actors.json";
     }
 
     @Override
@@ -50,7 +47,6 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
 
     @Override
     protected List<String> checkErrors(List<Actor> actorList) {
-        List<String> errors = new LinkedList<>();
 
         List<Film> deserializeFilms = new LinkedList<>();
 
@@ -60,9 +56,8 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
         List<Film> checkFilms = filmsRepository.find(filmIds);
 
         List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
-        errors.addAll(errorFilmsMessages);
 
-        return errors;
+        return new LinkedList<>(errorFilmsMessages);
     }
 
 }

@@ -1,7 +1,6 @@
 package com.app.controller.serialize.imp;
 
 import com.app.controller.serialize.AbstractSerializeController;
-import com.app.model.IEntity;
 import com.app.model.actor.Actor;
 import com.app.model.director.Director;
 import com.app.model.film.Film;
@@ -14,18 +13,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.annotation.PostConstruct;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/serialize/films")
 public class FilmSerializeController extends AbstractSerializeController<Film> {
-    private String filePath = "src/main/resources/database/Films.json";
 
     @Autowired
     private FilmsRepository filmsRepository;
@@ -45,7 +40,7 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
     @Override
     @PostConstruct
     protected void getFilePath() {
-        super.filePath = filePath;
+        super.filePath = "src/main/resources/database/Films.json";
     }
 
     @Override
@@ -61,7 +56,6 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
 
     @Override
     protected List<String> checkErrors(List<Film> filmList) {
-        List<String> errors = new LinkedList<>();
 
         List<Genre> deserializeGenres = new LinkedList<>();
         List<Actor> deserializeActors = new LinkedList<>();
@@ -82,7 +76,7 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
         List<Director> checkDirectors = directorsRepository.find(directorIds);
 
         List<String> errorGenresMessages = getErrorMessages(genreIds, deserializeGenres, checkGenres);
-        errors.addAll(errorGenresMessages);
+        List<String> errors = new LinkedList<>(errorGenresMessages);
 
         List<String> errorActorsMessages = getErrorMessages(actorIds, deserializeActors, checkActors);
         errors.addAll(errorActorsMessages);

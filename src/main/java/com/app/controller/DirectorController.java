@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Validated
 @Controller
@@ -31,10 +30,10 @@ public class DirectorController {
     private static final Logger logger = Logger.getLogger(DirectorController.class);
 
     @Autowired
-    private DirectorsRepository repository = new DirectorsRepository();
+    private final DirectorsRepository repository = new DirectorsRepository();
 
     @Autowired
-    private FilmsRepository filmsRepository = new FilmsRepository();
+    private final FilmsRepository filmsRepository = new FilmsRepository();
 
     private void getDirectorsAndFilmsList(Collection<Director> directorCollection, ModelMap model) {
         model.addAttribute("directors", directorCollection);

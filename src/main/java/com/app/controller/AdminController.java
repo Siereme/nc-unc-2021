@@ -23,8 +23,8 @@ public class AdminController {
     }
 
     @PostMapping("/admin")
-    public String  deleteUser(@RequestParam(required = true, defaultValue = "" ) int userId,
-                              @RequestParam(required = true, defaultValue = "" ) String action,
+    public String  deleteUser(@RequestParam(defaultValue = "" ) int userId,
+                              @RequestParam(defaultValue = "" ) String action,
                               Model model) {
         if (action.equals("delete")){
             repository.delete(userId);

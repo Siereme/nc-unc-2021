@@ -1,6 +1,5 @@
 package com.app.config;
 
-import com.app.config.converter.IdToEntityConverter;
 import com.app.config.converter.imp.IdToActorConverter;
 import com.app.config.converter.imp.IdToDirectorConverter;
 import com.app.config.converter.imp.IdToFilmConverter;

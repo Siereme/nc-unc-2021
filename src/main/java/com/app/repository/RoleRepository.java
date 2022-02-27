@@ -1,7 +1,6 @@
 package com.app.repository;
 
 import com.app.model.role.Role;
-import com.app.model.user.User.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;

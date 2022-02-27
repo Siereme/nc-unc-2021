@@ -3,7 +3,6 @@ package com.app.model.director;
 import com.app.model.IEntity;
 
 import com.app.model.film.Film;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -73,15 +72,7 @@ public class Director implements IEntity {
         this.films = new HashSet<>();
     }
 
-//    public Director(int id, String name) {
-//        this.id = id;
-//        this.name = name;
-//        this.year = "";
-//        this.films = new HashSet<>();
-//    }
-
     public Director(String name, String year) {
-        this.id = id;
         this.name = name;
         this.year = year;
         this.films = new HashSet<>();
@@ -139,7 +130,7 @@ public class Director implements IEntity {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("ID: ").append(id).append(" ");
         sb.append("Name: ").append(name).append(" ");
         sb.append("Year: ").append(year).append(" ");

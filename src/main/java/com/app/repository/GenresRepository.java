@@ -2,13 +2,8 @@ package com.app.repository;
 
 import com.app.model.genre.Genre;
 import org.apache.log4j.Logger;
-import org.springframework.dao.DataAccessException;
-import org.springframework.jdbc.core.BatchPreparedStatementSetter;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.*;
 import java.util.*;
 
 @Repository

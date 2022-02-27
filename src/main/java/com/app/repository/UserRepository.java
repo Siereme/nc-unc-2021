@@ -20,8 +20,6 @@ import java.util.List;
 @Repository
 public class UserRepository extends AbstractRepository<User> implements UserDetailsService {
 
-    private final String ROLE_USER_STR = "ROLE_USER";
-
     @Override
     public List<User> findAll() {
         return entityManager.createNamedQuery("User.findAllWithRoles", User.class).getResultList();
@@ -31,6 +29,7 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
     @Transactional
     public void add(User entity) {
         entityManager.persist(entity);
+        String ROLE_USER_STR = "ROLE_USER";
         Role role = entityManager.createQuery("select r from Role r left join fetch r.users where r.name =:name",
                 Role.class).setParameter("name", ROLE_USER_STR).getSingleResult();
         int roleId = role.getId();

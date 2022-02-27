@@ -1,13 +1,10 @@
 package com.app.model.genre;
 
 import com.app.model.IEntity;
-import com.app.model.actor.Actor;
 import com.app.model.film.Film;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -64,11 +61,6 @@ public class Genre implements IEntity {
         tittle = newGener;
     }
 
-//    public Genre(String tittle, List<Film> filmIds) {
-//        this.tittle = tittle;
-//        this.films = new HashSet<>();
-//    }
-
     public int getId() {
         return this.id;
     }
@@ -107,7 +99,7 @@ public class Genre implements IEntity {
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("ID: ").append(id).append(" ");
         sb.append("Tittle: ").append(tittle).append(" ");
         return new String(sb);

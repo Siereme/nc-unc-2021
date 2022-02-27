@@ -2,7 +2,6 @@ package com.app.controller.serialize;
 
 import com.app.controller.FilmController;
 import com.app.model.IEntity;
-import com.app.model.genre.Genre;
 import com.app.repository.AbstractRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.transaction.Transactional;
 import java.io.*;
@@ -47,7 +45,7 @@ public abstract class AbstractSerializeController<T extends IEntity> {
 
     private List<String> getMessages(List<? extends IEntity> entities, String message){
         return entities.stream()
-                .map(entity -> entity.getClass().getSimpleName() + " " + entity.toString() + " " + message)
+                .map(entity -> entity.getClass().getSimpleName() + " " + entity + " " + message)
                 .collect(Collectors.toList());
     }
 
@@ -87,7 +85,7 @@ public abstract class AbstractSerializeController<T extends IEntity> {
 
     @Transactional
     @RequestMapping("/import")
-    public ModelAndView importJsonFile(@RequestParam("file") MultipartFile file, RedirectAttributes attributes) throws IOException {
+    public ModelAndView importJsonFile(@RequestParam("file") MultipartFile file, RedirectAttributes attributes) {
         try {
 
             TypeReference<List<T>> typeReference = getRef();
