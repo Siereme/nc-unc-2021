@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.TypedQuery;
 import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,10 +34,8 @@ public class ActorsRepository extends AbstractRepository<Actor> {
         if (ids != null && ids.size() < 1) {
             return Collections.emptyList();
         }
-        return entityManager.createNamedQuery("Actor.findAllWithFilmByIds")
-                            .setParameter("ids", ids)
-                            .getResultList();
-
+        TypedQuery<Actor> query = entityManager.createNamedQuery("Actor.findAllWithFilmByIds", Actor.class).setParameter("ids", ids);
+        return query.getResultList();
     }
 
 
@@ -58,8 +57,8 @@ public class ActorsRepository extends AbstractRepository<Actor> {
 
     @Override
     public List<Actor> findByName(String name) {
-        return entityManager.createQuery("select distinct a from Actor a where a.name = :name").setParameter("name", name)
-                .getResultList();
+        TypedQuery<Actor> query = entityManager.createQuery("select distinct a from Actor a left join fetch a.films where a.name = :name", Actor.class).setParameter("name", name);
+        return query.getResultList();
     }
 
     @Override

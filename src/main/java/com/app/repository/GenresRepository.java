@@ -29,7 +29,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
             return Collections.emptyList();
         }
 
-        return entityManager.createNamedQuery("Genre.findAllWithFilmByIds").setParameter("ids", ids).getResultList();
+        return entityManager.createNamedQuery("Genre.findAllWithFilmByIds", Genre.class).setParameter("ids", ids).getResultList();
 
     }
 
@@ -38,7 +38,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
             return new ArrayList<>();
         }
 
-        return entityManager.createNativeQuery("SELECT genre_id, tittle FROM genre WHERE tittle IN (:titles)",
+        return entityManager.createQuery("SELECT distinct g FROM Genre g left join fetch g.films WHERE g.tittle IN (:titles)",
                 Genre.class).setParameter("titles", titles).getResultList();
 
     }
@@ -59,7 +59,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
 
     @Override
     public List<Genre> findByName(String name) {
-        return entityManager.createNativeQuery("Select genre_id, tittle from genre where tittle =: name", Genre.class)
+        return entityManager.createQuery("Select distinct g from Genre g left join fetch g.films where g.tittle = :name", Genre.class)
                 .setParameter("name", name).getResultList();
     }
 

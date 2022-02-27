@@ -24,7 +24,7 @@ public class DirectorsRepository extends AbstractRepository<Director> {
             return Collections.emptyList();
         }
 
-        return entityManager.createNamedQuery("Director.findAllWithFilmByIds").setParameter("ids", ids).getResultList();
+        return entityManager.createNamedQuery("Director.findAllWithFilmByIds", Director.class).setParameter("ids", ids).getResultList();
     }
 
     public void add(Director director) {
