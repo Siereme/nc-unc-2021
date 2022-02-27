@@ -5,6 +5,7 @@ import com.app.model.IEntity;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
