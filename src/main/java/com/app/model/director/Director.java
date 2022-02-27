@@ -8,8 +8,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /** Director entity
  * @author Vasiliy, Sergey
@@ -53,7 +55,6 @@ public class Director implements IEntity {
     @Column(name = "year")
     private String year;
 
-    @JsonIgnoreProperties(value = "directors", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_director",
     joinColumns = @JoinColumn(name = "director_id"),
@@ -119,7 +120,7 @@ public class Director implements IEntity {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + Objects.hashCode(id);
+        result = prime * result + Objects.hashCode(id) + Objects.hashCode(name) + Objects.hashCode(year);
         return result;
     }
 
@@ -130,7 +131,10 @@ public class Director implements IEntity {
         Director director = (Director) object;
         if(getId() != director.getId()) return false;
         if(!Objects.equals(getName(), director.getName())) return false;
-        return Objects.equals(getYear(), director.getYear());
+        if(!Objects.equals(getYear(), director.getYear())) return false;
+        List<Integer> filmIds = films.stream().map(Film::getId).collect(Collectors.toList());
+        List<Integer> checkFilmIds = director.getFilms().stream().map(Film::getId).collect(Collectors.toList());
+        return filmIds.containsAll(checkFilmIds) && checkFilmIds.containsAll(filmIds);
     }
 
     @Override
@@ -138,6 +142,7 @@ public class Director implements IEntity {
         StringBuffer sb = new StringBuffer();
         sb.append("ID: ").append(id).append(" ");
         sb.append("Name: ").append(name).append(" ");
+        sb.append("Year: ").append(year).append(" ");
         return new String(sb);
     }
 }

@@ -2,6 +2,7 @@ package com.app.controller.serialize;
 
 import com.app.controller.FilmController;
 import com.app.model.IEntity;
+import com.app.model.genre.Genre;
 import com.app.repository.AbstractRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -22,10 +23,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import javax.transaction.Transactional;
 import java.io.*;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Validated
@@ -47,13 +45,19 @@ public abstract class AbstractSerializeController<T extends IEntity> {
                 .collect(Collectors.toList());
     }
 
+    private List<String> getMessages(List<? extends IEntity> entities, String message){
+        return entities.stream()
+                .map(entity -> entity.getClass().getSimpleName() + " " + entity.toString() + " " + message)
+                .collect(Collectors.toList());
+    }
+
     protected List<String> getErrorMessages(List<Integer> entityIds, List<? extends IEntity> deserializeEntities, List<? extends IEntity> checkEntities){
-        return entityIds.stream()
+         List<? extends IEntity> entities = entityIds.stream()
                 .map(id -> deserializeEntities.stream().filter(entity -> id == entity.getId()).findFirst().orElse(null))
                 .filter(Objects::nonNull)
-                .filter(entity -> checkEntities.stream().noneMatch(checkEntity -> checkEntity.equals(entity)))
-                .map(entity -> entity.getClass().getSimpleName() + " " + entity.toString() + " " + "is not found")
+                .filter(entity -> checkEntities.stream().noneMatch(checkEntity -> entity.getId() == checkEntity.getId() && entity.hashCode() == checkEntity.hashCode()))
                 .collect(Collectors.toList());
+         return getMessages(entities, "is not found");
     }
 
 
@@ -96,24 +100,23 @@ public abstract class AbstractSerializeController<T extends IEntity> {
                 return new ModelAndView(getRedirectPath() + "/errors");
             }
 
-            fileEntityList.forEach(repository::edit);
+            List<T> entityList = repository.findAll();
 
-//            List<T> entityList = repository.findAll();
-//
-//            List<T> addEntityList = new LinkedList<>(fileEntityList);
-//            addEntityList.removeAll(entityList);
-//
-//            List<T> editEntityList = new LinkedList<>(fileEntityList);
-//            editEntityList.removeAll(addEntityList);
-//
-//            addEntityList.forEach(repository::edit);
-//            editEntityList.forEach(repository::edit);
+            List<T> updateEntityList = new LinkedList<>(fileEntityList);
+            updateEntityList.removeAll(entityList);
+
+            List<String> addMassages = getMessages(updateEntityList, "was updated");
+            List<String> successMessages = new ArrayList<>(addMassages);
+
+            updateEntityList.forEach(repository::edit);
+
+            attributes.addFlashAttribute("success", successMessages);
+            return new ModelAndView(getRedirectPath() + "/success");
         } catch (Exception ex){
             logger.error(ex);
             attributes.addFlashAttribute("errors", Collections.singletonList(ex));
             return new ModelAndView(getRedirectPath() + "/errors");
         }
-        return new ModelAndView(getRedirectPath() + "/all");
     }
 
     @Autowired

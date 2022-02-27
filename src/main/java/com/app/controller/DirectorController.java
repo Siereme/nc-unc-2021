@@ -26,7 +26,7 @@ import java.util.Set;
 @Validated
 @Controller
 @RequestMapping(path = "/directors")
-@SessionAttributes("errors")
+@SessionAttributes({"errors", "success"})
 public class DirectorController {
     private static final Logger logger = Logger.getLogger(DirectorController.class);
 
@@ -60,6 +60,15 @@ public class DirectorController {
             model.addAttribute("errors", errors);
             sessionStatus.setComplete();
         }
+        return get(model);
+    }
+
+    @GetMapping(value = "/success")
+    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
+        if(!success.isEmpty()){
+            model.addAttribute("success", success);
+        }
+        sessionStatus.setComplete();
         return get(model);
     }
 

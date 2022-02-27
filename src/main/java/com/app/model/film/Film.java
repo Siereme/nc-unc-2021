@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /** Film entity
  * @author Vasiliy, Sergey
@@ -100,7 +101,6 @@ public class Film implements IEntity {
         this.genres = genres;
     }
 
-
     @JsonIgnoreProperties(value = "films", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_actor",
@@ -141,7 +141,7 @@ public class Film implements IEntity {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + Objects.hashCode(id);
+        result = prime * result + Objects.hashCode(id) + Objects.hashCode(tittle) + Objects.hashCode(date);
         return result;
     }
 
@@ -152,7 +152,16 @@ public class Film implements IEntity {
         Film film = (Film) object;
         if(getId() != film.getId()) return false;
         if(getDate().compareTo(film.getDate()) != 0) return false;
-        return Objects.equals(getTittle(), film.getTittle());
+        if(!Objects.equals(getTittle(), film.getTittle())) return false;
+        List<Integer> genreIds = genres.stream().map(Genre::getId).collect(Collectors.toList());
+        List<Integer> checkGenreIds = film.getGenres().stream().map(Genre::getId).collect(Collectors.toList());
+        if(!genreIds.containsAll(checkGenreIds) || !checkGenreIds.containsAll(genreIds)) return false;
+        List<Integer> actorIds = actors.stream().map(Actor::getId).collect(Collectors.toList());
+        List<Integer> checkActorIds = film.getActors().stream().map(Actor::getId).collect(Collectors.toList());
+        if(!actorIds.containsAll(checkActorIds) || !checkActorIds.containsAll(actorIds)) return false;
+        List<Integer> directorIds = directors.stream().map(Director::getId).collect(Collectors.toList());
+        List<Integer> checkDirectorIds = film.getDirectors().stream().map(Director::getId).collect(Collectors.toList());
+        return directorIds.containsAll(checkDirectorIds) && checkDirectorIds.containsAll(directorIds);
     }
 
     @Override
@@ -160,6 +169,7 @@ public class Film implements IEntity {
         StringBuffer sb = new StringBuffer();
         sb.append("ID: ").append(id).append(" ");
         sb.append("Tittle: ").append(tittle).append(" ");
+        sb.append("Date: ").append(date).append(" ");
         return new String(sb);
     }
 }

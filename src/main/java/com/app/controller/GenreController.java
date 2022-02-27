@@ -28,7 +28,7 @@ import java.util.Set;
 @Validated
 @Controller
 @RequestMapping(path = "/genres")
-@SessionAttributes("errors")
+@SessionAttributes({"errors", "success"})
 public class GenreController {
     private static final Logger logger = Logger.getLogger(FilmController.class);
 
@@ -46,6 +46,15 @@ public class GenreController {
             model.addAttribute("errors", errors);
             sessionStatus.setComplete();
         }
+        return get(model);
+    }
+
+    @GetMapping(value = "/success")
+    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
+        if(!success.isEmpty()){
+            model.addAttribute("success", success);
+        }
+        sessionStatus.setComplete();
         return get(model);
     }
 
