@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -55,7 +56,7 @@ public class Film implements IEntity {
     @NotNull(message = "Date cannot be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 
     public void setId(int id) {
         this.id = id;
@@ -69,11 +70,11 @@ public class Film implements IEntity {
         this.tittle = tittle;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -126,7 +127,7 @@ public class Film implements IEntity {
 
     }
 
-    public Film(String tittle, Date date){
+    public Film(String tittle, LocalDate date){
         this.tittle = tittle;
         this.date = date;
     }
