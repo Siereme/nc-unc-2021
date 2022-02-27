@@ -55,7 +55,7 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
 
     @Override
     protected String getRedirectPath() {
-        return "/films/all";
+        return "redirect:/films";
     }
 
 
@@ -81,18 +81,15 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
         List<Integer> directorIds = getEntityIds(deserializeDirectors);
         List<Director> checkDirectors = directorsRepository.find(directorIds);
 
-        if(genreIds.size() != checkGenres.size()){
-            List<String> errorGenresMessages = getErrorMessages(genreIds, deserializeGenres, checkGenres);
-            errors.addAll(errorGenresMessages);
-        }
-        if(actorIds.size() != checkActors.size()){
-            List<String> errorActorsMessages = getErrorMessages(actorIds, deserializeActors, checkActors);
-            errors.addAll(errorActorsMessages);
-        }
-        if(directorIds.size() != checkDirectors.size()){
-            List<String> errorActorsMessages = getErrorMessages(directorIds, deserializeDirectors, checkDirectors);
-            errors.addAll(errorActorsMessages);
-        }
+        List<String> errorGenresMessages = getErrorMessages(genreIds, deserializeGenres, checkGenres);
+        errors.addAll(errorGenresMessages);
+
+        List<String> errorActorsMessages = getErrorMessages(actorIds, deserializeActors, checkActors);
+        errors.addAll(errorActorsMessages);
+
+        List<String> errorDirectorsMessages = getErrorMessages(directorIds, deserializeDirectors, checkDirectors);
+        errors.addAll(errorDirectorsMessages);
+
         return errors;
     }
 

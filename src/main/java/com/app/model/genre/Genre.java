@@ -5,18 +5,9 @@ import com.app.model.actor.Actor;
 import com.app.model.film.Film;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -74,6 +65,7 @@ public class Genre implements IEntity {
 
     public Genre(String tittle, List<Film> filmIds) {
         this.tittle = tittle;
+        this.films = new HashSet<>();
     }
 
     public int getId() {
@@ -97,7 +89,8 @@ public class Genre implements IEntity {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Genre genre = (Genre) object;
-        return getId() == genre.getId();
+        if(getId() != genre.getId()) return false;
+        return Objects.equals(getTittle(), genre.getTittle());
     }
 
     @Override

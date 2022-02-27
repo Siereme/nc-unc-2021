@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.transaction.Transactional;
 import java.io.*;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -46,9 +49,9 @@ public abstract class AbstractSerializeController<T extends IEntity> {
 
     protected List<String> getErrorMessages(List<Integer> entityIds, List<? extends IEntity> deserializeEntities, List<? extends IEntity> checkEntities){
         return entityIds.stream()
-                .filter(id -> checkEntities.stream().noneMatch(entity -> id == entity.getId()))
-                .map(id -> deserializeEntities.stream().filter(entity -> id == entity.getId()).findAny().orElse(null))
+                .map(id -> deserializeEntities.stream().filter(entity -> id == entity.getId()).findFirst().orElse(null))
                 .filter(Objects::nonNull)
+                .filter(entity -> checkEntities.stream().noneMatch(checkEntity -> checkEntity.equals(entity)))
                 .map(entity -> entity.getClass().getSimpleName() + " " + entity.toString() + " " + "is not found")
                 .collect(Collectors.toList());
     }
@@ -80,7 +83,7 @@ public abstract class AbstractSerializeController<T extends IEntity> {
 
     @Transactional
     @RequestMapping("/import")
-    public ModelAndView importJsonFile(@RequestParam("file") MultipartFile file) throws IOException {
+    public ModelAndView importJsonFile(@RequestParam("file") MultipartFile file, RedirectAttributes attributes) throws IOException {
         try {
 
             TypeReference<List<T>> typeReference = getRef();
@@ -89,23 +92,28 @@ public abstract class AbstractSerializeController<T extends IEntity> {
 
             List<String> errorMessages = checkErrors(fileEntityList);
             if(errorMessages.size() > 0){
-                return new ModelAndView("redirect:" + getRedirectPath());
+                attributes.addFlashAttribute("errors", errorMessages);
+                return new ModelAndView(getRedirectPath() + "/errors");
             }
 
-            List<T> entityList = repository.findAll();
+            fileEntityList.forEach(repository::edit);
 
-            List<T> addEntityList = new LinkedList<>(fileEntityList);
-            addEntityList.removeAll(entityList);
-
-            List<T> editEntityList = new LinkedList<>(fileEntityList);
-            editEntityList.removeAll(addEntityList);
-
-            addEntityList.forEach(repository::add);
-            editEntityList.forEach(repository::edit);
+//            List<T> entityList = repository.findAll();
+//
+//            List<T> addEntityList = new LinkedList<>(fileEntityList);
+//            addEntityList.removeAll(entityList);
+//
+//            List<T> editEntityList = new LinkedList<>(fileEntityList);
+//            editEntityList.removeAll(addEntityList);
+//
+//            addEntityList.forEach(repository::edit);
+//            editEntityList.forEach(repository::edit);
         } catch (Exception ex){
             logger.error(ex);
+            attributes.addFlashAttribute("errors", Collections.singletonList(ex));
+            return new ModelAndView(getRedirectPath() + "/errors");
         }
-        return new ModelAndView("redirect:" + getRedirectPath());
+        return new ModelAndView(getRedirectPath() + "/all");
     }
 
     @Autowired

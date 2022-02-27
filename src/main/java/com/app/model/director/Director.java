@@ -5,17 +5,7 @@ import com.app.model.IEntity;
 import com.app.model.film.Film;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Objects;
@@ -90,6 +80,7 @@ public class Director implements IEntity {
 //    }
 
     public Director(String name, String year) {
+        this.id = id;
         this.name = name;
         this.year = year;
         this.films = new HashSet<>();
@@ -137,7 +128,9 @@ public class Director implements IEntity {
         if (this == object) return true;
         if (object == null || getClass() != object.getClass()) return false;
         Director director = (Director) object;
-        return getId() == director.getId();
+        if(getId() != director.getId()) return false;
+        if(!Objects.equals(getName(), director.getName())) return false;
+        return Objects.equals(getYear(), director.getYear());
     }
 
     @Override
