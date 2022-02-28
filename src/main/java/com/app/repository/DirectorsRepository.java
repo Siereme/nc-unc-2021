@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Repository
 public class DirectorsRepository extends AbstractRepository<Director> {
 

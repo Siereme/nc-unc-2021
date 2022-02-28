@@ -8,6 +8,7 @@ import com.app.model.IEntity;
  * @version 1.0
  * */
 
+@SuppressWarnings("ALL")
 public interface IUser extends IEntity {
     /** Method gets user id
      * @return user id

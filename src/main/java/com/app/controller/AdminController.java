@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+@SuppressWarnings("ALL")
 @Controller
 public class AdminController {
     private static final Logger logger = Logger.getLogger(AdminController.class);
@@ -16,6 +17,7 @@ public class AdminController {
     @Autowired
     private UserRepository repository;
 
+    @SuppressWarnings("SameReturnValue")
     @GetMapping("/admin")
     public String userList(Model model) {
         model.addAttribute("allUsers", repository.findAll());

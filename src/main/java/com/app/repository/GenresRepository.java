@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
+@SuppressWarnings("unused")
 @Repository
 public class GenresRepository extends AbstractRepository<Genre> {
     private static final Logger logger = Logger.getLogger(GenresRepository.class);
@@ -58,6 +59,7 @@ public class GenresRepository extends AbstractRepository<Genre> {
                 .setParameter("name", name).getResultList();
     }
 
+    @SuppressWarnings("unused")
     @Override
     public int size() {
         return 0;

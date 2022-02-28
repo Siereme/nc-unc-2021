@@ -22,6 +22,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings("ALL")
 @Validated
 @Controller
 @RequestMapping(path = "/directors")

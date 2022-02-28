@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@SuppressWarnings("SameReturnValue")
 @Controller
 public class RegistrationController {
     private static final Logger logger = Logger.getLogger(RegistrationController.class);

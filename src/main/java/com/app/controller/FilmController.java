@@ -27,13 +27,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings({"SameReturnValue", "unused"})
 @Validated
 @Controller
 @RequestMapping(path = "/films")
 @SessionAttributes({"errors", "success"})
 public class FilmController implements WebMvcConfigurer {
     private static final Logger logger = Logger.getLogger(FilmController.class);
-    private final String filePath = "src/main/resources/database/Films.json";
 
     @GetMapping(value = "/all")
     public String get(ModelMap model) {

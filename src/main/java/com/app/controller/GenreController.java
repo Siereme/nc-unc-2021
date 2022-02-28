@@ -23,6 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+@SuppressWarnings("ALL")
 @Validated
 @Controller
 @RequestMapping(path = "/genres")
@@ -30,6 +31,7 @@ import java.util.Objects;
 public class GenreController {
     private static final Logger logger = Logger.getLogger(FilmController.class);
 
+    @SuppressWarnings("SameReturnValue")
     @GetMapping(value = "/all")
     public String get(ModelMap model) {
         Collection<Genre> genres = repository.findAll();
@@ -77,6 +79,7 @@ public class GenreController {
         model.addAttribute("json", "../serialize/genres");
     }
 
+    @SuppressWarnings("SameReturnValue")
     @PostMapping(value = "/handle/{commandType}")
     public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model,
                                    @Valid @PathVariable String commandType) {

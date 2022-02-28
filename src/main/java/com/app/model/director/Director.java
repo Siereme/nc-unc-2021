@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
  * @version 1.0
  * */
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "director")
 @NamedQueries({

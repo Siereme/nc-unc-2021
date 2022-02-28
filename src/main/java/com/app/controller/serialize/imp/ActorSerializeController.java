@@ -3,6 +3,7 @@ package com.app.controller.serialize.imp;
 import com.app.controller.serialize.AbstractSerializeController;
 import com.app.model.actor.Actor;
 import com.app.model.film.Film;
+import com.app.repository.AbstractRepository;
 import com.app.repository.ActorsRepository;
 import com.app.repository.FilmsRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -10,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
 import java.util.LinkedList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping(path = "/serialize/actors")
 public class ActorSerializeController extends AbstractSerializeController<Actor> {
@@ -24,15 +25,14 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
     private FilmsRepository filmsRepository;
 
     @Override
-    @PostConstruct
-    protected void getRepository() {
-        super.repository = actorsRepository;
+    protected AbstractRepository<Actor> getRepository() {
+        return actorsRepository;
     }
 
+    @SuppressWarnings("unused")
     @Override
-    @PostConstruct
-    protected void getFilePath() {
-        super.filePath = "src/main/resources/database/Actors.json";
+    protected String getFilePath() {
+        return "src/main/resources/database/Actors.json";
     }
 
     @Override

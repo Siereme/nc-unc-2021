@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  * @author Vasiliy, Sergey
  * */
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "genre")
 @NamedQueries({

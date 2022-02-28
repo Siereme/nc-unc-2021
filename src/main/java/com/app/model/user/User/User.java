@@ -26,6 +26,7 @@ import java.util.Set;
  * @author Sergey
  * @version 1.0
  * */
+@SuppressWarnings("unused")
 @JsonTypeName("visitor")
 @Entity
 @Table(name = "user")

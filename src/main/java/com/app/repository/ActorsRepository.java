@@ -8,6 +8,7 @@ import javax.persistence.TypedQuery;
 import java.math.BigInteger;
 import java.util.*;
 
+@SuppressWarnings("unused")
 @Repository
 @Transactional
 public class ActorsRepository extends AbstractRepository<Actor> {

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  * @author Vasiliy, Sergey
  * @version 1.0
  * */
+@SuppressWarnings("ALL")
 @Entity
 @Table(name = "actor")
 @NamedQueries({
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 )
 public class Actor implements IEntity {
 
+    @SuppressWarnings("unused")
     public void setId(int id) {
         this.id = id;
     }

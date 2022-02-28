@@ -3,6 +3,7 @@ package com.app.controller.serialize.imp;
 import com.app.controller.serialize.AbstractSerializeController;
 import com.app.model.director.Director;
 import com.app.model.film.Film;
+import com.app.repository.AbstractRepository;
 import com.app.repository.DirectorsRepository;
 import com.app.repository.FilmsRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -10,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,15 +24,13 @@ public class DirectorSerializeController extends AbstractSerializeController<Dir
     private FilmsRepository filmsRepository;
 
     @Override
-    @PostConstruct
-    protected void getRepository() {
-        super.repository = directorsRepository;
+    protected AbstractRepository<Director> getRepository() {
+        return directorsRepository;
     }
 
     @Override
-    @PostConstruct
-    protected void getFilePath() {
-        super.filePath = "src/main/resources/database/Directors.json";
+    protected String getFilePath() {
+        return "src/main/resources/database/Directors.json";
     }
 
     @Override

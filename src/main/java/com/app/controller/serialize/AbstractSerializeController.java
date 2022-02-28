@@ -27,11 +27,11 @@ import java.util.stream.Collectors;
 @Validated
 public abstract class AbstractSerializeController<T extends IEntity> {
     private static final Logger logger = Logger.getLogger(FilmController.class);
-    protected String filePath;
-    protected AbstractRepository<T> repository;
+    @Autowired
+    private ObjectMapper mapper;
 
-    protected abstract void getRepository();
-    protected abstract void getFilePath();
+    protected abstract AbstractRepository<T> getRepository();
+    protected abstract String getFilePath();
     protected abstract TypeReference<List<T>> getRef();
     protected abstract String getRedirectPath();
     protected abstract List<String> checkErrors(List<T> entityList);
@@ -62,9 +62,9 @@ public abstract class AbstractSerializeController<T extends IEntity> {
     @Transactional
     @RequestMapping(value = "/export")
     public ResponseEntity<Resource> exportJsonFile() throws IOException {
-        List<T> entityList = repository.findAll();
+        List<T> entityList = getRepository().findAll();
 
-        File file = new File(filePath);
+        File file = new File(getFilePath());
 
         TypeReference<List<T>> typeReference = getRef();
         mapper.writerFor(typeReference).writeValue(new FileOutputStream(file), entityList);
@@ -98,7 +98,7 @@ public abstract class AbstractSerializeController<T extends IEntity> {
                 return new ModelAndView(getRedirectPath() + "/errors");
             }
 
-            List<T> entityList = repository.findAll();
+            List<T> entityList = getRepository().findAll();
 
             List<T> updateEntityList = new LinkedList<>(fileEntityList);
             updateEntityList.removeAll(entityList);
@@ -106,7 +106,7 @@ public abstract class AbstractSerializeController<T extends IEntity> {
             List<String> addMassages = getMessages(updateEntityList, "was updated");
             List<String> successMessages = new ArrayList<>(addMassages);
 
-            updateEntityList.forEach(repository::edit);
+            updateEntityList.forEach(getRepository()::edit);
 
             attributes.addFlashAttribute("success", successMessages);
             return new ModelAndView(getRedirectPath() + "/success");
@@ -116,10 +116,5 @@ public abstract class AbstractSerializeController<T extends IEntity> {
             return new ModelAndView(getRedirectPath() + "/errors");
         }
     }
-
-    @Autowired
-    private ObjectMapper mapper;
-
-
 }
 
