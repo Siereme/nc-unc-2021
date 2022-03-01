@@ -51,11 +51,14 @@ public class RoleRepository extends AbstractRepository<Role> {
 
     @Override
     public List<Role> findByContains(String name) {
-        return null;
+        return entityManager.createQuery(
+                        "select distinct r from Role r left join fetch r.users where r.name like :name ESCAPE '!'", Role.class)
+                .setParameter("name", '%' + name + '%').getResultList();
     }
 
     @Override
     public Role findById(int id) {
-        return null;
+        return entityManager.createQuery("select r from Role r left join fetch r.users where r.id = :id", Role.class)
+                .setParameter("id", id).getSingleResult();
     }
 }

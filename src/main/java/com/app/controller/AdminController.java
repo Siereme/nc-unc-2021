@@ -99,7 +99,7 @@ public class AdminController {
             map.addAttribute("result", result);
             return renderHandlePage(user, map, "page-add");
         }
-        repository.add(user);
+        repository.saveUser(user);
         return "redirect:/admin/all";
     }
 

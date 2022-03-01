@@ -1,7 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
     <title>Handle Page</title>
     <link href="<c:url value="/resources/bootstrap-5.0.2-dist/css/bootstrap.min.css" />" rel="stylesheet">
@@ -25,6 +25,8 @@
                 <input class="form-control" name="username" value="${user.getUsername()}">
                 <span>Password</span>
                 <input class="form-control" name="password" value="${user.getPassword()}">
+                <span>Password Confirm</span>
+                <input class="form-control" name="passwordConfirm" value="${user.getPassword()}">
             </div>
         </div>
         <div class="row">

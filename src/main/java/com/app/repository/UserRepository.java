@@ -1,6 +1,5 @@
 package com.app.repository;
 
-import com.app.model.actor.Actor;
 import com.app.model.role.Role;
 import com.app.model.user.User.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,12 +7,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
-
-import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigInteger;
 import java.util.List;
 
@@ -69,7 +66,9 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
 
     @Override
     public int size() {
-        return (int) entityManager.createNativeQuery("SELECT count(*) FROM user", Integer.class).getSingleResult();
+        BigInteger bigInteger =
+                (BigInteger) entityManager.createNativeQuery("SELECT count(*) FROM user", BigInteger.class).getSingleResult();
+        return bigInteger.intValue();
     }
 
     @Override

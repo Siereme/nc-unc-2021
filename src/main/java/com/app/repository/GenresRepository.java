@@ -4,6 +4,7 @@ import com.app.model.genre.Genre;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigInteger;
 import java.util.*;
 
 @SuppressWarnings("unused")
@@ -62,7 +63,9 @@ public class GenresRepository extends AbstractRepository<Genre> {
     @SuppressWarnings("unused")
     @Override
     public int size() {
-        return 0;
+        BigInteger bigInteger =
+                (BigInteger) entityManager.createNativeQuery("select count(*) from genre").getSingleResult();
+        return bigInteger.intValue();
     }
 
     @Override

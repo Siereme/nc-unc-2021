@@ -3,6 +3,7 @@ package com.app.model.role;
 import com.app.model.user.User.User;
 import org.springframework.security.core.GrantedAuthority;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -66,7 +67,7 @@ public class Role implements GrantedAuthority {
         return getName();
     }
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")

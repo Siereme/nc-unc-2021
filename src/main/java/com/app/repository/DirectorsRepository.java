@@ -1,8 +1,11 @@
 package com.app.repository;
 
+import com.app.model.actor.Actor;
 import com.app.model.director.Director;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.TypedQuery;
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
 
@@ -44,12 +47,16 @@ public class DirectorsRepository extends AbstractRepository<Director> {
 
     @Override
     public List<Director> findByName(String name) {
-        return null;
+        TypedQuery<Director> query = entityManager.createQuery("select distinct d from Director d left join fetch d.films where d.name = :name", Director.class).setParameter("name", name);
+        return query.getResultList();
     }
 
+    @SuppressWarnings("unused")
     @Override
     public int size() {
-        return 0;
+        BigInteger bigInteger =
+                (BigInteger) entityManager.createNativeQuery("select count(*) from director").getSingleResult();
+        return bigInteger.intValue();
     }
 
     @Override

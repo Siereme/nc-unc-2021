@@ -53,7 +53,6 @@
             </tr>
         </c:forEach>
     </table>
-    <a href="/films/all">Back</a>
 </div>
 </body>
 </html>

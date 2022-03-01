@@ -33,11 +33,6 @@
                             Directors
                         </a>
                     </li>
-                    <li>
-                        <a href="/admin/all" class="nav-link ${currentPage.contains('/admin/all') ? ' text-secondary' : ' text-white'}">
-                            Admin
-                        </a>
-                    </li>
                 </ul>
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                     <sec:authorize access="!isAuthenticated()">

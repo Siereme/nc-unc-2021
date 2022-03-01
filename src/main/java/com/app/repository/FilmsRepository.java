@@ -57,6 +57,7 @@ public class FilmsRepository extends AbstractRepository<Film> {
                 .getResultList();
     }
 
+    @SuppressWarnings("unused")
     @Override
     public int size() {
         BigInteger bigInteger =

@@ -52,6 +52,7 @@ public class ActorsRepository extends AbstractRepository<Actor> {
         return query.getResultList();
     }
 
+    @SuppressWarnings("unused")
     @Override
     public int size() {
         BigInteger bigInteger =

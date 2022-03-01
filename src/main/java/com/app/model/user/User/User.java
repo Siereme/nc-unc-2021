@@ -1,12 +1,12 @@
 package com.app.model.user.User;
 
-import com.app.model.role.Role;
 import com.app.model.IEntity;
+import com.app.model.role.Role;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -55,7 +55,7 @@ public class User implements IEntity, UserDetails {
     @Transient
     private String passwordConfirm;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
@@ -69,6 +69,12 @@ public class User implements IEntity, UserDetails {
         this.user_id = user_id;
         this.username = username;
         this.password = password;
+    }
+
+    public User(String username, String password, Set<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
     }
 
     public User(String username, String password) {
