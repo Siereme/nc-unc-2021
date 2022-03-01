@@ -23,16 +23,25 @@
         </thead>
         <c:forEach items="${allUsers}" var="user">
             <tr>
-                <td>${user.id}</td>
-                <td>${user.username}</td>
-                <td>${user.password}</td>
-                <td>
-                     <c:forEach items="${user.roles}" var="role"> <div> ${role.name} </div> </c:forEach>
+                <th class="align-middle" scope="row">${user.id}</th>
+                <td class="align-middle">${user.username}</td>
+                <td class="align-middle">${user.password}</td>
+                <td class="px-0">
+                    <table class="table">
+                        <tbody>
+                        <c:forEach var="role" items="${user.roles}">
+                            <tr>
+                                <td class="w-50">${role.getName()}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
                 </td>
                 <td class="align-middle col-1">
                     <form action="handle/page-edit" method="post">
                         <input type="hidden" name="user_id" value="${user.getId()}"/>
                         <input type="hidden" name="username" value="${user.getUsername()}"/>
+                        <input type="hidden" name="password" value="${user.getPassword()}">
                         <input type="submit" class="btn btn-outline-dark" value="Edit"/>
                     </form>
                 </td>

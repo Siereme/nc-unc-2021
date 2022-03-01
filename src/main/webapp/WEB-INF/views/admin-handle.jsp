@@ -21,8 +21,10 @@
         <div class="row">
             <div class="col-6">
                 <span>Name</span>
-                <input type="hidden" name="id" value="${user.getId()}"/>
-                <input class="form-control" name="name" value="${user.getUsername()}">
+                <input type="hidden" name="user_id" value="${user.getId()}"/>
+                <input class="form-control" name="username" value="${user.getUsername()}">
+                <span>Password</span>
+                <input class="form-control" name="password" value="${user.getPassword()}">
             </div>
         </div>
         <div class="row">

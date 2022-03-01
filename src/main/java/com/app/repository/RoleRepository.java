@@ -5,6 +5,7 @@ import com.app.model.user.User.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @Repository
@@ -42,9 +43,10 @@ public class RoleRepository extends AbstractRepository<Role> {
 
     @Override
     public int size() {
-        /*return jdbcTemplate.queryForObject("Select count(*) from role", Integer.TYPE);*/
-        //TODO
-        return -1;
+        BigInteger bigInteger =
+                (BigInteger) entityManager.createNativeQuery("SELECT count(*) from role", BigInteger.class)
+                        .getSingleResult();
+        return bigInteger.intValue();
     }
 
     @Override
