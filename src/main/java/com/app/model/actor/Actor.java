@@ -1,20 +1,20 @@
 package com.app.model.actor;
 
-import com.app.config.converter.imp.IdToFilmConverter;
 import com.app.model.IEntity;
 import com.app.model.film.Film;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /** Actor entity
  * @author Vasiliy, Sergey
  * @version 1.0
  * */
+@SuppressWarnings("ALL")
 @Entity
 @Table(name = "actor")
 @NamedQueries({
@@ -31,6 +31,7 @@ import java.util.Set;
 )
 public class Actor implements IEntity {
 
+    @SuppressWarnings("unused")
     public void setId(int id) {
         this.id = id;
     }
@@ -50,10 +51,9 @@ public class Actor implements IEntity {
     @Column(name = "year")
     private String year;
 
-    @JsonIgnoreProperties(value = "actors", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_actor",
-    joinColumns = @JoinColumn(name = "actor_id"),
+            joinColumns = @JoinColumn(name = "actor_id"),
             inverseJoinColumns = @JoinColumn(name = "film_id"))
     private Set<Film> films;
 
@@ -76,22 +76,11 @@ public class Actor implements IEntity {
         this.year = "";
     }
 
-//    public Actor(int actor_id, String name) {
-//        this.id = actor_id;
-//        this.name = name;
-//    }
-
     public Actor(String name, String year) {
         this.name = name;
         this.year = year;
         this.films = new HashSet<>();
     }
-
-//    public Actor(int actor_id, String name, String year) {
-//        this.id = actor_id;
-//        this.name = name;
-//        this.year = year;
-//    }
 
     public int getId() {
         return this.id;
@@ -114,7 +103,7 @@ public class Actor implements IEntity {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + Objects.hashCode(id);
+        result = prime * result + Objects.hashCode(id) + Objects.hashCode(name) + Objects.hashCode(year);
         return result;
     }
 
@@ -125,14 +114,18 @@ public class Actor implements IEntity {
         Actor actor = (Actor) object;
         if(getId() != actor.getId()) return false;
         if(!Objects.equals(getName(), actor.getName())) return false;
-        return Objects.equals(getYear(), actor.getYear());
+        if(!Objects.equals(getYear(), actor.getYear())) return false;
+        List<Integer> filmIds = films.stream().map(Film::getId).collect(Collectors.toList());
+        List<Integer> checkFilmIds = actor.getFilms().stream().map(Film::getId).collect(Collectors.toList());
+        return filmIds.containsAll(checkFilmIds) && checkFilmIds.containsAll(filmIds);
     }
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("ID: ").append(id).append(" ");
         sb.append("Name: ").append(name).append(" ");
+        sb.append("Year: ").append(year).append(" ");
         return new String(sb);
     }
 

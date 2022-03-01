@@ -9,13 +9,16 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /** Film entity
  * @author Vasiliy, Sergey
  * @version 1.0
  * */
 
+@SuppressWarnings("unused")
 @Entity
 @Table(name = "film")
 @NamedQueries({
@@ -54,7 +57,7 @@ public class Film implements IEntity {
     @NotNull(message = "Date cannot be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 
     public void setId(int id) {
         this.id = id;
@@ -68,11 +71,11 @@ public class Film implements IEntity {
         this.tittle = tittle;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -100,7 +103,6 @@ public class Film implements IEntity {
         this.genres = genres;
     }
 
-
     @JsonIgnoreProperties(value = "films", allowSetters = true)
     @ManyToMany
     @JoinTable(name = "film_actor",
@@ -126,7 +128,7 @@ public class Film implements IEntity {
 
     }
 
-    public Film(String tittle, Date date){
+    public Film(String tittle, LocalDate date){
         this.tittle = tittle;
         this.date = date;
     }
@@ -141,7 +143,7 @@ public class Film implements IEntity {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + Objects.hashCode(id);
+        result = prime * result + Objects.hashCode(id) + Objects.hashCode(tittle) + Objects.hashCode(date);
         return result;
     }
 
@@ -152,14 +154,24 @@ public class Film implements IEntity {
         Film film = (Film) object;
         if(getId() != film.getId()) return false;
         if(getDate().compareTo(film.getDate()) != 0) return false;
-        return Objects.equals(getTittle(), film.getTittle());
+        if(!Objects.equals(getTittle(), film.getTittle())) return false;
+        List<Integer> genreIds = genres.stream().map(Genre::getId).collect(Collectors.toList());
+        List<Integer> checkGenreIds = film.getGenres().stream().map(Genre::getId).collect(Collectors.toList());
+        if(!genreIds.containsAll(checkGenreIds) || !checkGenreIds.containsAll(genreIds)) return false;
+        List<Integer> actorIds = actors.stream().map(Actor::getId).collect(Collectors.toList());
+        List<Integer> checkActorIds = film.getActors().stream().map(Actor::getId).collect(Collectors.toList());
+        if(!actorIds.containsAll(checkActorIds) || !checkActorIds.containsAll(actorIds)) return false;
+        List<Integer> directorIds = directors.stream().map(Director::getId).collect(Collectors.toList());
+        List<Integer> checkDirectorIds = film.getDirectors().stream().map(Director::getId).collect(Collectors.toList());
+        return directorIds.containsAll(checkDirectorIds) && checkDirectorIds.containsAll(directorIds);
     }
 
     @Override
     public String toString() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         sb.append("ID: ").append(id).append(" ");
         sb.append("Tittle: ").append(tittle).append(" ");
+        sb.append("Date: ").append(date).append(" ");
         return new String(sb);
     }
 }

@@ -23,19 +23,17 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
+@SuppressWarnings({"SameReturnValue", "unused"})
 @Validated
 @Controller
 @RequestMapping(path = "/films")
-@SessionAttributes("errors")
+@SessionAttributes({"errors", "success"})
 public class FilmController implements WebMvcConfigurer {
     private static final Logger logger = Logger.getLogger(FilmController.class);
-    private final String filePath = "src/main/resources/database/Films.json";
 
     @GetMapping(value = "/all")
     public String get(ModelMap model) {
@@ -61,8 +59,17 @@ public class FilmController implements WebMvcConfigurer {
     public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model, SessionStatus sessionStatus) {
         if(!errors.isEmpty()){
             model.addAttribute("errors", errors);
-            sessionStatus.setComplete();
         }
+        sessionStatus.setComplete();
+        return get(model);
+    }
+
+    @GetMapping(value = "/success")
+    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
+        if(!success.isEmpty()){
+            model.addAttribute("success", success);
+        }
+        sessionStatus.setComplete();
         return get(model);
     }
 

@@ -67,9 +67,14 @@
     </table>
 </div>
 <c:if test="${errors != null && !errors.isEmpty()}">
-    <jsp:include page="errors-modal.jsp">
-        <jsp:param name="errors" value="${errors}"/>
-    </jsp:include>
+    <c:set var="title" value="Errors" scope="request"/>
+    <c:set var="messages" value="${errors}" scope="request"/>
+    <jsp:include page="modal-messages.jsp" />
+</c:if>
+<c:if test="${success != null && !success.isEmpty()}">
+    <c:set var="title" value="Success" scope="request"/>
+    <c:set var="messages" value="${success}" scope="request"/>
+    <jsp:include page="modal-messages.jsp" />
 </c:if>
 </body>
 </html>

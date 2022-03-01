@@ -19,19 +19,19 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
+@SuppressWarnings("ALL")
 @Validated
 @Controller
 @RequestMapping(path = "/genres")
-@SessionAttributes("errors")
+@SessionAttributes({"errors", "success"})
 public class GenreController {
     private static final Logger logger = Logger.getLogger(FilmController.class);
 
+    @SuppressWarnings("SameReturnValue")
     @GetMapping(value = "/all")
     public String get(ModelMap model) {
         Collection<Genre> genres = repository.findAll();
@@ -46,6 +46,15 @@ public class GenreController {
             model.addAttribute("errors", errors);
             sessionStatus.setComplete();
         }
+        return get(model);
+    }
+
+    @GetMapping(value = "/success")
+    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
+        if(!success.isEmpty()){
+            model.addAttribute("success", success);
+        }
+        sessionStatus.setComplete();
         return get(model);
     }
 
@@ -70,6 +79,7 @@ public class GenreController {
         model.addAttribute("json", "../serialize/genres");
     }
 
+    @SuppressWarnings("SameReturnValue")
     @PostMapping(value = "/handle/{commandType}")
     public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model,
                                    @Valid @PathVariable String commandType) {

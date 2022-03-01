@@ -14,6 +14,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import java.util.Set;
 
+@SuppressWarnings("ALL")
 @Entity
 @Table(name = "role")
 public class Role implements GrantedAuthority {
@@ -52,6 +53,7 @@ public class Role implements GrantedAuthority {
         return name;
     }
 
+    @SuppressWarnings("unused")
     public void setName(String name) {
         this.name = name;
     }

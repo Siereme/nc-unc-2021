@@ -12,7 +12,7 @@ import java.util.List;
 public class RoleRepository extends AbstractRepository<Role> {
     @Override
     public List<Role> findAll() {
-        return entityManager.createQuery("SELECT distinct r FROM Role r left join fetch r.users", Role.class)
+        return entityManager.createQuery("SELECT r FROM Role r left join fetch r.users", Role.class)
                 .getResultList();
     }
 
@@ -37,7 +37,7 @@ public class RoleRepository extends AbstractRepository<Role> {
 
     @Override
     public List<Role> findByName(String name) {
-        return entityManager.createQuery("Select distinct r from Role r left join fetch r.users where r.name = :name",
+        return entityManager.createQuery("Select r from Role r left join fetch r.users where r.name = :name",
                 Role.class).setParameter("name", name).getResultList();
     }
 

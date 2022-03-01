@@ -18,24 +18,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.transaction.Transactional;
 import java.io.*;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Validated
 public abstract class AbstractSerializeController<T extends IEntity> {
     private static final Logger logger = Logger.getLogger(FilmController.class);
-    protected String filePath;
-    protected AbstractRepository<T> repository;
+    @Autowired
+    private ObjectMapper mapper;
 
-    protected abstract void getRepository();
-    protected abstract void getFilePath();
+    protected abstract AbstractRepository<T> getRepository();
+    protected abstract String getFilePath();
     protected abstract TypeReference<List<T>> getRef();
     protected abstract String getRedirectPath();
     protected abstract List<String> checkErrors(List<T> entityList);
@@ -47,22 +43,28 @@ public abstract class AbstractSerializeController<T extends IEntity> {
                 .collect(Collectors.toList());
     }
 
+    private List<String> getMessages(List<? extends IEntity> entities, String message){
+        return entities.stream()
+                .map(entity -> entity.getClass().getSimpleName() + " " + entity + " " + message)
+                .collect(Collectors.toList());
+    }
+
     protected List<String> getErrorMessages(List<Integer> entityIds, List<? extends IEntity> deserializeEntities, List<? extends IEntity> checkEntities){
-        return entityIds.stream()
+         List<? extends IEntity> entities = entityIds.stream()
                 .map(id -> deserializeEntities.stream().filter(entity -> id == entity.getId()).findFirst().orElse(null))
                 .filter(Objects::nonNull)
-                .filter(entity -> checkEntities.stream().noneMatch(checkEntity -> checkEntity.equals(entity)))
-                .map(entity -> entity.getClass().getSimpleName() + " " + entity.toString() + " " + "is not found")
+                .filter(entity -> checkEntities.stream().noneMatch(checkEntity -> entity.getId() == checkEntity.getId() && entity.hashCode() == checkEntity.hashCode()))
                 .collect(Collectors.toList());
+         return getMessages(entities, "is not found");
     }
 
 
     @Transactional
     @RequestMapping(value = "/export")
     public ResponseEntity<Resource> exportJsonFile() throws IOException {
-        List<T> entityList = repository.findAll();
+        List<T> entityList = getRepository().findAll();
 
-        File file = new File(filePath);
+        File file = new File(getFilePath());
 
         TypeReference<List<T>> typeReference = getRef();
         mapper.writerFor(typeReference).writeValue(new FileOutputStream(file), entityList);
@@ -83,7 +85,7 @@ public abstract class AbstractSerializeController<T extends IEntity> {
 
     @Transactional
     @RequestMapping("/import")
-    public ModelAndView importJsonFile(@RequestParam("file") MultipartFile file, RedirectAttributes attributes) throws IOException {
+    public ModelAndView importJsonFile(@RequestParam("file") MultipartFile file, RedirectAttributes attributes) {
         try {
 
             TypeReference<List<T>> typeReference = getRef();
@@ -96,29 +98,23 @@ public abstract class AbstractSerializeController<T extends IEntity> {
                 return new ModelAndView(getRedirectPath() + "/errors");
             }
 
-            fileEntityList.forEach(repository::edit);
+            List<T> entityList = getRepository().findAll();
 
-//            List<T> entityList = repository.findAll();
-//
-//            List<T> addEntityList = new LinkedList<>(fileEntityList);
-//            addEntityList.removeAll(entityList);
-//
-//            List<T> editEntityList = new LinkedList<>(fileEntityList);
-//            editEntityList.removeAll(addEntityList);
-//
-//            addEntityList.forEach(repository::edit);
-//            editEntityList.forEach(repository::edit);
+            List<T> updateEntityList = new LinkedList<>(fileEntityList);
+            updateEntityList.removeAll(entityList);
+
+            List<String> addMassages = getMessages(updateEntityList, "was updated");
+            List<String> successMessages = new ArrayList<>(addMassages);
+
+            updateEntityList.forEach(getRepository()::edit);
+
+            attributes.addFlashAttribute("success", successMessages);
+            return new ModelAndView(getRedirectPath() + "/success");
         } catch (Exception ex){
             logger.error(ex);
             attributes.addFlashAttribute("errors", Collections.singletonList(ex));
             return new ModelAndView(getRedirectPath() + "/errors");
         }
-        return new ModelAndView(getRedirectPath() + "/all");
     }
-
-    @Autowired
-    private ObjectMapper mapper;
-
-
 }
 

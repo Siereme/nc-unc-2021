@@ -1,9 +1,9 @@
 package com.app.controller.serialize.imp;
 
 import com.app.controller.serialize.AbstractSerializeController;
-import com.app.model.actor.Actor;
 import com.app.model.director.Director;
 import com.app.model.film.Film;
+import com.app.repository.AbstractRepository;
 import com.app.repository.DirectorsRepository;
 import com.app.repository.FilmsRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -11,14 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.PostConstruct;
 import java.util.LinkedList;
 import java.util.List;
 
 @RestController
 @RequestMapping(path = "/serialize/directors")
 public class DirectorSerializeController extends AbstractSerializeController<Director> {
-    private final String filePath = "src/main/resources/database/Directors.json";
 
     @Autowired
     private DirectorsRepository directorsRepository;
@@ -26,15 +24,13 @@ public class DirectorSerializeController extends AbstractSerializeController<Dir
     private FilmsRepository filmsRepository;
 
     @Override
-    @PostConstruct
-    protected void getRepository() {
-        super.repository = directorsRepository;
+    protected AbstractRepository<Director> getRepository() {
+        return directorsRepository;
     }
 
     @Override
-    @PostConstruct
-    protected void getFilePath() {
-        super.filePath = filePath;
+    protected String getFilePath() {
+        return "src/main/resources/database/Directors.json";
     }
 
     @Override
@@ -49,7 +45,6 @@ public class DirectorSerializeController extends AbstractSerializeController<Dir
 
     @Override
     protected List<String> checkErrors(List<Director> directorList) {
-        List<String> errors = new LinkedList<>();
 
         List<Film> deserializeFilms = new LinkedList<>();
 
@@ -59,8 +54,7 @@ public class DirectorSerializeController extends AbstractSerializeController<Dir
         List<Film> checkFilms = filmsRepository.find(filmIds);
 
         List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
-        errors.addAll(errorFilmsMessages);
 
-        return errors;
+        return new LinkedList<>(errorFilmsMessages);
     }
 }

@@ -21,20 +21,20 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
+@SuppressWarnings("ALL")
 @Validated
 @Controller
 @RequestMapping(path = "/directors")
-@SessionAttributes("errors")
+@SessionAttributes({"errors", "success"})
 public class DirectorController {
     private static final Logger logger = Logger.getLogger(DirectorController.class);
 
     @Autowired
-    private DirectorsRepository repository = new DirectorsRepository();
+    private final DirectorsRepository repository = new DirectorsRepository();
 
     @Autowired
-    private FilmsRepository filmsRepository = new FilmsRepository();
+    private final FilmsRepository filmsRepository = new FilmsRepository();
 
     private void getDirectorsAndFilmsList(Collection<Director> directorCollection, ModelMap model) {
         model.addAttribute("directors", directorCollection);
@@ -60,6 +60,15 @@ public class DirectorController {
             model.addAttribute("errors", errors);
             sessionStatus.setComplete();
         }
+        return get(model);
+    }
+
+    @GetMapping(value = "/success")
+    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
+        if(!success.isEmpty()){
+            model.addAttribute("success", success);
+        }
+        sessionStatus.setComplete();
         return get(model);
     }
 

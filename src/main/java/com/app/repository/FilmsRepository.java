@@ -13,6 +13,7 @@ import java.util.List;
  * @author Vasiliy, Sergey
  * @version 1.0
  * */
+@SuppressWarnings("unused")
 @Transactional
 @Repository
 public class FilmsRepository extends AbstractRepository<Film> {

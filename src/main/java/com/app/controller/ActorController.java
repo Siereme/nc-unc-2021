@@ -21,12 +21,12 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
+@SuppressWarnings({"SameReturnValue", "unused"})
 @Validated
 @Controller
 @RequestMapping(path = "/actors")
-@SessionAttributes("errors")
+@SessionAttributes({"errors", "success"})
 public class ActorController {
     private static final Logger logger = Logger.getLogger(ActorController.class);
 
@@ -60,6 +60,15 @@ public class ActorController {
             model.addAttribute("errors", errors);
             sessionStatus.setComplete();
         }
+        return get(model);
+    }
+
+    @GetMapping(value = "/success")
+    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
+        if(!success.isEmpty()){
+            model.addAttribute("success", success);
+        }
+        sessionStatus.setComplete();
         return get(model);
     }
 

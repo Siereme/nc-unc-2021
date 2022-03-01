@@ -1,14 +1,6 @@
 package com.app.model;
 
 
-import com.app.model.actor.Actor;
-import com.app.model.director.Director;
-import com.app.model.film.Film;
-import com.app.model.genre.Genre;
-import com.app.model.user.User.User;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-
 //@JsonTypeInfo(
 //        use = JsonTypeInfo.Id.NAME,
 //        property = "type")

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.ModelAndView;
 
+@SuppressWarnings("ALL")
 import javax.validation.ConstraintViolationException;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -42,7 +43,8 @@ public class AdminController {
     @Autowired
     private UserRepository repository;
 
-    @GetMapping("/all")
+    @SuppressWarnings("SameReturnValue")
+    @GetMapping("/admin")
     public String userList(Model model) {
         model.addAttribute("allUsers", repository.findAll());
         return "admin";
@@ -63,6 +65,7 @@ public class AdminController {
             model.addAttribute("allUsers", userList);
             return new ModelAndView("admin", model);
         }
+        return "redirect:/admin";
     }
 
     @PostMapping(value = "/handle/{commandType}")
