@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @SuppressWarnings("SameReturnValue")
 @Controller
-public class RegistrationController {
+public class RegistrationController extends AbstractController{
     private static final Logger logger = Logger.getLogger(RegistrationController.class);
 
     @Lazy
@@ -25,31 +25,31 @@ public class RegistrationController {
     @GetMapping("/registration")
     public String registration(Model model) {
         User user = new User();
-        model.addAttribute("userForm", user);
+        model.addAttribute(USER_FORM, user);
 
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("userForm") User userForm, Model model) {
+    public String addUser(@ModelAttribute(USER_FORM) User userForm, Model model) {
 
         String username = userForm.getUsername();
         if(username.length() < 3) {
-            model.addAttribute("usernameError", "username must contain at least 3 characters");
+            model.addAttribute(USERNAME_ERROR, "username must contain at least 3 characters");
             return "registration";
         }
         String password = userForm.getPassword();
         if(password.length() < 6){
-            model.addAttribute("passwordError", "password must contain at least 6 characters");
+            model.addAttribute(PASSWORD_ERROR, "password must contain at least 6 characters");
             return "registration";
         }
 
         if (!userForm.getPassword().equals(userForm.getPasswordConfirm())){
-            model.addAttribute("passwordError", "passwords don't match");
+            model.addAttribute(PASSWORD_ERROR, "passwords don't match");
             return "registration";
         }
         if (!repository.saveUser(userForm)){
-            model.addAttribute("usernameError", "a user with this name already exists");
+            model.addAttribute(USERNAME_ERROR, "a user with this name already exists");
             return "registration";
         }
 

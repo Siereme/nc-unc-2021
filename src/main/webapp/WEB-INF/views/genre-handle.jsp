@@ -31,10 +31,10 @@
                       </button>
                       <ul class="dropdown-menu p-0">
                         <select class="form-select" multiple aria-label="multiple select example" name="films">
-                            <c:forEach var="film" items="${filmGenreList}">
+                            <c:forEach var="film" items="${filmList}">
                                 <option value="${film.getId()}" selected>${film.getTittle()}</option>
                             </c:forEach>
-                            <c:forEach var="film" items="${filmList}">
+                            <c:forEach var="film" items="${films}">
                                 <option value="${film.getId()}">${film.getTittle()}</option>
                             </c:forEach>
                         </select>

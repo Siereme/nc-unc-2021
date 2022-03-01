@@ -39,10 +39,10 @@
                       </button>
                       <ul class="dropdown-menu p-0">
                         <select class="form-select" multiple aria-label="multiple select example" name="genres">
-                            <c:forEach var="genre" items="${genreFilmList}">
+                            <c:forEach var="genre" items="${genreList}">
                                 <option value="${genre.getId()}" selected>${genre.getTittle()}</option>
                             </c:forEach>
-                            <c:forEach var="genre" items="${genreList}">
+                            <c:forEach var="genre" items="${genres}">
                                 <option value="${genre.getId()}">${genre.getTittle()}</option>
                             </c:forEach>
                         </select>
@@ -57,10 +57,10 @@
                       </button>
                       <ul class="dropdown-menu p-0">
                         <select class="form-select" multiple aria-label="multiple select example" name="actors">
-                            <c:forEach var="actor" items="${actorFilmList}">
+                            <c:forEach var="actor" items="${actorList}">
                                 <option value="${actor.getId()}" selected>${actor.getName()}</option>
                             </c:forEach>
-                            <c:forEach var="actor" items="${actorList}">
+                            <c:forEach var="actor" items="${actors}">
                                 <option value="${actor.getId()}">${actor.getName()}</option>
                             </c:forEach>
                         </select>
@@ -75,10 +75,10 @@
                       </button>
                       <ul class="dropdown-menu p-0">
                         <select class="form-select" multiple aria-label="multiple select example" name="directors">
-                            <c:forEach var="director" items="${directorFilmList}">
+                            <c:forEach var="director" items="${directorList}">
                                 <option value="${director.getId()}" selected>${director.getName()}</option>
                             </c:forEach>
-                            <c:forEach var="director" items="${directorList}">
+                            <c:forEach var="director" items="${directors}">
                                 <option value="${director.getId()}">${director.getName()}</option>
                             </c:forEach>
                         </select>
