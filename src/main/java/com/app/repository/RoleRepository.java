@@ -12,7 +12,7 @@ import java.util.List;
 public class RoleRepository extends AbstractRepository<Role> {
     @Override
     public List<Role> findAll() {
-        return entityManager.createQuery("SELECT distinct r FROM Role r left join fetch r.users", Role.class)
+        return entityManager.createQuery("SELECT distinct r FROM Role r", Role.class)
                 .getResultList();
     }
 
@@ -32,12 +32,12 @@ public class RoleRepository extends AbstractRepository<Role> {
     @Transactional
     @Override
     public void edit(Role entity) {
-        entityManager.persist(entity);
+        entityManager.merge(entity);
     }
 
     @Override
     public List<Role> findByName(String name) {
-        return entityManager.createQuery("Select distinct r from Role r left join fetch r.users where r.name = :name",
+        return entityManager.createQuery("Select distinct r from Role r where r.name = :name",
                 Role.class).setParameter("name", name).getResultList();
     }
 
@@ -52,13 +52,13 @@ public class RoleRepository extends AbstractRepository<Role> {
     @Override
     public List<Role> findByContains(String name) {
         return entityManager.createQuery(
-                        "select distinct r from Role r left join fetch r.users where r.name like :name ESCAPE '!'", Role.class)
+                        "select distinct r from Role r where r.name like :name ESCAPE '!'", Role.class)
                 .setParameter("name", '%' + name + '%').getResultList();
     }
 
     @Override
     public Role findById(int id) {
-        return entityManager.createQuery("select r from Role r left join fetch r.users where r.id = :id", Role.class)
+        return entityManager.createQuery("select r from Role r where r.id = :id", Role.class)
                 .setParameter("id", id).getSingleResult();
     }
 }

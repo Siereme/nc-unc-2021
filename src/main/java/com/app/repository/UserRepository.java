@@ -29,8 +29,9 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
         entityManager.persist(entity);
         // adding the role of an entity without roles
         if(entity.getRoles().size() == 0){
+            // TODO validation
             String ROLE_USER_STR = "ROLE_USER";
-            Role role = entityManager.createQuery("select r from Role r left join fetch r.users where r.name =:name",
+            Role role = entityManager.createQuery("select r from Role r where r.name =:name",
                     Role.class).setParameter("name", ROLE_USER_STR).getSingleResult();
             int roleId = role.getId();
             entityManager.createNativeQuery("insert into user_role(user_id, role_id) values(:id, :roleId)")
@@ -48,7 +49,7 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
     @Transactional
     @Override
     public void edit(User entity) {
-        entityManager.persist(entity);
+        entityManager.merge(entity);
     }
 
     @Override

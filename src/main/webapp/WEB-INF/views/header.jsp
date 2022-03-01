@@ -33,6 +33,16 @@
                             Directors
                         </a>
                     </li>
+                    <sec:authorize access="isAuthenticated()">
+                        <sec:authorize access="hasRole('ADMIN')">
+                            <li>
+                                <a href="/admin/all"
+                                   class="nav-link ${currentPage.contains('/admin/all') ? ' text-secondary' : ' text-white'}">
+                                    Users
+                                </a>
+                            </li>
+                        </sec:authorize>
+                    </sec:authorize>
                 </ul>
                 <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
                     <sec:authorize access="!isAuthenticated()">
@@ -51,12 +61,6 @@
                                 out
                             </button>
                         </li>
-                        <sec:authorize access="hasRole('ADMIN')">
-                            <li>
-                                <button onclick="window.location.href = '/admin/all'" type="button" class="btn btn-light text-dark-me-2">Users
-                                </button>
-                            </li>
-                        </sec:authorize>
                     </sec:authorize>
                 </ul>
             </div>
