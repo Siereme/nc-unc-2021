@@ -12,6 +12,7 @@
 </head>
 
 <body>
+<jsp:include page="header.jsp"></jsp:include>
 <div class="films-grid-container">
     <table class="table text-center">
         <thead class="bg-light">
@@ -22,17 +23,31 @@
         </thead>
         <c:forEach items="${allUsers}" var="user">
             <tr>
-                <td>${user.id}</td>
-                <td>${user.username}</td>
-                <td>${user.password}</td>
-                <td>
-                     <c:forEach items="${user.roles}" var="role"> <div> ${role.name} </div> </c:forEach>
+                <th class="align-middle" scope="row">${user.id}</th>
+                <td class="align-middle">${user.username}</td>
+                <td class="align-middle">${user.password}</td>
+                <td class="px-0">
+                    <table class="table">
+                        <tbody>
+                        <c:forEach var="role" items="${user.roles}">
+                            <tr>
+                                <td class="w-50">${role.getName()}</td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
                 </td>
-                <td>
-                    <form action="${pageContext.request.contextPath}/admin" method="post">
-                        <input type="hidden" name="userId" value="${user.id}"/>
-                        <input type="hidden" name="action" value="delete"/>
-                        <button type="submit">Delete</button>
+                <td class="align-middle col-1">
+                    <form action="handle/page-edit" method="post">
+                        <input type="hidden" name="user_id" value="${user.getId()}"/>
+                        <input type="hidden" name="username" value="${user.getUsername()}"/>
+                        <input type="hidden" name="password" value="${user.getPassword()}">
+                        <input type="submit" class="btn btn-outline-dark" value="Edit"/>
+                    </form>
+                </td>
+                <td class="align-middle col-1">
+                    <form action="handle/delete/${user.getId()}" method="post">
+                        <button class="btn btn-outline-dark" type="submit">Delete</button>
                     </form>
                 </td>
             </tr>

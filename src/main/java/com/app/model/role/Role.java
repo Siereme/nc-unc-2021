@@ -29,8 +29,16 @@ public class Role implements GrantedAuthority {
     @Column(name = "role_id")
     private int id;
 
-    public Role() {
+    public Set<User> getUsers() {
+        return users;
+    }
 
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
+
+    public Role() {
+        name = "";
     }
 
     public int getId() {

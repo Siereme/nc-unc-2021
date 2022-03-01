@@ -4,6 +4,8 @@ import com.app.config.converter.imp.IdToActorConverter;
 import com.app.config.converter.imp.IdToDirectorConverter;
 import com.app.config.converter.imp.IdToFilmConverter;
 import com.app.config.converter.imp.IdToGenreConverter;
+import com.app.config.converter.imp.IdToRoleConverter;
+import com.app.config.converter.imp.IdToUserConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -20,7 +22,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = { "com.app" })
+@ComponentScan(basePackages = {"com.app"})
 public class WebConfig implements WebMvcConfigurer {
 
     @Autowired
@@ -31,7 +33,10 @@ public class WebConfig implements WebMvcConfigurer {
     IdToDirectorConverter idToDirectorConverter;
     @Autowired
     IdToGenreConverter idToGenreConverter;
-
+    @Autowired
+    IdToUserConverter idToUserConverter;
+    @Autowired
+    IdToRoleConverter idToRoleConverter;
 
     @Bean
     public ViewResolver viewResolver() {
@@ -59,9 +64,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry
-                .addResourceHandler("/resources/**")
-                .addResourceLocations("/resources/")
+        registry.addResourceHandler("/resources/**").addResourceLocations("/resources/")
                 .setCacheControl(CacheControl.noCache());
     }
 
@@ -71,5 +74,7 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addConverter(idToActorConverter);
         registry.addConverter(idToDirectorConverter);
         registry.addConverter(idToGenreConverter);
+        registry.addConverter(idToUserConverter);
+        registry.addConverter(idToRoleConverter);
     }
 }
