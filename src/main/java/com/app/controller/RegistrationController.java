@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import static com.app.ConstantVariables.*;
+
 @SuppressWarnings("SameReturnValue")
 @Controller
-public class RegistrationController extends AbstractController{
+public class RegistrationController{
     private static final Logger logger = Logger.getLogger(RegistrationController.class);
 
     @Lazy
@@ -25,31 +27,31 @@ public class RegistrationController extends AbstractController{
     @GetMapping("/registration")
     public String registration(Model model) {
         User user = new User();
-        model.addAttribute(USER_FORM, user);
+        model.addAttribute(USER_FORM.value(), user);
 
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute(USER_FORM) User userForm, Model model) {
+    public String addUser(@ModelAttribute("userForm") User userForm, Model model) {
 
         String username = userForm.getUsername();
         if(username.length() < 3) {
-            model.addAttribute(USERNAME_ERROR, "username must contain at least 3 characters");
+            model.addAttribute(USERNAME_ERROR.value(), "username must contain at least 3 characters");
             return "registration";
         }
         String password = userForm.getPassword();
         if(password.length() < 6){
-            model.addAttribute(PASSWORD_ERROR, "password must contain at least 6 characters");
+            model.addAttribute(PASSWORD_ERROR.value(), "password must contain at least 6 characters");
             return "registration";
         }
 
         if (!userForm.getPassword().equals(userForm.getPasswordConfirm())){
-            model.addAttribute(PASSWORD_ERROR, "passwords don't match");
+            model.addAttribute(PASSWORD_ERROR.value(), "passwords don't match");
             return "registration";
         }
         if (!repository.saveUser(userForm)){
-            model.addAttribute(USERNAME_ERROR, "a user with this name already exists");
+            model.addAttribute(USERNAME_ERROR.value(), "a user with this name already exists");
             return "registration";
         }
 

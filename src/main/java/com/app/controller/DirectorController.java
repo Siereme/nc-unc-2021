@@ -22,12 +22,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.app.ConstantVariables.*;
+
 @SuppressWarnings("ALL")
 @Validated
 @Controller
 @RequestMapping(path = "/directors")
 @SessionAttributes({"errors", "success"})
-public class DirectorController extends AbstractController {
+public class DirectorController {
     private static final Logger logger = Logger.getLogger(DirectorController.class);
 
     @Autowired
@@ -37,13 +39,13 @@ public class DirectorController extends AbstractController {
     private final FilmsRepository filmsRepository = new FilmsRepository();
 
     private void getDirectorsAndFilmsList(Collection<Director> directorCollection, ModelMap model) {
-        model.addAttribute(DIRECTORS, directorCollection);
+        model.addAttribute(DIRECTORS.value(), directorCollection);
         Collection<Collection<Film>> listFilms = new LinkedList<>();
         for (Director director : directorCollection) {
             listFilms.add(director.getFilms());
         }
-        model.addAttribute(FILMS, listFilms);
-        model.addAttribute(JSON, "../serialize/directors");
+        model.addAttribute(FILMS.value(), listFilms);
+        model.addAttribute(JSON.value(), "../serialize/directors");
         logger.info("show all directors");
     }
 
@@ -51,22 +53,22 @@ public class DirectorController extends AbstractController {
     public String get(ModelMap model) {
         Collection<Director> directorList = repository.findAll();
         getDirectorsAndFilmsList(directorList, model);
-        return DIRECTORS;
+        return DIRECTORS.value();
     }
 
     @GetMapping(value = "/errors")
-    public String getWithErrors(@ModelAttribute(ERRORS) List<String> errors, ModelMap model, SessionStatus sessionStatus) {
+    public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model, SessionStatus sessionStatus) {
         if(!errors.isEmpty()){
-            model.addAttribute(ERRORS, errors);
+            model.addAttribute(ERRORS.value(), errors);
             sessionStatus.setComplete();
         }
         return get(model);
     }
 
     @GetMapping(value = "/success")
-    public String getWithSuccess(@ModelAttribute(SUCCESS) List<String> success, ModelMap model, SessionStatus sessionStatus) {
+    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
         if(!success.isEmpty()){
-            model.addAttribute(SUCCESS, success);
+            model.addAttribute(SUCCESS.value(), success);
         }
         sessionStatus.setComplete();
         return get(model);
@@ -85,7 +87,7 @@ public class DirectorController extends AbstractController {
             return new ModelAndView("redirect:/directors/all");
         } else {
             getDirectorsAndFilmsList(directorList, model);
-            return new ModelAndView(DIRECTORS, model);
+            return new ModelAndView(DIRECTORS.value(), model);
         }
     }
 
@@ -94,19 +96,19 @@ public class DirectorController extends AbstractController {
                                    @PathVariable @NotBlank String commandType) {
         List<Film> films = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
-            model.addAttribute(FILMS, films);
-            model.addAttribute(MODAL_TITLE, "Add");
-            model.addAttribute(EVENT_TYPE, "handle/add");
+            model.addAttribute(FILMS.value(), films);
+            model.addAttribute(MODAL_TITLE.value(), "Add");
+            model.addAttribute(EVENT_TYPE.value(), "handle/add");
         }
         if (Objects.equals(commandType, "page-edit")) {
             int id = director.getId();
             director = repository.findById(id);
             Collection<Film> filmsByDirectorId = director.getFilms();
             films.removeIf(film -> filmsByDirectorId.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
-            model.addAttribute(FILMS, films);
-            model.addAttribute(FILM_LIST, filmsByDirectorId);
-            model.addAttribute(MODAL_TITLE, "Edit");
-            model.addAttribute(EVENT_TYPE, "handle/edit");
+            model.addAttribute(FILMS.value(), films);
+            model.addAttribute(FILM_LIST.value(), filmsByDirectorId);
+            model.addAttribute(MODAL_TITLE.value(), "Edit");
+            model.addAttribute(EVENT_TYPE.value(), "handle/edit");
             model.addAttribute("director", director);
         }
         return "director-handle";
@@ -115,7 +117,7 @@ public class DirectorController extends AbstractController {
     @PostMapping(value = "/handle/add")
     public String add(@Validated @ModelAttribute Director director, BindingResult result, ModelMap map) {
         if (result.hasErrors()) {
-            map.addAttribute(RESULT, result);
+            map.addAttribute(RESULT.value(), result);
             return renderHandlePage(director, map, "page-add");
         }
         repository.add(director);
@@ -125,7 +127,7 @@ public class DirectorController extends AbstractController {
     @PostMapping(value = "/handle/edit")
     public String edit(@Validated @ModelAttribute Director director, BindingResult result, ModelMap map) {
         if (result.hasErrors()) {
-            map.addAttribute(RESULT, result);
+            map.addAttribute(RESULT.value(), result);
             return renderHandlePage(director, map, "page-edit");
         }
         repository.edit(director);

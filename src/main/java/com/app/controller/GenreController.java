@@ -23,12 +23,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.app.ConstantVariables.*;
+
 @SuppressWarnings("ALL")
 @Validated
 @Controller
 @RequestMapping(path = "/genres")
 @SessionAttributes({"errors", "success"})
-public class GenreController extends AbstractController{
+public class GenreController{
     private static final Logger logger = Logger.getLogger(FilmController.class);
 
     @SuppressWarnings("SameReturnValue")
@@ -37,22 +39,22 @@ public class GenreController extends AbstractController{
         Collection<Genre> genres = repository.findAll();
         getGenresAndFilms(model, genres);
         logger.info("Show all films");
-        return GENRES;
+        return GENRES.value();
     }
 
     @GetMapping(value = "/errors")
-    public String getWithErrors(@ModelAttribute(ERRORS) @NotEmpty List<String> errors, ModelMap model, SessionStatus sessionStatus) {
+    public String getWithErrors(@ModelAttribute("errors") @NotEmpty List<String> errors, ModelMap model, SessionStatus sessionStatus) {
         if(!errors.isEmpty()){
-            model.addAttribute(ERRORS, errors);
+            model.addAttribute(ERRORS.value(), errors);
             sessionStatus.setComplete();
         }
         return get(model);
     }
 
     @GetMapping(value = "/success")
-    public String getWithSuccess(@ModelAttribute(SUCCESS) List<String> success, ModelMap model, SessionStatus sessionStatus) {
+    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
         if(!success.isEmpty()){
-            model.addAttribute(SUCCESS, success);
+            model.addAttribute(SUCCESS.value(), success);
         }
         sessionStatus.setComplete();
         return get(model);
@@ -64,7 +66,7 @@ public class GenreController extends AbstractController{
 
         if (genres.size() > 0) {
             getGenresAndFilms(model, genres);
-            return new ModelAndView(GENRES, model);
+            return new ModelAndView(GENRES.value(), model);
         }
         return new ModelAndView("redirect:/genres/all");
     }
@@ -74,9 +76,9 @@ public class GenreController extends AbstractController{
         for (Genre genre : genres) {
             films.add(genre.getFilms());
         }
-        model.addAttribute(GENRES, genres);
-        model.addAttribute(FILMS, films);
-        model.addAttribute(JSON, "../serialize/genres");
+        model.addAttribute(GENRES.value(), genres);
+        model.addAttribute(FILMS.value(), films);
+        model.addAttribute(JSON.value(), "../serialize/genres");
     }
 
     @SuppressWarnings("SameReturnValue")
@@ -85,9 +87,9 @@ public class GenreController extends AbstractController{
                                    @Valid @PathVariable String commandType) {
         Collection<Film> filmList = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
-            model.addAttribute(FILMS, filmList);
-            model.addAttribute(MODAL_TITLE, "Add");
-            model.addAttribute(EVENT_TYPE, "add");
+            model.addAttribute(FILMS.value(), filmList);
+            model.addAttribute(MODAL_TITLE.value(), "Add");
+            model.addAttribute(EVENT_TYPE.value(), "add");
         }
         if (Objects.equals(commandType, "page-edit")) {
             int id = genre.getId();
@@ -96,10 +98,10 @@ public class GenreController extends AbstractController{
 
             filmList.removeIf(film -> filmGenreList.stream().anyMatch(filmGenre -> filmGenre.getId() == film.getId()));
 
-            model.addAttribute(FILM_LIST, filmGenreList);
-            model.addAttribute(FILMS, filmList);
-            model.addAttribute(MODAL_TITLE, "Edit");
-            model.addAttribute(EVENT_TYPE, "edit");
+            model.addAttribute(FILM_LIST.value(), filmGenreList);
+            model.addAttribute(FILMS.value(), filmList);
+            model.addAttribute(MODAL_TITLE.value(), "Edit");
+            model.addAttribute(EVENT_TYPE.value(), "edit");
             model.addAttribute("genre", genre);
         }
         return "genre-handle";
@@ -114,7 +116,7 @@ public class GenreController extends AbstractController{
     @PostMapping(value = "/handle/add")
     public String add(@Validated @ModelAttribute Genre genre, BindingResult result, ModelMap map) {
         if (result.hasErrors()) {
-            map.addAttribute(RESULT, result);
+            map.addAttribute(RESULT.value(), result);
             return renderHandlePage(genre, map, "page-add");
         }
         repository.add(genre);
@@ -124,7 +126,7 @@ public class GenreController extends AbstractController{
     @PostMapping(value = "/handle/edit")
     public String edit(@Validated @ModelAttribute Genre genre, BindingResult result, ModelMap map) {
         if (result.hasErrors()) {
-            map.addAttribute(RESULT, result);
+            map.addAttribute(RESULT.value(), result);
             return renderHandlePage(genre, map, "page-edit");
         }
         repository.edit(genre);

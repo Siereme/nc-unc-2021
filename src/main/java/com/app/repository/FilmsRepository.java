@@ -1,6 +1,7 @@
 package com.app.repository;
 
 import com.app.model.film.Film;
+import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 
 import javax.transaction.Transactional;

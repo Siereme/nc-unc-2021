@@ -7,19 +7,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 /** Visitor entity
@@ -63,12 +53,14 @@ public class User implements IEntity, UserDetails {
     public User() {
         this.username = "";
         this.password = "";
+        this.roles = new HashSet<>();
     }
 
     public User(int user_id, String username, String password) {
         this.user_id = user_id;
         this.username = username;
         this.password = password;
+        this.roles = new HashSet<>();
     }
 
     public User(String username, String password, Set<Role> roles) {
@@ -80,6 +72,7 @@ public class User implements IEntity, UserDetails {
     public User(String username, String password) {
         this.username = username;
         this.password = password;
+        this.roles = new HashSet<>();
     }
 
     public void setUsername(String username) {

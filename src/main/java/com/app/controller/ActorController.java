@@ -1,9 +1,9 @@
 package com.app.controller;
 
 import com.app.model.actor.Actor;
+import com.app.model.film.Film;
 import com.app.repository.ActorsRepository;
 import com.app.repository.FilmsRepository;
-import com.app.model.film.Film;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,22 +22,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
+import static com.app.ConstantVariables.*;
+
 @SuppressWarnings({"SameReturnValue", "unused"})
 @Validated
 @Controller
 @RequestMapping(path = "/actors")
 @SessionAttributes({"errors", "success"})
-public class ActorController extends AbstractController {
+public class ActorController {
     private static final Logger logger = Logger.getLogger(ActorController.class);
 
     private void getActorsAndFilmsList(Collection<Actor> actorCollection, ModelMap model) {
-        model.addAttribute(ACTORS, actorCollection);
+        model.addAttribute(ACTORS.value(), actorCollection);
         Collection<Collection<Film>> listListFilms = new LinkedList<>();
         for (Actor actor : actorCollection) {
             listListFilms.add(actor.getFilms());
         }
-        model.addAttribute(FILMS, listListFilms);
-        model.addAttribute(JSON, "../serialize/actors");
+        model.addAttribute(FILMS.value(), listListFilms);
+        model.addAttribute(JSON.value(), "../serialize/actors");
         logger.info("show all actors");
     }
 
@@ -51,22 +53,22 @@ public class ActorController extends AbstractController {
     public String get(ModelMap model) {
         Collection<Actor> actorList = repository.findAll();
         getActorsAndFilmsList(actorList, model);
-        return ACTORS;
+        return ACTORS.value();
     }
 
     @GetMapping(value = "/errors")
-    public String getWithErrors(@ModelAttribute(ERRORS) List<String> errors, ModelMap model, SessionStatus sessionStatus) {
+    public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model, SessionStatus sessionStatus) {
         if(!errors.isEmpty()){
-            model.addAttribute(ERRORS, errors);
+            model.addAttribute(ERRORS.value(), errors);
             sessionStatus.setComplete();
         }
         return get(model);
     }
 
     @GetMapping(value = "/success")
-    public String getWithSuccess(@ModelAttribute(SUCCESS) List<String> success, ModelMap model, SessionStatus sessionStatus) {
+    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
         if(!success.isEmpty()){
-            model.addAttribute(SUCCESS, success);
+            model.addAttribute(SUCCESS.value(), success);
         }
         sessionStatus.setComplete();
         return get(model);
@@ -85,7 +87,7 @@ public class ActorController extends AbstractController {
             return new ModelAndView("redirect:/actors/all");
         } else {
             getActorsAndFilmsList(actorList, model);
-            return new ModelAndView(ACTORS, model);
+            return new ModelAndView(ACTORS.value(), model);
         }
     }
 
@@ -94,9 +96,9 @@ public class ActorController extends AbstractController {
                                    @PathVariable @NotBlank String commandType) {
         Collection<Film> films = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
-            model.addAttribute(FILMS, films);
-            model.addAttribute(MODAL_TITLE, "Add");
-            model.addAttribute(EVENT_TYPE, "handle/add");
+            model.addAttribute(FILMS.value(), films);
+            model.addAttribute(MODAL_TITLE.value(), "Add");
+            model.addAttribute(EVENT_TYPE.value(), "handle/add");
         }
         if (Objects.equals(commandType, "page-edit")) {
             int id = actor.getId();
@@ -105,10 +107,10 @@ public class ActorController extends AbstractController {
             // we delete entities that are both there and there in films
             // ( удаляем из списка всех фильмов те, в которых актер участвовал)
             films.removeIf(film -> actorFilmList.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
-            model.addAttribute(FILMS, films);
-            model.addAttribute(FILM_LIST, actorFilmList);
-            model.addAttribute(MODAL_TITLE, "Edit");
-            model.addAttribute(EVENT_TYPE, "handle/edit");
+            model.addAttribute(FILMS.value(), films);
+            model.addAttribute(FILM_LIST.value(), actorFilmList);
+            model.addAttribute(MODAL_TITLE.value(), "Edit");
+            model.addAttribute(EVENT_TYPE.value(), "handle/edit");
             model.addAttribute("actor", actor);
         }
         return "actor-handle";
@@ -117,7 +119,7 @@ public class ActorController extends AbstractController {
     @PostMapping(value = "/handle/add")
     public String add(@Validated @ModelAttribute Actor actor, BindingResult result, ModelMap map) {
         if (result.hasErrors()) {
-            map.addAttribute(RESULT, result);
+            map.addAttribute(RESULT.value(), result);
             return renderHandlePage(actor, map, "page-add");
         }
         repository.add(actor);
@@ -127,7 +129,7 @@ public class ActorController extends AbstractController {
     @PostMapping(value = "/handle/edit")
     public String edit(@Validated @ModelAttribute Actor actor, BindingResult result, ModelMap map) {
         if (result.hasErrors()) {
-            map.addAttribute(RESULT, result);
+            map.addAttribute(RESULT.value(), result);
             return renderHandlePage(actor, map, "page-edit");
         }
         repository.edit(actor);
