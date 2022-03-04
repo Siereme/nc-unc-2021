@@ -83,12 +83,8 @@ public class ActorController {
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
         Collection<Actor> actorList = repository.findByContains(tittle);
-        if (actorList == null || actorList.isEmpty()) {
-            return new ModelAndView("redirect:/actors/all");
-        } else {
-            getActorsAndFilmsList(actorList, model);
-            return new ModelAndView(ACTORS.value(), model);
-        }
+        getActorsAndFilmsList(actorList, model);
+        return new ModelAndView(ACTORS.value(), model);
     }
 
     @PostMapping(value = "/handle/{commandType}")

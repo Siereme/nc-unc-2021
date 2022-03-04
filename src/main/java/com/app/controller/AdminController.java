@@ -57,12 +57,8 @@ public class AdminController {
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
         Collection<User> userList = repository.findByContains(tittle);
-        if (userList == null || userList.isEmpty()) {
-            return new ModelAndView("redirect:/admin/all");
-        } else {
-            model.addAttribute("allUsers", userList);
-            return new ModelAndView("admin", model);
-        }
+        model.addAttribute("allUsers", userList);
+        return new ModelAndView("admin", model);
     }
 
     @PostMapping(value = "/handle/{commandType}")

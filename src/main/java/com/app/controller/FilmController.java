@@ -58,8 +58,9 @@ public class FilmController implements WebMvcConfigurer {
     }
 
     @GetMapping(value = "/errors")
-    public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model, SessionStatus sessionStatus) {
-        if(!errors.isEmpty()){
+    public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model,
+                                SessionStatus sessionStatus) {
+        if (!errors.isEmpty()) {
             model.addAttribute(ERRORS.value(), errors);
         }
         sessionStatus.setComplete();
@@ -67,8 +68,9 @@ public class FilmController implements WebMvcConfigurer {
     }
 
     @GetMapping(value = "/success")
-    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
-        if(!success.isEmpty()){
+    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model,
+                                 SessionStatus sessionStatus) {
+        if (!success.isEmpty()) {
             model.addAttribute(SUCCESS.value(), success);
         }
         sessionStatus.setComplete();
@@ -96,7 +98,8 @@ public class FilmController implements WebMvcConfigurer {
             model.addAttribute(JSON.value(), "../serialize/films");
             return new ModelAndView(FILMS.value(), model);
         }
-        return new ModelAndView("redirect:/films/all");
+        model.addAttribute(FILMS.value(), findFilm);
+        return new ModelAndView("films", model);
     }
 
     @PostMapping(value = "/handle/{commandType}")
@@ -121,10 +124,8 @@ public class FilmController implements WebMvcConfigurer {
             Collection<Actor> actorList = film.getActors();
             Collection<Director> directorList = film.getDirectors();
 
-            genres.removeIf(
-                    genre -> genreList.stream().anyMatch(filmGenre -> filmGenre.getId() == genre.getId()));
-            actors.removeIf(
-                    actor -> actorList.stream().anyMatch(filmActor -> filmActor.getId() == actor.getId()));
+            genres.removeIf(genre -> genreList.stream().anyMatch(filmGenre -> filmGenre.getId() == genre.getId()));
+            actors.removeIf(actor -> actorList.stream().anyMatch(filmActor -> filmActor.getId() == actor.getId()));
             directors.removeIf(director -> directorList.stream()
                     .anyMatch(filmDirector -> filmDirector.getId() == director.getId()));
 

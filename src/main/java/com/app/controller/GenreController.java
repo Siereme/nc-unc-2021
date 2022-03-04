@@ -30,7 +30,7 @@ import static com.app.ConstantVariables.*;
 @Controller
 @RequestMapping(path = "/genres")
 @SessionAttributes({"errors", "success"})
-public class GenreController{
+public class GenreController {
     private static final Logger logger = Logger.getLogger(FilmController.class);
 
     @SuppressWarnings("SameReturnValue")
@@ -43,8 +43,9 @@ public class GenreController{
     }
 
     @GetMapping(value = "/errors")
-    public String getWithErrors(@ModelAttribute("errors") @NotEmpty List<String> errors, ModelMap model, SessionStatus sessionStatus) {
-        if(!errors.isEmpty()){
+    public String getWithErrors(@ModelAttribute("errors") @NotEmpty List<String> errors, ModelMap model,
+                                SessionStatus sessionStatus) {
+        if (!errors.isEmpty()) {
             model.addAttribute(ERRORS.value(), errors);
             sessionStatus.setComplete();
         }
@@ -52,8 +53,9 @@ public class GenreController{
     }
 
     @GetMapping(value = "/success")
-    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
-        if(!success.isEmpty()){
+    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model,
+                                 SessionStatus sessionStatus) {
+        if (!success.isEmpty()) {
             model.addAttribute(SUCCESS.value(), success);
         }
         sessionStatus.setComplete();
@@ -63,12 +65,8 @@ public class GenreController{
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
         Collection<Genre> genres = repository.findByContains(tittle);
-
-        if (genres.size() > 0) {
-            getGenresAndFilms(model, genres);
-            return new ModelAndView(GENRES.value(), model);
-        }
-        return new ModelAndView("redirect:/genres/all");
+        getGenresAndFilms(model, genres);
+        return new ModelAndView(GENRES.value(), model);
     }
 
     private void getGenresAndFilms(ModelMap model, Collection<Genre> genres) {
