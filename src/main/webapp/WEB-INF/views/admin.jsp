@@ -12,7 +12,7 @@
 </head>
 
 <body>
-<jsp:include page="header.jsp"></jsp:include>
+<jsp:include page="admin-header.jsp"></jsp:include>
 <div class="films-grid-container">
     <table class="table text-center">
         <thead class="bg-light">
