@@ -1,7 +1,7 @@
 package com.app.controller;
 
 import com.app.model.role.Role;
-import com.app.model.user.User.User;
+import com.app.model.user.User;
 import com.app.repository.RoleRepository;
 import com.app.repository.UserRepository;
 import org.apache.log4j.Logger;

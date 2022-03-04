@@ -1,7 +1,7 @@
 package com.app.repository;
 
 import com.app.model.role.Role;
-import com.app.model.user.User.User;
+import com.app.model.user.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,16 +27,6 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
     @Transactional
     public void add(User entity) {
         entityManager.persist(entity);
-        // adding the role of an entity without roles
-        if(entity.getRoles().size() == 0){
-            // TODO validation
-            String ROLE_USER_STR = "ROLE_USER";
-            Role role = entityManager.createQuery("select r from Role r where r.name =:name",
-                    Role.class).setParameter("name", ROLE_USER_STR).getSingleResult();
-            int roleId = role.getId();
-            entityManager.createNativeQuery("insert into user_role(user_id, role_id) values(:id, :roleId)")
-                    .setParameter("id", entity.getId()).setParameter("roleId", roleId);
-        }
     }
 
     @Transactional
@@ -68,13 +58,15 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
     @Override
     public int size() {
         BigInteger bigInteger =
-                (BigInteger) entityManager.createNativeQuery("SELECT count(*) FROM user", BigInteger.class).getSingleResult();
+                (BigInteger) entityManager.createNativeQuery("SELECT count(*) FROM user", BigInteger.class)
+                        .getSingleResult();
         return bigInteger.intValue();
     }
 
     @Override
     public List<User> findByContains(String name) {
-        return entityManager.createQuery("select distinct u from User u left join fetch u.roles where u.username like :name ESCAPE '!'",
+        return entityManager.createQuery(
+                "select distinct u from User u left join fetch u.roles where u.username like :name ESCAPE '!'",
                 User.class).setParameter("name", '%' + name + '%').getResultList();
     }
 
@@ -111,7 +103,14 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
 
     @Override
     public User findById(int id) {
-        return entityManager.createQuery("select u from User u left join fetch u.roles where u.user_id = :id", User.class)
-                .setParameter("id", id).getSingleResult();
+        return entityManager.createQuery("select u from User u left join fetch u.roles where u.user_id = :id",
+                User.class).setParameter("id", id).getSingleResult();
     }
+
+    public void addUserRoleToUser(User user) {
+        Role role = entityManager.createQuery("select r from Role r where r.name = :name", Role.class)
+                .setParameter("name", "ROLE_USER").getSingleResult();
+        user.getRoles().add(role);
+    }
+
 }

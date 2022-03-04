@@ -1,6 +1,6 @@
 package com.app.controller;
 
-import com.app.model.user.User.User;
+import com.app.model.user.User;
 import com.app.repository.UserRepository;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,14 +15,12 @@ import static com.app.ConstantVariables.*;
 
 @SuppressWarnings("SameReturnValue")
 @Controller
-public class RegistrationController{
+public class RegistrationController {
     private static final Logger logger = Logger.getLogger(RegistrationController.class);
 
     @Lazy
     @Autowired
     private UserRepository repository;
-
-
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -36,30 +34,26 @@ public class RegistrationController{
     public String addUser(@ModelAttribute("userForm") User userForm, Model model) {
 
         String username = userForm.getUsername();
-        if(username.length() < 3) {
+        if (username.length() < 3) {
             model.addAttribute(USERNAME_ERROR.value(), "username must contain at least 3 characters");
             return "registration";
         }
         String password = userForm.getPassword();
-        if(password.length() < 6){
+        if (password.length() < 6) {
             model.addAttribute(PASSWORD_ERROR.value(), "password must contain at least 6 characters");
             return "registration";
         }
 
-        if (!userForm.getPassword().equals(userForm.getPasswordConfirm())){
+        if (!userForm.getPassword().equals(userForm.getPasswordConfirm())) {
             model.addAttribute(PASSWORD_ERROR.value(), "passwords don't match");
             return "registration";
-        }
-        if (!repository.saveUser(userForm)){
-            model.addAttribute(USERNAME_ERROR.value(), "a user with this name already exists");
+        } else {
+            repository.addUserRoleToUser(userForm);
+            if (!repository.saveUser(userForm)) {
+                model.addAttribute(USERNAME_ERROR.value(), "a user with this name already exists");
+            }
             return "registration";
         }
-
-        return "redirect:/login";
     }
-
-
-
-
 
 }

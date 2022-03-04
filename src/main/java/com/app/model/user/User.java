@@ -1,13 +1,27 @@
-package com.app.model.user.User;
+package com.app.model.user;
 
 import com.app.model.IEntity;
 import com.app.model.role.Role;
+import com.app.validator.CheckUserName;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.junit.validator.ValidateWith;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.CascadeType;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,6 +39,7 @@ import java.util.Set;
         @NamedQuery(name="User.findAllWithRoles",
                 query = "select distinct u from User u left join fetch u.roles")
 })
+@CheckUserName
 public class User implements IEntity, UserDetails {
 
     public void setUser_id(int user_id) {
@@ -45,6 +60,8 @@ public class User implements IEntity, UserDetails {
     @Transient
     private String passwordConfirm;
 
+    @NotNull
+    @Size(min = 1, message = "pick at least one role")
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
