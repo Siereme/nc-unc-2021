@@ -1,9 +1,9 @@
 package com.app.config;
 
 import com.app.repository.UserRepository;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 // only for unauthorized
-                .antMatchers("/registration").not().fullyAuthenticated()
+                .antMatchers("/registration", "/sendEmail", "/sendHtmlEmail").not().fullyAuthenticated()
                 // only for admin
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 // for all users

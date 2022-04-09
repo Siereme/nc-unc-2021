@@ -1,5 +1,6 @@
 package com.app.repository;
 
+import com.app.model.film.Film;
 import com.app.model.role.Role;
 import com.app.model.user.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -112,5 +113,4 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
                 .setParameter("name", "ROLE_USER").getSingleResult();
         user.getRoles().add(role);
     }
-
 }

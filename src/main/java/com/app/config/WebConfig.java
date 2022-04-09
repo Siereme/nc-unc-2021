@@ -1,11 +1,6 @@
 package com.app.config;
 
-import com.app.config.converter.imp.IdToActorConverter;
-import com.app.config.converter.imp.IdToDirectorConverter;
-import com.app.config.converter.imp.IdToFilmConverter;
-import com.app.config.converter.imp.IdToGenreConverter;
-import com.app.config.converter.imp.IdToRoleConverter;
-import com.app.config.converter.imp.IdToUserConverter;
+import com.app.config.converter.imp.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -77,4 +72,5 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addConverter(idToUserConverter);
         registry.addConverter(idToRoleConverter);
     }
+
 }

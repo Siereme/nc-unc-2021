@@ -54,6 +54,7 @@ public class FilmController implements WebMvcConfigurer {
         model.addAttribute(DIRECTORS.value(), directors);
         model.addAttribute(JSON.value(), "../serialize/films");
         logger.info("Show all films");
+
         return "films";
     }
 

@@ -1,6 +1,7 @@
 package com.app.model.user;
 
 import com.app.model.IEntity;
+import com.app.model.film.Film;
 import com.app.model.role.Role;
 import com.app.validator.CheckUserName;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -67,6 +68,7 @@ public class User implements IEntity, UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+
     public User() {
         this.username = "";
         this.password = "";
@@ -81,6 +83,12 @@ public class User implements IEntity, UserDetails {
     }
 
     public User(String username, String password, Set<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
+
+    public User(String username, String password, Set<Role> roles, Set<Film> films) {
         this.username = username;
         this.password = password;
         this.roles = roles;

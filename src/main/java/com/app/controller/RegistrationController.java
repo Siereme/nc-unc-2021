@@ -30,6 +30,7 @@ public class RegistrationController {
         return "registration";
     }
 
+
     @PostMapping("/registration")
     public String addUser(@ModelAttribute("userForm") User userForm, Model model) {
 
@@ -55,5 +56,4 @@ public class RegistrationController {
             return "registration";
         }
     }
-
 }
