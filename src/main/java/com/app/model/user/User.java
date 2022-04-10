@@ -1,11 +1,11 @@
 package com.app.model.user;
 
 import com.app.model.IEntity;
+import com.app.model.confirmEmail.ConfirmEmail;
 import com.app.model.film.Film;
 import com.app.model.role.Role;
 import com.app.validator.CheckUserName;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import org.junit.validator.ValidateWith;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,6 +19,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -37,8 +38,7 @@ import java.util.Set;
 @Entity
 @Table(name = "user")
 @NamedQueries({
-        @NamedQuery(name="User.findAllWithRoles",
-                query = "select distinct u from User u left join fetch u.roles")
+        @NamedQuery(name = "User.findAllWithRoles", query = "select distinct u from User u left join fetch u.roles")
 })
 @CheckUserName
 public class User implements IEntity, UserDetails {
@@ -61,13 +61,34 @@ public class User implements IEntity, UserDetails {
     @Transient
     private String passwordConfirm;
 
+    @Column(name = "email", unique = true, nullable = false)
+    private String email;
+
+    @OneToMany(mappedBy = "user")
+    private Set<ConfirmEmail> confirmEmails;
+
+    public Set<ConfirmEmail> getConfirmEmails() {
+        return confirmEmails;
+    }
+
+    public void setConfirmEmails(Set<ConfirmEmail> confirmEmails) {
+        this.confirmEmails = confirmEmails;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     @NotNull
     @Size(min = 1, message = "pick at least one role")
     @ManyToMany
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
-
 
     public User() {
         this.username = "";

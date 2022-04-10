@@ -30,7 +30,6 @@ public class RegistrationController {
         return "registration";
     }
 
-
     @PostMapping("/registration")
     public String addUser(@ModelAttribute("userForm") User userForm, Model model) {
 
@@ -50,10 +49,11 @@ public class RegistrationController {
             return "registration";
         } else {
             repository.addUserRoleToUser(userForm);
+            repository.addNoConfirmedRoleToUser(userForm);
             if (!repository.saveUser(userForm)) {
                 model.addAttribute(USERNAME_ERROR.value(), "a user with this name already exists");
             }
-            return "registration";
+            return "login";
         }
     }
 }

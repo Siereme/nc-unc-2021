@@ -29,6 +29,10 @@
             </span>
         </div>
         <div class="form-floating">
+            <form:input cssClass="form-control" type="text" path="email" placeholder="Email"
+                        autofocus="true"></form:input>
+        </div>
+        <div class="form-floating">
             <form:input cssClass="form-control" type="text" path="username" placeholder="Username"
                         autofocus="true"></form:input>
         </div>

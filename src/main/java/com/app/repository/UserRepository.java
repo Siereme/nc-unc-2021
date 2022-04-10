@@ -1,8 +1,11 @@
 package com.app.repository;
 
+import com.app.model.confirmEmail.ConfirmEmail;
 import com.app.model.film.Film;
 import com.app.model.role.Role;
 import com.app.model.user.User;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -11,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.math.BigInteger;
 import java.util.List;
@@ -113,4 +117,43 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
                 .setParameter("name", "ROLE_USER").getSingleResult();
         user.getRoles().add(role);
     }
+
+    public void addNoConfirmedRoleToUser(User user) {
+        Role role = entityManager.createQuery("select r from Role r where r.name = :name", Role.class)
+                .setParameter("name", "ROLE_NO_CONFIRMED").getSingleResult();
+        user.getRoles().add(role);
+    }
+
+    public String getCurrentUsername() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
+
+    public String getCurrentEmail() {
+        User currentUser = getCurrentUser();
+        return currentUser.getEmail();
+    }
+
+    public User getCurrentUser() {
+        String currentUserName = getCurrentUsername();
+        return (User) loadUserByUsername(currentUserName);
+    }
+
+    public boolean isTokenExist(String token) {
+        User currentUser = getCurrentUser();
+        ConfirmEmail confirmEmail = entityManager.createQuery(
+                        "select CE from ConfirmEmail CE where CE.token = :token and CE.user.user_id = :userId",
+                        ConfirmEmail.class).setParameter("token", token).setParameter("userId", currentUser.getId())
+                .getSingleResult();
+        return confirmEmail != null;
+    }
+
+    public void removeRoleNoConfirmedFromUser(User user) {
+        Role NO_CONFIRMED_ROLE = entityManager.createQuery("select r from Role r where r.name = :name", Role.class)
+                .setParameter("name", "ROLE_NO_CONFIRMED").getSingleResult();
+        entityManager.createNativeQuery("delete from user_role where user_id = :userId and role_id = :roleId")
+                .setParameter("userId", user.getId()).setParameter("roleId", NO_CONFIRMED_ROLE.getId())
+                .executeUpdate();
+    }
+
 }

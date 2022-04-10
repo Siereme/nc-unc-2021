@@ -31,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 // only for unauthorized
-                .antMatchers("/registration", "/sendEmail", "/sendHtmlEmail").not().fullyAuthenticated()
+                .antMatchers("/registration").not().fullyAuthenticated()
                 // only for admin
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 // for all users

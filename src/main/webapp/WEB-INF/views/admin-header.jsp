@@ -55,6 +55,15 @@
                         </li>
                     </sec:authorize>
                     <sec:authorize access="isAuthenticated()">
+                        <sec:authorize access="hasRole('NO_CONFIRMED')">
+                            <li>
+                                <button onclick="window.location.href = '/sendHtmlEmail'" type="button" class="btn btn-primary text-dark-me-2 me-2">
+                                    Confirm Email
+                                </button>
+                            </li>
+                        </sec:authorize>
+                    </sec:authorize>
+                    <sec:authorize access="isAuthenticated()">
                         <li>
                             <button onclick="window.location.href = '/logout'" type="button" class="btn btn-primary text-dark-me-2 me-2">Log
                                 out
