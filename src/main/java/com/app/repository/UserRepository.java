@@ -44,7 +44,7 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
     @Transactional
     @Override
     public void edit(User entity) {
-        entityManager.merge(entity);
+        entityManager.persist(entity);
     }
 
     @Override
@@ -112,9 +112,9 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
                 User.class).setParameter("id", id).getSingleResult();
     }
 
-    public void addUserRoleToUser(User user) {
+    public void addRoleToUser(User user, String Role) {
         Role role = entityManager.createQuery("select r from Role r where r.name = :name", Role.class)
-                .setParameter("name", "ROLE_USER").getSingleResult();
+                .setParameter("name", Role).getSingleResult();
         user.getRoles().add(role);
     }
 

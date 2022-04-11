@@ -7,6 +7,7 @@ import com.app.repository.UserRepository;
 import com.app.service.mail.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-@RestController
+@Controller
 public class MailController {
 
     @Lazy
@@ -36,11 +37,12 @@ public class MailController {
 
     private String to;
     private final String subject = "[nc-unc-2021] Please confirm your email address!";
-    private final String from = "nc-unc-2021";
+    private final String from = "team nc-unc-2021";
 
     @GetMapping("/sendEmail")
-    public void getEmail() {
+    public String getEmail() {
         mailService.sendSimpleMessage(to, subject, ":=)");
+        return "";
     }
 
     private String getMessageToConfirmEmail() {
@@ -79,7 +81,7 @@ public class MailController {
     }
 
     @GetMapping("/sendHtmlEmail")
-    public void getHtmlEmail() throws MessagingException {
+    public String getHtmlEmail() throws MessagingException {
         Map<String, Object> context = new HashMap<>();
         //        context.put("name", "Name");
         String text = getMessageToConfirmEmail();
@@ -89,14 +91,17 @@ public class MailController {
         context.put("link", link);
         to = userRepository.getCurrentEmail();
         mailService.sendMessageUsingThymeleafTemplate(to, subject, context);
+        return "redirect:/films/all";
     }
 
     @GetMapping("/nc-unc-2021/confirm-email/{token}")
-    public void verificationToken(@PathVariable("token") String token) {
+    public String verificationToken(@PathVariable("token") String token) {
         if (userRepository.isTokenExist(token)) {
             User currentUser = userRepository.getCurrentUser();
             userRepository.removeRoleNoConfirmedFromUser(currentUser);
         }
+        // fixme редирект не совсем корректно работает
+        return "redirect:/films/all";
     }
 
 }

@@ -48,8 +48,8 @@ public class RegistrationController {
             model.addAttribute(PASSWORD_ERROR.value(), "passwords don't match");
             return "registration";
         } else {
-            repository.addUserRoleToUser(userForm);
-            repository.addNoConfirmedRoleToUser(userForm);
+            repository.addRoleToUser(userForm, "ROLE_USER");
+            repository.addRoleToUser(userForm, "ROLE_NO_CONFIRMED");
             if (!repository.saveUser(userForm)) {
                 model.addAttribute(USERNAME_ERROR.value(), "a user with this name already exists");
             }

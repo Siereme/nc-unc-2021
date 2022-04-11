@@ -65,7 +65,7 @@ public class User implements IEntity, UserDetails {
     private String email;
 
     @OneToMany(mappedBy = "user")
-    private Set<ConfirmEmail> confirmEmails;
+    private Set<ConfirmEmail> confirmEmails = new HashSet<>();
 
     public Set<ConfirmEmail> getConfirmEmails() {
         return confirmEmails;

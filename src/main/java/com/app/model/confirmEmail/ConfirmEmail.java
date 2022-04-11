@@ -1,7 +1,5 @@
 package com.app.model.confirmEmail;
 
-
-
 import com.app.model.user.User;
 
 import javax.persistence.Column;
@@ -11,10 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Table(name = "confirm_tokens")
