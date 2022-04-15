@@ -8,7 +8,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 @Repository
 public class EmailsRepository {
 
-    int capacity = 5;
+    int capacity = 2;
 
 /*
     public int getCapacity() {

@@ -6,9 +6,31 @@ public class NewEmail {
 
     private String text;
 
-    public NewEmail(String type, String text) {
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
+
+    public String getFrom() {
+        return from;
+    }
+
+    public void setFrom(String from) {
+        this.from = from;
+    }
+
+    private String to;
+
+    private String from;
+
+    public NewEmail(String type, String text, String to, String from) {
         this.type = type;
         this.text = text;
+        this.to = to;
+        this.from = from;
     }
 
     public String getType() {
