@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -30,8 +31,13 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
 
     @Override
     @Transactional
-    public void add(User entity) {
-        entityManager.persist(entity);
+    public User add(User entity) {
+        try {
+            entityManager.persist(entity);
+            return entity;
+        }catch (EntityExistsException ex){
+            return null;
+        }
     }
 
     @Transactional

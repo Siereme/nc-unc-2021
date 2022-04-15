@@ -1,9 +1,10 @@
 package com.app.repository;
 
+import com.app.annotation.AddEntityHandler;
 import com.app.model.film.Film;
-import org.hibernate.Hibernate;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityExistsException;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.Collections;
@@ -36,8 +37,14 @@ public class FilmsRepository extends AbstractRepository<Film> {
                 .getResultList();
     }
 
-    public void add(Film film) {
-        entityManager.persist(film);
+    @AddEntityHandler
+    public Film add(Film film) {
+        try {
+            entityManager.persist(film);
+            return film;
+        }catch (EntityExistsException ex){
+            return null;
+        }
     }
 
     @Override

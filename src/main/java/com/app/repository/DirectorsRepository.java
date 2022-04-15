@@ -1,9 +1,10 @@
 package com.app.repository;
 
-import com.app.model.actor.Actor;
+import com.app.annotation.AddEntityHandler;
 import com.app.model.director.Director;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.TypedQuery;
 import java.math.BigInteger;
 import java.util.Collections;
@@ -31,8 +32,14 @@ public class DirectorsRepository extends AbstractRepository<Director> {
         return entityManager.createNamedQuery("Director.findAllWithFilmByIds", Director.class).setParameter("ids", ids).getResultList();
     }
 
-    public void add(Director director) {
-        entityManager.persist(director);
+    @AddEntityHandler
+    public Director add(Director director) {
+        try {
+            entityManager.persist(director);
+            return director;
+        }catch (EntityExistsException ex){
+            return null;
+        }
     }
 
     @Override

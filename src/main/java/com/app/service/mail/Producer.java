@@ -40,7 +40,7 @@ public class Producer implements Runnable {
         try {
             int cnt = 0;
             for (int i = 0; i < newEmailList.size(); ++i) {
-                emailsRepository.getNewFilmEmails().put(newEmailList.remove(0));
+                emailsRepository.getNewFilmEmails().put(newEmailList.get(i));
                 if (cnt++ > 5) {
 /*                    NewEmail done = new NewEmail("done", " ");
                     emailsRepository.getNewFilmEmails().put(done);*/

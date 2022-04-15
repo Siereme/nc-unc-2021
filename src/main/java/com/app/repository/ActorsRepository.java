@@ -1,9 +1,11 @@
 package com.app.repository;
 
+import com.app.annotation.AddEntityHandler;
 import com.app.model.actor.Actor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.TypedQuery;
 import java.math.BigInteger;
 import java.util.*;
@@ -30,9 +32,14 @@ public class ActorsRepository extends AbstractRepository<Actor> {
     }
 
 
-
-    public void add(Actor actor) {
-        entityManager.persist(actor);
+    @AddEntityHandler
+    public Actor add(Actor actor) {
+        try {
+            entityManager.persist(actor);
+            return actor;
+        }catch (EntityExistsException ex){
+            return null;
+        }
     }
 
     @Override

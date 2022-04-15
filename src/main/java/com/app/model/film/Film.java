@@ -169,7 +169,6 @@ public class Film implements IEntity {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("ID: ").append(id).append(" ");
         sb.append("Tittle: ").append(tittle).append(" ");
         sb.append("Date: ").append(date).append(" ");
         return new String(sb);

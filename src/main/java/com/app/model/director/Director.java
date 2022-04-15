@@ -132,7 +132,6 @@ public class Director implements IEntity {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("ID: ").append(id).append(" ");
         sb.append("Name: ").append(name).append(" ");
         sb.append("Year: ").append(year).append(" ");
         return new String(sb);

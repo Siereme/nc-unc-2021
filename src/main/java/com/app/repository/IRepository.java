@@ -1,5 +1,6 @@
 package com.app.repository;
 
+import com.app.model.IEntity;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -15,7 +16,7 @@ public interface IRepository<T> {
     List<T> findAll();
 
     @Transactional
-    void add(T entity);
+    T add(T entity);
 
     @Transactional
     void delete(int id);

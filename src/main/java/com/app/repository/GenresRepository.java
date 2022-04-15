@@ -1,9 +1,11 @@
 package com.app.repository;
 
+import com.app.annotation.AddEntityHandler;
 import com.app.model.genre.Genre;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityExistsException;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -40,8 +42,14 @@ public class GenresRepository extends AbstractRepository<Genre> {
 
     }
 
-    public void add(Genre genre) {
-        entityManager.persist(genre);
+    @AddEntityHandler
+    public Genre add(Genre genre) {
+        try {
+            entityManager.persist(genre);
+            return genre;
+        }catch (EntityExistsException ex){
+            return null;
+        }
     }
 
     @Override

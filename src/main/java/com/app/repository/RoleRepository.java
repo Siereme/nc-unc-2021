@@ -4,6 +4,7 @@ import com.app.model.role.Role;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityExistsException;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -17,8 +18,13 @@ public class RoleRepository extends AbstractRepository<Role> {
 
     @Transactional
     @Override
-    public void add(Role entity) {
-        entityManager.persist(entity);
+    public Role add(Role entity) {
+        try {
+            entityManager.persist(entity);
+            return entity;
+        }catch (EntityExistsException ex){
+            return null;
+        }
     }
 
     @Transactional

@@ -4,6 +4,7 @@ import com.app.model.confirmEmail.ConfirmEmail;
 import com.app.model.director.Director;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityExistsException;
 import java.util.List;
 
 @Repository
@@ -14,8 +15,13 @@ public class ConfirmEmailRepository extends AbstractRepository<ConfirmEmail>{
         return null;
     }
 
-    public void add(ConfirmEmail confirmEmail){
-        entityManager.persist(confirmEmail);
+    public ConfirmEmail add(ConfirmEmail confirmEmail){
+        try {
+            entityManager.persist(confirmEmail);
+            return confirmEmail;
+        }catch (EntityExistsException ex){
+            return null;
+        }
     }
 
     @Override
