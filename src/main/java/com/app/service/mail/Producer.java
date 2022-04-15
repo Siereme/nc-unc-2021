@@ -3,10 +3,16 @@ package com.app.service.mail;
 import com.app.model.emailInfo.NewEmail;
 import com.app.repository.EmailsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class Producer implements Runnable {
+
+    private EmailsRepository emailsRepository;
+
+    private List<NewEmail> newEmailList;
 
     public EmailsRepository getEmailsRepository() {
         return emailsRepository;
@@ -16,8 +22,6 @@ public class Producer implements Runnable {
         this.emailsRepository = emailsRepository;
     }
 
-    private EmailsRepository emailsRepository;
-
     public List<NewEmail> getNewEmailList() {
         return newEmailList;
     }
@@ -25,8 +29,6 @@ public class Producer implements Runnable {
     public void setNewEmailList(List<NewEmail> newEmailList) {
         this.newEmailList = newEmailList;
     }
-
-    private List<NewEmail> newEmailList;
 
     @Autowired
     public Producer(EmailsRepository emailsRepository) {
