@@ -3,17 +3,13 @@ package com.app.service.mail;
 import com.app.model.IEntity;
 import com.app.model.emailInfo.NewEmail;
 import com.app.model.user.User;
-import com.app.repository.EmailsRepository;
 import com.app.repository.UserRepository;
-import com.thoughtworks.qdox.model.expression.Add;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,7 +42,7 @@ public class MailHandler {
                 NewEmail newEmail = new NewEmail(type, text, user.getEmail(), "team nc-unc-2021");
                 emails.add(newEmail);
             }
-            addingHandler.setEmailsListToProducer(emails);
+            addingHandler.addEmailsListToProducer(emails);
         }
     }
 }

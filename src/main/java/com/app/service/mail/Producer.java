@@ -27,8 +27,8 @@ public class Producer implements Runnable {
         return newEmailList;
     }
 
-    public void setNewEmailList(List<NewEmail> newEmailList) {
-        this.newEmailList = newEmailList;
+    public void addNewEmailList(List<NewEmail> newEmailList) {
+        this.newEmailList.addAll(newEmailList);
     }
 
     @Autowired
@@ -64,8 +64,8 @@ public class Producer implements Runnable {
                 if (cnt == capacity) {
                     cnt = 0;
                     System.out.println("producer sleep");
-                    // ставлю 100 секунд, чтобы показать, что письма отправляются пачками
-                    Thread.sleep(100000);
+                    // ставлю 60 секунд, чтобы показать, что письма отправляются пачками
+                    Thread.sleep(60000);
                 }
                 if (!newEmailList.isEmpty()) {
                     NewEmail newEmail = newEmailList.remove(0);
