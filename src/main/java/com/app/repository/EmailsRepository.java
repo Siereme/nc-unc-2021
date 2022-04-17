@@ -10,7 +10,6 @@ public class EmailsRepository {
 
     int capacity = 2;
 
-/*
     public int getCapacity() {
         return capacity;
     }
@@ -18,7 +17,6 @@ public class EmailsRepository {
     public void setCapacity(int capacity) {
         this.capacity = capacity;
     }
-*/
 
     public ArrayBlockingQueue<NewEmail> getNewFilmEmails() {
         return newFilmEmails;
@@ -36,6 +34,14 @@ public class EmailsRepository {
 
     public boolean isEmpty(){
         return newFilmEmails.isEmpty();
+    }
+
+    public boolean add(NewEmail newEmail){
+        return newFilmEmails.add(newEmail);
+    }
+
+    public NewEmail take() throws InterruptedException {
+        return newFilmEmails.take();
     }
 
 

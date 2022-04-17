@@ -15,12 +15,13 @@ import java.util.Map;
 @Service
 public class Consumer implements Runnable {
 
-    @Autowired
-    private MailService mailService;
+    @Lazy
+    private final MailService mailService;
 
     @Autowired
-    Consumer(EmailsRepository emailsRepository) {
+    Consumer(EmailsRepository emailsRepository, MailService mailService) {
         this.emailsRepository = emailsRepository;
+        this.mailService = mailService;
     }
 
     private List<NewEmail> newEmailList = new LinkedList<>();
@@ -45,32 +46,63 @@ public class Consumer implements Runnable {
 
     @Override
     public void run() {
-        try {
+/*        try {
             // это чтобы раньше не начать, хотя это надо будет обыграть по-другому
+            System.out.println("consumer run");
             Thread.sleep(5000);
+            System.out.println("consumer get up");
             int cnt = 0;
-            while (!emailsRepository.isEmpty()) {
+            while (!emailsRepository.isEmpty() || !(newEmailList.isEmpty())) {
                 if (cnt == 2) {
                     cnt = 0;
-                    // TODO отправлять письма здесь надо наверное
                     for (NewEmail email : newEmailList) {
                         Map<String, Object> context = new HashMap<>();
                         context.put("text", email.getText());
                         context.put("senderName", email.getFrom());
                         String to = email.getTo();
+                        System.out.println("consumer sends email");
                         mailService.sendMessageUsingThymeleafTemplate(to, "hello, we have an update!!!", context);
                     }
                     newEmailList.clear();
-                    Thread.sleep(2000);
+                    Thread.sleep(20000);
                 }
-
                 NewEmail newEmail = emailsRepository.getNewFilmEmails().take();
+                System.out.println("consumer get email to");
+                System.out.println(newEmail.getTo());
                 newEmailList.add(newEmail);
-
+                System.out.println("consumer add email to email list");
                 ++cnt;
             }
         } catch (InterruptedException | MessagingException e) {
             e.printStackTrace();
+        }*/
+        try {
+            System.out.println("consumer run");
+            int cnt = 0;
+            int capacity = emailsRepository.getCapacity();
+            while (true) {
+                if (cnt == capacity) {
+                    cnt = 0;
+                    for (NewEmail email : newEmailList) {
+                        Map<String, Object> context = new HashMap<>();
+                        context.put("text", email.getText());
+                        context.put("senderName", email.getFrom());
+                        String to = email.getTo();
+                        System.out.println("consumer sends email");
+                        mailService.sendMessageUsingThymeleafTemplate(to, "hello, we have an update!!!", context);
+                    }
+                    newEmailList.clear();
+                }
+                if (!emailsRepository.isEmpty()) {
+                    NewEmail newEmail = emailsRepository.take();
+                    newEmailList.add(newEmail);
+                    ++cnt;
+                }
+            }
+        } catch (MessagingException | InterruptedException e) {
+            System.out.println("consumer died");
+            e.printStackTrace();
         }
+
     }
 }

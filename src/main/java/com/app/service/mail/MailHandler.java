@@ -5,10 +5,12 @@ import com.app.model.emailInfo.NewEmail;
 import com.app.model.user.User;
 import com.app.repository.EmailsRepository;
 import com.app.repository.UserRepository;
+import com.thoughtworks.qdox.model.expression.Add;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -19,11 +21,15 @@ import java.util.List;
 @Component
 public class MailHandler {
 
-    @Autowired
-    EmailsRepository repository;
+    private final AddingHandler addingHandler;
+
+    private final UserRepository userRepository;
 
     @Autowired
-    UserRepository userRepository;
+    public MailHandler(UserRepository userRepository, AddingHandler addingHandler) {
+        this.userRepository = userRepository;
+        this.addingHandler = addingHandler;
+    }
 
     @Pointcut("@annotation(com.app.annotation.AddEntityHandler) && args(entity))")
     private void addEntityHandle(IEntity entity) {
@@ -40,13 +46,7 @@ public class MailHandler {
                 NewEmail newEmail = new NewEmail(type, text, user.getEmail(), "team nc-unc-2021");
                 emails.add(newEmail);
             }
-            Producer producer = new Producer(repository);
-            producer.setNewEmailList(emails);
-            Consumer consumer = new Consumer(repository);
-            Thread sender = new Thread(producer);
-            Thread getter = new Thread(consumer);
-            sender.start();
-            getter.start();
+            addingHandler.setEmailsListToProducer(emails);
         }
     }
 }
