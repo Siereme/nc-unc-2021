@@ -65,6 +65,7 @@ public class Producer implements Runnable {
                     cnt = 0;
                     System.out.println("producer sleep");
                     // ставлю 60 секунд, чтобы показать, что письма отправляются пачками
+                    // fixme убрать кринж
                     Thread.sleep(60000);
                 }
                 if (!newEmailList.isEmpty()) {

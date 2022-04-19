@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 @Table(name = "confirm_tokens")
@@ -43,12 +46,32 @@ public class ConfirmEmail {
     @Column(name = "token")
     private String token;
 
-    public ConfirmEmail(User user, String token){
-        this.user = user;
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
         this.token = token;
     }
 
-    public ConfirmEmail(){
+    public LocalDateTime getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDateTime endDate) {
+        this.endDate = endDate;
+    }
+
+    @Column(name = "date_end")
+    private LocalDateTime endDate;
+
+    public ConfirmEmail(User user, String token) {
+        this.user = user;
+        this.token = token;
+        endDate = LocalDateTime.now().plusDays(1);
+    }
+
+    public ConfirmEmail() {
 
     }
 

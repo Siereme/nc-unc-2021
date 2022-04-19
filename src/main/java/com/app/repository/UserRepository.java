@@ -18,6 +18,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Transactional
@@ -35,7 +37,7 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
         try {
             entityManager.persist(entity);
             return entity;
-        }catch (EntityExistsException ex){
+        } catch (EntityExistsException ex) {
             return null;
         }
     }
@@ -151,15 +153,18 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
                         "select CE from ConfirmEmail CE where CE.token = :token and CE.user.user_id = :userId",
                         ConfirmEmail.class).setParameter("token", token).setParameter("userId", currentUser.getId())
                 .getSingleResult();
-        return confirmEmail != null;
+        if (confirmEmail != null) {
+            LocalDateTime now = LocalDateTime.now();
+            return confirmEmail.getEndDate().isAfter(now);
+        }
+        return false;
     }
 
     public void removeRoleNoConfirmedFromUser(User user) {
         Role NO_CONFIRMED_ROLE = entityManager.createQuery("select r from Role r where r.name = :name", Role.class)
                 .setParameter("name", "ROLE_NO_CONFIRMED").getSingleResult();
         entityManager.createNativeQuery("delete from user_role where user_id = :userId and role_id = :roleId")
-                .setParameter("userId", user.getId()).setParameter("roleId", NO_CONFIRMED_ROLE.getId())
-                .executeUpdate();
+                .setParameter("userId", user.getId()).setParameter("roleId", NO_CONFIRMED_ROLE.getId()).executeUpdate();
     }
 
 }

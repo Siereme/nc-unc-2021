@@ -55,7 +55,7 @@ public class MailController {
         return new String(sb);
     }
 
-    private String getMessageSuccessfulConfirm(){
+    private String getMessageSuccessfulConfirm() {
         StringBuffer sb = new StringBuffer();
         sb.append("Hi ");
         String currentUserName = userRepository.getCurrentUsername();
@@ -80,8 +80,7 @@ public class MailController {
         return new String(sb);
     }
 
-    @GetMapping("/sendHtmlEmail")
-    public String getHtmlEmail() throws MessagingException {
+    private void sendConfimMessage() throws MessagingException {
         Map<String, Object> context = new HashMap<>();
         //        context.put("name", "Name");
         String text = getMessageToConfirmEmail();
@@ -91,17 +90,36 @@ public class MailController {
         context.put("link", link);
         to = userRepository.getCurrentEmail();
         mailService.sendMessageUsingThymeleafTemplate(to, subject, context);
+    }
+
+    private void sendSuccessfulConfimMessage() throws MessagingException {
+        Map<String, Object> context = new HashMap<>();
+        //        context.put("name", "Name");
+        String text = getMessageSuccessfulConfirm();
+        context.put("text", text);
+        context.put("senderName", from);
+        String link = getConfirmLink();
+        context.put("link", link);
+        to = userRepository.getCurrentEmail();
+        mailService.sendMessageUsingThymeleafTemplate(to, subject, context);
+    }
+
+    @GetMapping("/sendHtmlEmail")
+    public String getHtmlEmail() throws MessagingException {
+        sendConfimMessage();
         return "redirect:/films/all";
     }
 
     @GetMapping("/nc-unc-2021/confirm-email/{token}")
-    public String verificationToken(@PathVariable("token") String token) {
+    public String verificationToken(@PathVariable("token") String token) throws MessagingException {
         if (userRepository.isTokenExist(token)) {
             User currentUser = userRepository.getCurrentUser();
             userRepository.removeRoleNoConfirmedFromUser(currentUser);
+            sendSuccessfulConfimMessage();
         }
         // fixme редирект не совсем корректно работает
         return "redirect:/films/all";
     }
+
 
 }
