@@ -85,7 +85,7 @@ public class MailController {
         //        context.put("name", "Name");
         String text = getMessageToConfirmEmail();
         context.put("text", text);
-        context.put("senderName", from);
+        context.put("from", from);
         String link = getConfirmLink();
         context.put("link", link);
         to = userRepository.getCurrentEmail();
@@ -97,7 +97,7 @@ public class MailController {
         //        context.put("name", "Name");
         String text = getMessageSuccessfulConfirm();
         context.put("text", text);
-        context.put("senderName", from);
+        context.put("from", from);
         String link = getConfirmLink();
         context.put("link", link);
         to = userRepository.getCurrentEmail();

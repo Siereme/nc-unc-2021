@@ -8,7 +8,8 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
 
 @SpringBootApplication(exclude = HibernateJpaAutoConfiguration.class)
 public class Main {
-	public static void main(String[] args) {
+
+	public static void main(String[] args) throws Exception {
         BasicConfigurator.configure();
 		SpringApplication.run(Main.class, args);
 	}

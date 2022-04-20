@@ -76,33 +76,33 @@ public class Consumer implements Runnable {
         } catch (InterruptedException | MessagingException e) {
             e.printStackTrace();
         }*/
-        try {
-            System.out.println("consumer run");
-            int cnt = 0;
-            int capacity = emailsRepository.getCapacity();
-            while (true) {
-                if (cnt == capacity) {
-                    cnt = 0;
-                    for (NewEmail email : newEmailList) {
-                        Map<String, Object> context = new HashMap<>();
-                        context.put("text", email.getText());
-                        context.put("senderName", email.getFrom());
-                        String to = email.getTo();
-                        System.out.println("consumer sends email");
-                        mailService.sendMessageUsingThymeleafTemplate(to, "hello, we have an update!!!", context);
-                    }
-                    newEmailList.clear();
-                }
-                if (!emailsRepository.isEmpty()) {
-                    NewEmail newEmail = emailsRepository.take();
-                    newEmailList.add(newEmail);
-                    ++cnt;
-                }
-            }
-        } catch (MessagingException | InterruptedException e) {
-            System.out.println("consumer died");
-            e.printStackTrace();
-        }
+//        try {
+//            System.out.println("consumer run");
+//            int cnt = 0;
+//            int capacity = emailsRepository.getCapacity();
+//            while (true) {
+//                if (cnt == capacity) {
+//                    cnt = 0;
+//                    for (NewEmail email : newEmailList) {
+//                        Map<String, Object> context = new HashMap<>();
+//                        context.put("text", email.getText());
+//                        context.put("senderName", email.getFrom());
+//                        String to = email.getTo();
+//                        System.out.println("consumer sends email");
+//                        mailService.sendMessageUsingThymeleafTemplate(to, "hello, we have an update!!!", context);
+//                    }
+//                    newEmailList.clear();
+//                }
+//                if (!emailsRepository.isEmpty()) {
+//                    NewEmail newEmail = emailsRepository.take();
+//                    newEmailList.add(newEmail);
+//                    ++cnt;
+//                }
+//            }
+//        } catch (MessagingException | InterruptedException e) {
+//            System.out.println("consumer died");
+//            e.printStackTrace();
+//        }
 
     }
 }

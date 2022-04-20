@@ -18,7 +18,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableWebMvc
 @Configuration
 @ComponentScan(basePackages = {"com.app"})
-public class WebConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer  {
 
     @Autowired
     IdToFilmConverter idToFilmConverter;
@@ -72,5 +72,4 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addConverter(idToUserConverter);
         registry.addConverter(idToRoleConverter);
     }
-
 }

@@ -4,20 +4,27 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.Resource;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
+import org.springframework.jdbc.datasource.init.DataSourceInitializer;
+import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
+import java.net.MalformedURLException;
 import java.sql.Driver;
 import java.util.Properties;
 
 @Configuration
+@WebAppConfiguration
 @ComponentScan(basePackages = "com.app")
 @EnableTransactionManagement
 public class SpringConfig {
@@ -30,6 +37,7 @@ public class SpringConfig {
 
     @Value("${spring.datasource.password}")
     private String password;
+
 
     @Bean
     public DataSource dataSource() {
@@ -56,8 +64,9 @@ public class SpringConfig {
         return hibernateProp;
     }
 
+    @Primary
     @Bean
-    public PlatformTransactionManager transactionManager() {
+    public PlatformTransactionManager springTransactionManager() {
         return new JpaTransactionManager(entityManagerFactory());
     }
 
@@ -76,6 +85,28 @@ public class SpringConfig {
         factoryBean.setJpaVendorAdapter(jpaVendorAdapter());
         factoryBean.afterPropertiesSet();
         return factoryBean.getNativeEntityManagerFactory();
+    }
+
+
+    @Value("classpath:org/springframework/batch/core/schema-drop-mysql.sql")
+    private Resource dropRepositoryTables;
+
+    @Value("classpath:org/springframework/batch/core/schema-mysql.sql")
+    private Resource dataRepositorySchema;
+
+    @Bean
+    public DataSourceInitializer dataSourceInitializer(DataSource dataSource) throws MalformedURLException {
+        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+
+        databasePopulator.addScript(dropRepositoryTables);
+        databasePopulator.addScript(dataRepositorySchema);
+        databasePopulator.setIgnoreFailedDrops(true);
+
+        DataSourceInitializer initializer = new DataSourceInitializer();
+        initializer.setDataSource(dataSource);
+        initializer.setDatabasePopulator(databasePopulator);
+
+        return initializer;
     }
 
 }

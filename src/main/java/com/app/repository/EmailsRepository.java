@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.concurrent.ArrayBlockingQueue;
 
 @Repository
-public class EmailsRepository {
+public class EmailsRepository{
 
     int capacity = 2;
 

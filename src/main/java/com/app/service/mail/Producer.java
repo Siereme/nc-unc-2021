@@ -68,6 +68,7 @@ public class Producer implements Runnable {
                     // fixme убрать кринж
                     Thread.sleep(60000);
                 }
+
                 if (!newEmailList.isEmpty()) {
                     NewEmail newEmail = newEmailList.remove(0);
                     System.out.println("producer get email");

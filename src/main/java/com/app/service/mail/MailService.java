@@ -36,6 +36,7 @@ public class MailService {
         helper.setSubject(subject);
         helper.setText(htmlBody, true);
         emailSender.send(message);
+
     }
 
     public void sendMessageUsingThymeleafTemplate(String to, String subject, Map<String, Object> templateModel) throws MessagingException {
