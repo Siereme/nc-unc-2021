@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
 import java.util.HashMap;
@@ -80,19 +79,22 @@ public class MailController {
         return new String(sb);
     }
 
-    private void sendConfimMessage() throws MessagingException {
-        Map<String, Object> context = new HashMap<>();
-        //        context.put("name", "Name");
-        String text = getMessageToConfirmEmail();
-        context.put("text", text);
-        context.put("from", from);
-        String link = getConfirmLink();
-        context.put("link", link);
-        to = userRepository.getCurrentEmail();
-        mailService.sendMessageUsingThymeleafTemplate(to, subject, context);
+    private void sendConfirmMessage() throws MessagingException {
+        User user = userRepository.getCurrentUser();
+        if(!userRepository.isLinksEnough(user, 1)){
+            Map<String, Object> context = new HashMap<>();
+            //        context.put("name", "Name");
+            String text = getMessageToConfirmEmail();
+            context.put("text", text);
+            context.put("from", from);
+            String link = getConfirmLink();
+            context.put("link", link);
+            to = userRepository.getCurrentEmail();
+            mailService.sendMessageUsingThymeleafTemplate(to, subject, context);
+        }
     }
 
-    private void sendSuccessfulConfimMessage() throws MessagingException {
+    private void sendSuccessfulConfirmMessage() throws MessagingException {
         Map<String, Object> context = new HashMap<>();
         //        context.put("name", "Name");
         String text = getMessageSuccessfulConfirm();
@@ -106,7 +108,7 @@ public class MailController {
 
     @GetMapping("/sendHtmlEmail")
     public String getHtmlEmail() throws MessagingException {
-        sendConfimMessage();
+        sendConfirmMessage();
         return "redirect:/films/all";
     }
 
@@ -115,9 +117,8 @@ public class MailController {
         if (userRepository.isTokenExist(token)) {
             User currentUser = userRepository.getCurrentUser();
             userRepository.removeRoleNoConfirmedFromUser(currentUser);
-            sendSuccessfulConfimMessage();
+            sendSuccessfulConfirmMessage();
         }
-        // fixme редирект не совсем корректно работает
         return "redirect:/films/all";
     }
 

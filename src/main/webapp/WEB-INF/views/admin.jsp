@@ -18,13 +18,16 @@
         <thead class="bg-light">
         <th> ID</th>
         <th>UserName</th>
+        <th>Email</th>
         <th>Password</th>
         <th>Roles</th>
+        <th>Handle</th>
         </thead>
         <c:forEach items="${allUsers}" var="user">
             <tr>
                 <th class="align-middle" scope="row">${user.id}</th>
                 <td class="align-middle">${user.username}</td>
+                <td class="align-middle">${user.email}</td>
                 <td class="align-middle">${user.password}</td>
                 <td class="px-0">
                     <table class="table">

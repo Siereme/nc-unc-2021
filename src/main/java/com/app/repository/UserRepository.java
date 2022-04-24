@@ -167,4 +167,19 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
                 .setParameter("userId", user.getId()).setParameter("roleId", NO_CONFIRMED_ROLE.getId()).executeUpdate();
     }
 
+    public int getCountActiveLinks(User user) {
+        int userId = user.getUser_id();
+        LocalDateTime now = LocalDateTime.now();
+        // TODO добавить сравнение даты
+        BigInteger count = (BigInteger) entityManager.createNativeQuery(
+                        "select count(*) from confirm_tokens where user_id = :user_id")
+                .setParameter("user_id", userId).getSingleResult();
+        return count.intValue();
+    }
+
+    public boolean isLinksEnough(User user, int countLinks) {
+        int countActiveLinks = getCountActiveLinks(user);
+        return countActiveLinks > countLinks;
+    }
+
 }
