@@ -17,7 +17,9 @@ public enum ConstantVariables {
     SUCCESS("success"),
     USER_FORM("userForm"),
     USERNAME_ERROR("usernameError"),
-    PASSWORD_ERROR("passwordError");
+    PASSWORD_ERROR("passwordError"),
+    EMAIL_QUEUE_CAPACITY("10"),
+    JOB_BATCH_SIZE("10");
 
     private String value;
     ConstantVariables(String value) {

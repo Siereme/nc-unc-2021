@@ -5,10 +5,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-@Repository
-public class EmailsRepository{
+import static com.app.ConstantVariables.EMAIL_QUEUE_CAPACITY;
 
-    int capacity = 2;
+@Repository
+public class EmailsRepository {
+
+    int capacity = Integer.parseInt(EMAIL_QUEUE_CAPACITY.value());
 
     public int getCapacity() {
         return capacity;
@@ -32,11 +34,11 @@ public class EmailsRepository{
         newFilmEmails = new ArrayBlockingQueue<>(capacity);
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return newFilmEmails.isEmpty();
     }
 
-    public boolean add(NewEmail newEmail){
+    public boolean add(NewEmail newEmail) {
         return newFilmEmails.add(newEmail);
     }
 
