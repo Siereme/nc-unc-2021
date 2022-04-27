@@ -1,6 +1,8 @@
 package com.app;
 
 public enum ConstantVariables {
+    // TODO create constant interface
+    // Strings
     FILMS("films"),
     GENRES("genres"),
     ACTORS("actors"),
@@ -18,11 +20,15 @@ public enum ConstantVariables {
     USER_FORM("userForm"),
     USERNAME_ERROR("usernameError"),
     PASSWORD_ERROR("passwordError");
+//    COUNT_LINKS("1"),
+    // Integers
+//    COUNT_LINKS_INT(Integer.valueOf(String.valueOf(COUNT_LINKS)));
 
     private String value;
     ConstantVariables(String value) {
         this.value = value;
     }
+
 
     public String value(){
         return value;
