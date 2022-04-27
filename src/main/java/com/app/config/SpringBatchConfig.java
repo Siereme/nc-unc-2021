@@ -19,6 +19,8 @@ import org.springframework.context.annotation.Configuration;
 import java.net.MalformedURLException;
 import java.util.List;
 
+import static com.app.ConstantVariables.JOB_BATCH_SIZE;
+
 @Configuration
 @EnableBatchProcessing
 public class SpringBatchConfig {
@@ -50,7 +52,7 @@ public class SpringBatchConfig {
     protected Step step1(ItemReader<NewEmail> reader,
                          ItemProcessor<NewEmail, NewEmail> processor,
                          ItemWriter<NewEmail> writer) {
-        return steps.get("step1").<NewEmail, NewEmail> chunk(10)
+        return steps.get("step1").<NewEmail, NewEmail> chunk(Integer.parseInt(JOB_BATCH_SIZE.value()))
                 .reader(reader).processor(processor).writer(writer).build();
     }
 

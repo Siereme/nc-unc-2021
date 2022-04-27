@@ -26,7 +26,7 @@ public class QueueItemWriter implements ItemWriter<NewEmail> {
             MimeMessageHelper helper = null;
             try {
                 helper = new MimeMessageHelper(message, true, "UTF-8");
-                helper.setTo("User Email");
+                helper.setTo("sergeyskotenev@gmail.com");
                 helper.setSubject("Added new content!");
                 helper.setText(email.getText(), true);
                 emailSender.send(message);
