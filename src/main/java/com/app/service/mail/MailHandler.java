@@ -4,6 +4,7 @@ import com.app.model.IEntity;
 import com.app.model.emailInfo.NewEmail;
 import com.app.model.user.User;
 import com.app.repository.UserRepository;
+import com.app.service.mail.kafka.KafkaProducer;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
@@ -21,10 +22,14 @@ public class MailHandler {
 
     private final UserRepository userRepository;
 
+    private final KafkaProducer producer;
+
+
     @Autowired
-    public MailHandler(UserRepository userRepository, AddingHandler addingHandler) {
+    public MailHandler(UserRepository userRepository, AddingHandler addingHandler, KafkaProducer producer) {
         this.userRepository = userRepository;
         this.addingHandler = addingHandler;
+        this.producer = producer;
     }
 
     @Pointcut("@annotation(com.app.annotation.AddEntityHandler) && args(entity))")
@@ -43,6 +48,9 @@ public class MailHandler {
                 emails.add(newEmail);
             }
             addingHandler.addEmailsListToProducer(emails);
+
+            NewEmail newEmail = new NewEmail(type, text, "", "team nc-unc-2021");
+            producer.sendMessage(newEmail);
         }
     }
 }

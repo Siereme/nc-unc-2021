@@ -12,12 +12,12 @@ public class AddingHandler {
     private final Producer producer;
 
     @Autowired
-    public AddingHandler(Producer producer, Consumer consumer) {
+    public AddingHandler(Producer producer) {
         this.producer = producer;
         Thread sender = new Thread(producer);
-        Thread getter = new Thread(consumer);
+//        Thread getter = new Thread(consumer);
         sender.start();
-        getter.start();
+//        getter.start();
     }
 
     public void addEmailsListToProducer(List<NewEmail> emails) {
