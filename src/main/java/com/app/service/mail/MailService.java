@@ -1,5 +1,6 @@
 package com.app.service.mail;
 
+import com.app.model.emailInfo.NewEmail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -46,5 +47,15 @@ public class MailService {
         String htmlBody = thymeleafTemplateEngine.process("email.html", thymeleafContext);
 
         sendHtmlMessage(to, subject, htmlBody);
+    }
+
+    public void sendNewUpdatedMessage(String to, String subject, NewEmail email) throws MessagingException {
+        Context context = new Context();
+        context.setVariable("type", email.getType());
+        context.setVariable("text", email.getText());
+        context.setVariable("from", email.getFrom());
+        String html = thymeleafTemplateEngine.process("email.html", context);
+
+        sendHtmlMessage(to, subject, html);
     }
 }

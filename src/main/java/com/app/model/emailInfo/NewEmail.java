@@ -26,6 +26,9 @@ public class NewEmail {
 
     private String from;
 
+    public NewEmail() {
+    }
+
     public NewEmail(String type, String text, String to, String from) {
         this.type = type;
         this.text = text;
