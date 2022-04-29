@@ -38,24 +38,6 @@ public class Producer implements Runnable {
 
     @Override
     public void run() {
-/*        try {
-            System.out.println("producer run");
-            int cnt = 0;
-            for (int i = 0; i < newEmailList.size(); ++i) {
-                NewEmail newEmail = newEmailList.remove(0);
-                System.out.println("producer get email");
-                emailsRepository.getNewFilmEmails().add(newEmail);
-                System.out.println("producer added email to repository");
-                ++cnt;
-                if (cnt == 2) {
-                    cnt = 0;
-                    System.out.println("producer sleep");
-                    Thread.sleep(10000);
-                }
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
         try {
             System.out.println("producer run");
             int cnt = 0;

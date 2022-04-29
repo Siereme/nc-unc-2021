@@ -6,11 +6,12 @@ import org.springframework.stereotype.Repository;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static com.app.ConstantVariables.EMAIL_QUEUE_CAPACITY;
+import static com.app.ConstantVariables.INT_EMAIL_QUEUE_CAPACITY;
 
 @Repository
 public class EmailsRepository {
 
-    int capacity = Integer.parseInt(EMAIL_QUEUE_CAPACITY.value());
+    int capacity = INT_EMAIL_QUEUE_CAPACITY;
 
     public int getCapacity() {
         return capacity;

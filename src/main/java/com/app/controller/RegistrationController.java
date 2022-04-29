@@ -25,7 +25,7 @@ public class RegistrationController {
     @GetMapping("/registration")
     public String registration(Model model) {
         User user = new User();
-        model.addAttribute(USER_FORM.value(), user);
+        model.addAttribute(USER_FORM, user);
 
         return "registration";
     }
@@ -35,23 +35,23 @@ public class RegistrationController {
 
         String username = userForm.getUsername();
         if (username.length() < 3) {
-            model.addAttribute(USERNAME_ERROR.value(), "username must contain at least 3 characters");
+            model.addAttribute(USERNAME_ERROR, "username must contain at least 3 characters");
             return "registration";
         }
         String password = userForm.getPassword();
         if (password.length() < 6) {
-            model.addAttribute(PASSWORD_ERROR.value(), "password must contain at least 6 characters");
+            model.addAttribute(PASSWORD_ERROR, "password must contain at least 6 characters");
             return "registration";
         }
 
         if (!userForm.getPassword().equals(userForm.getPasswordConfirm())) {
-            model.addAttribute(PASSWORD_ERROR.value(), "passwords don't match");
+            model.addAttribute(PASSWORD_ERROR, "passwords don't match");
             return "registration";
         } else {
             repository.addRoleToUser(userForm, "ROLE_USER");
             repository.addRoleToUser(userForm, "ROLE_NO_CONFIRMED");
             if (!repository.saveUser(userForm)) {
-                model.addAttribute(USERNAME_ERROR.value(), "a user with this name already exists");
+                model.addAttribute(USERNAME_ERROR, "a user with this name already exists");
             }
             return "login";
         }

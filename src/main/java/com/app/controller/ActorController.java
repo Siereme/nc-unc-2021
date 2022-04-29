@@ -33,13 +33,13 @@ public class ActorController {
     private static final Logger logger = Logger.getLogger(ActorController.class);
 
     private void getActorsAndFilmsList(Collection<Actor> actorCollection, ModelMap model) {
-        model.addAttribute(ACTORS.value(), actorCollection);
+        model.addAttribute(ACTORS, actorCollection);
         Collection<Collection<Film>> listListFilms = new LinkedList<>();
         for (Actor actor : actorCollection) {
             listListFilms.add(actor.getFilms());
         }
-        model.addAttribute(FILMS.value(), listListFilms);
-        model.addAttribute(JSON.value(), "../serialize/actors");
+        model.addAttribute(FILMS, listListFilms);
+        model.addAttribute(JSON, "../serialize/actors");
         logger.info("show all actors");
     }
 
@@ -53,13 +53,13 @@ public class ActorController {
     public String get(ModelMap model) {
         Collection<Actor> actorList = repository.findAll();
         getActorsAndFilmsList(actorList, model);
-        return ACTORS.value();
+        return ACTORS;
     }
 
     @GetMapping(value = "/errors")
     public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model, SessionStatus sessionStatus) {
         if(!errors.isEmpty()){
-            model.addAttribute(ERRORS.value(), errors);
+            model.addAttribute(ERRORS, errors);
             sessionStatus.setComplete();
         }
         return get(model);
@@ -68,7 +68,7 @@ public class ActorController {
     @GetMapping(value = "/success")
     public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
         if(!success.isEmpty()){
-            model.addAttribute(SUCCESS.value(), success);
+            model.addAttribute(SUCCESS, success);
         }
         sessionStatus.setComplete();
         return get(model);
@@ -84,7 +84,7 @@ public class ActorController {
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
         Collection<Actor> actorList = repository.findByContains(tittle);
         getActorsAndFilmsList(actorList, model);
-        return new ModelAndView(ACTORS.value(), model);
+        return new ModelAndView(ACTORS, model);
     }
 
     @PostMapping(value = "/handle/{commandType}")
@@ -92,9 +92,9 @@ public class ActorController {
                                    @PathVariable @NotBlank String commandType) {
         Collection<Film> films = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
-            model.addAttribute(FILMS.value(), films);
-            model.addAttribute(MODAL_TITLE.value(), "Add");
-            model.addAttribute(EVENT_TYPE.value(), "handle/add");
+            model.addAttribute(FILMS, films);
+            model.addAttribute(MODAL_TITLE, "Add");
+            model.addAttribute(EVENT_TYPE, "handle/add");
         }
         if (Objects.equals(commandType, "page-edit")) {
             int id = actor.getId();
@@ -103,10 +103,10 @@ public class ActorController {
             // we delete entities that are both there and there in films
             // ( удаляем из списка всех фильмов те, в которых актер участвовал)
             films.removeIf(film -> actorFilmList.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
-            model.addAttribute(FILMS.value(), films);
-            model.addAttribute(FILM_LIST.value(), actorFilmList);
-            model.addAttribute(MODAL_TITLE.value(), "Edit");
-            model.addAttribute(EVENT_TYPE.value(), "handle/edit");
+            model.addAttribute(FILMS, films);
+            model.addAttribute(FILM_LIST, actorFilmList);
+            model.addAttribute(MODAL_TITLE, "Edit");
+            model.addAttribute(EVENT_TYPE, "handle/edit");
             model.addAttribute("actor", actor);
         }
         return "actor-handle";
@@ -115,7 +115,7 @@ public class ActorController {
     @PostMapping(value = "/handle/add")
     public String add(@Validated @ModelAttribute Actor actor, BindingResult result, ModelMap map) {
         if (result.hasErrors()) {
-            map.addAttribute(RESULT.value(), result);
+            map.addAttribute(RESULT, result);
             return renderHandlePage(actor, map, "page-add");
         }
         repository.add(actor);
@@ -125,7 +125,7 @@ public class ActorController {
     @PostMapping(value = "/handle/edit")
     public String edit(@Validated @ModelAttribute Actor actor, BindingResult result, ModelMap map) {
         if (result.hasErrors()) {
-            map.addAttribute(RESULT.value(), result);
+            map.addAttribute(RESULT, result);
             return renderHandlePage(actor, map, "page-edit");
         }
         repository.edit(actor);

@@ -1,32 +1,30 @@
 package com.app;
 
-public enum ConstantVariables {
-    FILMS("films"),
-    GENRES("genres"),
-    ACTORS("actors"),
-    DIRECTORS("directors"),
-    JSON("json"),
-    FILM_LIST("filmList"),
-    GENRE_LIST("genreList"),
-    ACTOR_LIST("actorList"),
-    DIRECTOR_LIST("directorList"),
-    MODAL_TITLE("modalTitle"),
-    EVENT_TYPE("eventType"),
-    RESULT("result"),
-    ERRORS("errors"),
-    SUCCESS("success"),
-    USER_FORM("userForm"),
-    USERNAME_ERROR("usernameError"),
-    PASSWORD_ERROR("passwordError"),
-    EMAIL_QUEUE_CAPACITY("10"),
-    JOB_BATCH_SIZE("10");
+public interface ConstantVariables {
 
-    private String value;
-    ConstantVariables(String value) {
-        this.value = value;
-    }
+    // STRINGS
+    String FILMS = "films";
+    String GENRES = "genres";
+    String ACTORS = "actors";
+    String DIRECTORS = "directors";
+    String JSON = "json";
+    String FILM_LIST = "filmList";
+    String GENRE_LIST = "genreList";
+    String ACTOR_LIST = "actorList";
+    String DIRECTOR_LIST = "directorList";
+    String MODAL_TITLE = "modalTitle";
+    String EVENT_TYPE = "eventType";
+    String RESULT = "result";
+    String ERRORS = "errors";
+    String SUCCESS = "success";
+    String USER_FORM = "userForm";
+    String USERNAME_ERROR = "usernameError";
+    String PASSWORD_ERROR = "passwordError";
+    String EMAIL_QUEUE_CAPACITY = "10";
+    String JOB_BATCH_SIZE = "10";
 
-    public String value(){
-        return value;
-    }
+    // INTEGERS
+    Integer INT_EMAIL_QUEUE_CAPACITY = Integer.parseInt(EMAIL_QUEUE_CAPACITY);
+    Integer INT_JOB_BATCH_SIZE = Integer.parseInt(JOB_BATCH_SIZE);
+
 }

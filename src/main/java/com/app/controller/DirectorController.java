@@ -1,5 +1,6 @@
 package com.app.controller;
 
+import com.app.ConstantVariables;
 import com.app.repository.FilmsRepository;
 import com.app.model.director.Director;
 import com.app.model.film.Film;
@@ -39,13 +40,13 @@ public class DirectorController {
     private final FilmsRepository filmsRepository = new FilmsRepository();
 
     private void getDirectorsAndFilmsList(Collection<Director> directorCollection, ModelMap model) {
-        model.addAttribute(DIRECTORS.value(), directorCollection);
+        model.addAttribute(DIRECTORS, directorCollection);
         Collection<Collection<Film>> listFilms = new LinkedList<>();
         for (Director director : directorCollection) {
             listFilms.add(director.getFilms());
         }
-        model.addAttribute(FILMS.value(), listFilms);
-        model.addAttribute(JSON.value(), "../serialize/directors");
+        model.addAttribute(FILMS, listFilms);
+        model.addAttribute(JSON, "../serialize/directors");
         logger.info("show all directors");
     }
 
@@ -53,13 +54,13 @@ public class DirectorController {
     public String get(ModelMap model) {
         Collection<Director> directorList = repository.findAll();
         getDirectorsAndFilmsList(directorList, model);
-        return DIRECTORS.value();
+        return DIRECTORS;
     }
 
     @GetMapping(value = "/errors")
     public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model, SessionStatus sessionStatus) {
         if(!errors.isEmpty()){
-            model.addAttribute(ERRORS.value(), errors);
+            model.addAttribute(ERRORS, errors);
             sessionStatus.setComplete();
         }
         return get(model);
@@ -68,7 +69,7 @@ public class DirectorController {
     @GetMapping(value = "/success")
     public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
         if(!success.isEmpty()){
-            model.addAttribute(SUCCESS.value(), success);
+            model.addAttribute(SUCCESS, success);
         }
         sessionStatus.setComplete();
         return get(model);
@@ -84,7 +85,7 @@ public class DirectorController {
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
         Collection<Director> directorList = repository.findByContains(tittle);
         getDirectorsAndFilmsList(directorList, model);
-        return new ModelAndView(DIRECTORS.value(), model);
+        return new ModelAndView(DIRECTORS, model);
     }
 
     @PostMapping(value = "/handle/{commandType}")
@@ -92,19 +93,19 @@ public class DirectorController {
                                    @PathVariable @NotBlank String commandType) {
         List<Film> films = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
-            model.addAttribute(FILMS.value(), films);
-            model.addAttribute(MODAL_TITLE.value(), "Add");
-            model.addAttribute(EVENT_TYPE.value(), "handle/add");
+            model.addAttribute(FILMS, films);
+            model.addAttribute(MODAL_TITLE, "Add");
+            model.addAttribute(EVENT_TYPE, "handle/add");
         }
         if (Objects.equals(commandType, "page-edit")) {
             int id = director.getId();
             director = repository.findById(id);
             Collection<Film> filmsByDirectorId = director.getFilms();
             films.removeIf(film -> filmsByDirectorId.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
-            model.addAttribute(FILMS.value(), films);
-            model.addAttribute(FILM_LIST.value(), filmsByDirectorId);
-            model.addAttribute(MODAL_TITLE.value(), "Edit");
-            model.addAttribute(EVENT_TYPE.value(), "handle/edit");
+            model.addAttribute(FILMS, films);
+            model.addAttribute(FILM_LIST, filmsByDirectorId);
+            model.addAttribute(MODAL_TITLE, "Edit");
+            model.addAttribute(EVENT_TYPE, "handle/edit");
             model.addAttribute("director", director);
         }
         return "director-handle";
@@ -113,7 +114,7 @@ public class DirectorController {
     @PostMapping(value = "/handle/add")
     public String add(@Validated @ModelAttribute Director director, BindingResult result, ModelMap map) {
         if (result.hasErrors()) {
-            map.addAttribute(RESULT.value(), result);
+            map.addAttribute(RESULT, result);
             return renderHandlePage(director, map, "page-add");
         }
         repository.add(director);
@@ -123,7 +124,7 @@ public class DirectorController {
     @PostMapping(value = "/handle/edit")
     public String edit(@Validated @ModelAttribute Director director, BindingResult result, ModelMap map) {
         if (result.hasErrors()) {
-            map.addAttribute(RESULT.value(), result);
+            map.addAttribute(RESULT, result);
             return renderHandlePage(director, map, "page-edit");
         }
         repository.edit(director);

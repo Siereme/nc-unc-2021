@@ -48,11 +48,11 @@ public class FilmController implements WebMvcConfigurer {
             directors.add(film.getDirectors());
             actors.add(film.getActors());
         }
-        model.addAttribute(FILMS.value(), films);
-        model.addAttribute(GENRES.value(), genres);
-        model.addAttribute(ACTORS.value(), actors);
-        model.addAttribute(DIRECTORS.value(), directors);
-        model.addAttribute(JSON.value(), "../serialize/films");
+        model.addAttribute(FILMS, films);
+        model.addAttribute(GENRES, genres);
+        model.addAttribute(ACTORS, actors);
+        model.addAttribute(DIRECTORS, directors);
+        model.addAttribute(JSON, "../serialize/films");
         logger.info("Show all films");
 
         return "films";
@@ -62,7 +62,7 @@ public class FilmController implements WebMvcConfigurer {
     public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model,
                                 SessionStatus sessionStatus) {
         if (!errors.isEmpty()) {
-            model.addAttribute(ERRORS.value(), errors);
+            model.addAttribute(ERRORS, errors);
         }
         sessionStatus.setComplete();
         return get(model);
@@ -72,7 +72,7 @@ public class FilmController implements WebMvcConfigurer {
     public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model,
                                  SessionStatus sessionStatus) {
         if (!success.isEmpty()) {
-            model.addAttribute(SUCCESS.value(), success);
+            model.addAttribute(SUCCESS, success);
         }
         sessionStatus.setComplete();
         return get(model);
@@ -91,15 +91,15 @@ public class FilmController implements WebMvcConfigurer {
                 actors.add(film.getActors());
                 directors.add(film.getDirectors());
             }
-            model.addAttribute(FILMS.value(), findFilm);
-            model.addAttribute(GENRES.value(), genres);
-            model.addAttribute(ACTORS.value(), actors);
-            model.addAttribute(DIRECTORS.value(), directors);
+            model.addAttribute(FILMS, findFilm);
+            model.addAttribute(GENRES, genres);
+            model.addAttribute(ACTORS, actors);
+            model.addAttribute(DIRECTORS, directors);
 
-            model.addAttribute(JSON.value(), "../serialize/films");
-            return new ModelAndView(FILMS.value(), model);
+            model.addAttribute(JSON, "../serialize/films");
+            return new ModelAndView(FILMS, model);
         }
-        model.addAttribute(FILMS.value(), findFilm);
+        model.addAttribute(FILMS, findFilm);
         return new ModelAndView("films", model);
     }
 
@@ -111,11 +111,11 @@ public class FilmController implements WebMvcConfigurer {
         Collection<Director> directors = directorsRepository.findAll();
 
         if (Objects.equals(commandType, "page-add")) {
-            model.addAttribute(GENRES.value(), genres);
-            model.addAttribute(ACTORS.value(), actors);
-            model.addAttribute(DIRECTORS.value(), directors);
-            model.addAttribute(MODAL_TITLE.value(), "Add");
-            model.addAttribute(EVENT_TYPE.value(), "add");
+            model.addAttribute(GENRES, genres);
+            model.addAttribute(ACTORS, actors);
+            model.addAttribute(DIRECTORS, directors);
+            model.addAttribute(MODAL_TITLE, "Add");
+            model.addAttribute(EVENT_TYPE, "add");
         }
         if (Objects.equals(commandType, "page-edit")) {
 
@@ -130,14 +130,14 @@ public class FilmController implements WebMvcConfigurer {
             directors.removeIf(director -> directorList.stream()
                     .anyMatch(filmDirector -> filmDirector.getId() == director.getId()));
 
-            model.addAttribute(GENRE_LIST.value(), genreList);
-            model.addAttribute(ACTOR_LIST.value(), actorList);
-            model.addAttribute(DIRECTOR_LIST.value(), directorList);
-            model.addAttribute(GENRES.value(), genres);
-            model.addAttribute(ACTORS.value(), actors);
-            model.addAttribute(DIRECTORS.value(), directors);
-            model.addAttribute(MODAL_TITLE.value(), "Edit");
-            model.addAttribute(EVENT_TYPE.value(), "edit");
+            model.addAttribute(GENRE_LIST, genreList);
+            model.addAttribute(ACTOR_LIST, actorList);
+            model.addAttribute(DIRECTOR_LIST, directorList);
+            model.addAttribute(GENRES, genres);
+            model.addAttribute(ACTORS, actors);
+            model.addAttribute(DIRECTORS, directors);
+            model.addAttribute(MODAL_TITLE, "Edit");
+            model.addAttribute(EVENT_TYPE, "edit");
             model.addAttribute("film", film);
         }
         return "film-handle";
@@ -152,7 +152,7 @@ public class FilmController implements WebMvcConfigurer {
     @PostMapping(value = "/handle/add")
     public String add(@Validated @ModelAttribute Film film, BindingResult result, ModelMap map) {
         if (result.hasErrors()) {
-            map.addAttribute(RESULT.value(), result);
+            map.addAttribute(RESULT, result);
             return renderHandlePage(film, map, "page-add");
         }
         repository.add(film);
@@ -162,7 +162,7 @@ public class FilmController implements WebMvcConfigurer {
     @PostMapping(value = "/handle/edit")
     public String edit(@Validated @ModelAttribute Film film, BindingResult result, ModelMap map) {
         if (result.hasErrors()) {
-            map.addAttribute(RESULT.value(), result);
+            map.addAttribute(RESULT, result);
             return renderHandlePage(film, map, "page-edit");
         }
         repository.edit(film);
