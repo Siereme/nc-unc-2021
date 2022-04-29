@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.app.ConstantVariables.*;
+import static com.app.Constants.*;
 
 @SuppressWarnings({"SameReturnValue", "unused"})
 @Validated

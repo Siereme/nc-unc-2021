@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import static com.app.ConstantVariables.*;
+import static com.app.Constants.*;
 
 @SuppressWarnings("SameReturnValue")
 @Controller
