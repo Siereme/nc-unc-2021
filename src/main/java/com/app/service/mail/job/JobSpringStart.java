@@ -25,7 +25,8 @@ public class JobSpringStart {
     JobLauncher jobLauncher;
 
     @Scheduled(cron = "0 * * * * *")
-    public void start() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException, JobParametersInvalidException, JobRestartException {
+    public void start() throws JobInstanceAlreadyCompleteException, JobExecutionAlreadyRunningException,
+            JobParametersInvalidException, JobRestartException {
         jobLauncher.run(job, new JobParametersBuilder().addDate("date", new Date()).toJobParameters());
     }
 }

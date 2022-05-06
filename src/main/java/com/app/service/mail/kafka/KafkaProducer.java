@@ -31,6 +31,7 @@ public class KafkaProducer {
             public void onSuccess(SendResult<String, NewEmail> result) {
                 logger.info("Sent message=[" + email + "] with offset=[" + result.getRecordMetadata().offset() + "]");
             }
+
             @Override
             public void onFailure(Throwable ex) {
                 logger.warn("Unable to send message=[" + email + "] due to : " + ex.getMessage());

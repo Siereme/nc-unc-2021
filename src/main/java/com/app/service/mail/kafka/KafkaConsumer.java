@@ -15,6 +15,7 @@ import java.util.Locale;
 
 @Service
 public class KafkaConsumer {
+
     @Autowired
     private MailService mailService;
 
@@ -22,7 +23,8 @@ public class KafkaConsumer {
 
     @KafkaListener(topics = "email", groupId = "group-id")
     public void consume(NewEmail email) throws IOException, MessagingException {
-        mailService.sendNewUpdatedMessage("sergeyskotenev@gmail.com","Added new " + email.getType().toLowerCase(Locale.ROOT) + "!", email);
+        String to = email.getTo();
+        mailService.sendNewUpdatedMessage(to, "Added new " + email.getType().toLowerCase(Locale.ROOT) + "!", email);
         logger.info(String.format("#### -> Consumed message -> %s", email));
     }
 }

@@ -18,17 +18,13 @@ import java.util.List;
 @Component
 public class MailHandler {
 
-    private final AddingHandler addingHandler;
-
     private final UserRepository userRepository;
 
     private final KafkaProducer producer;
 
-
     @Autowired
-    public MailHandler(UserRepository userRepository, AddingHandler addingHandler, KafkaProducer producer) {
+    public MailHandler(UserRepository userRepository, KafkaProducer producer) {
         this.userRepository = userRepository;
-        this.addingHandler = addingHandler;
         this.producer = producer;
     }
 
@@ -42,15 +38,11 @@ public class MailHandler {
             String type = entity.getClass().getSimpleName();
             String text = entity.toString();
             List<User> userList = userRepository.findAll();
-            List<NewEmail> emails = new LinkedList<>();
             for (User user : userList) {
                 NewEmail newEmail = new NewEmail(type, text, user.getEmail(), "team nc-unc-2021");
-                emails.add(newEmail);
+                producer.sendMessage(newEmail);
             }
-            addingHandler.addEmailsListToProducer(emails);
 
-            NewEmail newEmail = new NewEmail(type, text, "", "team nc-unc-2021");
-            producer.sendMessage(newEmail);
         }
     }
 }

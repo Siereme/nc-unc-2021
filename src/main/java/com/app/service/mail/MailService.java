@@ -52,7 +52,8 @@ public class MailService {
         emailSender.send(message);
     }
 
-    public void sendMessageUsingThymeleafTemplate(String to, String subject, Map<String, Object> templateModel) throws MessagingException {
+    public void sendMessageUsingThymeleafTemplate(String to, String subject, Map<String, Object> templateModel)
+            throws MessagingException {
 
         Context thymeleafContext = new Context();
         thymeleafContext.setVariables(templateModel);
@@ -108,7 +109,7 @@ public class MailService {
 
     public void sendMessageToConfirmEmail() throws MessagingException {
         User user = userRepository.getCurrentUser();
-        if(!userRepository.isLinksEnough(user, 1)){
+        if (!userRepository.isLinksEnough(user, 1)) {
             Map<String, Object> context = new HashMap<>();
             //        context.put("name", "Name");
             String text = getMessageToConfirmEmail();

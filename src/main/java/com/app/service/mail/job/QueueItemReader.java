@@ -14,7 +14,7 @@ public class QueueItemReader<T> implements ItemReader<T> {
 
     @Override
     public T read() throws Exception {
-        if(queue.peek() != null){
+        if (queue.peek() != null) {
             return queue.take();
         }
         return null;
