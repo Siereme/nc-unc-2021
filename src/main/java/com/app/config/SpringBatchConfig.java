@@ -20,7 +20,6 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 import static com.app.ConstantVariables.INT_JOB_BATCH_SIZE;
-import static com.app.ConstantVariables.JOB_BATCH_SIZE;
 
 @Configuration
 @EnableBatchProcessing

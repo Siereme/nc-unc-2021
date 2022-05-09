@@ -5,7 +5,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-import static com.app.ConstantVariables.EMAIL_QUEUE_CAPACITY;
 import static com.app.ConstantVariables.INT_EMAIL_QUEUE_CAPACITY;
 
 @Repository

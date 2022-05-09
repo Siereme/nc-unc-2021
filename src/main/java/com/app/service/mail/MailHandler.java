@@ -38,7 +38,7 @@ public class MailHandler {
             String type = entity.getClass().getSimpleName();
             String text = entity.toString();
             NewEmail newEmail = new NewEmail(type, text, "null", "team nc-unc-2021");
-            producer.addEmailToQueue(newEmail);
+            producer.setEmail(newEmail);
         }
     }
 }

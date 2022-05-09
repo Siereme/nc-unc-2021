@@ -6,26 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
-import java.time.Duration;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ArrayBlockingQueue;
+
+import static com.app.ConstantVariables.INT_EMAIL_QUEUE_CAPACITY;
 
 @Service
-@EnableScheduling
 public class KafkaProducer {
-
-    private static final Duration d = java.time.Duration.parse("PT1M");
-
-    private ConcurrentLinkedQueue<NewEmail> concurrentLinkedQueue = new ConcurrentLinkedQueue<>();
-
-    public void addEmailToQueue(NewEmail newEmail) {
-        concurrentLinkedQueue.add(newEmail);
-    }
 
     private static final Logger logger = Logger.getLogger(KafkaProducer.class);
     @Value(value = "${spring.kafka.topic-name}")
@@ -34,29 +25,29 @@ public class KafkaProducer {
     @Autowired
     private KafkaTemplate<String, NewEmail> kafkaTemplate;
 
-    @Scheduled(initialDelay = 60000, fixedRate = 60000)
-    public void sendMessage() {
+    private final ArrayBlockingQueue<NewEmail> queue = new ArrayBlockingQueue<NewEmail>(INT_EMAIL_QUEUE_CAPACITY);
 
-        if (concurrentLinkedQueue.size() != 0) {
-            NewEmail email = concurrentLinkedQueue.remove();
+    @Scheduled(cron = "0 * * * * *")
+    public void sendMessage() throws InterruptedException {
+        NewEmail email = queue.take();
+        ListenableFuture<SendResult<String, NewEmail>> future = kafkaTemplate.send(topicName, email);
 
-            ListenableFuture<SendResult<String, NewEmail>> future = kafkaTemplate.send(topicName, email);
+        future.addCallback(new ListenableFutureCallback<SendResult<String, NewEmail>>() {
 
-            future.addCallback(new ListenableFutureCallback<SendResult<String, NewEmail>>() {
+            @Override
+            public void onSuccess(SendResult<String, NewEmail> result) {
+                logger.info("Sent message=[" + email + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+            }
 
-                @Override
-                public void onSuccess(SendResult<String, NewEmail> result) {
-                    logger.info(
-                            "Sent message=[" + email + "] with offset=[" + result.getRecordMetadata().offset() + "]");
-                }
-
-                @Override
-                public void onFailure(Throwable ex) {
-                    logger.warn("Unable to send message=[" + email + "] due to : " + ex.getMessage());
-                }
-            });
-        }
-
+            @Override
+            public void onFailure(Throwable ex) {
+                logger.warn("Unable to send message=[" + email + "] due to : " + ex.getMessage());
+            }
+        });
     }
 
+
+    public void setEmail(NewEmail email){
+        queue.add(email);
+    }
 }
