@@ -7,11 +7,9 @@ import com.app.service.mail.MailService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -37,4 +35,5 @@ public class KafkaConsumer {
         }
         logger.info(String.format("#### -> Consumed message -> %s", email));
     }
+
 }

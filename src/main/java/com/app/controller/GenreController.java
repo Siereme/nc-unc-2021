@@ -23,7 +23,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import static com.app.Constants.*;
+import static com.app.ConstantVariables.*;
 
 @SuppressWarnings("ALL")
 @Validated
