@@ -37,12 +37,8 @@ public class MailHandler {
         if (entity != null) {
             String type = entity.getClass().getSimpleName();
             String text = entity.toString();
-            List<User> userList = userRepository.findAll();
-            for (User user : userList) {
-                NewEmail newEmail = new NewEmail(type, text, user.getEmail(), "team nc-unc-2021");
-                producer.sendMessage(newEmail);
-            }
-
+            NewEmail newEmail = new NewEmail(type, text, "null", "team nc-unc-2021");
+            producer.sendMessage(newEmail);
         }
     }
 }
