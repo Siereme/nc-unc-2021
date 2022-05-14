@@ -2,6 +2,11 @@ package com.app.repository;
 
 import com.app.annotation.AddEntityHandler;
 import com.app.model.actor.Actor;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -9,68 +14,131 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.TypedQuery;
 import java.math.BigInteger;
 import java.util.*;
+import java.util.function.Function;
 
 @SuppressWarnings("unused")
 @Repository
 @Transactional
 public class ActorsRepository extends AbstractRepository<Actor> {
+
+    @Override
+    public Actor findById(int id) {
+        return null;
+    }
+
+    @Override
+    public <S extends Actor> S save(S entity) {
+        return null;
+    }
+
+    @Override
+    public <S extends Actor> List<S> saveAll(Iterable<S> entities) {
+        return null;
+    }
+
+    @Override
+    public Optional<Actor> findById(Integer integer) {
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean existsById(Integer integer) {
+        return false;
+    }
+
     @Override
     public List<Actor> findAll() {
-        return entityManager.createNamedQuery("Actor.findAllWithFilm", Actor.class).getResultList();
-    }
-
-    public Actor findById(int id) {
-        return entityManager.createNamedQuery("Actor.findById", Actor.class).setParameter("id", id).getSingleResult();
-    }
-
-    public List<Actor> find(List<Integer> ids) {
-        if (ids != null && ids.size() < 1) {
-            return Collections.emptyList();
-        }
-        TypedQuery<Actor> query = entityManager.createNamedQuery("Actor.findAllWithFilmByIds", Actor.class).setParameter("ids", ids);
-        return query.getResultList();
-    }
-
-
-    @AddEntityHandler
-    public Actor add(Actor actor) {
-        try {
-            entityManager.persist(actor);
-            return actor;
-        }catch (EntityExistsException ex){
-            return null;
-        }
+        return null;
     }
 
     @Override
-    public void delete(int id) {
-        Actor actor = entityManager.find(Actor.class, id);
-        entityManager.remove(actor);
+    public Iterable<Actor> findAllById(Iterable<Integer> integers) {
+        return null;
     }
 
     @Override
-    public void edit(Actor actor) {
-        entityManager.merge(actor);
+    public long count() {
+        return 0;
     }
 
     @Override
-    public List<Actor> findByName(String name) {
-        TypedQuery<Actor> query = entityManager.createQuery("select distinct a from Actor a left join fetch a.films where a.name = :name", Actor.class).setParameter("name", name);
-        return query.getResultList();
+    public void deleteById(Integer integer) {
+
     }
 
-    @SuppressWarnings("unused")
     @Override
-    public int size() {
-        BigInteger bigInteger =
-                (BigInteger) entityManager.createNativeQuery("select count(*) from actor").getSingleResult();
-        return bigInteger.intValue();
+    public void delete(Actor entity) {
+
     }
 
-    public List<Actor> findByContains(String name) {
-        return entityManager.createQuery("select distinct a from Actor a left join fetch a.films where a.name like :name ESCAPE '!'",
-                Actor.class).setParameter("name", '%' + name + '%').getResultList();
+    @Override
+    public void deleteAllById(Iterable<? extends Integer> integers) {
+
     }
 
+    @Override
+    public void deleteAll(Iterable<? extends Actor> entities) {
 
+    }
+
+    @Override
+    public void deleteAll() {
+
+    }
+
+    @Override
+    public List<Actor> findAll(Sort sort) {
+        return null;
+    }
+
+    @Override
+    public Page<Actor> findAll(Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public <S extends Actor> S insert(S entity) {
+        return null;
+    }
+
+    @Override
+    public <S extends Actor> List<S> insert(Iterable<S> entities) {
+        return null;
+    }
+
+    @Override
+    public <S extends Actor> Optional<S> findOne(Example<S> example) {
+        return Optional.empty();
+    }
+
+    @Override
+    public <S extends Actor> List<S> findAll(Example<S> example) {
+        return null;
+    }
+
+    @Override
+    public <S extends Actor> List<S> findAll(Example<S> example, Sort sort) {
+        return null;
+    }
+
+    @Override
+    public <S extends Actor> Page<S> findAll(Example<S> example, Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public <S extends Actor> long count(Example<S> example) {
+        return 0;
+    }
+
+    @Override
+    public <S extends Actor> boolean exists(Example<S> example) {
+        return false;
+    }
+
+    @Override
+    public <S extends Actor, R> R findBy(Example<S> example,
+                                         Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+        return null;
+    }
 }

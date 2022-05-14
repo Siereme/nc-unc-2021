@@ -3,6 +3,7 @@ package com.app.model.director;
 import com.app.model.IEntity;
 
 import com.app.model.film.Film;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,71 +13,23 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/** Director entity
- * @author Vasiliy, Sergey
- * @version 1.0
- * */
-
-@SuppressWarnings("unused")
-@Entity
-@Table(name = "director")
-@NamedQueries({
-        @NamedQuery(name="Director.findAllWithFilm",
-                query = "select distinct d from Director d left join fetch d.films"),
-        @NamedQuery(name="Director.findAllWithFilmByIds",
-                query = "select distinct d from Director d left join fetch d.films where d.id in :ids"),
-        @NamedQuery(name = "Director.findById",
-                query = "SELECT distinct d FROM Director d "
-                        + "left join fetch d.films f "
-                        + "where d.id = :id"
-        )
-})
-
+@Document
 public class Director implements IEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "director_id")
     private int id;
+    @NotBlank(message = "Name cannot be empty")
+    private String year;
+    @NotBlank(message = "Name cannot be empty")
+    private String name;
+    private Set<Integer> filmsIds;
 
     public void setName(String name) {
         this.name = name;
     }
 
-    @NotBlank(message = "Name cannot be empty")
-    @Column(name = "name")
-    private String name;
-
     public void setYear(String year) {
         this.year = year;
-    }
-
-    @NotBlank(message = "Year cannot be empty")
-    @Column(name = "year")
-    private String year;
-
-    @ManyToMany
-    @JoinTable(name = "film_director",
-    joinColumns = @JoinColumn(name = "director_id"),
-            inverseJoinColumns = @JoinColumn(name = "film_id"))
-    private Set<Film> films;
-
-    public Director() {
-        this.name = "";
-        this.year = "";
-        this.films = new HashSet<>();
-    }
-
-    public Director(String name) {
-        this.name = name;
-        this.year = "";
-        this.films = new HashSet<>();
-    }
-
-    public Director(String name, String year) {
-        this.name = name;
-        this.year = year;
-        this.films = new HashSet<>();
     }
 
     public int getId() {
@@ -85,10 +38,6 @@ public class Director implements IEntity {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setFilms(Set<Film> films) {
-        this.films = films;
     }
 
     public String getName() {
@@ -103,10 +52,19 @@ public class Director implements IEntity {
         this.id = id;
     }
 
-    public Set<Film> getFilms() {
-        return films;
+    public Set<Integer> getFilmsIds() {
+        return filmsIds;
     }
 
+    public void setFilmsIds(Set<Integer> filmsIds) {
+        this.filmsIds = filmsIds;
+    }
+
+    public Director(){
+        name = "";
+        year = "";
+        filmsIds = new HashSet<>();
+    }
 
     @Override
     public int hashCode() {
@@ -116,6 +74,7 @@ public class Director implements IEntity {
         return result;
     }
 
+    // TODO
     @Override
     public boolean equals(Object object){
         if (this == object) return true;
@@ -124,9 +83,7 @@ public class Director implements IEntity {
         if(getId() != director.getId()) return false;
         if(!Objects.equals(getName(), director.getName())) return false;
         if(!Objects.equals(getYear(), director.getYear())) return false;
-        List<Integer> filmIds = films.stream().map(Film::getId).collect(Collectors.toList());
-        List<Integer> checkFilmIds = director.getFilms().stream().map(Film::getId).collect(Collectors.toList());
-        return filmIds.containsAll(checkFilmIds) && checkFilmIds.containsAll(filmIds);
+        return false;
     }
 
     @Override

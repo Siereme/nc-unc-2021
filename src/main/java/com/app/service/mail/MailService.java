@@ -94,7 +94,7 @@ public class MailService {
 
     public void addTokenToDB(String token) {
         User user = userRepository.getCurrentUser();
-        ConfirmEmail confirmEmail = new ConfirmEmail(user, token);
+        ConfirmEmail confirmEmail = new ConfirmEmail(user.getUser_id(), token);
         confirmEmailRepository.add(confirmEmail);
     }
 

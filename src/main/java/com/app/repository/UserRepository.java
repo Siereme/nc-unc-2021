@@ -4,6 +4,11 @@ import com.app.model.confirmEmail.ConfirmEmail;
 import com.app.model.film.Film;
 import com.app.model.role.Role;
 import com.app.model.user.User;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.repository.query.FluentQuery;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,67 +26,29 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 @Transactional
 @Repository
 public class UserRepository extends AbstractRepository<User> implements UserDetailsService {
 
-    @Override
-    public List<User> findAll() {
-        return entityManager.createNamedQuery("User.findAllWithRoles", User.class).getResultList();
-    }
 
-    @Override
-    @Transactional
-    public User add(User entity) {
-        try {
-            entityManager.persist(entity);
-            return entity;
-        } catch (EntityExistsException ex) {
-            return null;
-        }
-    }
-
-    @Transactional
-    @Override
-    public void delete(int id) {
-        User user = entityManager.find(User.class, id);
-        entityManager.remove(user);
-    }
-
-    @Transactional
-    @Override
-    public void edit(User entity) {
-        entityManager.persist(entity);
-    }
-
-    @Override
     public List<User> findByName(String username) {
 
-        try {
+/*        try {
             TypedQuery<User> query = entityManager.createQuery(
                     "select distinct u from User u left join fetch u.roles where u.username = :name", User.class);
             query.setParameter("name", username);
             return query.getResultList();
         } catch (NoResultException e) {
             return null;
-        }
+        }*/
+        return null;
     }
 
-    @Override
-    public int size() {
-        BigInteger bigInteger =
-                (BigInteger) entityManager.createNativeQuery("SELECT count(*) FROM user", BigInteger.class)
-                        .getSingleResult();
-        return bigInteger.intValue();
-    }
 
-    @Override
-    public List<User> findByContains(String name) {
-        return entityManager.createQuery(
-                "select distinct u from User u left join fetch u.roles where u.username like :name ESCAPE '!'",
-                User.class).setParameter("name", '%' + name + '%').getResultList();
-    }
+
 
     public boolean saveUser(User user) {
         String userName = user.getUsername();
@@ -92,7 +59,7 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
             String hashedPassword = passwordEncoder.encode(password);
             user.setPassword(hashedPassword);
 
-            add(user);
+            save(user);
             return true;
         }
         return false;
@@ -114,22 +81,12 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
         return !BigInteger.ZERO.equals(count);
     }
 
-    @Override
-    public User findById(int id) {
-        return entityManager.createQuery("select u from User u left join fetch u.roles where u.user_id = :id",
-                User.class).setParameter("id", id).getSingleResult();
-    }
 
     public void addRoleToUser(User user, String Role) {
-        Role role = entityManager.createQuery("select r from Role r where r.name = :name", Role.class)
-                .setParameter("name", Role).getSingleResult();
-        user.getRoles().add(role);
     }
 
     public void addNoConfirmedRoleToUser(User user) {
-        Role role = entityManager.createQuery("select r from Role r where r.name = :name", Role.class)
-                .setParameter("name", "ROLE_NO_CONFIRMED").getSingleResult();
-        user.getRoles().add(role);
+
     }
 
     public String getCurrentUsername() {
@@ -148,23 +105,11 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
     }
 
     public boolean isTokenExist(String token) {
-        User currentUser = getCurrentUser();
-        ConfirmEmail confirmEmail = entityManager.createQuery(
-                        "select CE from ConfirmEmail CE where CE.token = :token and CE.user.user_id = :userId",
-                        ConfirmEmail.class).setParameter("token", token).setParameter("userId", currentUser.getId())
-                .getSingleResult();
-        if (confirmEmail != null) {
-            LocalDateTime now = LocalDateTime.now();
-            return confirmEmail.getEndDate().isAfter(now);
-        }
         return false;
     }
 
     public void removeRoleNoConfirmedFromUser(User user) {
-        Role NO_CONFIRMED_ROLE = entityManager.createQuery("select r from Role r where r.name = :name", Role.class)
-                .setParameter("name", "ROLE_NO_CONFIRMED").getSingleResult();
-        entityManager.createNativeQuery("delete from user_role where user_id = :userId and role_id = :roleId")
-                .setParameter("userId", user.getId()).setParameter("roleId", NO_CONFIRMED_ROLE.getId()).executeUpdate();
+
     }
 
     public int getCountActiveLinks(User user) {
@@ -182,4 +127,124 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
         return countActiveLinks > countLinks;
     }
 
+    @Override
+    public <S extends User> S save(S entity) {
+        return null;
+    }
+
+    @Override
+    public <S extends User> List<S> saveAll(Iterable<S> entities) {
+        return null;
+    }
+
+    @Override
+    public Optional<User> findById(Integer integer) {
+        return Optional.empty();
+    }
+
+    @Override
+    public boolean existsById(Integer integer) {
+        return false;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return null;
+    }
+
+    @Override
+    public Iterable<User> findAllById(Iterable<Integer> integers) {
+        return null;
+    }
+
+    @Override
+    public long count() {
+        return 0;
+    }
+
+    @Override
+    public void deleteById(Integer integer) {
+
+    }
+
+    @Override
+    public void delete(User entity) {
+
+    }
+
+    @Override
+    public void deleteAllById(Iterable<? extends Integer> integers) {
+
+    }
+
+    @Override
+    public void deleteAll(Iterable<? extends User> entities) {
+
+    }
+
+    @Override
+    public void deleteAll() {
+
+    }
+
+    @Override
+    public List<User> findAll(Sort sort) {
+        return null;
+    }
+
+    @Override
+    public Page<User> findAll(Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public <S extends User> S insert(S entity) {
+        return null;
+    }
+
+    @Override
+    public <S extends User> List<S> insert(Iterable<S> entities) {
+        return null;
+    }
+
+    @Override
+    public <S extends User> Optional<S> findOne(Example<S> example) {
+        return Optional.empty();
+    }
+
+    @Override
+    public <S extends User> List<S> findAll(Example<S> example) {
+        return null;
+    }
+
+    @Override
+    public <S extends User> List<S> findAll(Example<S> example, Sort sort) {
+        return null;
+    }
+
+    @Override
+    public <S extends User> Page<S> findAll(Example<S> example, Pageable pageable) {
+        return null;
+    }
+
+    @Override
+    public <S extends User> long count(Example<S> example) {
+        return 0;
+    }
+
+    @Override
+    public <S extends User> boolean exists(Example<S> example) {
+        return false;
+    }
+
+    @Override
+    public <S extends User, R> R findBy(Example<S> example,
+                                        Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+        return null;
+    }
+
+    @Override
+    public User findById(int id) {
+        return null;
+    }
 }

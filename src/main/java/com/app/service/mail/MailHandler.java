@@ -2,7 +2,6 @@ package com.app.service.mail;
 
 import com.app.model.IEntity;
 import com.app.model.emailInfo.NewEmail;
-import com.app.model.user.User;
 import com.app.repository.UserRepository;
 import com.app.service.mail.kafka.KafkaProducer;
 import org.aspectj.lang.annotation.AfterReturning;
@@ -10,9 +9,6 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.LinkedList;
-import java.util.List;
 
 @Aspect
 @Component
@@ -38,7 +34,7 @@ public class MailHandler {
             String type = entity.getClass().getSimpleName();
             String text = entity.toString();
             NewEmail newEmail = new NewEmail(type, text, "null", "team nc-unc-2021");
-            producer.setEmail(newEmail);
+            producer.addEmail(newEmail);
         }
     }
 }

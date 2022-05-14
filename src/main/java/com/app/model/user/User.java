@@ -33,13 +33,8 @@ import java.util.Set;
  * @author Sergey
  * @version 1.0
  * */
-@SuppressWarnings("unused")
+
 @JsonTypeName("visitor")
-@Entity
-@Table(name = "user")
-@NamedQueries({
-        @NamedQuery(name = "User.findAllWithRoles", query = "select distinct u from User u left join fetch u.roles")
-})
 @CheckUserName
 public class User implements IEntity, UserDetails {
 
@@ -48,32 +43,21 @@ public class User implements IEntity, UserDetails {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
     private int user_id;
-
-    @Column(name = "username", unique = true, nullable = false)
     private String username;
-
-    @Column(name = "password")
     private String password;
-
-    @Transient
     private String passwordConfirm;
-
-    @Column(name = "email", unique = true, nullable = false)
     private String email;
 
-    @OneToMany(mappedBy = "user")
-    private Set<ConfirmEmail> confirmEmails = new HashSet<>();
-
-    public Set<ConfirmEmail> getConfirmEmails() {
-        return confirmEmails;
+    public Set<Integer> getConfirmEmailsIds() {
+        return confirmEmailsIds;
     }
 
-    public void setConfirmEmails(Set<ConfirmEmail> confirmEmails) {
-        this.confirmEmails = confirmEmails;
+    public void setConfirmEmailsIds(Set<Integer> confirmEmailsIds) {
+        this.confirmEmailsIds = confirmEmailsIds;
     }
+
+    private Set<Integer> confirmEmailsIds = new HashSet<>();
 
     public String getEmail() {
         return email;

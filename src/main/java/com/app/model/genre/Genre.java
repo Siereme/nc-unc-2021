@@ -2,6 +2,7 @@ package com.app.model.genre;
 
 import com.app.model.IEntity;
 import com.app.model.film.Film;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,49 +11,24 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/** Genre entity
- * @author Vasiliy, Sergey
- * */
-
-@SuppressWarnings("unused")
-@Entity
-@Table(name = "genre")
-@NamedQueries({
-        @NamedQuery(name="Genre.findAllWithFilm",
-        query = "select distinct g from Genre g left join fetch g.films"),
-        @NamedQuery(name="Genre.findAllWithFilmByIds",
-                query = "select distinct g from Genre g left join fetch g.films where g.id in :ids"),
-        @NamedQuery(name = "Genre.findById",
-                query = "SELECT distinct g FROM Genre g "
-                        + "left join fetch g.films f "
-                        + "where g.id = :id"
-        )
-})
-
+@Document
 public class Genre implements IEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "genre_id")
     private int id;
 
-    public Set<Film> getFilms() {
-        return films;
+    public Set<Integer> getFilmsIds() {
+        return filmsIds;
     }
 
-    public void setFilms(Set<Film> films) {
-        this.films = films;
+    public void setFilmsIds(Set<Integer> filmsIds) {
+        this.filmsIds = filmsIds;
     }
 
     @NotBlank(message = "Title cannot be empty")
-    @Column(name = "tittle")
     private String tittle;
 
-    @ManyToMany
-    @JoinTable(name = "film_genre",
-            joinColumns = @JoinColumn(name = "genre_id"),
-            inverseJoinColumns = @JoinColumn(name = "film_id"))
-    private Set<Film> films;
+    private Set<Integer> filmsIds;
 
     public Genre() {
         tittle = "";
@@ -78,6 +54,7 @@ public class Genre implements IEntity {
         this.tittle = tittle;
     }
 
+    // TODO
     @Override
     public boolean equals(Object object) {
         if (this == object) return true;
@@ -85,9 +62,7 @@ public class Genre implements IEntity {
         Genre genre = (Genre) object;
         if(getId() != genre.getId()) return false;
         if(!Objects.equals(getTittle(), genre.getTittle())) return false;
-        List<Integer> filmIds = films.stream().map(Film::getId).collect(Collectors.toList());
-        List<Integer> checkFilmIds = genre.getFilms().stream().map(Film::getId).collect(Collectors.toList());
-        return filmIds.containsAll(checkFilmIds) && checkFilmIds.containsAll(filmIds);
+        return true;
     }
 
     @Override

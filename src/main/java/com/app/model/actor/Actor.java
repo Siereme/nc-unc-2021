@@ -2,102 +2,64 @@ package com.app.model.actor;
 
 import com.app.model.IEntity;
 import com.app.model.film.Film;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/** Actor entity
- * @author Vasiliy, Sergey
- * @version 1.0
- * */
-@SuppressWarnings("ALL")
-@Entity
-@Table(name = "actor")
-@NamedQueries({
-        @NamedQuery(name="Actor.findAllWithFilm",
-                query = "select distinct a from Actor a left join fetch a.films"),
-        @NamedQuery(name="Actor.findAllWithFilmByIds",
-                        query = "select distinct a from Actor a left join fetch a.films where a.id in :ids"),
-        @NamedQuery(name = "Actor.findById",
-                query = "SELECT distinct a FROM Actor a "
-                        + "left join fetch a.films f "
-                        + "where a.id = :id"
-        )
-    }
-)
-public class Actor implements IEntity {
+@Document
+public class Actor {
 
-    @SuppressWarnings("unused")
+    @Id
+    private int id;
+    @NotBlank(message = "Name cannot be empty")
+    private String name;
+    @NotBlank(message = "Name cannot be empty")
+    private String year;
+    private Set<Integer> filmsIds;
+
+    public Set<Integer> getFilmsIds() {
+        return filmsIds;
+    }
+
+    public void setFilmsIds(Set<Integer> filmsIds) {
+        this.filmsIds = filmsIds;
+    }
+
+    public int getId() {
+        return id;
+    }
+
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setFilms(Set<Film> films) {
-        this.films = films;
+    public String getName() {
+        return name;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "actor_id")
-    private int id;
-
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "year")
-    private String year;
-
-    @ManyToMany
-    @JoinTable(name = "film_actor",
-            joinColumns = @JoinColumn(name = "actor_id"),
-            inverseJoinColumns = @JoinColumn(name = "film_id"))
-    private Set<Film> films;
-
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getYear() {
+        return year;
     }
 
     public void setYear(String year) {
         this.year = year;
     }
 
-    public Actor() {
-        this.name = "";
-        this.year = "";
+    public Actor(){
+        name = "";
+        year = "";
+        filmsIds = new HashSet<>();
     }
-
-    public Actor(String name) {
-        this.name = name;
-        this.year = "";
-    }
-
-    public Actor(String name, String year) {
-        this.name = name;
-        this.year = year;
-        this.films = new HashSet<>();
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public String getYear() {
-        return this.year;
-    }
-
-    public Set<Film> getFilms(){
-        return films;
-    }
-
 
     @Override
     public int hashCode() {
@@ -107,6 +69,8 @@ public class Actor implements IEntity {
         return result;
     }
 
+
+    // TODO
     @Override
     public boolean equals(Object object){
         if (this == object) return true;
@@ -115,9 +79,7 @@ public class Actor implements IEntity {
         if(getId() != actor.getId()) return false;
         if(!Objects.equals(getName(), actor.getName())) return false;
         if(!Objects.equals(getYear(), actor.getYear())) return false;
-        List<Integer> filmIds = films.stream().map(Film::getId).collect(Collectors.toList());
-        List<Integer> checkFilmIds = actor.getFilms().stream().map(Film::getId).collect(Collectors.toList());
-        return filmIds.containsAll(checkFilmIds) && checkFilmIds.containsAll(filmIds);
+        return false;
     }
 
     @Override

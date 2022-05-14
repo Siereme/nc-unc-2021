@@ -2,14 +2,13 @@ version: "2.1"
 
 services:
   db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
+    image: mongo
+    container_name: mongodb
     ports:
-      - "3306:3306"
-
+      - "27017:27017"
     environment:
-      MYSQL_ROOT_PASSWORD: example
+     MONGO_INITDB_ROOT_USERNAME: user
+     MONGO_INITDB_ROOT_PASSWORD: 85289768
   zookeeper:
     image: wurstmeister/zookeeper
     ports:

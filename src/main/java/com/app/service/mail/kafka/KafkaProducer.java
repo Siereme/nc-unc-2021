@@ -29,25 +29,29 @@ public class KafkaProducer {
 
     @Scheduled(cron = "0 * * * * *")
     public void sendMessage() throws InterruptedException {
-        NewEmail email = queue.take();
-        ListenableFuture<SendResult<String, NewEmail>> future = kafkaTemplate.send(topicName, email);
 
-        future.addCallback(new ListenableFutureCallback<SendResult<String, NewEmail>>() {
+        if (queue.size() != 0) {
+            NewEmail email = queue.take();
+            ListenableFuture<SendResult<String, NewEmail>> future = kafkaTemplate.send(topicName, email);
 
-            @Override
-            public void onSuccess(SendResult<String, NewEmail> result) {
-                logger.info("Sent message=[" + email + "] with offset=[" + result.getRecordMetadata().offset() + "]");
-            }
+            future.addCallback(new ListenableFutureCallback<SendResult<String, NewEmail>>() {
 
-            @Override
-            public void onFailure(Throwable ex) {
-                logger.warn("Unable to send message=[" + email + "] due to : " + ex.getMessage());
-            }
-        });
+                @Override
+                public void onSuccess(SendResult<String, NewEmail> result) {
+                    logger.info(
+                            "Sent message=[" + email + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+                }
+
+                @Override
+                public void onFailure(Throwable ex) {
+                    logger.warn("Unable to send message=[" + email + "] due to : " + ex.getMessage());
+                }
+            });
+        }
+
     }
 
-
-    public void setEmail(NewEmail email){
+    public void addEmail(NewEmail email) {
         queue.add(email);
     }
 }

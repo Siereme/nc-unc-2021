@@ -1,5 +1,6 @@
 package com.app.model.role;
 
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Column;
@@ -9,9 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@SuppressWarnings("ALL")
-@Entity
-@Table(name = "role")
+@Document
 public class Role implements GrantedAuthority {
 
     public Role(int id, String name) {
@@ -20,9 +19,8 @@ public class Role implements GrantedAuthority {
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
     private int id;
+    private String name;
 
     public Role() {
         name = "";
@@ -44,9 +42,6 @@ public class Role implements GrantedAuthority {
     public void setName(String name) {
         this.name = name;
     }
-
-    @Column(name = "name")
-    private String name;
 
     @Override
     public String getAuthority() {

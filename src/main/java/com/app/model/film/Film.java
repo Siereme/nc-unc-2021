@@ -5,6 +5,7 @@ import com.app.model.actor.Actor;
 import com.app.model.director.Director;
 import com.app.model.genre.Genre;
 import com.fasterxml.jackson.annotation.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -13,51 +14,21 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-/** Film entity
- * @author Vasiliy, Sergey
- * @version 1.0
- * */
-
-@SuppressWarnings("unused")
-@Entity
-@Table(name = "film")
-@NamedQueries({
-        @NamedQuery(name = "Film.findAllWithAll",
-        query = "SELECT distinct f from Film f "
-                + "left join fetch f.actors a "
-                + "left join fetch f.directors d "
-                + "left join fetch f.genres g"
-        ),
-        @NamedQuery(name = "Film.findById",
-        query = "SELECT distinct f FROM Film f "
-                + "left join fetch f.actors a "
-                + "left join fetch f.directors d "
-                + "left join fetch f.genres g "
-                + "where f.id = :id"
-        ),
-        @NamedQuery(name = "Film.findAllWithAllByIds",
-                query = "SELECT distinct f from Film f "
-                        + "left join fetch f.actors a "
-                        + "left join fetch f.directors d "
-                        + "left join fetch f.genres g "
-                        + "where f.id in :ids"
-        )
-})
+@Document
 public class Film implements IEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "film_id")
     private int id;
-
-    @NotNull(message = "Tittle cannot be empty")
-    @Column(name = "tittle")
+    @NotBlank(message = "Name cannot be empty")
     private String tittle;
-
-    @NotNull(message = "Date cannot be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    @Column(name = "date")
     private LocalDate date;
+    @JsonIgnoreProperties(value = "films", allowSetters = true)
+    private Set<Integer> actorsIds;
+    @JsonIgnoreProperties(value = "films", allowSetters = true)
+    private Set<Integer> directorsIds;
+    @JsonIgnoreProperties(value = "films", allowSetters = true)
+    private Set<Integer> genresIds;
 
     public void setId(int id) {
         this.id = id;
@@ -78,51 +49,6 @@ public class Film implements IEntity {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-
-    public Set<Actor> getActors() {
-        return actors;
-    }
-
-    public void setActors(Set<Actor> actors) {
-        this.actors = actors;
-    }
-
-    public Set<Director> getDirectors() {
-        return directors;
-    }
-
-    public void setDirectors(Set<Director> directors) {
-        this.directors = directors;
-    }
-
-    public Set<Genre> getGenres() {
-        return genres;
-    }
-
-    public void setGenres(Set<Genre> genres) {
-        this.genres = genres;
-    }
-
-    @JsonIgnoreProperties(value = "films", allowSetters = true)
-    @ManyToMany
-    @JoinTable(name = "film_actor",
-            joinColumns = @JoinColumn(name = "film_id"),
-            inverseJoinColumns = @JoinColumn(name = "actor_id"))
-    private Set<Actor> actors;
-
-    @JsonIgnoreProperties(value = "films", allowSetters = true)
-    @ManyToMany
-    @JoinTable(name = "film_director",
-            joinColumns = @JoinColumn(name = "film_id"),
-            inverseJoinColumns = @JoinColumn(name = "director_id"))
-    private Set<Director> directors;
-
-    @JsonIgnoreProperties(value = "films", allowSetters = true)
-    @ManyToMany
-    @JoinTable(name = "film_genre",
-            joinColumns = @JoinColumn(name = "film_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    private Set<Genre> genres;
 
     public Film(){
 
@@ -147,6 +73,31 @@ public class Film implements IEntity {
         return result;
     }
 
+    public Set<Integer> getActorsIds() {
+        return actorsIds;
+    }
+
+    public void setActorsIds(Set<Integer> actorsIds) {
+        this.actorsIds = actorsIds;
+    }
+
+    public Set<Integer> getDirectorsIds() {
+        return directorsIds;
+    }
+
+    public void setDirectorsIds(Set<Integer> directorsIds) {
+        this.directorsIds = directorsIds;
+    }
+
+    public Set<Integer> getGenresIds() {
+        return genresIds;
+    }
+
+    public void setGenresIds(Set<Integer> genresIds) {
+        this.genresIds = genresIds;
+    }
+
+    // TODO
     @Override
     public boolean equals(Object object){
         if (this == object) return true;
@@ -155,15 +106,7 @@ public class Film implements IEntity {
         if(getId() != film.getId()) return false;
         if(getDate().compareTo(film.getDate()) != 0) return false;
         if(!Objects.equals(getTittle(), film.getTittle())) return false;
-        List<Integer> genreIds = genres.stream().map(Genre::getId).collect(Collectors.toList());
-        List<Integer> checkGenreIds = film.getGenres().stream().map(Genre::getId).collect(Collectors.toList());
-        if(!genreIds.containsAll(checkGenreIds) || !checkGenreIds.containsAll(genreIds)) return false;
-        List<Integer> actorIds = actors.stream().map(Actor::getId).collect(Collectors.toList());
-        List<Integer> checkActorIds = film.getActors().stream().map(Actor::getId).collect(Collectors.toList());
-        if(!actorIds.containsAll(checkActorIds) || !checkActorIds.containsAll(actorIds)) return false;
-        List<Integer> directorIds = directors.stream().map(Director::getId).collect(Collectors.toList());
-        List<Integer> checkDirectorIds = film.getDirectors().stream().map(Director::getId).collect(Collectors.toList());
-        return directorIds.containsAll(checkDirectorIds) && checkDirectorIds.containsAll(directorIds);
+        return true;
     }
 
     @Override

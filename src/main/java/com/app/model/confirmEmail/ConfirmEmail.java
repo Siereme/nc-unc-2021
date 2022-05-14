@@ -1,6 +1,7 @@
 package com.app.model.confirmEmail;
 
 import com.app.model.user.User;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,13 +15,10 @@ import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
-@Entity
-@Table(name = "confirm_tokens")
+@Document
 public class ConfirmEmail {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
     private int id;
 
     public int getId() {
@@ -31,19 +29,8 @@ public class ConfirmEmail {
         this.id = id;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Integer userId;
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    @Column(name = "token")
     private String token;
 
     public String getToken() {
@@ -65,8 +52,8 @@ public class ConfirmEmail {
     @Column(name = "date_end")
     private LocalDateTime endDate;
 
-    public ConfirmEmail(User user, String token) {
-        this.user = user;
+    public ConfirmEmail(Integer userId, String token) {
+        this.userId = userId;
         this.token = token;
         endDate = LocalDateTime.now().plusDays(1);
     }
