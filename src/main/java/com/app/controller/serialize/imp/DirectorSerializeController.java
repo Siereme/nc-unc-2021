@@ -48,13 +48,14 @@ public class DirectorSerializeController extends AbstractSerializeController<Dir
 
         List<Film> deserializeFilms = new LinkedList<>();
 
-        directorList.forEach(film -> deserializeFilms.addAll(film.getFilms()));
+//        directorList.forEach(film -> deserializeFilms.addAll(film.getFilms()));
 
         List<Integer> filmIds = getEntityIds(deserializeFilms);
-        List<Film> checkFilms = filmsRepository.find(filmIds);
+//        List<Film> checkFilms = filmsRepository.find(filmIds);
 
-        List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
+//        List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
 
-        return new LinkedList<>(errorFilmsMessages);
+//        return new LinkedList<>(errorFilmsMessages);
+        return null;
     }
 }

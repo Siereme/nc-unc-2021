@@ -23,17 +23,17 @@ public class KafkaConsumer {
     @Autowired
     private UserRepository userRepository;
 
-    private static final Logger logger = Logger.getLogger(KafkaConsumer.class);
-
-    @KafkaListener(topics = "email", groupId = "group-id")
-    public void consume(NewEmail email) throws IOException, MessagingException {
-        List<User> userList = userRepository.findAll();
-        for (User user : userList) {
-            String to = user.getEmail();
-            String subject = "Added new " + email.getType().toLowerCase(Locale.ROOT) + "!";
-            mailService.sendNewUpdatedMessage(to, subject, email);
-        }
-        logger.info(String.format("#### -> Consumed message -> %s", email));
-    }
+//    private static final Logger logger = Logger.getLogger(KafkaConsumer.class);
+//
+//    @KafkaListener(topics = "email", groupId = "group-id")
+//    public void consume(NewEmail email) throws IOException, MessagingException {
+//        List<User> userList = userRepository.findAll();
+//        for (User user : userList) {
+//            String to = user.getEmail();
+//            String subject = "Added new " + email.getType().toLowerCase(Locale.ROOT) + "!";
+//            mailService.sendNewUpdatedMessage(to, subject, email);
+//        }
+//        logger.info(String.format("#### -> Consumed message -> %s", email));
+//    }
 
 }

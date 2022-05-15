@@ -35,9 +35,9 @@ public class ActorController {
     private void getActorsAndFilmsList(Collection<Actor> actorCollection, ModelMap model) {
         model.addAttribute(ACTORS, actorCollection);
         Collection<Collection<Film>> listListFilms = new LinkedList<>();
-        for (Actor actor : actorCollection) {
-            listListFilms.add(actor.getFilms());
-        }
+//        for (Actor actor : actorCollection) {
+//            listListFilms.add(actor.getFilms());
+//        }
         model.addAttribute(FILMS, listListFilms);
         model.addAttribute(JSON, "../serialize/actors");
         logger.info("show all actors");
@@ -76,14 +76,14 @@ public class ActorController {
 
     @PostMapping(value = "/handle/delete/{id}")
     public ModelAndView delete(@PathVariable @NotNull int id) {
-        repository.delete(id);
+//        repository.delete(id);
         return new ModelAndView("redirect:/actors/all");
     }
 
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
-        Collection<Actor> actorList = repository.findByContains(tittle);
-        getActorsAndFilmsList(actorList, model);
+//        Collection<Actor> actorList = repository.findByContains(tittle);
+//        getActorsAndFilmsList(actorList, model);
         return new ModelAndView(ACTORS, model);
     }
 
@@ -99,12 +99,12 @@ public class ActorController {
         if (Objects.equals(commandType, "page-edit")) {
             int id = actor.getId();
             actor = repository.findById(id);
-            Collection<Film> actorFilmList = actor.getFilms();
+//            Collection<Film> actorFilmList = actor.getFilms();
             // we delete entities that are both there and there in films
             // ( удаляем из списка всех фильмов те, в которых актер участвовал)
-            films.removeIf(film -> actorFilmList.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
+//            films.removeIf(film -> actorFilmList.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
             model.addAttribute(FILMS, films);
-            model.addAttribute(FILM_LIST, actorFilmList);
+//            model.addAttribute(FILM_LIST, actorFilmList);
             model.addAttribute(MODAL_TITLE, "Edit");
             model.addAttribute(EVENT_TYPE, "handle/edit");
             model.addAttribute("actor", actor);
@@ -118,7 +118,7 @@ public class ActorController {
             map.addAttribute(RESULT, result);
             return renderHandlePage(actor, map, "page-add");
         }
-        repository.add(actor);
+//        repository.add(actor);
         return "redirect:/actors/all";
     }
 
@@ -128,7 +128,7 @@ public class ActorController {
             map.addAttribute(RESULT, result);
             return renderHandlePage(actor, map, "page-edit");
         }
-        repository.edit(actor);
+//        repository.edit(actor);
         return "redirect:/actors/all";
     }
 

@@ -64,16 +64,16 @@ public class GenreController {
 
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
-        Collection<Genre> genres = repository.findByContains(tittle);
-        getGenresAndFilms(model, genres);
+//        Collection<Genre> genres = repository.findByContains(tittle);
+//        getGenresAndFilms(model, genres);
         return new ModelAndView(GENRES, model);
     }
 
     private void getGenresAndFilms(ModelMap model, Collection<Genre> genres) {
         Collection<Collection<Film>> films = new LinkedList<>();
-        for (Genre genre : genres) {
-            films.add(genre.getFilms());
-        }
+//        for (Genre genre : genres) {
+//            films.add(genre.getFilms());
+//        }
         model.addAttribute(GENRES, genres);
         model.addAttribute(FILMS, films);
         model.addAttribute(JSON, "../serialize/genres");
@@ -92,11 +92,11 @@ public class GenreController {
         if (Objects.equals(commandType, "page-edit")) {
             int id = genre.getId();
             genre = repository.findById(id);
-            Collection<Film> filmGenreList = genre.getFilms();
+//            Collection<Film> filmGenreList = genre.getFilms();
 
-            filmList.removeIf(film -> filmGenreList.stream().anyMatch(filmGenre -> filmGenre.getId() == film.getId()));
-
-            model.addAttribute(FILM_LIST, filmGenreList);
+//            filmList.removeIf(film -> filmGenreList.stream().anyMatch(filmGenre -> filmGenre.getId() == film.getId()));
+//
+//            model.addAttribute(FILM_LIST, filmGenreList);
             model.addAttribute(FILMS, filmList);
             model.addAttribute(MODAL_TITLE, "Edit");
             model.addAttribute(EVENT_TYPE, "edit");
@@ -107,7 +107,7 @@ public class GenreController {
 
     @PostMapping(value = "/handle/delete/{id}")
     public ModelAndView delete(@Valid @PathVariable int id) {
-        repository.delete(id);
+//        repository.delete(id);
         return new ModelAndView("redirect:/genres/all");
     }
 
@@ -117,7 +117,7 @@ public class GenreController {
             map.addAttribute(RESULT, result);
             return renderHandlePage(genre, map, "page-add");
         }
-        repository.add(genre);
+//        repository.add(genre);
         return "redirect:/genres/all";
     }
 
@@ -127,7 +127,7 @@ public class GenreController {
             map.addAttribute(RESULT, result);
             return renderHandlePage(genre, map, "page-edit");
         }
-        repository.edit(genre);
+//        repository.edit(genre);
         return "redirect:/genres/all";
     }
 

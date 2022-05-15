@@ -55,30 +55,31 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
         List<Actor> deserializeActors = new LinkedList<>();
         List<Director> deserializeDirectors = new LinkedList<>();
 
-        filmList.forEach(film -> {
-            deserializeGenres.addAll(film.getGenres());
-            deserializeActors.addAll(film.getActors());
-            deserializeDirectors.addAll(film.getDirectors());
-        });
+//        filmList.forEach(film -> {
+//            deserializeGenres.addAll(film.getGenres());
+//            deserializeActors.addAll(film.getActors());
+//            deserializeDirectors.addAll(film.getDirectors());
+//        });
+//
+//        List<Integer> genreIds = getEntityIds(deserializeGenres);
+//        List<Genre> checkGenres = genresRepository.find(genreIds);
+//
+//        List<Integer> actorIds = getEntityIds(deserializeActors);
+//        List<Actor> checkActors = actorsRepository.find(actorIds);
+//        List<Integer> directorIds = getEntityIds(deserializeDirectors);
+//        List<Director> checkDirectors = directorsRepository.find(directorIds);
 
-        List<Integer> genreIds = getEntityIds(deserializeGenres);
-        List<Genre> checkGenres = genresRepository.find(genreIds);
-
-        List<Integer> actorIds = getEntityIds(deserializeActors);
-        List<Actor> checkActors = actorsRepository.find(actorIds);
-        List<Integer> directorIds = getEntityIds(deserializeDirectors);
-        List<Director> checkDirectors = directorsRepository.find(directorIds);
-
-        List<String> errorGenresMessages = getErrorMessages(genreIds, deserializeGenres, checkGenres);
-        List<String> errors = new LinkedList<>(errorGenresMessages);
-
-        List<String> errorActorsMessages = getErrorMessages(actorIds, deserializeActors, checkActors);
-        errors.addAll(errorActorsMessages);
-
-        List<String> errorDirectorsMessages = getErrorMessages(directorIds, deserializeDirectors, checkDirectors);
-        errors.addAll(errorDirectorsMessages);
-
-        return errors;
+//        List<String> errorGenresMessages = getErrorMessages(genreIds, deserializeGenres, checkGenres);
+//        List<String> errors = new LinkedList<>(errorGenresMessages);
+//
+//        List<String> errorActorsMessages = getErrorMessages(actorIds, deserializeActors, checkActors);
+//        errors.addAll(errorActorsMessages);
+//
+//        List<String> errorDirectorsMessages = getErrorMessages(directorIds, deserializeDirectors, checkDirectors);
+//        errors.addAll(errorDirectorsMessages);
+//
+//        return errors;
+        return null;
     }
 
 }

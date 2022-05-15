@@ -106,7 +106,7 @@ public abstract class AbstractSerializeController<T extends IEntity> {
             List<String> addMassages = getMessages(updateEntityList, "was updated");
             List<String> successMessages = new ArrayList<>(addMassages);
 
-            updateEntityList.forEach(getRepository()::edit);
+//            updateEntityList.forEach(getRepository()::edit);
 
             attributes.addFlashAttribute("success", successMessages);
             return new ModelAndView(getRedirectPath() + "/success");

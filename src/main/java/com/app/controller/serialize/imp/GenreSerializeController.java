@@ -49,13 +49,14 @@ public class GenreSerializeController extends AbstractSerializeController<Genre>
 
         List<Film> deserializeFilms = new LinkedList<>();
 
-        genreList.forEach(film -> deserializeFilms.addAll(film.getFilms()));
-
-        List<Integer> filmIds = getEntityIds(deserializeFilms);
-        List<Film> checkFilms = filmsRepository.find(filmIds);
-
-        List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
-
-        return new LinkedList<>(errorFilmsMessages);
+//        genreList.forEach(film -> deserializeFilms.addAll(film.getFilms()));
+//
+//        List<Integer> filmIds = getEntityIds(deserializeFilms);
+//        List<Film> checkFilms = filmsRepository.find(filmIds);
+//
+//        List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
+//
+//        return new LinkedList<>(errorFilmsMessages);
+        return null;
     }
 }

@@ -134,12 +134,13 @@ public class ConfirmEmailRepository extends AbstractRepository<ConfirmEmail>{
     }
 
     public ConfirmEmail add(ConfirmEmail confirmEmail){
-        try {
-            entityManager.persist(confirmEmail);
-            return confirmEmail;
-        }catch (EntityExistsException ex){
-            return null;
-        }
+//        try {
+//            entityManager.persist(confirmEmail);
+//            return confirmEmail;
+//        }catch (EntityExistsException ex){
+//            return null;
+//        }
+        return null;
     }
 
     @Override

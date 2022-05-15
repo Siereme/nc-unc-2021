@@ -50,14 +50,14 @@ public class AdminController {
 
     @PostMapping(value = "/handle/delete/{id}")
     public ModelAndView delete(@PathVariable @NotNull int id) {
-        repository.delete(id);
+//        repository.delete(id);
         return new ModelAndView("redirect:/admin/all");
     }
 
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
-        Collection<User> userList = repository.findByContains(tittle);
-        model.addAttribute("allUsers", userList);
+//        Collection<User> userList = repository.findByContains(tittle);
+//        model.addAttribute("allUsers", userList);
         return new ModelAndView("admin", model);
     }
 
@@ -105,7 +105,7 @@ public class AdminController {
             map.addAttribute("result", result);
             return renderHandlePage(user, map, "page-edit");
         }
-        repository.edit(user);
+//        repository.edit(user);
         return "redirect:/admin/all";
     }
 

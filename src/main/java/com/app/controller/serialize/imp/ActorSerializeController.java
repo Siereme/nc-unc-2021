@@ -50,14 +50,16 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
 
         List<Film> deserializeFilms = new LinkedList<>();
 
-        actorList.forEach(film -> deserializeFilms.addAll(film.getFilms()));
+//        actorList.forEach(film -> deserializeFilms.addAll(film.getFilms()));
 
         List<Integer> filmIds = getEntityIds(deserializeFilms);
-        List<Film> checkFilms = filmsRepository.find(filmIds);
+//        List<Film> checkFilms = filmsRepository.find(filmIds);
 
-        List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
+//        List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
 
-        return new LinkedList<>(errorFilmsMessages);
+//        return new LinkedList<>(errorFilmsMessages);
+        return null;
     }
+
 
 }

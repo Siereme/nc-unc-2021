@@ -43,11 +43,11 @@ public class FilmController implements WebMvcConfigurer {
         Collection<Collection<Genre>> genres = new LinkedList<>();
         Collection<Collection<Director>> directors = new LinkedList<>();
         Collection<Collection<Actor>> actors = new LinkedList<>();
-        for (Film film : films) {
-            genres.add(film.getGenres());
-            directors.add(film.getDirectors());
-            actors.add(film.getActors());
-        }
+//        for (Film film : films) {
+//            genres.add(film.getGenres());
+//            directors.add(film.getDirectors());
+//            actors.add(film.getActors());
+//        }
         model.addAttribute(FILMS, films);
         model.addAttribute(GENRES, genres);
         model.addAttribute(ACTORS, actors);
@@ -81,25 +81,25 @@ public class FilmController implements WebMvcConfigurer {
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam("tittle") @NotBlank String tittle, ModelMap model)
             throws ConstraintViolationException {
-        Collection<Film> findFilm = repository.findByContains(tittle);
-        if (findFilm.size() > 0) {
-            Collection<Collection<Genre>> genres = new LinkedList<>();
-            Collection<Collection<Actor>> actors = new LinkedList<>();
-            Collection<Collection<Director>> directors = new LinkedList<>();
-            for (Film film : findFilm) {
-                genres.add(film.getGenres());
-                actors.add(film.getActors());
-                directors.add(film.getDirectors());
-            }
-            model.addAttribute(FILMS, findFilm);
-            model.addAttribute(GENRES, genres);
-            model.addAttribute(ACTORS, actors);
-            model.addAttribute(DIRECTORS, directors);
-
-            model.addAttribute(JSON, "../serialize/films");
-            return new ModelAndView(FILMS, model);
-        }
-        model.addAttribute(FILMS, findFilm);
+//        Collection<Film> findFilm = repository.findByContains(tittle);
+//        if (findFilm.size() > 0) {
+//            Collection<Collection<Genre>> genres = new LinkedList<>();
+//            Collection<Collection<Actor>> actors = new LinkedList<>();
+//            Collection<Collection<Director>> directors = new LinkedList<>();
+//            for (Film film : findFilm) {
+//                genres.add(film.getGenres());
+//                actors.add(film.getActors());
+//                directors.add(film.getDirectors());
+//            }
+//            model.addAttribute(FILMS, findFilm);
+//            model.addAttribute(GENRES, genres);
+//            model.addAttribute(ACTORS, actors);
+//            model.addAttribute(DIRECTORS, directors);
+//
+//            model.addAttribute(JSON, "../serialize/films");
+//            return new ModelAndView(FILMS, model);
+//        }
+//        model.addAttribute(FILMS, findFilm);
         return new ModelAndView("films", model);
     }
 
@@ -121,18 +121,18 @@ public class FilmController implements WebMvcConfigurer {
 
             int id = film.getId();
             film = repository.findById(id);
-            Collection<Genre> genreList = film.getGenres();
-            Collection<Actor> actorList = film.getActors();
-            Collection<Director> directorList = film.getDirectors();
+//            Collection<Genre> genreList = film.getGenres();
+//            Collection<Actor> actorList = film.getActors();
+//            Collection<Director> directorList = film.getDirectors();
 
-            genres.removeIf(genre -> genreList.stream().anyMatch(filmGenre -> filmGenre.getId() == genre.getId()));
-            actors.removeIf(actor -> actorList.stream().anyMatch(filmActor -> filmActor.getId() == actor.getId()));
-            directors.removeIf(director -> directorList.stream()
-                    .anyMatch(filmDirector -> filmDirector.getId() == director.getId()));
-
-            model.addAttribute(GENRE_LIST, genreList);
-            model.addAttribute(ACTOR_LIST, actorList);
-            model.addAttribute(DIRECTOR_LIST, directorList);
+//            genres.removeIf(genre -> genreList.stream().anyMatch(filmGenre -> filmGenre.getId() == genre.getId()));
+//            actors.removeIf(actor -> actorList.stream().anyMatch(filmActor -> filmActor.getId() == actor.getId()));
+//            directors.removeIf(director -> directorList.stream()
+//                    .anyMatch(filmDirector -> filmDirector.getId() == director.getId()));
+//
+//            model.addAttribute(GENRE_LIST, genreList);
+//            model.addAttribute(ACTOR_LIST, actorList);
+//            model.addAttribute(DIRECTOR_LIST, directorList);
             model.addAttribute(GENRES, genres);
             model.addAttribute(ACTORS, actors);
             model.addAttribute(DIRECTORS, directors);
@@ -145,7 +145,7 @@ public class FilmController implements WebMvcConfigurer {
 
     @PostMapping(value = "/handle/delete/{id}")
     public ModelAndView delete(@PathVariable("id") @NotNull int id) {
-        repository.delete(id);
+//        repository.delete(id);
         return new ModelAndView("redirect:/films/all");
     }
 
@@ -155,7 +155,7 @@ public class FilmController implements WebMvcConfigurer {
             map.addAttribute(RESULT, result);
             return renderHandlePage(film, map, "page-add");
         }
-        repository.add(film);
+//        repository.add(film);
         return "redirect:/films/all";
     }
 
@@ -165,7 +165,7 @@ public class FilmController implements WebMvcConfigurer {
             map.addAttribute(RESULT, result);
             return renderHandlePage(film, map, "page-edit");
         }
-        repository.edit(film);
+//        repository.edit(film);
         return "redirect:/films/all";
     }
 

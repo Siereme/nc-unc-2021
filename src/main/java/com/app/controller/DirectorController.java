@@ -42,9 +42,9 @@ public class DirectorController {
     private void getDirectorsAndFilmsList(Collection<Director> directorCollection, ModelMap model) {
         model.addAttribute(DIRECTORS, directorCollection);
         Collection<Collection<Film>> listFilms = new LinkedList<>();
-        for (Director director : directorCollection) {
-            listFilms.add(director.getFilms());
-        }
+//        for (Director director : directorCollection) {
+//            listFilms.add(director.getFilms());
+//        }
         model.addAttribute(FILMS, listFilms);
         model.addAttribute(JSON, "../serialize/directors");
         logger.info("show all directors");
@@ -77,14 +77,14 @@ public class DirectorController {
 
     @PostMapping(value = "/handle/delete/{id}")
     public ModelAndView delete(@PathVariable @NotNull int id) {
-        repository.delete(id);
+//        repository.delete(id);
         return new ModelAndView("redirect:/directors/all");
     }
 
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
-        Collection<Director> directorList = repository.findByContains(tittle);
-        getDirectorsAndFilmsList(directorList, model);
+//        Collection<Director> directorList = repository.findByContains(tittle);
+//        getDirectorsAndFilmsList(directorList, model);
         return new ModelAndView(DIRECTORS, model);
     }
 
@@ -100,10 +100,10 @@ public class DirectorController {
         if (Objects.equals(commandType, "page-edit")) {
             int id = director.getId();
             director = repository.findById(id);
-            Collection<Film> filmsByDirectorId = director.getFilms();
-            films.removeIf(film -> filmsByDirectorId.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
+//            Collection<Film> filmsByDirectorId = director.getFilms();
+//            films.removeIf(film -> filmsByDirectorId.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
             model.addAttribute(FILMS, films);
-            model.addAttribute(FILM_LIST, filmsByDirectorId);
+//            model.addAttribute(FILM_LIST, filmsByDirectorId);
             model.addAttribute(MODAL_TITLE, "Edit");
             model.addAttribute(EVENT_TYPE, "handle/edit");
             model.addAttribute("director", director);
@@ -117,7 +117,7 @@ public class DirectorController {
             map.addAttribute(RESULT, result);
             return renderHandlePage(director, map, "page-add");
         }
-        repository.add(director);
+//        repository.add(director);
         return "redirect:/directors/all";
     }
 
@@ -127,7 +127,7 @@ public class DirectorController {
             map.addAttribute(RESULT, result);
             return renderHandlePage(director, map, "page-edit");
         }
-        repository.edit(director);
+//        repository.edit(director);
         return "redirect:/directors/all";
     }
 

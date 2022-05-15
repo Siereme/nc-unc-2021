@@ -75,10 +75,11 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
     }
 
     public boolean isUserExist(String userName) {
-        BigInteger count =
-                (BigInteger) entityManager.createNativeQuery("Select count(*) from user where username = :username")
-                        .setParameter("username", userName).getSingleResult();
-        return !BigInteger.ZERO.equals(count);
+//        BigInteger count =
+//                (BigInteger) entityManager.createNativeQuery("Select count(*) from user where username = :username")
+//                        .setParameter("username", userName).getSingleResult();
+//        return !BigInteger.ZERO.equals(count);
+        return true;
     }
 
 
@@ -116,10 +117,11 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
         int userId = user.getUser_id();
         LocalDateTime now = LocalDateTime.now();
         // TODO добавить сравнение даты
-        BigInteger count = (BigInteger) entityManager.createNativeQuery(
-                        "select count(*) from confirm_tokens where user_id = :user_id")
-                .setParameter("user_id", userId).getSingleResult();
-        return count.intValue();
+//        BigInteger count = (BigInteger) entityManager.createNativeQuery(
+//                        "select count(*) from confirm_tokens where user_id = :user_id")
+//                .setParameter("user_id", userId).getSingleResult();
+//        return count.intValue();
+        return 0;
     }
 
     public boolean isLinksEnough(User user, int countLinks) {

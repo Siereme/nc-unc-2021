@@ -1,19 +1,16 @@
 package com.app.model.actor;
 
 import com.app.model.IEntity;
-import com.app.model.film.Film;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.persistence.*;
+import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Document
-public class Actor {
+public class Actor implements IEntity {
 
     @Id
     private int id;
