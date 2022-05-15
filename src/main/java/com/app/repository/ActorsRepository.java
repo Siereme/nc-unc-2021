@@ -23,7 +23,7 @@ public class ActorsRepository extends AbstractRepository<Actor> {
 
     @Override
     public Actor findById(int id) {
-        return null;
+        return mongoTemplate.findById(id, Actor.class);
     }
 
     @Override
