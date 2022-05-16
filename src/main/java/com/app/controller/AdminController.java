@@ -4,6 +4,7 @@ import com.app.model.role.Role;
 import com.app.model.user.User;
 import com.app.repository.RoleRepository;
 import com.app.repository.UserRepository;
+import com.app.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,6 +42,9 @@ public class AdminController {
     @Autowired
     private UserRepository repository;
 
+    @Autowired
+    private UserService userService;
+
     @SuppressWarnings("SameReturnValue")
     @GetMapping("/all")
     public String userList(Model model) {
@@ -50,20 +54,20 @@ public class AdminController {
 
     @PostMapping(value = "/handle/delete/{id}")
     public ModelAndView delete(@PathVariable @NotNull int id) {
-//        repository.delete(id);
+        repository.deleteById(id);
         return new ModelAndView("redirect:/admin/all");
     }
 
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
-//        Collection<User> userList = repository.findByContains(tittle);
-//        model.addAttribute("allUsers", userList);
+        Collection<User> userList = userService.findByContains(tittle);
+        model.addAttribute("allUsers", userList);
         return new ModelAndView("admin", model);
     }
 
     @PostMapping(value = "/handle/{commandType}")
     public String renderHandlePage(@ModelAttribute User user, ModelMap model,
-                                   @PathVariable @NotBlank String commandType) {
+                                   @PathVariable @NotBlank String commandType) throws Exception {
         Collection<Role> roles = roleRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute("roleList", roles);
@@ -72,7 +76,7 @@ public class AdminController {
         }
         if (Objects.equals(commandType, "page-edit")) {
             int id = user.getId();
-            user = repository.findById(id);
+            user = repository.findById(id).orElseThrow(() -> new Exception("User is not found"));
             Collection<Role> userRoleList = user.getRoles();
             roles.removeIf(role -> userRoleList.stream().anyMatch(userRole -> userRole.getId() == role.getId()));
             model.addAttribute("roleList", roles);
@@ -90,22 +94,22 @@ public class AdminController {
     }
 
     @PostMapping(value = "/handle/add")
-    public String add(@Validated @ModelAttribute User user, BindingResult result, ModelMap map) {
+    public String add(@Validated @ModelAttribute User user, BindingResult result, ModelMap map) throws Exception {
         if (result.hasErrors()) {
             map.addAttribute("result", result);
             return renderHandlePage(user, map, "page-add");
         }
-        repository.saveUser(user);
+        repository.insert(user);
         return "redirect:/admin/all";
     }
 
     @PostMapping(value = "/handle/edit")
-    public String edit(@Validated @ModelAttribute User user, BindingResult result, ModelMap map) {
+    public String edit(@Validated @ModelAttribute User user, BindingResult result, ModelMap map) throws Exception {
         if (result.hasErrors()) {
             map.addAttribute("result", result);
             return renderHandlePage(user, map, "page-edit");
         }
-//        repository.edit(user);
+        repository.save(user);
         return "redirect:/admin/all";
     }
 

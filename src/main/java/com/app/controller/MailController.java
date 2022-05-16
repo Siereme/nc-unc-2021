@@ -1,9 +1,8 @@
 package com.app.controller;
 
 import com.app.model.user.User;
-import com.app.repository.ConfirmEmailRepository;
-import com.app.repository.UserRepository;
 import com.app.service.mail.MailService;
+import com.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
@@ -18,13 +17,13 @@ public class MailController {
     @Lazy
     private final MailService mailService;
 
-    private final UserRepository userRepository;
+
+    private final UserService userService;
 
     @Autowired
-    public MailController(MailService mailService, UserRepository userRepository,
-                          ConfirmEmailRepository confirmEmailRepository) {
+    public MailController(MailService mailService, UserService userService) {
         this.mailService = mailService;
-        this.userRepository = userRepository;
+        this.userService = userService;
     }
 
     @GetMapping("/sendHtmlEmail")
@@ -35,9 +34,9 @@ public class MailController {
 
     @GetMapping("/nc-unc-2021/confirm-email/{token}")
     public String verificationToken(@PathVariable("token") String token) throws MessagingException {
-        if (userRepository.isTokenExist(token)) {
-            User currentUser = userRepository.getCurrentUser();
-            userRepository.removeRoleNoConfirmedFromUser(currentUser);
+        if (userService.isTokenExist(token)) {
+            User currentUser = userService.getCurrentUser();
+            userService.removeRoleNoConfirmedFromUser(currentUser);
             mailService.sendSuccessfulConfirmMessage();
         }
         return "redirect:/films/all";

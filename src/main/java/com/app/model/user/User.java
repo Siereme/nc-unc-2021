@@ -38,6 +38,9 @@ import java.util.Set;
 @CheckUserName
 public class User implements IEntity, UserDetails {
 
+    @Transient
+    public static final String SEQUENCE_NAME = "user_sequence";
+
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }

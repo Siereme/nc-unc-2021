@@ -1,10 +1,13 @@
 package com.app.controller;
 
 import com.app.ConstantVariables;
+import com.app.model.actor.Actor;
 import com.app.repository.FilmsRepository;
 import com.app.model.director.Director;
 import com.app.model.film.Film;
 import com.app.repository.DirectorsRepository;
+import com.app.service.SequenceGeneratorService;
+import com.app.service.director.DirectorService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +37,13 @@ public class DirectorController {
     private static final Logger logger = Logger.getLogger(DirectorController.class);
 
     @Autowired
-    private final DirectorsRepository repository = new DirectorsRepository();
+    SequenceGeneratorService sequenceGeneratorService;
+
+    @Autowired
+    private DirectorsRepository repository;
+
+    @Autowired
+    private DirectorService directorService;
 
     @Autowired
     private FilmsRepository filmsRepository;
@@ -42,9 +51,11 @@ public class DirectorController {
     private void getDirectorsAndFilmsList(Collection<Director> directorCollection, ModelMap model) {
         model.addAttribute(DIRECTORS, directorCollection);
         Collection<Collection<Film>> listFilms = new LinkedList<>();
-//        for (Director director : directorCollection) {
-//            listFilms.add(director.getFilms());
-//        }
+        for (Director director : directorCollection) {
+            Collection<Integer> filmsIds = director.getFilmsIds();
+            List<Film> filmCollection = (List<Film>) filmsRepository.findAllById(filmsIds);
+            listFilms.add(filmCollection);
+        }
         model.addAttribute(FILMS, listFilms);
         model.addAttribute(JSON, "../serialize/directors");
         logger.info("show all directors");
@@ -58,8 +69,9 @@ public class DirectorController {
     }
 
     @GetMapping(value = "/errors")
-    public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model, SessionStatus sessionStatus) {
-        if(!errors.isEmpty()){
+    public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model,
+                                SessionStatus sessionStatus) {
+        if (!errors.isEmpty()) {
             model.addAttribute(ERRORS, errors);
             sessionStatus.setComplete();
         }
@@ -67,8 +79,9 @@ public class DirectorController {
     }
 
     @GetMapping(value = "/success")
-    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
-        if(!success.isEmpty()){
+    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model,
+                                 SessionStatus sessionStatus) {
+        if (!success.isEmpty()) {
             model.addAttribute(SUCCESS, success);
         }
         sessionStatus.setComplete();
@@ -77,14 +90,14 @@ public class DirectorController {
 
     @PostMapping(value = "/handle/delete/{id}")
     public ModelAndView delete(@PathVariable @NotNull int id) {
-//        repository.delete(id);
+        repository.deleteById(id);
         return new ModelAndView("redirect:/directors/all");
     }
 
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
-//        Collection<Director> directorList = repository.findByContains(tittle);
-//        getDirectorsAndFilmsList(directorList, model);
+        Collection<Director> directorList = directorService.findByContains(tittle);
+        getDirectorsAndFilmsList(directorList, model);
         return new ModelAndView(DIRECTORS, model);
     }
 
@@ -98,15 +111,16 @@ public class DirectorController {
             model.addAttribute(EVENT_TYPE, "handle/add");
         }
         if (Objects.equals(commandType, "page-edit")) {
-            int id = director.getId();
+            // TODO
+/*            int id = director.getId();
             director = repository.findById(id);
-//            Collection<Film> filmsByDirectorId = director.getFilms();
-//            films.removeIf(film -> filmsByDirectorId.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
+            Collection<Integer> filmsByDirectorId = director.getFilmsIds();
+            films.removeIf(film -> filmsByDirectorId.stream().anyMatch(directorFilm -> directorFilm.getId() == film.getId()));
             model.addAttribute(FILMS, films);
-//            model.addAttribute(FILM_LIST, filmsByDirectorId);
+            model.addAttribute(FILM_LIST, filmsByDirectorId);
             model.addAttribute(MODAL_TITLE, "Edit");
             model.addAttribute(EVENT_TYPE, "handle/edit");
-            model.addAttribute("director", director);
+            model.addAttribute("director", director);*/
         }
         return "director-handle";
     }
@@ -117,7 +131,8 @@ public class DirectorController {
             map.addAttribute(RESULT, result);
             return renderHandlePage(director, map, "page-add");
         }
-//        repository.add(director);
+        director.setId(sequenceGeneratorService.generateSequence(Actor.SEQUENCE_NAME));
+        repository.save(director);
         return "redirect:/directors/all";
     }
 
@@ -127,7 +142,7 @@ public class DirectorController {
             map.addAttribute(RESULT, result);
             return renderHandlePage(director, map, "page-edit");
         }
-//        repository.edit(director);
+        repository.save(director);
         return "redirect:/directors/all";
     }
 

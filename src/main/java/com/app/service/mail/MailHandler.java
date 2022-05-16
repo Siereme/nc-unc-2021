@@ -2,7 +2,6 @@ package com.app.service.mail;
 
 import com.app.model.IEntity;
 import com.app.model.emailInfo.NewEmail;
-import com.app.repository.UserRepository;
 import com.app.service.mail.kafka.KafkaProducer;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -14,13 +13,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailHandler {
 
-    private final UserRepository userRepository;
 
     private final KafkaProducer producer;
 
     @Autowired
-    public MailHandler(UserRepository userRepository, KafkaProducer producer) {
-        this.userRepository = userRepository;
+    public MailHandler(KafkaProducer producer) {
         this.producer = producer;
     }
 

@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 @Document
 public class Director implements IEntity {
 
+    @Transient
+    public static final String SEQUENCE_NAME = "directors_sequence";
+
     @Id
     private int id;
     @NotBlank(message = "Name cannot be empty")

@@ -27,29 +27,29 @@ public class KafkaProducer {
 
     private final ArrayBlockingQueue<NewEmail> queue = new ArrayBlockingQueue<NewEmail>(INT_EMAIL_QUEUE_CAPACITY);
 
-//    @Scheduled(cron = "0 * * * * *")
-//    public void sendMessage() throws InterruptedException {
-//
-//        if (queue.size() != 0) {
-//            NewEmail email = queue.take();
-//            ListenableFuture<SendResult<String, NewEmail>> future = kafkaTemplate.send(topicName, email);
-//
-//            future.addCallback(new ListenableFutureCallback<SendResult<String, NewEmail>>() {
-//
-//                @Override
-//                public void onSuccess(SendResult<String, NewEmail> result) {
-//                    logger.info(
-//                            "Sent message=[" + email + "] with offset=[" + result.getRecordMetadata().offset() + "]");
-//                }
-//
-//                @Override
-//                public void onFailure(Throwable ex) {
-//                    logger.warn("Unable to send message=[" + email + "] due to : " + ex.getMessage());
-//                }
-//            });
-//        }
-//
-//    }
+    @Scheduled(cron = "0 * * * * *")
+    public void sendMessage() throws InterruptedException {
+
+        if (queue.size() != 0) {
+            NewEmail email = queue.take();
+            ListenableFuture<SendResult<String, NewEmail>> future = kafkaTemplate.send(topicName, email);
+
+            future.addCallback(new ListenableFutureCallback<SendResult<String, NewEmail>>() {
+
+                @Override
+                public void onSuccess(SendResult<String, NewEmail> result) {
+                    logger.info(
+                            "Sent message=[" + email + "] with offset=[" + result.getRecordMetadata().offset() + "]");
+                }
+
+                @Override
+                public void onFailure(Throwable ex) {
+                    logger.warn("Unable to send message=[" + email + "] due to : " + ex.getMessage());
+                }
+            });
+        }
+
+    }
 
     public void addEmail(NewEmail email) {
         queue.add(email);

@@ -11,12 +11,16 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 
 @Document
 public class ConfirmEmail {
+
+    @Transient
+    public static final String SEQUENCE_NAME = "confirm_email_sequence";
 
     @Id
     private int id;

@@ -2,6 +2,7 @@ package com.app.controller;
 
 import com.app.model.user.User;
 import com.app.repository.UserRepository;
+import com.app.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -20,7 +21,7 @@ public class RegistrationController {
 
     @Lazy
     @Autowired
-    private UserRepository repository;
+    private UserService userService;
 
     @GetMapping("/registration")
     public String registration(Model model) {
@@ -48,9 +49,9 @@ public class RegistrationController {
             model.addAttribute(PASSWORD_ERROR, "passwords don't match");
             return "registration";
         } else {
-            repository.addRoleToUser(userForm, "ROLE_USER");
-            repository.addRoleToUser(userForm, "ROLE_NO_CONFIRMED");
-            if (!repository.saveUser(userForm)) {
+            userService.addRoleToUser(userForm, "ROLE_USER");
+            userService.addRoleToUser(userForm, "ROLE_NO_CONFIRMED");
+            if (!userService.saveUser(userForm)) {
                 model.addAttribute(USERNAME_ERROR, "a user with this name already exists");
             }
             return "login";

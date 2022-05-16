@@ -107,8 +107,6 @@ public class ActorController {
             int id = actor.getId();
             actor = repository.findById(id).orElseThrow(() -> new Exception("Actor is not found"));
             Collection<Film> actorFilmList = actor.getFilms();
-//             we delete entities that are both there and there in films
-//             ( удаляем из списка всех фильмов те, в которых актер участвовал)
             films.removeIf(film -> actorFilmList.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
             model.addAttribute(FILMS, films);
             model.addAttribute(FILM_LIST, actorFilmList);

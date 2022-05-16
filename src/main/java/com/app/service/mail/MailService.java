@@ -4,7 +4,7 @@ import com.app.model.confirmEmail.ConfirmEmail;
 import com.app.model.emailInfo.NewEmail;
 import com.app.model.user.User;
 import com.app.repository.ConfirmEmailRepository;
-import com.app.repository.UserRepository;
+import com.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -27,7 +27,7 @@ public class MailService {
     @Autowired
     private SpringTemplateEngine thymeleafTemplateEngine;
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
     @Autowired
     private ConfirmEmailRepository confirmEmailRepository;
 
@@ -75,7 +75,7 @@ public class MailService {
     public String getMessageToConfirmEmail() {
         StringBuffer sb = new StringBuffer();
         sb.append("Hi ");
-        String currentUserName = userRepository.getCurrentUsername();
+        String currentUserName = userService.getCurrentUsername();
         sb.append(currentUserName);
         sb.append(",\n");
         sb.append("Thanks for using our service. Please verify your email address by clicking the button below.");
@@ -85,7 +85,7 @@ public class MailService {
     public String getMessageSuccessfulConfirm() {
         StringBuffer sb = new StringBuffer();
         sb.append("Hi ");
-        String currentUserName = userRepository.getCurrentUsername();
+        String currentUserName = userService.getCurrentUsername();
         sb.append(currentUserName);
         sb.append(",\n");
         sb.append("Thanks for using our service. Your email successfully confirmed!");
@@ -93,7 +93,7 @@ public class MailService {
     }
 
     public void addTokenToDB(String token) {
-        User user = userRepository.getCurrentUser();
+        User user = userService.getCurrentUser();
         ConfirmEmail confirmEmail = new ConfirmEmail(user.getUser_id(), token);
         confirmEmailRepository.add(confirmEmail);
     }
@@ -108,8 +108,8 @@ public class MailService {
     }
 
     public void sendMessageToConfirmEmail() throws MessagingException {
-        User user = userRepository.getCurrentUser();
-        if (!userRepository.isLinksEnough(user, 1)) {
+        User user = userService.getCurrentUser();
+        if (!userService.isLinksEnough(user, 1)) {
             Map<String, Object> context = new HashMap<>();
             //        context.put("name", "Name");
             String text = getMessageToConfirmEmail();
@@ -117,7 +117,7 @@ public class MailService {
             context.put("from", from);
             String link = getConfirmLink();
             context.put("link", link);
-            to = userRepository.getCurrentEmail();
+            to = userService.getCurrentEmail();
             sendMessageUsingThymeleafTemplate(to, subject, context);
         }
     }
@@ -130,7 +130,7 @@ public class MailService {
         context.put("from", from);
         String link = getConfirmLink();
         context.put("link", link);
-        to = userRepository.getCurrentEmail();
+        to = userService.getCurrentEmail();
         sendMessageUsingThymeleafTemplate(to, subject, context);
     }
 }
