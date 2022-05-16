@@ -3,9 +3,9 @@ package com.app.controller.serialize.imp;
 import com.app.controller.serialize.AbstractSerializeController;
 import com.app.model.film.Film;
 import com.app.model.genre.Genre;
-import com.app.repository.AbstractRepository;
 import com.app.repository.FilmsRepository;
 import com.app.repository.GenresRepository;
+import com.app.repository.IRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,8 +25,9 @@ public class GenreSerializeController extends AbstractSerializeController<Genre>
     private FilmsRepository filmsRepository;
 
     @Override
-    protected AbstractRepository<Genre> getRepository() {
-        return genresRepository;
+    protected IRepository<Genre> getRepository() {
+//        return genresRepository;
+        return null;
     }
 
     @Override

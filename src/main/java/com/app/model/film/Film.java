@@ -12,10 +12,12 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Document
 public class Film implements IEntity {
+
+    @Transient
+    public static final String SEQUENCE_NAME = "films_sequence";
 
     @Id
     private int id;
@@ -24,11 +26,11 @@ public class Film implements IEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     @JsonIgnoreProperties(value = "films", allowSetters = true)
-    private Set<Integer> actorsIds;
+    private Set<Actor> actors = new HashSet<>();
     @JsonIgnoreProperties(value = "films", allowSetters = true)
-    private Set<Integer> directorsIds;
+    private Set<Director> directors = new HashSet<>();
     @JsonIgnoreProperties(value = "films", allowSetters = true)
-    private Set<Integer> genresIds;
+    private Set<Genre> genres = new HashSet<>();
 
     public void setId(int id) {
         this.id = id;
@@ -73,28 +75,28 @@ public class Film implements IEntity {
         return result;
     }
 
-    public Set<Integer> getActorsIds() {
-        return actorsIds;
+    public Set<Actor> getActors() {
+        return actors;
     }
 
-    public void setActorsIds(Set<Integer> actorsIds) {
-        this.actorsIds = actorsIds;
+    public void setActors(Set<Actor> actors) {
+        this.actors = actors;
     }
 
-    public Set<Integer> getDirectorsIds() {
-        return directorsIds;
+    public Set<Director> getDirectors() {
+        return directors;
     }
 
-    public void setDirectorsIds(Set<Integer> directorsIds) {
-        this.directorsIds = directorsIds;
+    public void setDirectors(Set<Director> directors) {
+        this.directors = directors;
     }
 
-    public Set<Integer> getGenresIds() {
-        return genresIds;
+    public Set<Genre> getGenres() {
+        return genres;
     }
 
-    public void setGenresIds(Set<Integer> genresIds) {
-        this.genresIds = genresIds;
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
     }
 
     // TODO

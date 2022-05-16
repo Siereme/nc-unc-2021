@@ -3,7 +3,7 @@ package com.app.controller.serialize.imp;
 import com.app.controller.serialize.AbstractSerializeController;
 import com.app.model.actor.Actor;
 import com.app.model.film.Film;
-import com.app.repository.AbstractRepository;
+import com.app.repository.IRepository;
 import com.app.repository.ActorsRepository;
 import com.app.repository.FilmsRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -25,7 +25,7 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
     private FilmsRepository filmsRepository;
 
     @Override
-    protected AbstractRepository<Actor> getRepository() {
+    protected IRepository<Actor> getRepository() {
         return actorsRepository;
     }
 

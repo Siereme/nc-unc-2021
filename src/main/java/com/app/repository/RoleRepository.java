@@ -18,8 +18,8 @@ import java.util.function.Function;
 @Repository
 public class RoleRepository extends AbstractRepository<Role> {
 
-    @Override
-    public Role findById(int id) {
+
+    public List<Role> findByContains(String name) {
         return null;
     }
 
@@ -134,8 +134,12 @@ public class RoleRepository extends AbstractRepository<Role> {
     }
 
     @Override
-    public <S extends Role, R> R findBy(Example<S> example,
-                                        Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+    public <S extends Role, R> R findBy(Example<S> example, Function<FluentQuery.FetchableFluentQuery<S>, R> queryFunction) {
+        return null;
+    }
+
+    @Override
+    public Role findById(int id) {
         return null;
     }
 }

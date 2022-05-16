@@ -1,9 +1,11 @@
 package com.app.model.actor;
 
 import com.app.model.IEntity;
+import com.app.model.film.Film;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Objects;
@@ -12,20 +14,23 @@ import java.util.Set;
 @Document
 public class Actor implements IEntity {
 
+    @Transient
+    public static final String SEQUENCE_NAME = "actors_sequence";
+
     @Id
     private int id;
     @NotBlank(message = "Name cannot be empty")
     private String name;
     @NotBlank(message = "Name cannot be empty")
     private String year;
-    private Set<Integer> filmsIds;
+    private Set<Film> films;
 
-    public Set<Integer> getFilmsIds() {
-        return filmsIds;
+    public Set<Film> getFilms() {
+        return films;
     }
 
-    public void setFilmsIds(Set<Integer> filmsIds) {
-        this.filmsIds = filmsIds;
+    public void setFilms(Set<Film> films) {
+        this.films = films;
     }
 
     public int getId() {
@@ -55,7 +60,7 @@ public class Actor implements IEntity {
     public Actor(){
         name = "";
         year = "";
-        filmsIds = new HashSet<>();
+        films = new HashSet<>();
     }
 
     @Override

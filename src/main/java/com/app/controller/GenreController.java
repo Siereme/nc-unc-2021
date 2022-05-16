@@ -1,9 +1,12 @@
 package com.app.controller;
 
+import com.app.model.actor.Actor;
 import com.app.repository.FilmsRepository;
 import com.app.model.film.Film;
 import com.app.model.genre.Genre;
 import com.app.repository.GenresRepository;
+import com.app.service.SequenceGeneratorService;
+import com.app.service.genre.GenreService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -64,16 +67,16 @@ public class GenreController {
 
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
-//        Collection<Genre> genres = repository.findByContains(tittle);
-//        getGenresAndFilms(model, genres);
+        Collection<Genre> genres = service.findByContains(tittle);
+        getGenresAndFilms(model, genres);
         return new ModelAndView(GENRES, model);
     }
 
     private void getGenresAndFilms(ModelMap model, Collection<Genre> genres) {
         Collection<Collection<Film>> films = new LinkedList<>();
-//        for (Genre genre : genres) {
-//            films.add(genre.getFilms());
-//        }
+        for (Genre genre : genres) {
+            films.add(genre.getFilms());
+        }
         model.addAttribute(GENRES, genres);
         model.addAttribute(FILMS, films);
         model.addAttribute(JSON, "../serialize/genres");
@@ -82,7 +85,7 @@ public class GenreController {
     @SuppressWarnings("SameReturnValue")
     @PostMapping(value = "/handle/{commandType}")
     public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model,
-                                   @Valid @PathVariable String commandType) {
+                                   @Valid @PathVariable String commandType) throws Exception {
         Collection<Film> filmList = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute(FILMS, filmList);
@@ -91,7 +94,7 @@ public class GenreController {
         }
         if (Objects.equals(commandType, "page-edit")) {
             int id = genre.getId();
-            genre = repository.findById(id);
+            genre = repository.findById(id).orElseThrow(() -> new Exception("Genre is not found"));
 //            Collection<Film> filmGenreList = genre.getFilms();
 
 //            filmList.removeIf(film -> filmGenreList.stream().anyMatch(filmGenre -> filmGenre.getId() == film.getId()));
@@ -107,27 +110,28 @@ public class GenreController {
 
     @PostMapping(value = "/handle/delete/{id}")
     public ModelAndView delete(@Valid @PathVariable int id) {
-//        repository.delete(id);
+        repository.deleteById(id);
         return new ModelAndView("redirect:/genres/all");
     }
 
     @PostMapping(value = "/handle/add")
-    public String add(@Validated @ModelAttribute Genre genre, BindingResult result, ModelMap map) {
+    public String add(@Validated @ModelAttribute Genre genre, BindingResult result, ModelMap map) throws Exception {
         if (result.hasErrors()) {
             map.addAttribute(RESULT, result);
             return renderHandlePage(genre, map, "page-add");
         }
-//        repository.add(genre);
+        genre.setId(sequenceGeneratorService.generateSequence(Genre.SEQUENCE_NAME));
+        repository.insert(genre);
         return "redirect:/genres/all";
     }
 
     @PostMapping(value = "/handle/edit")
-    public String edit(@Validated @ModelAttribute Genre genre, BindingResult result, ModelMap map) {
+    public String edit(@Validated @ModelAttribute Genre genre, BindingResult result, ModelMap map) throws Exception {
         if (result.hasErrors()) {
             map.addAttribute(RESULT, result);
             return renderHandlePage(genre, map, "page-edit");
         }
-//        repository.edit(genre);
+        repository.save(genre);
         return "redirect:/genres/all";
     }
 
@@ -139,5 +143,9 @@ public class GenreController {
     @Autowired
     private GenresRepository repository;
     @Autowired
+    GenreService service;
+    @Autowired
     private FilmsRepository filmsRepository;
+    @Autowired
+    SequenceGeneratorService sequenceGeneratorService;
 }

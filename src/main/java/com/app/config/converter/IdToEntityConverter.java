@@ -1,14 +1,16 @@
 package com.app.config.converter;
 
+import com.app.model.IEntity;
 import com.app.repository.AbstractRepository;
+import com.app.repository.IRepository;
 import org.springframework.core.convert.converter.Converter;
 
 
-public abstract  class IdToEntityConverter<Object, T> implements Converter<Object, T> {
+public abstract  class IdToEntityConverter<Object, T extends IEntity> implements Converter<Object, T> {
 
-    final AbstractRepository<T> repository;
+    final IRepository<T> repository;
 
-    public IdToEntityConverter(AbstractRepository<T> repository) {
+    public IdToEntityConverter(IRepository<T> repository) {
         this.repository = repository;
     }
 
@@ -16,6 +18,6 @@ public abstract  class IdToEntityConverter<Object, T> implements Converter<Objec
     @Override
     public T convert(Object source) {
         int id = Integer.parseInt((String)source);
-        return repository.findById(id);
+        return repository.findById(id).orElse(null);
     }
 }

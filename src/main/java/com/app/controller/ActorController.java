@@ -2,8 +2,10 @@ package com.app.controller;
 
 import com.app.model.actor.Actor;
 import com.app.model.film.Film;
-import com.app.repository.ActorsRepository;
 import com.app.repository.FilmsRepository;
+import com.app.repository.ActorsRepository;
+import com.app.service.SequenceGeneratorService;
+import com.app.service.actor.ActorService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,12 +34,15 @@ import static com.app.ConstantVariables.*;
 public class ActorController {
     private static final Logger logger = Logger.getLogger(ActorController.class);
 
+    @Autowired
+    SequenceGeneratorService sequenceGeneratorService;
+
     private void getActorsAndFilmsList(Collection<Actor> actorCollection, ModelMap model) {
         model.addAttribute(ACTORS, actorCollection);
         Collection<Collection<Film>> listListFilms = new LinkedList<>();
-//        for (Actor actor : actorCollection) {
-//            listListFilms.add(actor.getFilms());
-//        }
+        for (Actor actor : actorCollection) {
+            listListFilms.add(actor.getFilms());
+        }
         model.addAttribute(FILMS, listListFilms);
         model.addAttribute(JSON, "../serialize/actors");
         logger.info("show all actors");
@@ -45,6 +50,8 @@ public class ActorController {
 
     @Autowired
     private ActorsRepository repository;
+    @Autowired
+    ActorService service;
 
     @Autowired
     private FilmsRepository filmsRepository;
@@ -76,20 +83,20 @@ public class ActorController {
 
     @PostMapping(value = "/handle/delete/{id}")
     public ModelAndView delete(@PathVariable @NotNull int id) {
-//        repository.delete(id);
+        repository.deleteById(id);
         return new ModelAndView("redirect:/actors/all");
     }
 
     @PostMapping(value = "/find")
     public ModelAndView get(@RequestParam @NotBlank String tittle, ModelMap model) {
-//        Collection<Actor> actorList = repository.findByContains(tittle);
-//        getActorsAndFilmsList(actorList, model);
+        Collection<Actor> actorList = service.findByContains(tittle);
+        getActorsAndFilmsList(actorList, model);
         return new ModelAndView(ACTORS, model);
     }
 
     @PostMapping(value = "/handle/{commandType}")
     public String renderHandlePage(@ModelAttribute Actor actor, ModelMap model,
-                                   @PathVariable @NotBlank String commandType) {
+                                   @PathVariable @NotBlank String commandType) throws Exception {
         Collection<Film> films = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute(FILMS, films);
@@ -98,13 +105,13 @@ public class ActorController {
         }
         if (Objects.equals(commandType, "page-edit")) {
             int id = actor.getId();
-            actor = repository.findById(id);
-//            Collection<Film> actorFilmList = actor.getFilms();
-            // we delete entities that are both there and there in films
-            // ( удаляем из списка всех фильмов те, в которых актер участвовал)
-//            films.removeIf(film -> actorFilmList.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
+            actor = repository.findById(id).orElseThrow(() -> new Exception("Actor is not found"));
+            Collection<Film> actorFilmList = actor.getFilms();
+//             we delete entities that are both there and there in films
+//             ( удаляем из списка всех фильмов те, в которых актер участвовал)
+            films.removeIf(film -> actorFilmList.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
             model.addAttribute(FILMS, films);
-//            model.addAttribute(FILM_LIST, actorFilmList);
+            model.addAttribute(FILM_LIST, actorFilmList);
             model.addAttribute(MODAL_TITLE, "Edit");
             model.addAttribute(EVENT_TYPE, "handle/edit");
             model.addAttribute("actor", actor);
@@ -113,22 +120,23 @@ public class ActorController {
     }
 
     @PostMapping(value = "/handle/add")
-    public String add(@Validated @ModelAttribute Actor actor, BindingResult result, ModelMap map) {
+    public String add(@Validated @ModelAttribute Actor actor, BindingResult result, ModelMap map) throws Exception {
         if (result.hasErrors()) {
             map.addAttribute(RESULT, result);
             return renderHandlePage(actor, map, "page-add");
         }
-//        repository.add(actor);
+        actor.setId(sequenceGeneratorService.generateSequence(Actor.SEQUENCE_NAME));
+        repository.insert(actor);
         return "redirect:/actors/all";
     }
 
     @PostMapping(value = "/handle/edit")
-    public String edit(@Validated @ModelAttribute Actor actor, BindingResult result, ModelMap map) {
+    public String edit(@Validated @ModelAttribute Actor actor, BindingResult result, ModelMap map) throws Exception {
         if (result.hasErrors()) {
             map.addAttribute(RESULT, result);
             return renderHandlePage(actor, map, "page-edit");
         }
-//        repository.edit(actor);
+        repository.save(actor);
         return "redirect:/actors/all";
     }
 

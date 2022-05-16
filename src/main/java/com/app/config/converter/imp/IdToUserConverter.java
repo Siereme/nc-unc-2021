@@ -5,10 +5,10 @@ import com.app.model.user.User;
 import com.app.repository.UserRepository;
 import org.springframework.stereotype.Component;
 
-@Component
-public class IdToUserConverter extends IdToEntityConverter<Object, User> {
-
-    public IdToUserConverter(UserRepository repository) {
-        super(repository);
-    }
-}
+//@Component
+//public class IdToUserConverter extends IdToEntityConverter<Object, User> {
+//
+//    public IdToUserConverter(UserRepository repository) {
+//        super(repository);
+//    }
+//}

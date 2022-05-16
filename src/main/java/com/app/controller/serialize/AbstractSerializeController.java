@@ -3,6 +3,7 @@ package com.app.controller.serialize;
 import com.app.controller.FilmController;
 import com.app.model.IEntity;
 import com.app.repository.AbstractRepository;
+import com.app.repository.IRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.log4j.Logger;
@@ -30,7 +31,7 @@ public abstract class AbstractSerializeController<T extends IEntity> {
     @Autowired
     private ObjectMapper mapper;
 
-    protected abstract AbstractRepository<T> getRepository();
+    protected abstract IRepository<T> getRepository();
     protected abstract String getFilePath();
     protected abstract TypeReference<List<T>> getRef();
     protected abstract String getRedirectPath();

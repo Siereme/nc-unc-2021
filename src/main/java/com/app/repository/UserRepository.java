@@ -49,6 +49,10 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
 
 
 
+    public List<User> findByContains(String name) {
+        return null;
+    }
+
 
     public boolean saveUser(User user) {
         String userName = user.getUsername();
@@ -153,6 +157,8 @@ public class UserRepository extends AbstractRepository<User> implements UserDeta
     public List<User> findAll() {
         return null;
     }
+
+
 
     @Override
     public Iterable<User> findAllById(Iterable<Integer> integers) {

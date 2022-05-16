@@ -5,11 +5,11 @@ import com.app.model.director.Director;
 import com.app.repository.DirectorsRepository;
 import org.springframework.stereotype.Component;
 
-@Component
-public class IdToDirectorConverter extends IdToEntityConverter<Object, Director> {
-
-    public IdToDirectorConverter(DirectorsRepository repository) {
-        super(repository);
-    }
-
-}
+//@Component
+//public class IdToDirectorConverter extends IdToEntityConverter<Object, Director> {
+//
+//    public IdToDirectorConverter(DirectorsRepository repository) {
+//        super(repository);
+//    }
+//
+//}

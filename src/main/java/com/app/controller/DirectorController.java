@@ -37,7 +37,7 @@ public class DirectorController {
     private final DirectorsRepository repository = new DirectorsRepository();
 
     @Autowired
-    private final FilmsRepository filmsRepository = new FilmsRepository();
+    private FilmsRepository filmsRepository;
 
     private void getDirectorsAndFilmsList(Collection<Director> directorCollection, ModelMap model) {
         model.addAttribute(DIRECTORS, directorCollection);

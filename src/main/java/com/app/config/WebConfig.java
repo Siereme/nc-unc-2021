@@ -20,18 +20,18 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan(basePackages = {"com.app"})
 public class WebConfig implements WebMvcConfigurer  {
 
-    @Autowired
-    IdToFilmConverter idToFilmConverter;
-    @Autowired
-    IdToActorConverter idToActorConverter;
-    @Autowired
-    IdToDirectorConverter idToDirectorConverter;
-    @Autowired
-    IdToGenreConverter idToGenreConverter;
-    @Autowired
-    IdToUserConverter idToUserConverter;
-    @Autowired
-    IdToRoleConverter idToRoleConverter;
+//    @Autowired
+//    IdToFilmConverter idToFilmConverter;
+//    @Autowired
+//    IdToActorConverter idToActorConverter;
+//    @Autowired
+//    IdToDirectorConverter idToDirectorConverter;
+//    @Autowired
+//    IdToGenreConverter idToGenreConverter;
+//    @Autowired
+//    IdToUserConverter idToUserConverter;
+//    @Autowired
+//    IdToRoleConverter idToRoleConverter;
 
     @Bean
     public ViewResolver viewResolver() {
@@ -63,13 +63,13 @@ public class WebConfig implements WebMvcConfigurer  {
                 .setCacheControl(CacheControl.noCache());
     }
 
-    @Override
-    public void addFormatters(FormatterRegistry registry) {
-        registry.addConverter(idToFilmConverter);
-        registry.addConverter(idToActorConverter);
-        registry.addConverter(idToDirectorConverter);
-        registry.addConverter(idToGenreConverter);
-        registry.addConverter(idToUserConverter);
-        registry.addConverter(idToRoleConverter);
-    }
+//    @Override
+//    public void addFormatters(FormatterRegistry registry) {
+//        registry.addConverter(idToFilmConverter);
+//        registry.addConverter(idToActorConverter);
+//        registry.addConverter(idToDirectorConverter);
+//        registry.addConverter(idToGenreConverter);
+//        registry.addConverter(idToUserConverter);
+//        registry.addConverter(idToRoleConverter);
+//    }
 }

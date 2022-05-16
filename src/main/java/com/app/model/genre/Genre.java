@@ -6,29 +6,30 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Document
 public class Genre implements IEntity {
 
+    @Transient
+    public static final String SEQUENCE_NAME = "genres_sequence";
+
     @Id
     private int id;
 
-    public Set<Integer> getFilmsIds() {
-        return filmsIds;
+    public Set<Film> getFilms() {
+        return films;
     }
 
-    public void setFilmsIds(Set<Integer> filmsIds) {
-        this.filmsIds = filmsIds;
+    public void setFilms(Set<Film> films) {
+        this.films = films;
     }
 
     @NotBlank(message = "Title cannot be empty")
     private String tittle;
 
-    private Set<Integer> filmsIds;
+    private Set<Film> films;
 
     public Genre() {
         tittle = "";
@@ -53,6 +54,7 @@ public class Genre implements IEntity {
     public void setTittle(String tittle) {
         this.tittle = tittle;
     }
+
 
     // TODO
     @Override

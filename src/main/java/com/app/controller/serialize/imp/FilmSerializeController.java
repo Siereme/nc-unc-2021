@@ -5,7 +5,11 @@ import com.app.model.actor.Actor;
 import com.app.model.director.Director;
 import com.app.model.film.Film;
 import com.app.model.genre.Genre;
-import com.app.repository.*;
+import com.app.repository.DirectorsRepository;
+import com.app.repository.FilmsRepository;
+import com.app.repository.GenresRepository;
+import com.app.repository.IRepository;
+import com.app.repository.ActorsRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +32,7 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
     private DirectorsRepository directorsRepository;
 
     @Override
-    protected AbstractRepository<Film> getRepository() {
+    protected IRepository<Film> getRepository() {
         return filmsRepository;
     }
 
