@@ -46,9 +46,12 @@ public class FilmController implements WebMvcConfigurer {
         Collection<Collection<Director>> directors = new LinkedList<>();
         Collection<Collection<Actor>> actors = new LinkedList<>();
         for (Film film : films) {
-            genres.add(film.getGenres());
-            directors.add(film.getDirectors());
-            actors.add(film.getActors());
+            List<Genre> filmGenres = (List<Genre>) genresRepository.findAllById(film.getGenresIds());
+            genres.add(filmGenres);
+            List<Director> filmDirectors = (List<Director>) directorsRepository.findAllById(film.getDirectorsIds());
+            directors.add(filmDirectors);
+            List<Actor> filmActors = (List<Actor>) actorsRepository.findAllById(film.getActorsIds());
+            actors.add(filmActors);
         }
         model.addAttribute(FILMS, films);
         model.addAttribute(GENRES, genres);
@@ -89,9 +92,12 @@ public class FilmController implements WebMvcConfigurer {
             Collection<Collection<Actor>> actors = new LinkedList<>();
             Collection<Collection<Director>> directors = new LinkedList<>();
             for (Film film : findFilm) {
-                genres.add(film.getGenres());
-                actors.add(film.getActors());
-                directors.add(film.getDirectors());
+                List<Genre> filmGenres = (List<Genre>) genresRepository.findAllById(film.getGenresIds());
+                genres.add(filmGenres);
+                List<Director> filmDirectors = (List<Director>) directorsRepository.findAllById(film.getDirectorsIds());
+                directors.add(filmDirectors);
+                List<Actor> filmActors = (List<Actor>) actorsRepository.findAllById(film.getActorsIds());
+                actors.add(filmActors);
             }
             model.addAttribute(FILMS, findFilm);
             model.addAttribute(GENRES, genres);
@@ -123,9 +129,9 @@ public class FilmController implements WebMvcConfigurer {
 
             int id = film.getId();
             film = repository.findById(id).orElseThrow(() -> new Exception("Film is not found"));
-            Collection<Genre> genreList = film.getGenres();
-            Collection<Actor> actorList = film.getActors();
-            Collection<Director> directorList = film.getDirectors();
+            Collection<Genre> genreList = (Collection<Genre>) genresRepository.findAllById(film.getGenresIds());
+            Collection<Actor> actorList = (Collection<Actor>) actorsRepository.findAllById(film.getActorsIds());
+            Collection<Director> directorList = (Collection<Director>) directorsRepository.findAllById(film.getDirectorsIds());
 
             if(genres != null){
                 genres.removeIf(genre -> genreList.stream().anyMatch(filmGenre -> filmGenre.getId() == genre.getId()));

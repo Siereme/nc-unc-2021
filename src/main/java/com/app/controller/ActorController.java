@@ -41,7 +41,8 @@ public class ActorController {
         model.addAttribute(ACTORS, actorCollection);
         Collection<Collection<Film>> listListFilms = new LinkedList<>();
         for (Actor actor : actorCollection) {
-            listListFilms.add(actor.getFilms());
+            List<Film> films = (List<Film>) filmsRepository.findAllById(actor.getFilmsIds());
+            listListFilms.add(films);
         }
         model.addAttribute(FILMS, listListFilms);
         model.addAttribute(JSON, "../serialize/actors");
@@ -106,7 +107,7 @@ public class ActorController {
         if (Objects.equals(commandType, "page-edit")) {
             int id = actor.getId();
             actor = repository.findById(id).orElseThrow(() -> new Exception("Actor is not found"));
-            Collection<Film> actorFilmList = actor.getFilms();
+            Collection<Film> actorFilmList = (Collection<Film>) filmsRepository.findAllById(actor.getFilmsIds());
             films.removeIf(film -> actorFilmList.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
             model.addAttribute(FILMS, films);
             model.addAttribute(FILM_LIST, actorFilmList);

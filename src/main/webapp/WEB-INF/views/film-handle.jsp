@@ -38,7 +38,7 @@
                         Genres
                       </button>
                       <ul class="dropdown-menu p-0">
-                        <select class="form-select" multiple aria-label="multiple select example" name="genres">
+                        <select class="form-select" multiple aria-label="multiple select example" name="genresIds">
                             <c:forEach var="genre" items="${genreList}">
                                 <option value="${genre.getId()}" selected>${genre.getTittle()}</option>
                             </c:forEach>
@@ -56,7 +56,7 @@
                         Actors
                       </button>
                       <ul class="dropdown-menu p-0">
-                        <select class="form-select" multiple aria-label="multiple select example" name="actors">
+                        <select class="form-select" multiple aria-label="multiple select example" name="actorsIds">
                             <c:forEach var="actor" items="${actorList}">
                                 <option value="${actor.getId()}" selected>${actor.getName()}</option>
                             </c:forEach>
@@ -74,7 +74,7 @@
                         Directors
                       </button>
                       <ul class="dropdown-menu p-0">
-                        <select class="form-select" multiple aria-label="multiple select example" name="directors">
+                        <select class="form-select" multiple aria-label="multiple select example" name="directorsIds">
                             <c:forEach var="director" items="${directorList}">
                                 <option value="${director.getId()}" selected>${director.getName()}</option>
                             </c:forEach>
