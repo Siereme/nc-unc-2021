@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@Document
 public class Actor implements IEntity {
 
     @Transient
@@ -21,14 +22,14 @@ public class Actor implements IEntity {
     private String name;
     @NotBlank(message = "Name cannot be empty")
     private String year;
-    private Set<Integer> films;
+    private Set<Integer> filmsIds;
 
-    public Set<Integer> getFilms() {
-        return films;
+    public Set<Integer> getFilmsIds() {
+        return filmsIds;
     }
 
-    public void setFilms(Set<Integer> films) {
-        this.films = films;
+    public void setFilmsIds(Set<Integer> filmsIds) {
+        this.filmsIds = filmsIds;
     }
 
     public int getId() {
@@ -58,7 +59,7 @@ public class Actor implements IEntity {
     public Actor(){
         name = "";
         year = "";
-        films = new HashSet<>();
+        filmsIds = new HashSet<>();
     }
 
     @Override

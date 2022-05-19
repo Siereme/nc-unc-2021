@@ -1,6 +1,5 @@
 package com.app.controller;
 
-import com.app.model.actor.Actor;
 import com.app.repository.FilmsRepository;
 import com.app.model.film.Film;
 import com.app.model.genre.Genre;
@@ -73,9 +72,10 @@ public class GenreController {
     }
 
     private void getGenresAndFilms(ModelMap model, Collection<Genre> genres) {
-        Collection<Collection<Integer>> films = new LinkedList<>();
+        Collection<Collection<Film>> films = new LinkedList<>();
         for (Genre genre : genres) {
-            films.add(genre.getFilms());
+            List<Film> genreFilms = (List<Film>) filmsRepository.findAllById(genre.getFilmsIds());
+            films.add(genreFilms);
         }
         model.addAttribute(GENRES, genres);
         model.addAttribute(FILMS, films);
@@ -84,8 +84,8 @@ public class GenreController {
 
     @SuppressWarnings("SameReturnValue")
     @PostMapping(value = "/handle/{commandType}")
-    public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model, @Valid @PathVariable String commandType)
-            throws Exception {
+    public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model,
+                                   @Valid @PathVariable String commandType) throws Exception {
         Collection<Film> filmList = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute(FILMS, filmList);
@@ -95,8 +95,10 @@ public class GenreController {
         if (Objects.equals(commandType, "page-edit")) {
             int id = genre.getId();
             genre = repository.findById(id).orElseThrow(() -> new Exception("Genre is not found"));
-            Collection<Integer> filmGenreList = genre.getFilms();
-            filmList.removeIf(film -> filmGenreList.stream().anyMatch(filmGenre -> filmGenre == film.getId()));
+            Collection<Film> filmGenreList = (List<Film>) filmsRepository.findAllById(genre.getFilmsIds());
+
+            filmList.removeIf(film -> filmGenreList.stream().anyMatch(filmGenre -> filmGenre.getId() == film.getId()));
+
             model.addAttribute(FILM_LIST, filmGenreList);
             model.addAttribute(FILMS, filmList);
             model.addAttribute(MODAL_TITLE, "Edit");

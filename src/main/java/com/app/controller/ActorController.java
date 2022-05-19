@@ -39,9 +39,10 @@ public class ActorController {
 
     private void getActorsAndFilmsList(Collection<Actor> actorCollection, ModelMap model) {
         model.addAttribute(ACTORS, actorCollection);
-        Collection<Collection<Integer>> listListFilms = new LinkedList<>();
+        Collection<Collection<Film>> listListFilms = new LinkedList<>();
         for (Actor actor : actorCollection) {
-            listListFilms.add(actor.getFilms());
+            List<Film> films = (List<Film>) filmsRepository.findAllById(actor.getFilmsIds());
+            listListFilms.add(films);
         }
         model.addAttribute(FILMS, listListFilms);
         model.addAttribute(JSON, "../serialize/actors");
@@ -106,8 +107,8 @@ public class ActorController {
         if (Objects.equals(commandType, "page-edit")) {
             int id = actor.getId();
             actor = repository.findById(id).orElseThrow(() -> new Exception("Actor is not found"));
-            Collection<Integer> actorFilmList = actor.getFilms();
-            films.removeIf(film -> actorFilmList.stream().anyMatch(actorFilm -> actorFilm == film.getId()));
+            Collection<Film> actorFilmList = (Collection<Film>) filmsRepository.findAllById(actor.getFilmsIds());
+            films.removeIf(film -> actorFilmList.stream().anyMatch(actorFilm -> actorFilm.getId() == film.getId()));
             model.addAttribute(FILMS, films);
             model.addAttribute(FILM_LIST, actorFilmList);
             model.addAttribute(MODAL_TITLE, "Edit");

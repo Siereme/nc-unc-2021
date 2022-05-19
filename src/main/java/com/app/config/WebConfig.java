@@ -67,8 +67,8 @@ public class WebConfig implements WebMvcConfigurer  {
 //    public void addFormatters(FormatterRegistry registry) {
 //        registry.addConverter(idToFilmConverter);
 //        registry.addConverter(idToActorConverter);
-//        registry.addConverter(idToDirectorConverter);
 //        registry.addConverter(idToGenreConverter);
+//        registry.addConverter(idToDirectorConverter);
 //        registry.addConverter(idToUserConverter);
 //        registry.addConverter(idToRoleConverter);
 //    }

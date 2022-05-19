@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -18,21 +19,22 @@ public class Genre implements IEntity {
     @Id
     private int id;
 
-    public Set<Integer> getFilms() {
-        return films;
+    public Set<Integer> getFilmsIds() {
+        return filmsIds;
     }
 
-    public void setFilms(Set<Integer> films) {
-        this.films = films;
+    public void setFilmsIds(Set<Integer> filmsIds) {
+        this.filmsIds = filmsIds;
     }
 
     @NotBlank(message = "Title cannot be empty")
     private String tittle;
 
-    private Set<Integer> films;
+    private Set<Integer> filmsIds;
 
     public Genre() {
         tittle = "";
+        filmsIds = new HashSet<>();
     }
 
     public Genre(String newGener) {

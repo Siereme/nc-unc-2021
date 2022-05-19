@@ -30,7 +30,7 @@
                         Films
                       </button>
                       <ul class="dropdown-menu p-0">
-                        <select class="form-select" multiple aria-label="multiple select example" name="films">
+                        <select class="form-select" multiple aria-label="multiple select example" name="filmsIds">
                             <c:forEach var="film" items="${filmList}">
                                 <option value="${film.getId()}" selected>${film.getTittle()}</option>
                             </c:forEach>
