@@ -12,7 +12,6 @@ import javax.mail.MessagingException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
-import java.util.logging.Logger;
 
 @Service
 public class KafkaConsumer {

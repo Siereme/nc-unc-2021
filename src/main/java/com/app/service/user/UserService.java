@@ -1,5 +1,6 @@
 package com.app.service.user;
 
+import com.app.model.confirmEmail.ConfirmEmail;
 import com.app.model.genre.Genre;
 import com.app.model.user.User;
 import com.app.service.AbstractService;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,10 +25,16 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
         return mongoTemplate.find(new Query().addCriteria(regex), User.class);
     }
 
-    // TODO
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        Query query = new Query();
+        query.addCriteria(Criteria.where("username").is(username));
+        List<User> users = mongoTemplate.find(query, User.class);
+        if (users.isEmpty()) {
+            throw new UsernameNotFoundException("username not found");
+        } else {
+            return users.get(0);
+        }
     }
 
     // TODO
@@ -51,10 +59,20 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
 
     // TODO
     public void addRoleToUser(User user, String Role) {
+
     }
 
     // TODO
     public boolean isTokenExist(String token) {
+        User user = getCurrentUser();
+        Query query = new Query();
+        query.addCriteria(Criteria.where("token").is(token));
+        query.addCriteria(Criteria.where("user_id").is(user.getId()));
+        ConfirmEmail confirmEmail = mongoTemplate.find(query, ConfirmEmail.class).get(0);
+        if (confirmEmail != null) {
+            LocalDateTime now = LocalDateTime.now();
+            return confirmEmail.getEndDate().isAfter(now);
+        }
         return false;
     }
 

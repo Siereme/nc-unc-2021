@@ -103,7 +103,7 @@ public class DirectorController {
 
     @PostMapping(value = "/handle/{commandType}")
     public String renderHandlePage(@ModelAttribute Director director, ModelMap model,
-                                   @PathVariable @NotBlank String commandType) {
+                                   @PathVariable @NotBlank String commandType) throws Exception {
         List<Film> films = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute(FILMS, films);
@@ -112,32 +112,34 @@ public class DirectorController {
         }
         if (Objects.equals(commandType, "page-edit")) {
             // TODO
-/*            int id = director.getId();
-            director = repository.findById(id);
+            int id = director.getId();
+            director = repository.findById(id).orElseThrow(() -> new Exception("Director is not found"));
             Collection<Integer> filmsByDirectorId = director.getFilmsIds();
-            films.removeIf(film -> filmsByDirectorId.stream().anyMatch(directorFilm -> directorFilm.getId() == film.getId()));
+            films.removeIf(film -> filmsByDirectorId.stream().anyMatch(directorFilm -> directorFilm == film.getId()));
             model.addAttribute(FILMS, films);
             model.addAttribute(FILM_LIST, filmsByDirectorId);
             model.addAttribute(MODAL_TITLE, "Edit");
             model.addAttribute(EVENT_TYPE, "handle/edit");
-            model.addAttribute("director", director);*/
+            model.addAttribute("director", director);
         }
         return "director-handle";
     }
 
     @PostMapping(value = "/handle/add")
-    public String add(@Validated @ModelAttribute Director director, BindingResult result, ModelMap map) {
+    public String add(@Validated @ModelAttribute Director director, BindingResult result, ModelMap map)
+            throws Exception {
         if (result.hasErrors()) {
             map.addAttribute(RESULT, result);
             return renderHandlePage(director, map, "page-add");
         }
-        director.setId(sequenceGeneratorService.generateSequence(Actor.SEQUENCE_NAME));
+        director.setId(sequenceGeneratorService.generateSequence(Director.SEQUENCE_NAME));
         repository.save(director);
         return "redirect:/directors/all";
     }
 
     @PostMapping(value = "/handle/edit")
-    public String edit(@Validated @ModelAttribute Director director, BindingResult result, ModelMap map) {
+    public String edit(@Validated @ModelAttribute Director director, BindingResult result, ModelMap map)
+            throws Exception {
         if (result.hasErrors()) {
             map.addAttribute(RESULT, result);
             return renderHandlePage(director, map, "page-edit");

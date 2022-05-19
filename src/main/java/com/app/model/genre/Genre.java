@@ -18,18 +18,18 @@ public class Genre implements IEntity {
     @Id
     private int id;
 
-    public Set<Film> getFilms() {
+    public Set<Integer> getFilms() {
         return films;
     }
 
-    public void setFilms(Set<Film> films) {
+    public void setFilms(Set<Integer> films) {
         this.films = films;
     }
 
     @NotBlank(message = "Title cannot be empty")
     private String tittle;
 
-    private Set<Film> films;
+    private Set<Integer> films;
 
     public Genre() {
         tittle = "";

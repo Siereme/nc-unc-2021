@@ -73,7 +73,7 @@ public class GenreController {
     }
 
     private void getGenresAndFilms(ModelMap model, Collection<Genre> genres) {
-        Collection<Collection<Film>> films = new LinkedList<>();
+        Collection<Collection<Integer>> films = new LinkedList<>();
         for (Genre genre : genres) {
             films.add(genre.getFilms());
         }
@@ -84,8 +84,8 @@ public class GenreController {
 
     @SuppressWarnings("SameReturnValue")
     @PostMapping(value = "/handle/{commandType}")
-    public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model,
-                                   @Valid @PathVariable String commandType) throws Exception {
+    public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model, @Valid @PathVariable String commandType)
+            throws Exception {
         Collection<Film> filmList = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute(FILMS, filmList);
@@ -95,11 +95,9 @@ public class GenreController {
         if (Objects.equals(commandType, "page-edit")) {
             int id = genre.getId();
             genre = repository.findById(id).orElseThrow(() -> new Exception("Genre is not found"));
-//            Collection<Film> filmGenreList = genre.getFilms();
-
-//            filmList.removeIf(film -> filmGenreList.stream().anyMatch(filmGenre -> filmGenre.getId() == film.getId()));
-//
-//            model.addAttribute(FILM_LIST, filmGenreList);
+            Collection<Integer> filmGenreList = genre.getFilms();
+            filmList.removeIf(film -> filmGenreList.stream().anyMatch(filmGenre -> filmGenre == film.getId()));
+            model.addAttribute(FILM_LIST, filmGenreList);
             model.addAttribute(FILMS, filmList);
             model.addAttribute(MODAL_TITLE, "Edit");
             model.addAttribute(EVENT_TYPE, "edit");

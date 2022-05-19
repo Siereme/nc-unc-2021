@@ -45,19 +45,28 @@ public class FilmController implements WebMvcConfigurer {
         Collection<Collection<Genre>> genres = new LinkedList<>();
         Collection<Collection<Director>> directors = new LinkedList<>();
         Collection<Collection<Actor>> actors = new LinkedList<>();
+        getAll(model, films, genres, directors, actors);
+        logger.info("Show all films");
+
+        return "films";
+    }
+
+    private void getAll(ModelMap model, Collection<Film> films, Collection<Collection<Genre>> genres,
+                        Collection<Collection<Director>> directors, Collection<Collection<Actor>> actors) {
         for (Film film : films) {
-            genres.add(film.getGenres());
-            directors.add(film.getDirectors());
-            actors.add(film.getActors());
+            Collection<Genre> genres1 = (Collection<Genre>) genresRepository.findAllById(film.getGenres());
+            genres.add(genres1);
+            Collection<Actor> actors1 = (Collection<Actor>) actorsRepository.findAllById(film.getActors());
+            actors.add(actors1);
+            Collection<Director> directors1 =
+                    (Collection<Director>) directorsRepository.findAllById(film.getDirectors());
+            directors.add(directors1);
         }
         model.addAttribute(FILMS, films);
         model.addAttribute(GENRES, genres);
         model.addAttribute(ACTORS, actors);
         model.addAttribute(DIRECTORS, directors);
         model.addAttribute(JSON, "../serialize/films");
-        logger.info("Show all films");
-
-        return "films";
     }
 
     @GetMapping(value = "/errors")
@@ -88,17 +97,7 @@ public class FilmController implements WebMvcConfigurer {
             Collection<Collection<Genre>> genres = new LinkedList<>();
             Collection<Collection<Actor>> actors = new LinkedList<>();
             Collection<Collection<Director>> directors = new LinkedList<>();
-            for (Film film : findFilm) {
-                genres.add(film.getGenres());
-                actors.add(film.getActors());
-                directors.add(film.getDirectors());
-            }
-            model.addAttribute(FILMS, findFilm);
-            model.addAttribute(GENRES, genres);
-            model.addAttribute(ACTORS, actors);
-            model.addAttribute(DIRECTORS, directors);
-
-            model.addAttribute(JSON, "../serialize/films");
+            getAll(model, findFilm, genres, directors, actors);
             return new ModelAndView(FILMS, model);
         }
         model.addAttribute(FILMS, findFilm);
@@ -123,19 +122,19 @@ public class FilmController implements WebMvcConfigurer {
 
             int id = film.getId();
             film = repository.findById(id).orElseThrow(() -> new Exception("Film is not found"));
-            Collection<Genre> genreList = film.getGenres();
-            Collection<Actor> actorList = film.getActors();
-            Collection<Director> directorList = film.getDirectors();
+            Collection<Integer> genreList = film.getGenres();
+            Collection<Integer> actorList = film.getActors();
+            Collection<Integer> directorList = film.getDirectors();
 
-            if(genres != null){
-                genres.removeIf(genre -> genreList.stream().anyMatch(filmGenre -> filmGenre.getId() == genre.getId()));
+            if (genres.size() != 0) {
+                genres.removeIf(genre -> genreList.stream().anyMatch(filmGenre -> filmGenre == genre.getId()));
             }
-            if(actors != null){
-                actors.removeIf(actor -> actorList.stream().anyMatch(filmActor -> filmActor.getId() == actor.getId()));
+            if (actors.size() != 0) {
+                actors.removeIf(actor -> actorList.stream().anyMatch(filmActor -> filmActor == actor.getId()));
             }
-            if(directors != null){
-                directors.removeIf(director -> directorList.stream()
-                        .anyMatch(filmDirector -> filmDirector.getId() == director.getId()));
+            if (directors.size() != 0) {
+                directors.removeIf(
+                        director -> directorList.stream().anyMatch(filmDirector -> filmDirector == director.getId()));
             }
 
             model.addAttribute(GENRE_LIST, genreList);

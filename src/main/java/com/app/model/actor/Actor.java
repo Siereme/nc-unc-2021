@@ -1,7 +1,6 @@
 package com.app.model.actor;
 
 import com.app.model.IEntity;
-import com.app.model.film.Film;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Id;
@@ -11,7 +10,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@Document
 public class Actor implements IEntity {
 
     @Transient
@@ -23,13 +21,13 @@ public class Actor implements IEntity {
     private String name;
     @NotBlank(message = "Name cannot be empty")
     private String year;
-    private Set<Film> films;
+    private Set<Integer> films;
 
-    public Set<Film> getFilms() {
+    public Set<Integer> getFilms() {
         return films;
     }
 
-    public void setFilms(Set<Film> films) {
+    public void setFilms(Set<Integer> films) {
         this.films = films;
     }
 

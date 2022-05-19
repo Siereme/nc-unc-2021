@@ -1,23 +1,15 @@
 package com.app.model.confirmEmail;
 
-import com.app.model.user.User;
+import com.app.model.IEntity;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 
 @Document
-public class ConfirmEmail {
+public class ConfirmEmail implements IEntity {
 
     @Transient
     public static final String SEQUENCE_NAME = "confirm_email_sequence";
@@ -53,7 +45,6 @@ public class ConfirmEmail {
         this.endDate = endDate;
     }
 
-    @Column(name = "date_end")
     private LocalDateTime endDate;
 
     public ConfirmEmail(Integer userId, String token) {

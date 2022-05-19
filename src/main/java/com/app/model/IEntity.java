@@ -1,5 +1,6 @@
 package com.app.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
 
 //@JsonTypeInfo(
 //        use = JsonTypeInfo.Id.NAME,
@@ -12,6 +13,7 @@ package com.app.model;
 //        @JsonSubTypes.Type(value = Film.class, name = "film"),
 //    }
 //)
+@Document
 public interface IEntity{
     int getId();
 }

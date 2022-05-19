@@ -6,6 +6,7 @@ import com.app.model.film.Film;
 import com.app.model.role.Role;
 import com.app.validator.CheckUserName;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -34,6 +35,7 @@ import java.util.Set;
  * @version 1.0
  * */
 
+@Document
 @JsonTypeName("visitor")
 @CheckUserName
 public class User implements IEntity, UserDetails {
@@ -70,11 +72,6 @@ public class User implements IEntity, UserDetails {
         this.email = email;
     }
 
-    @NotNull
-    @Size(min = 1, message = "pick at least one role")
-    @ManyToMany
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
     public User() {
@@ -91,12 +88,6 @@ public class User implements IEntity, UserDetails {
     }
 
     public User(String username, String password, Set<Role> roles) {
-        this.username = username;
-        this.password = password;
-        this.roles = roles;
-    }
-
-    public User(String username, String password, Set<Role> roles, Set<Film> films) {
         this.username = username;
         this.password = password;
         this.roles = roles;

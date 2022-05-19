@@ -1,5 +1,6 @@
 package com.app.model.role;
 
+import com.app.model.IEntity;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -11,7 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Document
-public class Role implements GrantedAuthority {
+public class Role implements GrantedAuthority, IEntity {
 
     public Role(int id, String name) {
         this.id = id;

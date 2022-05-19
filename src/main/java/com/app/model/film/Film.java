@@ -26,11 +26,11 @@ public class Film implements IEntity {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
     @JsonIgnoreProperties(value = "films", allowSetters = true)
-    private Set<Actor> actors = new HashSet<>();
+    private Set<Integer> actors = new HashSet<>();
     @JsonIgnoreProperties(value = "films", allowSetters = true)
-    private Set<Director> directors = new HashSet<>();
+    private Set<Integer> directors = new HashSet<>();
     @JsonIgnoreProperties(value = "films", allowSetters = true)
-    private Set<Genre> genres = new HashSet<>();
+    private Set<Integer> genres = new HashSet<>();
 
     public void setId(int id) {
         this.id = id;
@@ -75,27 +75,27 @@ public class Film implements IEntity {
         return result;
     }
 
-    public Set<Actor> getActors() {
+    public Set<Integer> getActors() {
         return actors;
     }
 
-    public void setActors(Set<Actor> actors) {
+    public void setActors(Set<Integer> actors) {
         this.actors = actors;
     }
 
-    public Set<Director> getDirectors() {
+    public Set<Integer> getDirectors() {
         return directors;
     }
 
-    public void setDirectors(Set<Director> directors) {
+    public void setDirectors(Set<Integer> directors) {
         this.directors = directors;
     }
 
-    public Set<Genre> getGenres() {
+    public Set<Integer> getGenres() {
         return genres;
     }
 
-    public void setGenres(Set<Genre> genres) {
+    public void setGenres(Set<Integer> genres) {
         this.genres = genres;
     }
 
