@@ -1,7 +1,8 @@
 package com.app.controller;
 
+import com.app.model.role.Role;
 import com.app.model.user.User;
-import com.app.repository.UserRepository;
+import com.app.repository.RoleRepository;
 import com.app.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import static com.app.ConstantVariables.*;
+import static com.app.ConstantVariables.PASSWORD_ERROR;
+import static com.app.ConstantVariables.USERNAME_ERROR;
+import static com.app.ConstantVariables.USER_FORM;
 
 @SuppressWarnings("SameReturnValue")
 @Controller
@@ -22,6 +25,9 @@ public class RegistrationController {
     @Lazy
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoleRepository roleRepository;
 
     @GetMapping("/registration")
     public String registration(Model model) {

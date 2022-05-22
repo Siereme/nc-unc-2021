@@ -1,9 +1,12 @@
 package com.app.service.user;
 
 import com.app.model.confirmEmail.ConfirmEmail;
-import com.app.model.genre.Genre;
+import com.app.model.role.Role;
 import com.app.model.user.User;
 import com.app.service.AbstractService;
+import com.app.service.SequenceGeneratorService;
+import com.app.service.role.RoleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.Authentication;
@@ -19,6 +22,13 @@ import java.util.List;
 
 @Service
 public class UserService extends AbstractService<User> implements UserDetailsService {
+
+    @Autowired
+    private RoleService roleService;
+
+    @Autowired
+    SequenceGeneratorService sequenceGeneratorService;
+
     @Override
     public List<User> findByContains(String query) {
         Criteria regex = Criteria.where("username").regex(query);
@@ -37,9 +47,11 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
         }
     }
 
-    // TODO
     public boolean isUserExist(String username) {
-        return false;
+        Query query = new Query();
+        query.addCriteria(Criteria.where("username").is(username));
+        List<User> users = mongoTemplate.find(query, User.class);
+        return !users.isEmpty();
     }
 
     public boolean saveUser(User user) {
@@ -51,18 +63,19 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
             String hashedPassword = passwordEncoder.encode(password);
             user.setPassword(hashedPassword);
 
+            user.setUser_id(sequenceGeneratorService.generateSequence(User.SEQUENCE_NAME));
+
             mongoTemplate.save(user);
             return true;
         }
         return false;
     }
 
-    // TODO
     public void addRoleToUser(User user, String Role) {
-
+        Role role = roleService.findByName(Role);
+        user.getRoles().add(role);
     }
 
-    // TODO
     public boolean isTokenExist(String token) {
         User user = getCurrentUser();
         Query query = new Query();
@@ -108,7 +121,8 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
         return (User) loadUserByUsername(currentUserName);
     }
 
-    // TODO
-    public void removeRoleNoConfirmedFromUser(User currentUser) {
+    public void removeRoleFromUser(User user, String role) {
+        Role removedRole = roleService.findByName(role);
+        user.getRoles().remove(removedRole);
     }
 }

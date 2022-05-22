@@ -9,7 +9,10 @@ import com.app.model.film.Film;
 import com.app.repository.ActorsRepository;
 import com.app.repository.GenresRepository;
 import com.app.service.SequenceGeneratorService;
+import com.app.service.actor.ActorService;
+import com.app.service.director.DirectorService;
 import com.app.service.film.FilmService;
+import com.app.service.genre.GenreService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -54,12 +57,12 @@ public class FilmController implements WebMvcConfigurer {
     private void getAll(ModelMap model, Collection<Film> films, Collection<Collection<Genre>> genres,
                         Collection<Collection<Director>> directors, Collection<Collection<Actor>> actors) {
         for (Film film : films) {
-            Collection<Genre> genres1 = (Collection<Genre>) genresRepository.findAllById(film.getGenres());
+            Collection<Genre> genres1 = (Collection<Genre>) genresRepository.findAllById(film.getGenresIds());
             genres.add(genres1);
-            Collection<Actor> actors1 = (Collection<Actor>) actorsRepository.findAllById(film.getActors());
+            Collection<Actor> actors1 = (Collection<Actor>) actorsRepository.findAllById(film.getActorsIds());
             actors.add(actors1);
             Collection<Director> directors1 =
-                    (Collection<Director>) directorsRepository.findAllById(film.getDirectors());
+                    (Collection<Director>) directorsRepository.findAllById(film.getDirectorsIds());
             directors.add(directors1);
         }
         model.addAttribute(FILMS, films);
@@ -122,9 +125,9 @@ public class FilmController implements WebMvcConfigurer {
 
             int id = film.getId();
             film = repository.findById(id).orElseThrow(() -> new Exception("Film is not found"));
-            Collection<Integer> genreList = film.getGenres();
-            Collection<Integer> actorList = film.getActors();
-            Collection<Integer> directorList = film.getDirectors();
+            Collection<Integer> genreList = film.getGenresIds();
+            Collection<Integer> actorList = film.getActorsIds();
+            Collection<Integer> directorList = film.getDirectorsIds();
 
             if (genres.size() != 0) {
                 genres.removeIf(genre -> genreList.stream().anyMatch(filmGenre -> filmGenre == genre.getId()));
@@ -163,6 +166,9 @@ public class FilmController implements WebMvcConfigurer {
             return renderHandlePage(film, map, "page-add");
         }
         film.setId(sequenceGeneratorService.generateSequence(Film.SEQUENCE_NAME));
+        genreService.addFilmToGenres(film);
+        actorService.addFilmToActor(film);
+        directorService.addFilmToDirectors(film);
         repository.insert(film);
         return "redirect:/films/all";
     }
@@ -183,15 +189,21 @@ public class FilmController implements WebMvcConfigurer {
     }
 
     @Autowired
-    FilmsRepository repository;
+    private FilmsRepository repository;
     @Autowired
-    FilmService service;
+    private FilmService service;
     @Autowired
-    SequenceGeneratorService sequenceGeneratorService;
+    private SequenceGeneratorService sequenceGeneratorService;
     @Autowired
-    GenresRepository genresRepository;
+    private GenresRepository genresRepository;
     @Autowired
-    ActorsRepository actorsRepository;
+    private GenreService genreService;
     @Autowired
-    DirectorsRepository directorsRepository;
+    private ActorsRepository actorsRepository;
+    @Autowired
+    private ActorService actorService;
+    @Autowired
+    private DirectorsRepository directorsRepository;
+    @Autowired
+    private DirectorService directorService;
 }

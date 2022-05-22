@@ -1,3 +1,4 @@
+/*
 package com.app.service.mail.kafka;
 
 import com.app.model.emailInfo.NewEmail;
@@ -5,11 +6,8 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -30,7 +28,8 @@ public class KafkaProducer {
     @Scheduled(cron = "0 * * * * *")
     public void sendMessage() throws InterruptedException {
 
-        if (queue.size() != 0) {
+     */
+/*   if (queue.size() != 0) {
             NewEmail email = queue.take();
             ListenableFuture<SendResult<String, NewEmail>> future = kafkaTemplate.send(topicName, email);
 
@@ -47,7 +46,8 @@ public class KafkaProducer {
                     logger.warn("Unable to send message=[" + email + "] due to : " + ex.getMessage());
                 }
             });
-        }
+        }*//*
+
 
     }
 
@@ -55,3 +55,4 @@ public class KafkaProducer {
         queue.add(email);
     }
 }
+*/

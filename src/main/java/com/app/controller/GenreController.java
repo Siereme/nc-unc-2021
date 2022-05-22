@@ -5,6 +5,7 @@ import com.app.model.film.Film;
 import com.app.model.genre.Genre;
 import com.app.repository.GenresRepository;
 import com.app.service.SequenceGeneratorService;
+import com.app.service.film.FilmService;
 import com.app.service.genre.GenreService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static com.app.ConstantVariables.*;
 
@@ -84,8 +86,8 @@ public class GenreController {
 
     @SuppressWarnings("SameReturnValue")
     @PostMapping(value = "/handle/{commandType}")
-    public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model,
-                                   @Valid @PathVariable String commandType) throws Exception {
+    public String renderHandlePage(@ModelAttribute Genre genre, ModelMap model, @Valid @PathVariable String commandType)
+            throws Exception {
         Collection<Film> filmList = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute(FILMS, filmList);
@@ -109,7 +111,11 @@ public class GenreController {
     }
 
     @PostMapping(value = "/handle/delete/{id}")
-    public ModelAndView delete(@Valid @PathVariable int id) {
+    public ModelAndView delete(@Valid @PathVariable int id) throws Exception {
+        // remove genre from all films
+        Genre genre = repository.findById(id).orElseThrow(() -> new Exception("Genre is not found"));
+        filmService.removeGenreFromFilms(genre);
+
         repository.deleteById(id);
         return new ModelAndView("redirect:/genres/all");
     }
@@ -121,6 +127,9 @@ public class GenreController {
             return renderHandlePage(genre, map, "page-add");
         }
         genre.setId(sequenceGeneratorService.generateSequence(Genre.SEQUENCE_NAME));
+
+        // add genre to all films
+        filmService.addGenreToFilms(genre);
         repository.insert(genre);
         return "redirect:/genres/all";
     }
@@ -131,6 +140,10 @@ public class GenreController {
             map.addAttribute(RESULT, result);
             return renderHandlePage(genre, map, "page-edit");
         }
+
+        // check films for genre
+        filmService.updateFilmsByGenre(genre);
+
         repository.save(genre);
         return "redirect:/genres/all";
     }
@@ -146,6 +159,8 @@ public class GenreController {
     GenreService service;
     @Autowired
     private FilmsRepository filmsRepository;
+    @Autowired
+    private FilmService filmService;
     @Autowired
     SequenceGeneratorService sequenceGeneratorService;
 }

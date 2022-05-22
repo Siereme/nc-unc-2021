@@ -1,3 +1,4 @@
+/*
 package com.app.service.mail;
 
 import com.app.model.IEntity;
@@ -35,3 +36,4 @@ public class MailHandler {
         }
     }
 }
+*/

@@ -17,7 +17,6 @@ public class MailController {
     @Lazy
     private final MailService mailService;
 
-
     private final UserService userService;
 
     @Autowired
@@ -36,11 +35,10 @@ public class MailController {
     public String verificationToken(@PathVariable("token") String token) throws MessagingException {
         if (userService.isTokenExist(token)) {
             User currentUser = userService.getCurrentUser();
-            userService.removeRoleNoConfirmedFromUser(currentUser);
+            userService.removeRoleFromUser(currentUser, "ROLE_NO_CONFIRMED");
             mailService.sendSuccessfulConfirmMessage();
         }
         return "redirect:/films/all";
     }
-
 
 }
