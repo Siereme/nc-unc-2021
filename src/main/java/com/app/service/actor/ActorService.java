@@ -24,12 +24,36 @@ public class ActorService extends AbstractService<Actor> {
         return mongoTemplate.find(new Query().addCriteria(regex), Actor.class);
     }
 
-    public void addFilmToActor(Film film) {
+    public void addFilmToActors(Film film) {
         Integer filmId = film.getId();
         Collection<Integer> actors = film.getActorsIds();
         Collection<Actor> actorCollection = (Collection<Actor>) actorsRepository.findAllById(actors);
         for (Actor actor : actorCollection) {
             actor.getFilmsIds().add(filmId);
+            actorsRepository.save(actor);
+        }
+    }
+
+    public void removeFilmFromActors(Film film) {
+        Integer filmId = film.getId();
+        Collection<Integer> actors = film.getActorsIds();
+        Collection<Actor> actorCollection = (Collection<Actor>) actorsRepository.findAllById(actors);
+        for (Actor actor : actorCollection) {
+            actor.getFilmsIds().remove(filmId);
+            actorsRepository.save(actor);
+        }
+    }
+
+    public void updateActorsByFilm(Film film) {
+        Collection<Integer> actors = film.getActorsIds();
+        Collection<Actor> actorCollection = actorsRepository.findAll();
+        Integer filmId = film.getId();
+        for (Actor actor : actorCollection) {
+            if (actors.contains(actor.getId())) {
+                    actor.getFilmsIds().add(filmId);
+            } else {
+                actor.getFilmsIds().remove(filmId);
+            }
             actorsRepository.save(actor);
         }
     }

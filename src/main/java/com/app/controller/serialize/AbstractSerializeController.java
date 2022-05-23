@@ -2,7 +2,6 @@ package com.app.controller.serialize;
 
 import com.app.controller.FilmController;
 import com.app.model.IEntity;
-import com.app.repository.AbstractRepository;
 import com.app.repository.IRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,8 +20,16 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.transaction.Transactional;
-import java.io.*;
-import java.util.*;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Validated

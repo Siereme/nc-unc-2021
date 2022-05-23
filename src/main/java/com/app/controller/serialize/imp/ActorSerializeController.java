@@ -45,6 +45,7 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
         return "redirect:/actors";
     }
 
+    // TODO
     @Override
     protected List<String> checkErrors(List<Actor> actorList) {
 
@@ -58,7 +59,7 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
 //        List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
 
 //        return new LinkedList<>(errorFilmsMessages);
-        return null;
+        return new LinkedList<>();
     }
 
 

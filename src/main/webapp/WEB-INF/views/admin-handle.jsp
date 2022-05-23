@@ -21,8 +21,10 @@
         <div class="row">
             <div class="col-6">
                 <span>Name</span>
-                <input type="hidden" name="user_id" value="${user.getId()}"/>
+                <input type="hidden" name="id" value="${user.getId()}"/>
                 <input class="form-control" name="username" value="${user.getUsername()}">
+                <span>Email</span>
+                <input class="form-control" name="email" value="${user.getEmail()}">
                 <span>Password</span>
                 <input class="form-control" name="password" value="${user.getPassword()}">
                 <span>Password Confirm</span>

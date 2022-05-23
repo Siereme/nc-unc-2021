@@ -63,7 +63,7 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
             String hashedPassword = passwordEncoder.encode(password);
             user.setPassword(hashedPassword);
 
-            user.setUser_id(sequenceGeneratorService.generateSequence(User.SEQUENCE_NAME));
+            user.setId(sequenceGeneratorService.generateSequence(User.SEQUENCE_NAME));
 
             mongoTemplate.save(user);
             return true;

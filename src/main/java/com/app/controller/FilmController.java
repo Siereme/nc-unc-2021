@@ -154,7 +154,11 @@ public class FilmController implements WebMvcConfigurer {
     }
 
     @PostMapping(value = "/handle/delete/{id}")
-    public ModelAndView delete(@PathVariable("id") @NotNull int id) {
+    public ModelAndView delete(@PathVariable("id") @NotNull int id) throws Exception {
+        Film film = repository.findById(id).orElseThrow(() -> new Exception("Film is not found"));
+        genreService.removeFilmFromGenre(film);
+        actorService.removeFilmFromActors(film);
+        directorService.removeFilmFromDirectors(film);
         repository.deleteById(id);
         return new ModelAndView("redirect:/films/all");
     }
@@ -167,7 +171,7 @@ public class FilmController implements WebMvcConfigurer {
         }
         film.setId(sequenceGeneratorService.generateSequence(Film.SEQUENCE_NAME));
         genreService.addFilmToGenres(film);
-        actorService.addFilmToActor(film);
+        actorService.addFilmToActors(film);
         directorService.addFilmToDirectors(film);
         repository.insert(film);
         return "redirect:/films/all";
@@ -179,6 +183,9 @@ public class FilmController implements WebMvcConfigurer {
             map.addAttribute(RESULT, result);
             return renderHandlePage(film, map, "page-edit");
         }
+        genreService.updateGenresByFilm(film);
+        actorService.updateActorsByFilm(film);
+        directorService.updateDirectorsByFilm(film);
         repository.save(film);
         return "redirect:/films/all";
     }

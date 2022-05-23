@@ -1,8 +1,6 @@
 package com.app.model.user;
 
 import com.app.model.IEntity;
-import com.app.model.confirmEmail.ConfirmEmail;
-import com.app.model.film.Film;
 import com.app.model.role.Role;
 import com.app.validator.CheckUserName;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -10,21 +8,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -43,14 +28,15 @@ public class User implements IEntity, UserDetails {
     @Transient
     public static final String SEQUENCE_NAME = "user_sequence";
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setId(int id) {
+        this.id = id;
     }
 
     @Id
-    private int user_id;
+    private int id;
     private String username;
     private String password;
+    @Transient
     private String passwordConfirm;
     private String email;
 
@@ -80,8 +66,8 @@ public class User implements IEntity, UserDetails {
         this.roles = new HashSet<>();
     }
 
-    public User(int user_id, String username, String password) {
-        this.user_id = user_id;
+    public User(int id, String username, String password) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.roles = new HashSet<>();
@@ -158,12 +144,8 @@ public class User implements IEntity, UserDetails {
         this.roles = roles;
     }
 
-    public int getUser_id() {
-        return user_id;
-    }
-
     @Override
     public int getId() {
-        return getUser_id();
+        return id;
     }
 }

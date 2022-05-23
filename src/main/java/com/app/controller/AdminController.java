@@ -4,6 +4,7 @@ import com.app.model.role.Role;
 import com.app.model.user.User;
 import com.app.repository.RoleRepository;
 import com.app.repository.UserRepository;
+import com.app.service.SequenceGeneratorService;
 import com.app.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,9 @@ public class AdminController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @SuppressWarnings("SameReturnValue")
     @GetMapping("/all")
@@ -99,6 +103,7 @@ public class AdminController {
             map.addAttribute("result", result);
             return renderHandlePage(user, map, "page-add");
         }
+        user.setId(sequenceGeneratorService.generateSequence(User.SEQUENCE_NAME));
         repository.insert(user);
         return "redirect:/admin/all";
     }

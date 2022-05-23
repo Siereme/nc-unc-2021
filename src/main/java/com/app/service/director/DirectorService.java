@@ -33,4 +33,31 @@ public class DirectorService extends AbstractService<Director> {
             directorsRepository.save(director);
         }
     }
+
+    public void removeFilmFromDirectors(Film film) {
+        Integer filmId = film.getId();
+        Collection<Integer> directors = film.getDirectorsIds();
+        Collection<Director> directorCollection = (Collection<Director>) directorsRepository.findAllById(directors);
+        for (Director director : directorCollection) {
+            director.getFilmsIds().remove(filmId);
+            directorsRepository.save(director);
+        }
+    }
+
+    public void updateDirectorsByFilm(Film film) {
+        Collection<Integer> directors = film.getDirectorsIds();
+        Collection<Director> directorCollection = (Collection<Director>) directorsRepository.findAll();
+        Integer filmId = film.getId();
+        for (Director director : directorCollection) {
+            if (directors.contains(director.getId())) {
+                director.getFilmsIds().add(filmId);
+            }
+            else{
+                director.getFilmsIds().remove(filmId);
+            }
+            directorsRepository.save(director);
+        }
+
+    }
+
 }

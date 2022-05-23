@@ -42,7 +42,8 @@
                 </td>
                 <td class="align-middle col-1">
                     <form action="handle/page-edit" method="post">
-                        <input type="hidden" name="user_id" value="${user.getId()}"/>
+                        <input type="hidden" name="id" value="${user.getId()}"/>
+                        <input type="hidden" name="email" value="${user.getEmail()}"/>
                         <input type="hidden" name="username" value="${user.getUsername()}"/>
                         <input type="hidden" name="password" value="${user.getPassword()}">
                         <input type="submit" class="btn btn-outline-dark" value="Edit"/>

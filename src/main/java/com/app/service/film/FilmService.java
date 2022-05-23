@@ -50,13 +50,9 @@ public class FilmService extends AbstractService<Film> {
         Integer genreId = genre.getId();
         for (Film film : filmCollection) {
             if (films.contains(film.getId())) {
-                if (!film.getGenresIds().contains(genreId)) {
-                    film.getGenresIds().add(genreId);
-                }
+                film.getGenresIds().add(genreId);
             } else {
-                if (film.getGenresIds().contains(genreId)) {
-                    film.getGenresIds().remove(genreId);
-                }
+                film.getGenresIds().remove(genreId);
             }
             filmsRepository.save(film);
         }

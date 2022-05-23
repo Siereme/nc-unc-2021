@@ -38,7 +38,29 @@ public class GenreService extends AbstractService<Genre> {
         }
     }
 
+    public void removeFilmFromGenre(Film film) {
+        Integer filmId = film.getId();
+        Collection<Integer> genresIds = film.getGenresIds();
+        Collection<Genre> genreCollection = (Collection<Genre>) genresRepository.findAllById(genresIds);
+        for (Genre genre : genreCollection) {
+            genre.getFilmsIds().remove(filmId);
+            genresRepository.save(genre);
+        }
+    }
 
+    public void updateGenresByFilm(Film film) {
+        Integer filmId = film.getId();
+        Collection<Integer> genresIds = film.getGenresIds();
+        Collection<Genre> genreCollection = (Collection<Genre>) genresRepository.findAll();
+        for (Genre genre : genreCollection) {
+            if (genresIds.contains(genre.getId())) {
+                genre.getFilmsIds().add(filmId);
+            } else {
+                genre.getFilmsIds().remove(filmId);
+            }
+            genresRepository.save(genre);
+        }
 
+    }
 
 }

@@ -3,6 +3,7 @@ package com.app.controller;
 import com.app.model.role.Role;
 import com.app.model.user.User;
 import com.app.repository.RoleRepository;
+import com.app.service.SequenceGeneratorService;
 import com.app.service.user.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class RegistrationController {
     @Lazy
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private SequenceGeneratorService sequenceGeneratorService;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -55,6 +59,7 @@ public class RegistrationController {
             model.addAttribute(PASSWORD_ERROR, "passwords don't match");
             return "registration";
         } else {
+            userService.addRoleToUser(userForm, "ROLE_ADMIN");
             userService.addRoleToUser(userForm, "ROLE_USER");
             userService.addRoleToUser(userForm, "ROLE_NO_CONFIRMED");
             if (!userService.saveUser(userForm)) {
