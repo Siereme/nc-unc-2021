@@ -7,6 +7,7 @@ import com.app.service.AbstractService;
 import com.app.service.SequenceGeneratorService;
 import com.app.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.security.core.Authentication;
@@ -17,11 +18,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService extends AbstractService<User> implements UserDetailsService {
+
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     @Autowired
     private RoleService roleService;
@@ -80,25 +86,28 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
         User user = getCurrentUser();
         Query query = new Query();
         query.addCriteria(Criteria.where("token").is(token));
-        query.addCriteria(Criteria.where("user_id").is(user.getId()));
-        ConfirmEmail confirmEmail = mongoTemplate.find(query, ConfirmEmail.class).get(0);
-        if (confirmEmail != null) {
+        query.addCriteria(Criteria.where("userId").is(user.getId()));
+        List<ConfirmEmail> confirmEmails = mongoTemplate.find(query, ConfirmEmail.class);
+        if (confirmEmails.size() != 0) {
             LocalDateTime now = LocalDateTime.now();
-            return confirmEmail.getEndDate().isAfter(now);
+            return confirmEmails.get(0).getEndDate().isAfter(now);
         }
         return false;
     }
 
     public int getCountActiveLinks(User user) {
-/*        int userId = user.getUser_id();
+        int userId = user.getId();
+        Query query = new Query();
+        query.addCriteria(Criteria.where("userId").is(userId));
         LocalDateTime now = LocalDateTime.now();
-        // TODO добавить сравнение даты
-        //        BigInteger count = (BigInteger) entityManager.createNativeQuery(
-        //                        "select count(*) from confirm_tokens where user_id = :user_id")
-        //                .setParameter("user_id", userId).getSingleResult();
-        //        return count.intValue();
-        return 0;*/
-        return -1;
+        int count = 0;
+        List<ConfirmEmail> confirmEmails = mongoTemplate.find(query, ConfirmEmail.class);
+        for (ConfirmEmail confirmEmail : confirmEmails) {
+            if (confirmEmail.getEndDate().isBefore(now)) {
+                count++;
+            }
+        }
+        return count;
     }
 
     public boolean isLinksEnough(User user, int countLinks) {
@@ -121,8 +130,11 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
         return (User) loadUserByUsername(currentUserName);
     }
 
-    public void removeRoleFromUser(User user, String role) {
+    public void removeRoleFromUser(User user, String role) throws Exception {
+        // TODO роль не удаляется
         Role removedRole = roleService.findByName(role);
-        user.getRoles().remove(removedRole);
+        Set<Role> roleSet = user.getRoles();
+        roleSet.remove(removedRole);
+        user.setRoles(roleSet);
     }
 }

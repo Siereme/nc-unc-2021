@@ -45,6 +45,17 @@ public class Role implements GrantedAuthority, IEntity {
     }
 
     @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Role objRole = (Role) obj;
+        return id == objRole.getId();
+    }
+
+    @Override
     public String getAuthority() {
         return getName();
     }

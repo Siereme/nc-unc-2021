@@ -6,6 +6,7 @@ import com.app.repository.FilmsRepository;
 import com.app.repository.ActorsRepository;
 import com.app.service.SequenceGeneratorService;
 import com.app.service.actor.ActorService;
+import com.app.service.film.FilmService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -52,7 +53,9 @@ public class ActorController {
     @Autowired
     private ActorsRepository repository;
     @Autowired
-    ActorService service;
+    private ActorService service;
+    @Autowired
+    private FilmService filmService;
 
     @Autowired
     private FilmsRepository filmsRepository;
@@ -65,8 +68,9 @@ public class ActorController {
     }
 
     @GetMapping(value = "/errors")
-    public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model, SessionStatus sessionStatus) {
-        if(!errors.isEmpty()){
+    public String getWithErrors(@ModelAttribute("errors") List<String> errors, ModelMap model,
+                                SessionStatus sessionStatus) {
+        if (!errors.isEmpty()) {
             model.addAttribute(ERRORS, errors);
             sessionStatus.setComplete();
         }
@@ -74,8 +78,9 @@ public class ActorController {
     }
 
     @GetMapping(value = "/success")
-    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model, SessionStatus sessionStatus) {
-        if(!success.isEmpty()){
+    public String getWithSuccess(@ModelAttribute("success") List<String> success, ModelMap model,
+                                 SessionStatus sessionStatus) {
+        if (!success.isEmpty()) {
             model.addAttribute(SUCCESS, success);
         }
         sessionStatus.setComplete();
@@ -83,7 +88,9 @@ public class ActorController {
     }
 
     @PostMapping(value = "/handle/delete/{id}")
-    public ModelAndView delete(@PathVariable @NotNull int id) {
+    public ModelAndView delete(@PathVariable @NotNull int id) throws Exception {
+        Actor actor = repository.findById(id).orElseThrow(() -> new Exception("actor not found!"));
+        filmService.removeActorFromFilms(actor);
         repository.deleteById(id);
         return new ModelAndView("redirect:/actors/all");
     }
@@ -125,6 +132,7 @@ public class ActorController {
             return renderHandlePage(actor, map, "page-add");
         }
         actor.setId(sequenceGeneratorService.generateSequence(Actor.SEQUENCE_NAME));
+        filmService.addActorToFilms(actor);
         repository.insert(actor);
         return "redirect:/actors/all";
     }
@@ -135,6 +143,7 @@ public class ActorController {
             map.addAttribute(RESULT, result);
             return renderHandlePage(actor, map, "page-edit");
         }
+        filmService.updateFilmsByActor(actor);
         repository.save(actor);
         return "redirect:/actors/all";
     }

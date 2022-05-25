@@ -4,6 +4,7 @@ import com.app.model.confirmEmail.ConfirmEmail;
 import com.app.model.emailInfo.NewEmail;
 import com.app.model.user.User;
 import com.app.repository.ConfirmEmailRepository;
+import com.app.service.SequenceGeneratorService;
 import com.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -30,6 +31,8 @@ public class MailService {
     UserService userService;
     @Autowired
     private ConfirmEmailRepository confirmEmailRepository;
+    @Autowired
+    private SequenceGeneratorService sequenceGeneratorService;
 
     private String to;
     private final String subject = "[nc-unc-2021] Please confirm your email address!";
@@ -95,6 +98,7 @@ public class MailService {
     public void addTokenToDB(String token) {
         User user = userService.getCurrentUser();
         ConfirmEmail confirmEmail = new ConfirmEmail(user.getId(), token);
+        confirmEmail.setId(sequenceGeneratorService.generateSequence(ConfirmEmail.SEQUENCE_NAME));
         confirmEmailRepository.save(confirmEmail);
     }
 
@@ -128,8 +132,6 @@ public class MailService {
         String text = getMessageSuccessfulConfirm();
         context.put("text", text);
         context.put("from", from);
-        String link = getConfirmLink();
-        context.put("link", link);
         to = userService.getCurrentEmail();
         sendMessageUsingThymeleafTemplate(to, subject, context);
     }

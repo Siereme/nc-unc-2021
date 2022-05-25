@@ -1,6 +1,7 @@
 package com.app.controller;
 
 import com.app.model.user.User;
+import com.app.repository.UserRepository;
 import com.app.service.mail.MailService;
 import com.app.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,13 @@ public class MailController {
 
     private final UserService userService;
 
+    private final UserRepository userRepository;
+
     @Autowired
-    public MailController(MailService mailService, UserService userService) {
+    public MailController(MailService mailService, UserService userService, UserRepository userRepository) {
         this.mailService = mailService;
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @GetMapping("/sendHtmlEmail")
@@ -32,10 +36,11 @@ public class MailController {
     }
 
     @GetMapping("/nc-unc-2021/confirm-email/{token}")
-    public String verificationToken(@PathVariable("token") String token) throws MessagingException {
+    public String verificationToken(@PathVariable("token") String token) throws Exception {
         if (userService.isTokenExist(token)) {
             User currentUser = userService.getCurrentUser();
             userService.removeRoleFromUser(currentUser, "ROLE_NO_CONFIRMED");
+            userRepository.save(currentUser);
             mailService.sendSuccessfulConfirmMessage();
         }
         return "redirect:/films/all";

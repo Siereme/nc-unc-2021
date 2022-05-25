@@ -25,8 +25,7 @@ public class DirectorSerializeController extends AbstractSerializeController<Dir
 
     @Override
     protected IRepository<Director> getRepository() {
-//        return directorsRepository;
-        return null;
+        return directorsRepository;
     }
 
     @Override

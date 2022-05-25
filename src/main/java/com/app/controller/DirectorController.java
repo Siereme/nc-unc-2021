@@ -1,13 +1,12 @@
 package com.app.controller;
 
-import com.app.ConstantVariables;
-import com.app.model.actor.Actor;
 import com.app.repository.FilmsRepository;
 import com.app.model.director.Director;
 import com.app.model.film.Film;
 import com.app.repository.DirectorsRepository;
 import com.app.service.SequenceGeneratorService;
 import com.app.service.director.DirectorService;
+import com.app.service.film.FilmService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,6 +46,9 @@ public class DirectorController {
 
     @Autowired
     private FilmsRepository filmsRepository;
+
+    @Autowired
+    private FilmService filmService;
 
     private void getDirectorsAndFilmsList(Collection<Director> directorCollection, ModelMap model) {
         model.addAttribute(DIRECTORS, directorCollection);
@@ -89,7 +91,9 @@ public class DirectorController {
     }
 
     @PostMapping(value = "/handle/delete/{id}")
-    public ModelAndView delete(@PathVariable @NotNull int id) {
+    public ModelAndView delete(@PathVariable @NotNull int id) throws Exception {
+        Director director = repository.findById(id).orElseThrow(() -> new Exception("director not found!"));
+        filmService.removeDirectorFromFilms(director);
         repository.deleteById(id);
         return new ModelAndView("redirect:/directors/all");
     }
@@ -132,6 +136,7 @@ public class DirectorController {
             map.addAttribute(RESULT, result);
             return renderHandlePage(director, map, "page-add");
         }
+        filmService.addDirectorToFilm(director);
         director.setId(sequenceGeneratorService.generateSequence(Director.SEQUENCE_NAME));
         repository.save(director);
         return "redirect:/directors/all";
@@ -144,6 +149,7 @@ public class DirectorController {
             map.addAttribute(RESULT, result);
             return renderHandlePage(director, map, "page-edit");
         }
+        filmService.updateFilmsByDirector(director);
         repository.save(director);
         return "redirect:/directors/all";
     }
