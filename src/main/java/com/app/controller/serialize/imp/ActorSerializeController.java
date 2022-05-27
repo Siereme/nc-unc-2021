@@ -67,7 +67,7 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
         List<Integer> checkFilmsIds = filmsRepository.findAll().stream().map(Film::getId).collect(Collectors.toList());
 
         List<String> errorFilmsMessages =
-                getErrorMessages(deserializeFilmsIds, checkFilmsIds, Actor.class.getSimpleName());
+                getErrorMessages(deserializeFilmsIds, checkFilmsIds, Film.class.getSimpleName());
 
         return new LinkedList<>(errorFilmsMessages);
     }

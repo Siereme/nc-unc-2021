@@ -71,7 +71,7 @@ public abstract class AbstractSerializeController<T extends IEntity> {
         return getErrorMesage(notFoundEntitiesIds, className);
     }
 
-    protected List<String> getUpdateMessages(List<? extends IEntity> entities, String message) {
+    protected List<String> getAddMessages(List<? extends IEntity> entities, String message) {
         return entities.stream().map(entity -> entity.getClass().getSimpleName() + " " + entity + " " + message)
                 .collect(Collectors.toList());
     }
@@ -117,10 +117,10 @@ public abstract class AbstractSerializeController<T extends IEntity> {
             List<T> updateEntityList = new LinkedList<>(fileEntityList);
             updateEntityList.removeAll(entityList);
 
-            List<String> addMassages = getUpdateMessages(updateEntityList, "was updated");
+            List<String> addMassages = getAddMessages(updateEntityList, "was added");
             List<String> successMessages = new ArrayList<>(addMassages);
 
-            //            updateEntityList.forEach(getRepository()::edit);
+            updateEntityList.forEach(getRepository()::save);
 
             attributes.addFlashAttribute("success", successMessages);
             return new ModelAndView(getRedirectPath() + "/success");
