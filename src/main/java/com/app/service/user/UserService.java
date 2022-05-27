@@ -103,7 +103,7 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
         int count = 0;
         List<ConfirmEmail> confirmEmails = mongoTemplate.find(query, ConfirmEmail.class);
         for (ConfirmEmail confirmEmail : confirmEmails) {
-            if (confirmEmail.getEndDate().isBefore(now)) {
+            if (confirmEmail.getEndDate().isAfter(now)) {
                 count++;
             }
         }
@@ -130,8 +130,7 @@ public class UserService extends AbstractService<User> implements UserDetailsSer
         return (User) loadUserByUsername(currentUserName);
     }
 
-    public void removeRoleFromUser(User user, String role) throws Exception {
-        // TODO роль не удаляется
+    public void removeRoleFromUser(User user, String role) {
         Role removedRole = roleService.findByName(role);
         Set<Role> roleSet = user.getRoles();
         roleSet.remove(removedRole);
