@@ -15,8 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/serialize/films")
@@ -43,7 +46,8 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
 
     @Override
     protected TypeReference<List<Film>> getRef() {
-        return new TypeReference<List<Film>>() {};
+        return new TypeReference<List<Film>>() {
+        };
     }
 
     @Override
@@ -51,39 +55,44 @@ public class FilmSerializeController extends AbstractSerializeController<Film> {
         return "redirect:/films";
     }
 
-
     @Override
     protected List<String> checkErrors(List<Film> filmList) {
 
-        List<Genre> deserializeGenres = new LinkedList<>();
-        List<Actor> deserializeActors = new LinkedList<>();
-        List<Director> deserializeDirectors = new LinkedList<>();
+        Set<Integer> deserializeGenresIdsSet = new HashSet<>();
+        Set<Integer> deserializeActorsIdsSet = new HashSet<>();
+        Set<Integer> deserializeDirectorsIdsSet = new HashSet<>();
+        for (Film film : filmList) {
+            deserializeActorsIdsSet.addAll(film.getActorsIds());
+            deserializeDirectorsIdsSet.addAll(film.getDirectorsIds());
+            deserializeGenresIdsSet.addAll(film.getGenresIds());
+        }
 
-//        filmList.forEach(film -> {
-//            deserializeGenres.addAll(film.getGenres());
-//            deserializeActors.addAll(film.getActors());
-//            deserializeDirectors.addAll(film.getDirectors());
-//        });
-//
-//        List<Integer> genreIds = getEntityIds(deserializeGenres);
-//        List<Genre> checkGenres = genresRepository.find(genreIds);
-//
-//        List<Integer> actorIds = getEntityIds(deserializeActors);
-//        List<Actor> checkActors = actorsRepository.find(actorIds);
-//        List<Integer> directorIds = getEntityIds(deserializeDirectors);
-//        List<Director> checkDirectors = directorsRepository.find(directorIds);
+        List<Integer> deserializeActorsIds = new LinkedList<>(deserializeActorsIdsSet);
+        List<Integer> deserializeDirectorIds = new LinkedList<>(deserializeDirectorsIdsSet);
+        List<Integer> deserializeGenresIds = new LinkedList<>(deserializeGenresIdsSet);
 
-//        List<String> errorGenresMessages = getErrorMessages(genreIds, deserializeGenres, checkGenres);
-//        List<String> errors = new LinkedList<>(errorGenresMessages);
-//
-//        List<String> errorActorsMessages = getErrorMessages(actorIds, deserializeActors, checkActors);
-//        errors.addAll(errorActorsMessages);
-//
-//        List<String> errorDirectorsMessages = getErrorMessages(directorIds, deserializeDirectors, checkDirectors);
-//        errors.addAll(errorDirectorsMessages);
-//
-//        return errors;
-        return null;
+        List<Integer> checkActorsIds =
+                actorsRepository.findAll().stream().map(Actor::getId).collect(Collectors.toList());
+        List<String> errorActorMessages =
+                getErrorMessages(deserializeActorsIds, checkActorsIds, Actor.class.getSimpleName());
+
+        List<Integer> checkDirectorIds =
+                directorsRepository.findAll().stream().map(Director::getId).collect(Collectors.toList());
+        List<String> errorDirectorMessages =
+                getErrorMessages(deserializeDirectorIds, checkDirectorIds, Director.class.getSimpleName());
+
+        List<Integer> checkGenreIds =
+                genresRepository.findAll().stream().map(Genre::getId).collect(Collectors.toList());
+        List<String> errorGenreMessages =
+                getErrorMessages(deserializeGenresIds, checkGenreIds, Genre.class.getSimpleName());
+
+        List<String> errors = new LinkedList<>();
+        errors.addAll(errorActorMessages);
+        errors.addAll(errorDirectorMessages);
+        errors.addAll(errorGenreMessages);
+
+        return errors;
+
     }
 
 }

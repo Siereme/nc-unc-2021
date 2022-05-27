@@ -1,6 +1,7 @@
 package com.app.controller.serialize.imp;
 
 import com.app.controller.serialize.AbstractSerializeController;
+import com.app.model.actor.Actor;
 import com.app.model.director.Director;
 import com.app.model.film.Film;
 import com.app.repository.DirectorsRepository;
@@ -11,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping(path = "/serialize/directors")
@@ -35,7 +38,8 @@ public class DirectorSerializeController extends AbstractSerializeController<Dir
 
     @Override
     protected TypeReference<List<Director>> getRef() {
-        return new TypeReference<List<Director>>() {};
+        return new TypeReference<List<Director>>() {
+        };
     }
 
     @Override
@@ -46,16 +50,23 @@ public class DirectorSerializeController extends AbstractSerializeController<Dir
     @Override
     protected List<String> checkErrors(List<Director> directorList) {
 
-        List<Film> deserializeFilms = new LinkedList<>();
+        List<Integer> deserializeFilmsIds = new LinkedList<>();
 
-//        directorList.forEach(film -> deserializeFilms.addAll(film.getFilms()));
+        for (Director director : directorList) {
+            Collection<Integer> filmsIds = director.getFilmsIds();
+            for (Integer filmId : filmsIds) {
+                if (!deserializeFilmsIds.contains(filmId)) {
+                    deserializeFilmsIds.add(filmId);
+                }
+            }
+        }
 
-        List<Integer> filmIds = getEntityIds(deserializeFilms);
-//        List<Film> checkFilms = filmsRepository.find(filmIds);
+        List<Integer> checkFilmsIds = filmsRepository.findAll().stream().map(Film::getId).collect(Collectors.toList());
 
-//        List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
+        List<String> errorFilmsMessages =
+                getErrorMessages(deserializeFilmsIds, checkFilmsIds, Director.class.getSimpleName());
 
-//        return new LinkedList<>(errorFilmsMessages);
-        return null;
+        return new LinkedList<>(errorFilmsMessages);
+
     }
 }

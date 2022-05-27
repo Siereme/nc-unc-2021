@@ -7,12 +7,15 @@ import com.app.repository.IRepository;
 import com.app.repository.ActorsRepository;
 import com.app.repository.FilmsRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
+import org.springframework.batch.core.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 @RestController
@@ -37,7 +40,8 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
 
     @Override
     protected TypeReference<List<Actor>> getRef() {
-        return new TypeReference<List<Actor>>() {};
+        return new TypeReference<List<Actor>>() {
+        };
     }
 
     @Override
@@ -49,18 +53,23 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
     @Override
     protected List<String> checkErrors(List<Actor> actorList) {
 
-        List<Film> deserializeFilms = new LinkedList<>();
+        List<Integer> deserializeFilmsIds = new LinkedList<>();
 
-//        actorList.forEach(film -> deserializeFilms.addAll(film.getFilms()));
+        for (Actor actor : actorList) {
+            Collection<Integer> filmsIds = actor.getFilmsIds();
+            for (Integer filmId : filmsIds) {
+                if (!deserializeFilmsIds.contains(filmId)) {
+                    deserializeFilmsIds.add(filmId);
+                }
+            }
+        }
 
-        List<Integer> filmIds = getEntityIds(deserializeFilms);
-//        List<Film> checkFilms = filmsRepository.find(filmIds);
+        List<Integer> checkFilmsIds = filmsRepository.findAll().stream().map(Film::getId).collect(Collectors.toList());
 
-//        List<String> errorFilmsMessages = getErrorMessages(filmIds, deserializeFilms, checkFilms);
+        List<String> errorFilmsMessages =
+                getErrorMessages(deserializeFilmsIds, checkFilmsIds, Actor.class.getSimpleName());
 
-//        return new LinkedList<>(errorFilmsMessages);
-        return new LinkedList<>();
+        return new LinkedList<>(errorFilmsMessages);
     }
-
 
 }

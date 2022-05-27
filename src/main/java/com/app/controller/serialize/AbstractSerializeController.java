@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Validated
@@ -39,33 +38,43 @@ public abstract class AbstractSerializeController<T extends IEntity> {
     private ObjectMapper mapper;
 
     protected abstract IRepository<T> getRepository();
+
     protected abstract String getFilePath();
+
     protected abstract TypeReference<List<T>> getRef();
+
     protected abstract String getRedirectPath();
+
     protected abstract List<String> checkErrors(List<T> entityList);
 
-    protected List<Integer> getEntityIds(List<? extends IEntity> entityList){
-        return entityList.stream()
-                .map(IEntity::getId)
-                .distinct()
+    protected List<Integer> getEntityIds(List<? extends IEntity> entityList) {
+        return entityList.stream().map(IEntity::getId).distinct().collect(Collectors.toList());
+    }
+
+    private List<String> getMessages(List<? extends IEntity> entities, String message) {
+        return entities.stream().map(entity -> entity.getClass().getSimpleName() + " " + entity + " " + message)
                 .collect(Collectors.toList());
     }
 
-    private List<String> getMessages(List<? extends IEntity> entities, String message){
-        return entities.stream()
-                .map(entity -> entity.getClass().getSimpleName() + " " + entity + " " + message)
-                .collect(Collectors.toList());
+    protected List<String> getErrorMesage(List<Integer> ids, String className) {
+        return ids.stream().map(id -> className + " with id " + id + " not found").collect(Collectors.toList());
     }
 
-    protected List<String> getErrorMessages(List<Integer> entityIds, List<? extends IEntity> deserializeEntities, List<? extends IEntity> checkEntities){
-         List<? extends IEntity> entities = entityIds.stream()
-                .map(id -> deserializeEntities.stream().filter(entity -> id == entity.getId()).findFirst().orElse(null))
-                .filter(Objects::nonNull)
-                .filter(entity -> checkEntities.stream().noneMatch(checkEntity -> entity.getId() == checkEntity.getId() && entity.hashCode() == checkEntity.hashCode()))
-                .collect(Collectors.toList());
-         return getMessages(entities, "is not found");
+    protected List<String> getErrorMessages(List<Integer> entitiesIds, List<Integer> entitiesFromRepositoryIds,
+                                            String className) {
+        List<Integer> notFoundEntitiesIds = new LinkedList<>();
+        for (Integer id : entitiesIds) {
+            if (!entitiesFromRepositoryIds.contains(id)) {
+                notFoundEntitiesIds.add(id);
+            }
+        }
+        return getErrorMesage(notFoundEntitiesIds, className);
     }
 
+    protected List<String> getUpdateMessages(List<? extends IEntity> entities, String message) {
+        return entities.stream().map(entity -> entity.getClass().getSimpleName() + " " + entity + " " + message)
+                .collect(Collectors.toList());
+    }
 
     @Transactional
     @RequestMapping(value = "/export")
@@ -84,10 +93,7 @@ public abstract class AbstractSerializeController<T extends IEntity> {
         header.add("Expires", "0");
         InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
-        return ResponseEntity.ok()
-                .headers(header)
-                .contentLength(file.length())
-                .contentType(MediaType.APPLICATION_JSON)
+        return ResponseEntity.ok().headers(header).contentLength(file.length()).contentType(MediaType.APPLICATION_JSON)
                 .body(resource);
     }
 
@@ -101,7 +107,7 @@ public abstract class AbstractSerializeController<T extends IEntity> {
             List<T> fileEntityList = mapper.readerFor(typeReference).readValue(json);
 
             List<String> errorMessages = checkErrors(fileEntityList);
-            if(errorMessages.size() > 0){
+            if (errorMessages.size() != 0) {
                 attributes.addFlashAttribute("errors", errorMessages);
                 return new ModelAndView(getRedirectPath() + "/errors");
             }
@@ -111,14 +117,14 @@ public abstract class AbstractSerializeController<T extends IEntity> {
             List<T> updateEntityList = new LinkedList<>(fileEntityList);
             updateEntityList.removeAll(entityList);
 
-            List<String> addMassages = getMessages(updateEntityList, "was updated");
+            List<String> addMassages = getUpdateMessages(updateEntityList, "was updated");
             List<String> successMessages = new ArrayList<>(addMassages);
 
-//            updateEntityList.forEach(getRepository()::edit);
+            //            updateEntityList.forEach(getRepository()::edit);
 
             attributes.addFlashAttribute("success", successMessages);
             return new ModelAndView(getRedirectPath() + "/success");
-        } catch (Exception ex){
+        } catch (Exception ex) {
             logger.error(ex);
             attributes.addFlashAttribute("errors", Collections.singletonList(ex));
             return new ModelAndView(getRedirectPath() + "/errors");
