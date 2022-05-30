@@ -108,20 +108,20 @@ public class DirectorController {
     @PostMapping(value = "/handle/{commandType}")
     public String renderHandlePage(@ModelAttribute Director director, ModelMap model,
                                    @PathVariable @NotBlank String commandType) throws Exception {
-        List<Film> films = filmsRepository.findAll();
+        Collection<Film> films = filmsRepository.findAll();
         if (Objects.equals(commandType, "page-add")) {
             model.addAttribute(FILMS, films);
             model.addAttribute(MODAL_TITLE, "Add");
             model.addAttribute(EVENT_TYPE, "handle/add");
         }
         if (Objects.equals(commandType, "page-edit")) {
-            // TODO
             int id = director.getId();
             director = repository.findById(id).orElseThrow(() -> new Exception("Director is not found"));
-            Collection<Integer> filmsByDirectorId = director.getFilmsIds();
-            films.removeIf(film -> filmsByDirectorId.stream().anyMatch(directorFilm -> directorFilm == film.getId()));
+            Collection<Film> directorFilmList = (Collection<Film>) filmsRepository.findAllById(director.getFilmsIds());
+            films.removeIf(
+                    film -> directorFilmList.stream().anyMatch(directorFilm -> directorFilm.getId() == film.getId()));
             model.addAttribute(FILMS, films);
-            model.addAttribute(FILM_LIST, filmsByDirectorId);
+            model.addAttribute(FILM_LIST, directorFilmList);
             model.addAttribute(MODAL_TITLE, "Edit");
             model.addAttribute(EVENT_TYPE, "handle/edit");
             model.addAttribute("director", director);
@@ -136,8 +136,8 @@ public class DirectorController {
             map.addAttribute(RESULT, result);
             return renderHandlePage(director, map, "page-add");
         }
-        filmService.addDirectorToFilm(director);
         director.setId(sequenceGeneratorService.generateSequence(Director.SEQUENCE_NAME));
+        filmService.addDirectorToFilm(director);
         repository.save(director);
         return "redirect:/directors/all";
     }

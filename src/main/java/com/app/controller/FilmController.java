@@ -126,23 +126,21 @@ public class FilmController implements WebMvcConfigurer {
             int id = film.getId();
             film = repository.findById(id).orElseThrow(() -> new Exception("Film is not found"));
             Collection<Integer> genreList = film.getGenresIds();
+            Collection<Genre> genreCollection = (Collection<Genre>) genresRepository.findAllById(genreList);
             Collection<Integer> actorList = film.getActorsIds();
+            Collection<Actor> actorCollection = (Collection<Actor>) actorsRepository.findAllById(actorList);
             Collection<Integer> directorList = film.getDirectorsIds();
+            Collection<Director> directorCollection =
+                    (Collection<Director>) directorsRepository.findAllById(directorList);
 
-            if (genres.size() != 0) {
-                genres.removeIf(genre -> genreList.stream().anyMatch(filmGenre -> filmGenre == genre.getId()));
-            }
-            if (actors.size() != 0) {
-                actors.removeIf(actor -> actorList.stream().anyMatch(filmActor -> filmActor == actor.getId()));
-            }
-            if (directors.size() != 0) {
-                directors.removeIf(
-                        director -> directorList.stream().anyMatch(filmDirector -> filmDirector == director.getId()));
-            }
+            genres.removeIf(genre -> genreCollection.stream().anyMatch(genre1 -> genre1.getId() == genre.getId()));
+            actors.removeIf(actor -> actorCollection.stream().anyMatch(actor1 -> actor1.getId() == actor.getId()));
+            directors.removeIf(director -> directorCollection.stream()
+                    .anyMatch(director1 -> director1.getId() == director.getId()));
 
-            model.addAttribute(GENRE_LIST, genreList);
-            model.addAttribute(ACTOR_LIST, actorList);
-            model.addAttribute(DIRECTOR_LIST, directorList);
+            model.addAttribute(GENRE_LIST, genreCollection);
+            model.addAttribute(ACTOR_LIST, actorCollection);
+            model.addAttribute(DIRECTOR_LIST, directorCollection);
             model.addAttribute(GENRES, genres);
             model.addAttribute(ACTORS, actors);
             model.addAttribute(DIRECTORS, directors);

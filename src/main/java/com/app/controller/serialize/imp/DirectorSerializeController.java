@@ -52,6 +52,7 @@ public class DirectorSerializeController extends AbstractSerializeController<Dir
 
         List<Integer> deserializeFilmsIds = new LinkedList<>();
 
+        // TODO использовать set
         for (Director director : directorList) {
             Collection<Integer> filmsIds = director.getFilmsIds();
             for (Integer filmId : filmsIds) {

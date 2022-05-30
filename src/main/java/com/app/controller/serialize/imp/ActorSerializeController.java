@@ -49,12 +49,13 @@ public class ActorSerializeController extends AbstractSerializeController<Actor>
         return "redirect:/actors";
     }
 
-    // TODO
+
     @Override
     protected List<String> checkErrors(List<Actor> actorList) {
 
         List<Integer> deserializeFilmsIds = new LinkedList<>();
 
+        // TODO использовать set
         for (Actor actor : actorList) {
             Collection<Integer> filmsIds = actor.getFilmsIds();
             for (Integer filmId : filmsIds) {

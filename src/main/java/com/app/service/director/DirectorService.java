@@ -1,6 +1,5 @@
 package com.app.service.director;
 
-import com.app.model.actor.Actor;
 import com.app.model.director.Director;
 import com.app.model.film.Film;
 import com.app.repository.DirectorsRepository;

@@ -23,7 +23,7 @@ public class FilmService extends AbstractService<Film> {
 
     @Override
     public List<Film> findByContains(String query) {
-        Criteria regex = Criteria.where("name").regex(query);
+        Criteria regex = Criteria.where("tittle").regex(query);
         return mongoTemplate.find(new Query().addCriteria(regex), Film.class);
     }
 
@@ -52,7 +52,7 @@ public class FilmService extends AbstractService<Film> {
         Set<Integer> films = director.getFilmsIds();
         Collection<Film> filmCollection = (Collection<Film>) filmsRepository.findAllById(films);
         for (Film film : filmCollection) {
-            film.getActorsIds().remove(directorId);
+            film.getDirectorsIds().remove(directorId);
             filmsRepository.save(film);
         }
     }
@@ -70,7 +70,7 @@ public class FilmService extends AbstractService<Film> {
         Collection<Integer> films = actor.getFilmsIds();
         Collection<Film> filmCollection = (Collection<Film>) filmsRepository.findAllById(films);
         for (Film film : filmCollection) {
-            film.getGenresIds().add(actor.getId());
+            film.getActorsIds().add(actor.getId());
             filmsRepository.save(film);
         }
     }
@@ -79,7 +79,7 @@ public class FilmService extends AbstractService<Film> {
         Collection<Integer> films = director.getFilmsIds();
         Collection<Film> filmCollection = (Collection<Film>) filmsRepository.findAllById(films);
         for (Film film : filmCollection) {
-            film.getGenresIds().add(director.getId());
+            film.getDirectorsIds().add(director.getId());
             filmsRepository.save(film);
         }
     }
@@ -104,9 +104,9 @@ public class FilmService extends AbstractService<Film> {
         Integer actorId = actor.getId();
         for (Film film : filmCollection) {
             if (films.contains(film.getId())) {
-                film.getGenresIds().add(actorId);
+                film.getActorsIds().add(actorId);
             } else {
-                film.getGenresIds().remove(actorId);
+                film.getActorsIds().remove(actorId);
             }
             filmsRepository.save(film);
         }
@@ -118,9 +118,9 @@ public class FilmService extends AbstractService<Film> {
         Integer actorId = director.getId();
         for (Film film : filmCollection) {
             if (films.contains(film.getId())) {
-                film.getGenresIds().add(actorId);
+                film.getDirectorsIds().add(actorId);
             } else {
-                film.getGenresIds().remove(actorId);
+                film.getDirectorsIds().remove(actorId);
             }
             filmsRepository.save(film);
         }

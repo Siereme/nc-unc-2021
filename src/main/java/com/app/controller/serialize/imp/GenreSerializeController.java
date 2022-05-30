@@ -53,6 +53,7 @@ public class GenreSerializeController extends AbstractSerializeController<Genre>
 
         List<Integer> deserializeFilmsIds = new LinkedList<>();
 
+        // TODO использовать set
         for (Genre genre : genreList) {
             Collection<Integer> filmsIds = genre.getFilmsIds();
             for (Integer filmId : filmsIds) {

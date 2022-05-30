@@ -1,4 +1,3 @@
-/*
 package com.app.service.mail.kafka;
 
 import com.app.model.emailInfo.NewEmail;
@@ -37,4 +36,3 @@ public class KafkaConsumer {
     }
 
 }
-*/

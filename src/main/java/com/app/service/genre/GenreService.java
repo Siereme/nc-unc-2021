@@ -1,11 +1,7 @@
 package com.app.service.genre;
 
-import com.app.model.actor.Actor;
-import com.app.model.director.Director;
 import com.app.model.film.Film;
 import com.app.model.genre.Genre;
-import com.app.repository.ActorsRepository;
-import com.app.repository.DirectorsRepository;
 import com.app.repository.GenresRepository;
 import com.app.service.AbstractService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +20,7 @@ public class GenreService extends AbstractService<Genre> {
 
     @Override
     public List<Genre> findByContains(String query) {
-        Criteria regex = Criteria.where("name").regex(query);
+        Criteria regex = Criteria.where("tittle").regex(query);
         return mongoTemplate.find(new Query().addCriteria(regex), Genre.class);
     }
 
@@ -51,7 +47,7 @@ public class GenreService extends AbstractService<Genre> {
     public void updateGenresByFilm(Film film) {
         Integer filmId = film.getId();
         Collection<Integer> genresIds = film.getGenresIds();
-        Collection<Genre> genreCollection = (Collection<Genre>) genresRepository.findAll();
+        Collection<Genre> genreCollection = genresRepository.findAll();
         for (Genre genre : genreCollection) {
             if (genresIds.contains(genre.getId())) {
                 genre.getFilmsIds().add(filmId);

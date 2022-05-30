@@ -1,4 +1,3 @@
-/*
 package com.app.service.mail;
 
 import com.app.model.IEntity;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Component;
 @Aspect
 @Component
 public class MailHandler {
-
 
     private final KafkaProducer producer;
 
@@ -36,4 +34,3 @@ public class MailHandler {
         }
     }
 }
-*/
