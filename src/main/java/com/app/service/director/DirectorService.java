@@ -1,5 +1,6 @@
 package com.app.service.director;
 
+import com.app.annotation.AddEntityHandler;
 import com.app.model.director.Director;
 import com.app.model.film.Film;
 import com.app.repository.DirectorsRepository;
@@ -56,6 +57,11 @@ public class DirectorService extends AbstractService<Director> {
             directorsRepository.save(director);
         }
 
+    }
+
+    @AddEntityHandler
+    public void insert(Director director){
+        directorsRepository.insert(director);
     }
 
 }

@@ -138,7 +138,7 @@ public class DirectorController {
         }
         director.setId(sequenceGeneratorService.generateSequence(Director.SEQUENCE_NAME));
         filmService.addDirectorToFilm(director);
-        repository.save(director);
+        directorService.insert(director);
         return "redirect:/directors/all";
     }
 

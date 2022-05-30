@@ -1,5 +1,6 @@
 package com.app.service.film;
 
+import com.app.annotation.AddEntityHandler;
 import com.app.model.actor.Actor;
 import com.app.model.director.Director;
 import com.app.model.film.Film;
@@ -124,5 +125,10 @@ public class FilmService extends AbstractService<Film> {
             }
             filmsRepository.save(film);
         }
+    }
+
+    @AddEntityHandler
+    public void insert(Film film) {
+        filmsRepository.insert(film);
     }
 }

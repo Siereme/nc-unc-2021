@@ -171,7 +171,7 @@ public class FilmController implements WebMvcConfigurer {
         genreService.addFilmToGenres(film);
         actorService.addFilmToActors(film);
         directorService.addFilmToDirectors(film);
-        repository.insert(film);
+        service.insert(film);
         return "redirect:/films/all";
     }
 

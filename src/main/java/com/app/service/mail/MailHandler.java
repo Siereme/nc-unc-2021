@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailHandler {
 
+
     private final KafkaProducer producer;
 
     @Autowired

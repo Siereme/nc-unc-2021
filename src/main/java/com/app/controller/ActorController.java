@@ -133,7 +133,7 @@ public class ActorController {
         }
         actor.setId(sequenceGeneratorService.generateSequence(Actor.SEQUENCE_NAME));
         filmService.addActorToFilms(actor);
-        repository.insert(actor);
+        service.insert(actor);
         return "redirect:/actors/all";
     }
 

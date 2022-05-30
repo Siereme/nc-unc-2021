@@ -130,7 +130,7 @@ public class GenreController {
 
         // add genre to all films
         filmService.addGenreToFilms(genre);
-        repository.insert(genre);
+        service.insert(genre);
         return "redirect:/genres/all";
     }
 

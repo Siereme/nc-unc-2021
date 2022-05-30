@@ -1,5 +1,6 @@
 package com.app.service.genre;
 
+import com.app.annotation.AddEntityHandler;
 import com.app.model.film.Film;
 import com.app.model.genre.Genre;
 import com.app.repository.GenresRepository;
@@ -57,6 +58,11 @@ public class GenreService extends AbstractService<Genre> {
             genresRepository.save(genre);
         }
 
+    }
+
+    @AddEntityHandler
+    public void insert(Genre genre){
+        genresRepository.insert(genre);
     }
 
 }
