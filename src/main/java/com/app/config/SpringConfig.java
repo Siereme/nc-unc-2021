@@ -35,12 +35,17 @@ public class SpringConfig {
     @Value("${spring.datasource.password}")
     private String password;
 
+    @Value("${spring.datasource.driverClassName}")
+    private String driverClassName;
+
+    @Value("${spring.jpa.properties.hibernate.dialect}")
+    private String hibernateDialect;
 
     @Bean
     public DataSource dataSource() {
         try {
             SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
-            Class<? extends Driver> driver = (Class<? extends Driver>) Class.forName("com.mysql.jdbc.Driver");
+            Class<? extends Driver> driver = (Class<? extends Driver>) Class.forName(driverClassName);
             dataSource.setDriverClass(driver);
             dataSource.setUrl(url);
             dataSource.setUsername(username);
@@ -54,7 +59,7 @@ public class SpringConfig {
     @Bean
     public Properties hibernateProperties() {
         Properties hibernateProp = new Properties();
-        hibernateProp.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        hibernateProp.put("hibernate.dialect", hibernateDialect);
         hibernateProp.put("hibernate.show_sql", "true");
         hibernateProp.put("hibernate.hbm2ddl.auto", "update");
         hibernateProp.put("hibernate.format_sql", "true");
@@ -85,25 +90,25 @@ public class SpringConfig {
     }
 
 
-    @Value("classpath:org/springframework/batch/core/schema-drop-mysql.sql")
-    private Resource dropRepositoryTables;
-
-    @Value("classpath:org/springframework/batch/core/schema-mysql.sql")
-    private Resource dataRepositorySchema;
-
-    @Bean
-    public DataSourceInitializer dataSourceInitializer(DataSource dataSource) throws MalformedURLException {
-        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
-
-        databasePopulator.addScript(dropRepositoryTables);
-        databasePopulator.addScript(dataRepositorySchema);
-        databasePopulator.setIgnoreFailedDrops(true);
-
-        DataSourceInitializer initializer = new DataSourceInitializer();
-        initializer.setDataSource(dataSource);
-        initializer.setDatabasePopulator(databasePopulator);
-
-        return initializer;
-    }
+//    @Value("classpath:org/springframework/batch/core/schema-drop-mysql.sql")
+//    private Resource dropRepositoryTables;
+//
+//    @Value("classpath:org/springframework/batch/core/schema-mysql.sql")
+//    private Resource dataRepositorySchema;
+//
+//    @Bean
+//    public DataSourceInitializer dataSourceInitializer(DataSource dataSource) throws MalformedURLException {
+//        ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
+//
+//        databasePopulator.addScript(dropRepositoryTables);
+//        databasePopulator.addScript(dataRepositorySchema);
+//        databasePopulator.setIgnoreFailedDrops(true);
+//
+//        DataSourceInitializer initializer = new DataSourceInitializer();
+//        initializer.setDataSource(dataSource);
+//        initializer.setDatabasePopulator(databasePopulator);
+//
+//        return initializer;
+//    }
 
 }
