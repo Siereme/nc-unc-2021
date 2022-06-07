@@ -1,93 +1,147 @@
 package com.app.repository;
 
 import com.app.model.film.Film;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-
-@RunWith(SpringRunner.class)
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class FilmsRepositoryTest {
 
-    @Autowired
-    FilmsRepository repository;
+    @Mock
+    private FilmsRepository repository;
+    private List<Film> films = new ArrayList<>();
+
+    @BeforeAll
+    void initFilms(){
+        this.films.addAll(List.of(
+                new Film("film1", LocalDate.of(2022, 6, 2)),
+                new Film("film2", LocalDate.of(2022, 6, 2)),
+                new Film("film3", LocalDate.of(2022, 6, 2))
+        ));
+        for (int i = 0; i < films.size(); i++) {
+            films.get(i).setId(i);
+        }
+    }
 
     @Test
+    @Order(2)
     void testFindAll() {
+        Mockito.when(repository.findAll()).thenReturn(films);
         List<Film> filmList = repository.findAll();
-        assertThat(filmList.isEmpty()).isFalse();
+
+        Mockito.verify(repository).findAll();
+        Assertions.assertEquals(3, filmList.size());
+        Assertions.assertEquals("film1", filmList.get(0).getTittle());
+        Assertions.assertEquals("film2", filmList.get(1).getTittle());
+        Assertions.assertEquals("film3", filmList.get(2).getTittle());
     }
 
     @Test
+    @Order(3)
     void testFindById() {
-        Film film = repository.findById(3);
-        assertThat(film.getId()).isEqualTo(3);
+        Film film = films.get(1);
+
+        Mockito.when(repository.findById(1)).thenReturn(film);
+        Film filmFind = repository.findById(1);
+
+        Mockito.verify(repository).findById(1);
+        Assertions.assertEquals(1, filmFind.getId());
+        Assertions.assertEquals("film2", filmFind.getTittle());
     }
 
     @Test
+    @Order(4)
     void find() {
-        List<Film> films = repository.find(List.of(1,2,3));
-        assertThat(films.size()).isEqualTo(3);
+        Mockito.when(repository.find(List.of(0, 1, 2))).thenReturn(films);
+
+        List<Film> filmList = repository.find(List.of(0, 1, 2));
+
+        Mockito.verify(repository).find(List.of(0, 1, 2));
+        Assertions.assertEquals(3, filmList.size());
+        Assertions.assertEquals("film1", filmList.get(0).getTittle());
+        Assertions.assertEquals("film2", filmList.get(1).getTittle());
+        Assertions.assertEquals("film3", filmList.get(2).getTittle());
     }
 
     @Test
+    @Order(1)
     void testAdd() {
-        Film film = new Film("film1212123", LocalDate.of(2022, 6, 2));
+        Film film = new Film("film4", LocalDate.of(2022, 6, 2));
 
+        Mockito.when(repository.add(film)).thenReturn(film);
         repository.add(film);
 
-        Film addFilm = repository.findByName("film1212123").stream().findFirst().orElse(null);
-
-        assertThat(addFilm).isNotEqualTo(null);
-        assertThat(addFilm.getTittle()).isEqualTo(film.getTittle());
-        assertThat(addFilm.getDate()).isEqualTo(film.getDate());
+        Mockito.verify(repository).add(film);
+        Assertions.assertNotNull(film.getId());
+        Assertions.assertEquals("film4", film.getTittle());
     }
 
     @Test
+    @Order(9)
     void testDelete() {
-        repository.delete(3);
+        repository.delete(1);
+        Mockito.verify(repository).delete(1);
 
-        Film film = repository.findById(3);
-
-        assertThat(film).isNull();
+        Film film = repository.findById(2);
+        Assertions.assertNull(film);
     }
 
     @Test
+    @Order(8)
     void testEdit() {
-        Film film = repository.findById(1);
+        Film film = films.get(1);
         film.setTittle("new tittle");
 
         repository.edit(film);
-        Film editFilm = repository.findById(1);
 
-        assertThat(editFilm.getTittle()).isEqualTo(film.getTittle());
+        Mockito.verify(repository).edit(film);
+        Assertions.assertEquals("new tittle", film.getTittle());
     }
 
     @Test
+    @Order(5)
     void testFindByName() {
+        Film film = films.get(0);
+
+        Mockito.when(repository.findByName("film1")).thenReturn(List.of(film));
         List<Film> films = repository.findByName("film1");
-        Film film = films.stream().findFirst().orElse(null);
 
-        assertThat(film).isNotNull();
-        assertThat(film.getTittle()).isEqualTo("film1");
+        Mockito.verify(repository).findByName("film1");
+        Assertions.assertEquals("film1", films.get(0).getTittle());
     }
 
     @Test
+    @Order(6)
     void testSize() {
+        Mockito.when(repository.size()).thenReturn(3);
+        int size = repository.size();
+
+        Mockito.verify(repository).size();
+        Assertions.assertEquals(3, size);
     }
 
     @Test
+    @Order(7)
     void testFindByContains() {
-        List<Film> films = repository.findByContains("film");
-        assertThat(films.isEmpty()).isFalse();
+        Mockito.when(repository.findByContains("film")).thenReturn(films);
+        List<Film> filmList = repository.findByContains("film");
+
+        Mockito.verify(repository).findByContains("film");
+        Assertions.assertFalse(filmList.isEmpty());
+        Assertions.assertEquals(3, filmList.size());
+        Assertions.assertEquals("film1", filmList.get(0).getTittle());
+        Assertions.assertEquals("film2", filmList.get(1).getTittle());
+        Assertions.assertEquals("film3", filmList.get(2).getTittle());
     }
 }
