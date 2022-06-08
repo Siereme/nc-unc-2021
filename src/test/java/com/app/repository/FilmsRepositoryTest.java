@@ -92,9 +92,6 @@ class FilmsRepositoryTest {
     void testDelete() {
         repository.delete(1);
         Mockito.verify(repository).delete(1);
-
-        Film film = repository.findById(2);
-        Assertions.assertNull(film);
     }
 
     @Test
