@@ -217,7 +217,6 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
-			<version>5.7.1</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
