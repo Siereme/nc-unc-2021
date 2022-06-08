@@ -55,9 +55,9 @@ public class ActorControllerTest {
     void testSearch() throws Exception {
         Mockito.when(actorsRepository.findByContains("actor")).thenReturn(actors);
 
-        mvc.perform(MockMvcRequestBuilders.post("/actor/find").param("name", "actor"))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("actor"))
-                .andExpect(MockMvcResultMatchers.model().attribute("actor", Matchers.hasSize(3)));
+        mvc.perform(MockMvcRequestBuilders.post("/actors/find").param("tittle", "actor"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("actors"))
+                .andExpect(MockMvcResultMatchers.model().attribute("actors", Matchers.hasSize(3)));
 
         Mockito.verify(actorsRepository).findByContains("actor");
     }

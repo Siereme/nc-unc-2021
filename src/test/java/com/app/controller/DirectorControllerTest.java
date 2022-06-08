@@ -54,11 +54,11 @@ public class DirectorControllerTest {
 
     @Test
     void testSearch() throws Exception {
-        Mockito.when(directorsRepository.findByContains("directors")).thenReturn(directors);
+        Mockito.when(directorsRepository.findByContains("director")).thenReturn(directors);
 
-        mvc.perform(MockMvcRequestBuilders.post("/director/find").param("name", "director"))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("director"))
-                .andExpect(MockMvcResultMatchers.model().attribute("director", Matchers.hasSize(3)));
+        mvc.perform(MockMvcRequestBuilders.post("/directors/find").param("tittle", "director"))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.view().name("directors"))
+                .andExpect(MockMvcResultMatchers.model().attribute("directors", Matchers.hasSize(3)));
 
         Mockito.verify(directorsRepository).findByContains("director");
     }
@@ -74,7 +74,7 @@ public class DirectorControllerTest {
     @Test
     void testAdd() throws Exception {
         mvc.perform(MockMvcRequestBuilders.post("/directors/handle/add").flashAttr("director", directors.get(0)))
-                .andExpect(MockMvcResultMatchers.view().name("redirect:/directors/all"));
+                .andExpect(MockMvcResultMatchers.redirectedUrl("/directors/all"));
 
         Mockito.verify(directorsRepository).add(directors.get(0));
     }
