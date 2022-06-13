@@ -4,13 +4,15 @@ import com.app.model.IEntity;
 import com.app.model.actor.Actor;
 import com.app.model.director.Director;
 import com.app.model.genre.Genre;
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
-import java.time.LocalDate;
-import java.util.*;
+import javax.validation.constraints.NotNull;
+import java.sql.Date;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /** Film entity
@@ -30,9 +32,9 @@ import java.util.stream.Collectors;
         ),
         @NamedQuery(name = "Film.findById",
         query = "SELECT distinct f FROM Film f "
-                + "left join fetch f.actors a "
-                + "left join fetch f.directors d "
-                + "left join fetch f.genres g "
+                + "left join fetch f.actors a left join fetch a.films "
+                + "left join fetch f.directors d left join fetch d.films "
+                + "left join fetch f.genres g left join fetch g.films "
                 + "where f.id = :id"
         ),
         @NamedQuery(name = "Film.findAllWithAllByIds",
@@ -57,7 +59,7 @@ public class Film implements IEntity {
     @NotNull(message = "Date cannot be empty")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "date")
-    private LocalDate date;
+    private Date date;
 
     public void setId(int id) {
         this.id = id;
@@ -71,11 +73,11 @@ public class Film implements IEntity {
         this.tittle = tittle;
     }
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -128,7 +130,7 @@ public class Film implements IEntity {
 
     }
 
-    public Film(String tittle, LocalDate date){
+    public Film(String tittle, Date date){
         this.tittle = tittle;
         this.date = date;
     }

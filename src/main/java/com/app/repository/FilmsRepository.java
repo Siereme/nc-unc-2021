@@ -5,6 +5,7 @@ import com.app.model.film.Film;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
 import java.math.BigInteger;
 import java.util.Collections;
@@ -25,7 +26,11 @@ public class FilmsRepository extends AbstractRepository<Film> {
     }
 
     public Film findById(int id) {
-        return entityManager.createNamedQuery("Film.findById", Film.class).setParameter("id", id).getSingleResult();
+        try{
+            return entityManager.createNamedQuery("Film.findById", Film.class).setParameter("id", id).getSingleResult();
+        }catch (NoResultException ex){
+            return null;
+        }
     }
 
     public List<Film> find(List<Integer> ids) {

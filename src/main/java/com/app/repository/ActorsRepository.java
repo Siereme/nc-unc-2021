@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.math.BigInteger;
 import java.util.*;
@@ -20,7 +21,11 @@ public class ActorsRepository extends AbstractRepository<Actor> {
     }
 
     public Actor findById(int id) {
-        return entityManager.createNamedQuery("Actor.findById", Actor.class).setParameter("id", id).getSingleResult();
+        try{
+            return entityManager.createNamedQuery("Actor.findById", Actor.class).setParameter("id", id).getSingleResult();
+        }catch (NoResultException ex){
+            return null;
+        }
     }
 
     public List<Actor> find(List<Integer> ids) {

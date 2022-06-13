@@ -12,15 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
+@ActiveProfiles("test")
 @AutoConfigureMockMvc
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class FilmControllerTest {
@@ -38,9 +40,9 @@ class FilmControllerTest {
     @BeforeAll
     void initFilms(){
         this.films.addAll(List.of(
-                new Film("film1", LocalDate.of(2022, 6, 2)),
-                new Film("film2", LocalDate.of(2022, 6, 2)),
-                new Film("film3", LocalDate.of(2022, 6, 2))
+                new Film("film1", Date.valueOf("2009-03-28")),
+                new Film("film2", Date.valueOf("2009-03-28")),
+                new Film("film3", Date.valueOf("2009-03-28"))
         ));
         for (int i = 0; i < films.size(); i++) {
             films.get(i).setId(i);
@@ -90,6 +92,7 @@ class FilmControllerTest {
     }
 
     @Test
+//    @WithMockUser(username = "admin1", password = "admin1", roles = "ADMIN")
     void testEdit() throws Exception {
         Film film = films.get(0);
         film.setTittle("new title");

@@ -1,148 +1,164 @@
 package com.app.repository;
 
 import com.app.model.actor.Actor;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 @ActiveProfiles("test")
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class ActorsRepositoryTest {
 
-    @Mock
+    @Autowired
     private ActorsRepository repository;
-    private List<Actor> actors = new ArrayList<>();
+    private Connection connection;
 
     @BeforeAll
-    void initActors() {
-        this.actors.addAll(List.of(new Actor("actor1", "21"), new Actor("actor2", "22"), new Actor("actor3", "23")));
-        for (int i = 0; i < actors.size(); i++) {
-            actors.get(i).setId(i);
+    void init() throws SQLException {
+        connection = DriverManager.getConnection("jdbc:h2:mem:test", "sa", "sa");
+    }
+
+    List<Actor> getActors(ResultSet resultSet) throws SQLException {
+        List<Actor> actors = new ArrayList<>();
+        while (resultSet.next()){
+            Actor actor = new Actor();
+            actor.setId(resultSet.getInt("actor_id"));
+            actor.setName(resultSet.getString("name"));
+            actor.setYear(resultSet.getString("year"));
+            actors.add(actor);
         }
+        return actors;
     }
 
     @Test
     @Order(2)
-    void testFindAll() {
-        Mockito.when(repository.findAll()).thenReturn(actors);
-        List<Actor> actorList = repository.findAll();
+    void testFindAll() throws SQLException {
+        List<Actor> actorsListTest = repository.findAll();
 
-        Mockito.verify(repository).findAll();
-        Assertions.assertEquals(3, actorList.size());
-        Assertions.assertEquals("actor1", actorList.get(0).getName());
-        Assertions.assertEquals("actor2", actorList.get(1).getName());
-        Assertions.assertEquals("actor3", actorList.get(2).getName());
+
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor");
+        List<Actor> actorsList = getActors(statement.executeQuery());
+
+        Assertions.assertEquals(actorsList.size(), actorsListTest.size());
+        Assertions.assertEquals(actorsList.get(0).getName(), actorsListTest.get(0).getName());
+        Assertions.assertEquals(actorsList.get(1).getName(), actorsListTest.get(1).getName());
+        Assertions.assertEquals(actorsList.get(2).getName(), actorsListTest.get(2).getName());
     }
 
     @Test
     @Order(3)
-    void testFindById() {
-        Actor actor = actors.get(1);
+    void testFindById() throws SQLException {
+        Actor actorFindTest = repository.findById(1);
 
-        Mockito.when(repository.findById(1)).thenReturn(actor);
-        Actor actorFind = repository.findById(1);
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor WHERE actor.actor_id = 1");
+        Actor actor = getActors(statement.executeQuery()).get(0);
 
-        Mockito.verify(repository).findById(1);
-        Assertions.assertEquals(1, actorFind.getId());
-        Assertions.assertEquals("actor2", actorFind.getName());
+        Assertions.assertEquals(actor.getId(), actorFindTest.getId());
+        Assertions.assertEquals(actor.getName(), actorFindTest.getName());
+        Assertions.assertEquals(actor.getYear(), actorFindTest.getYear());
     }
 
     @Test
     @Order(4)
-    void find() {
-        Mockito.when(repository.find(List.of(0, 1, 2))).thenReturn(actors);
+    void find() throws SQLException {
+        List<Actor> actorsListTest = repository.find(List.of(0, 1, 2));
 
-        List<Actor> actorList = repository.find(List.of(0, 1, 2));
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor WHERE actor.actor_id IN (0, 1, 2)");
+        List<Actor> actorsList = getActors(statement.executeQuery());
 
-        Mockito.verify(repository).find(List.of(0, 1, 2));
-        Assertions.assertEquals(3, actorList.size());
-        Assertions.assertEquals("actor1", actorList.get(0).getName());
-        Assertions.assertEquals("actor2", actorList.get(1).getName());
-        Assertions.assertEquals("actor3", actorList.get(2).getName());
+        Assertions.assertEquals(actorsList.size(), actorsListTest.size());
+        Assertions.assertEquals(actorsList.get(0).getName(), actorsListTest.get(0).getName());
+        Assertions.assertEquals(actorsList.get(1).getName(), actorsListTest.get(1).getName());
     }
 
     @Test
     @Order(1)
-    void testAdd() {
+    void testAdd() throws SQLException {
         Actor actor = new Actor("actor4", "24");
 
-        Mockito.when(repository.add(actor)).thenReturn(actor);
         repository.add(actor);
+        Actor actorAddTest = repository.findByName("actor4").get(0);
 
-        Mockito.verify(repository).add(actor);
-        Assertions.assertEquals("actor4", actor.getName());
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor WHERE actor.name = 'actor4'");
+        Actor actorAdd = getActors(statement.executeQuery()).get(0);
+
+        Assertions.assertEquals(actorAdd.getId(), actorAddTest.getId());
+        Assertions.assertEquals(actorAdd.getName(), actorAddTest.getName());
     }
 
     @Test
     @Order(9)
-    void testDelete() {
+    void testDelete() throws SQLException {
         repository.delete(1);
-        Mockito.verify(repository).delete(1);
+        Actor actorDeleteTest = repository.findById(1);
 
-        Actor actor = repository.findById(2);
-        Assertions.assertNull(actor);
+        PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM actor WHERE actor.actor_id = 1");
+        ResultSet resultSet = statement.executeQuery();
+        resultSet.next();
+        int actorDelete = resultSet.getInt(1);
+
+        Assertions.assertNull(actorDeleteTest);
+        Assertions.assertEquals(0, actorDelete);
     }
 
     @Test
     @Order(8)
-    void testEdit() {
-        Actor actor = actors.get(1);
+    void testEdit() throws SQLException {
+        Actor actor = repository.findById(1);
         actor.setName("new name");
 
         repository.edit(actor);
+        Actor actorEditTest = repository.findById(1);
 
-        Mockito.verify(repository).edit(actor);
-        Assertions.assertEquals("new name", actor.getName());
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor WHERE actor.actor_id = 1");
+        Actor actorEdit = getActors(statement.executeQuery()).get(0);
+
+        Assertions.assertEquals(actorEdit.getName(), actorEditTest.getName());
     }
 
     @Test
     @Order(5)
-    void testFindByName() {
-        Actor actor = actors.get(0);
+    void testFindByName() throws SQLException {
+        List<Actor> actorsListTest = repository.findByName("actor1");
 
-        Mockito.when(repository.findByName("actor1")).thenReturn(List.of(actor));
-        List<Actor> actors = repository.findByName("actor1");
-
-        Mockito.verify(repository).findByName("actor1");
-        Assertions.assertEquals("actor1", actors.get(0).getName());
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor WHERE actor.name = 'actor1'");
+        List<Actor> actorsList = getActors(statement.executeQuery());
+        Assertions.assertEquals(actorsList.get(0).getName(), actorsListTest.get(0).getName());
     }
 
     @Test
     @Order(6)
-    void testSize() {
-        Mockito.when(repository.size()).thenReturn(3);
-        int size = repository.size();
+    void testSize() throws SQLException {
+        int sizeTest = repository.size();
 
-        Mockito.verify(repository).size();
-        Assertions.assertEquals(3, size);
+        PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM actor");
+        ResultSet resultSet = statement.executeQuery();
+        resultSet.next();
+        int size = resultSet.getInt(1);
+
+        Assertions.assertEquals(size, sizeTest);
     }
 
     @Test
     @Order(7)
-    void testFindByContains() {
-        Mockito.when(repository.findByContains("actor")).thenReturn(actors);
-        List<Actor> actorList = repository.findByContains("actor");
+    void testFindByContains() throws SQLException {
+        List<Actor> actorsListTest = repository.findByContains("actor");
 
-        Mockito.verify(repository).findByContains("actor");
-        Assertions.assertFalse(actorList.isEmpty());
-        Assertions.assertEquals(3, actorList.size());
-        Assertions.assertEquals("actor1", actorList.get(0).getName());
-        Assertions.assertEquals("actor2", actorList.get(1).getName());
-        Assertions.assertEquals("actor3", actorList.get(2).getName());
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor WHERE actor.name LIKE '%actor%'");
+        List<Actor> actorsList = getActors(statement.executeQuery());
+
+        Assertions.assertFalse(actorsListTest.isEmpty());
+        Assertions.assertEquals(actorsList.size(), actorsListTest.size());
+        Assertions.assertEquals(actorsList.get(0).getName(), actorsListTest.get(0).getName());
+        Assertions.assertEquals(actorsList.get(1).getName(), actorsListTest.get(1).getName());
+        Assertions.assertEquals(actorsList.get(2).getName(), actorsListTest.get(2).getName());
     }
 
 }

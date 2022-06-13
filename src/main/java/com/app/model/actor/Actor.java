@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
         @NamedQuery(name = "Actor.findById",
                 query = "SELECT distinct a FROM Actor a "
                         + "left join fetch a.films f "
+                        + "left join fetch f.actors "
+                        + "left join fetch f.directors "
+                        + "left join fetch f.genres "
                         + "where a.id = :id"
         )
     }

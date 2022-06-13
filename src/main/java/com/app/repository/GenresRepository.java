@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.NoResultException;
 import java.math.BigInteger;
 import java.util.*;
 
@@ -20,7 +21,11 @@ public class GenresRepository extends AbstractRepository<Genre> {
 
     @Override
     public Genre findById(int id) {
-        return entityManager.createNamedQuery("Genre.findById", Genre.class).setParameter("id", id).getSingleResult();
+        try{
+            return entityManager.createNamedQuery("Genre.findById", Genre.class).setParameter("id", id).getSingleResult();
+        }catch (NoResultException ex){
+            return null;
+        }
     }
 
     public List<Genre> find(List<Integer> ids) {

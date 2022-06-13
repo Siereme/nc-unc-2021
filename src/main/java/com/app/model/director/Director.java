@@ -28,6 +28,9 @@ import java.util.stream.Collectors;
         @NamedQuery(name = "Director.findById",
                 query = "SELECT distinct d FROM Director d "
                         + "left join fetch d.films f "
+                        + "left join fetch f.actors "
+                        + "left join fetch f.directors "
+                        + "left join fetch f.genres "
                         + "where d.id = :id"
         )
 })
