@@ -33,9 +33,7 @@ class FilmControllerTest {
     @MockBean
     private FilmsRepository filmsRepository;
 
-
-
-    private List<Film> films = new ArrayList<>();
+    private final List<Film> films = new ArrayList<>();
 
     @BeforeAll
     void initFilms(){

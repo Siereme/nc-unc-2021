@@ -32,11 +32,15 @@ public class GenreControllerTest {
     @MockBean
     private GenresRepository genresRepository;
 
-    private List<Genre> genreList = new ArrayList<>();
+    private final List<Genre> genreList = new ArrayList<>();
 
     @BeforeAll
     void initGenres() {
-        this.genreList.addAll(List.of(new Genre("genre1"), new Genre("genre2"), new Genre("genre3")));
+        this.genreList.addAll(List.of(
+                new Genre("genre1"),
+                new Genre("genre2"),
+                new Genre("genre3")
+        ));
         for (int i = 0; i < genreList.size(); ++i) {
             genreList.get(i).setId(i);
         }

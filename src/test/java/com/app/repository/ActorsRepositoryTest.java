@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -18,47 +20,38 @@ class ActorsRepositoryTest {
 
     @Autowired
     private ActorsRepository repository;
-    private Connection connection;
+    private final List<Actor> actors = new ArrayList<>();
 
     @BeforeAll
-    void init() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:h2:mem:test", "sa", "sa");
+    void init() {
+        this.actors.addAll(List.of(
+                new Actor("actor1", "20"),
+                new Actor("actor2", "23"),
+                new Actor("actor3", "25")
+        ));
+        for (int i = 0; i < actors.size(); i++) {
+            actors.get(i).setId(i + 1);
+        }
     }
 
-    List<Actor> getActors(ResultSet resultSet) throws SQLException {
-        List<Actor> actors = new ArrayList<>();
-        while (resultSet.next()){
-            Actor actor = new Actor();
-            actor.setId(resultSet.getInt("actor_id"));
-            actor.setName(resultSet.getString("name"));
-            actor.setYear(resultSet.getString("year"));
-            actors.add(actor);
-        }
-        return actors;
+    @Test
+    @Order(1)
+    void testFindAll() {
+        List<Actor> actorsListTest = repository.findAll();
+
+
+        Assertions.assertEquals(actors.size(), actorsListTest.size());
+        Assertions.assertEquals(actors.get(0).getName(), actorsListTest.get(0).getName());
+        Assertions.assertEquals(actors.get(1).getName(), actorsListTest.get(1).getName());
+        Assertions.assertEquals(actors.get(2).getName(), actorsListTest.get(2).getName());
     }
 
     @Test
     @Order(2)
-    void testFindAll() throws SQLException {
-        List<Actor> actorsListTest = repository.findAll();
-
-
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor");
-        List<Actor> actorsList = getActors(statement.executeQuery());
-
-        Assertions.assertEquals(actorsList.size(), actorsListTest.size());
-        Assertions.assertEquals(actorsList.get(0).getName(), actorsListTest.get(0).getName());
-        Assertions.assertEquals(actorsList.get(1).getName(), actorsListTest.get(1).getName());
-        Assertions.assertEquals(actorsList.get(2).getName(), actorsListTest.get(2).getName());
-    }
-
-    @Test
-    @Order(3)
-    void testFindById() throws SQLException {
+    void testFindById() {
         Actor actorFindTest = repository.findById(1);
 
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor WHERE actor.actor_id = 1");
-        Actor actor = getActors(statement.executeQuery()).get(0);
+        Actor actor = actors.stream().filter(actorsItem -> actorsItem.getId() == 1).findFirst().orElseGet(Actor::new);
 
         Assertions.assertEquals(actor.getId(), actorFindTest.getId());
         Assertions.assertEquals(actor.getName(), actorFindTest.getName());
@@ -66,12 +59,15 @@ class ActorsRepositoryTest {
     }
 
     @Test
-    @Order(4)
-    void find() throws SQLException {
-        List<Actor> actorsListTest = repository.find(List.of(0, 1, 2));
+    @Order(3)
+    void find() {
+        List<Integer> ids = List.of(0, 1, 2);
+        List<Actor> actorsListTest = repository.find(ids);
 
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor WHERE actor.actor_id IN (0, 1, 2)");
-        List<Actor> actorsList = getActors(statement.executeQuery());
+        List<Actor> actorsList = actors.stream()
+                .filter(actorsItem ->
+                        ids.stream().anyMatch(id -> id == actorsItem.getId())
+                ).collect(Collectors.toList());
 
         Assertions.assertEquals(actorsList.size(), actorsListTest.size());
         Assertions.assertEquals(actorsList.get(0).getName(), actorsListTest.get(0).getName());
@@ -79,86 +75,82 @@ class ActorsRepositoryTest {
     }
 
     @Test
-    @Order(1)
-    void testAdd() throws SQLException {
+    @Order(7)
+    void testAdd() {
         Actor actor = new Actor("actor4", "24");
 
         repository.add(actor);
         Actor actorAddTest = repository.findByName("actor4").get(0);
 
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor WHERE actor.name = 'actor4'");
-        Actor actorAdd = getActors(statement.executeQuery()).get(0);
+        boolean hasActor = actors.stream().anyMatch(actorsItem -> Objects.equals(actorsItem.getName(), "actor4"));
 
-        Assertions.assertEquals(actorAdd.getId(), actorAddTest.getId());
-        Assertions.assertEquals(actorAdd.getName(), actorAddTest.getName());
+        Assertions.assertFalse(hasActor);
+        Assertions.assertEquals("actor4", actorAddTest.getName());
+        Assertions.assertEquals("24", actorAddTest.getYear());
     }
 
     @Test
     @Order(9)
-    void testDelete() throws SQLException {
+    void testDelete() {
         repository.delete(1);
         Actor actorDeleteTest = repository.findById(1);
 
-        PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM actor WHERE actor.actor_id = 1");
-        ResultSet resultSet = statement.executeQuery();
-        resultSet.next();
-        int actorDelete = resultSet.getInt(1);
+        boolean hasActor = actors.stream().anyMatch(actorsItem -> actorsItem.getId() == 1);
 
+        Assertions.assertTrue(hasActor);
         Assertions.assertNull(actorDeleteTest);
-        Assertions.assertEquals(0, actorDelete);
     }
 
     @Test
     @Order(8)
-    void testEdit() throws SQLException {
+    void testEdit() {
         Actor actor = repository.findById(1);
         actor.setName("new name");
 
         repository.edit(actor);
         Actor actorEditTest = repository.findById(1);
 
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor WHERE actor.actor_id = 1");
-        Actor actorEdit = getActors(statement.executeQuery()).get(0);
+        boolean hasActor = actors.stream().anyMatch(actorsItem -> Objects.equals(actorsItem.getName(), "new name"));
 
-        Assertions.assertEquals(actorEdit.getName(), actorEditTest.getName());
+        Assertions.assertFalse(hasActor);
+        Assertions.assertNotNull(actorEditTest);
+        Assertions.assertEquals("new name", actorEditTest.getName());
+    }
+
+    @Test
+    @Order(4)
+    void testFindByName() {
+        List<Actor> actorsListTest = repository.findByName("actor1");
+
+        List<Actor> actorList = actors.stream()
+                .filter(actorsItem -> Objects.equals(actorsItem.getName(), "actor1"))
+                .collect(Collectors.toList());
+
+        Assertions.assertEquals(actorList.get(0).getName(), actorsListTest.get(0).getName());
     }
 
     @Test
     @Order(5)
-    void testFindByName() throws SQLException {
-        List<Actor> actorsListTest = repository.findByName("actor1");
-
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor WHERE actor.name = 'actor1'");
-        List<Actor> actorsList = getActors(statement.executeQuery());
-        Assertions.assertEquals(actorsList.get(0).getName(), actorsListTest.get(0).getName());
-    }
-
-    @Test
-    @Order(6)
     void testSize() throws SQLException {
         int sizeTest = repository.size();
-
-        PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM actor");
-        ResultSet resultSet = statement.executeQuery();
-        resultSet.next();
-        int size = resultSet.getInt(1);
+        int size = actors.size();
 
         Assertions.assertEquals(size, sizeTest);
     }
 
     @Test
-    @Order(7)
-    void testFindByContains() throws SQLException {
+    @Order(6)
+    void testFindByContains() {
         List<Actor> actorsListTest = repository.findByContains("actor");
 
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM actor WHERE actor.name LIKE '%actor%'");
-        List<Actor> actorsList = getActors(statement.executeQuery());
+        List<Actor> actorList = actors.stream()
+                .filter(actorsItem -> actorsItem.getName().contains("actor"))
+                .collect(Collectors.toList());
 
-        Assertions.assertFalse(actorsListTest.isEmpty());
-        Assertions.assertEquals(actorsList.size(), actorsListTest.size());
-        Assertions.assertEquals(actorsList.get(0).getName(), actorsListTest.get(0).getName());
-        Assertions.assertEquals(actorsList.get(1).getName(), actorsListTest.get(1).getName());
-        Assertions.assertEquals(actorsList.get(2).getName(), actorsListTest.get(2).getName());
+        Assertions.assertEquals(actorList.size(), actorsListTest.size());
+        Assertions.assertEquals(actorList.get(0).getName(), actorsListTest.get(0).getName());
+        Assertions.assertEquals(actorList.get(1).getName(), actorsListTest.get(1).getName());
+        Assertions.assertEquals(actorList.get(2).getName(), actorsListTest.get(2).getName());
     }
 
 }

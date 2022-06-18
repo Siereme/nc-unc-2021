@@ -6,9 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -18,47 +19,39 @@ public class DirectorsRepositoryTest {
 
     @Autowired
     private DirectorsRepository repository;
-    private Connection connection;
+    private final List<Director> directors = new ArrayList<>();
 
     @BeforeAll
-    void initDirectors() throws SQLException {
-        connection = DriverManager.getConnection("jdbc:h2:mem:test", "sa", "sa");
+    void initDirectors() {
+        this.directors.addAll(List.of(
+                new Director("director1", "20"),
+                new Director("director2", "35"),
+                new Director("director3", "30")
+        ));
+        for (int i = 0; i < directors.size(); i++) {
+            directors.get(i).setId(i + 1);
+        }
     }
 
-    List<Director> getDirectors(ResultSet resultSet) throws SQLException {
-        List<Director> directors = new ArrayList<>();
-        while (resultSet.next()){
-            Director director = new Director();
-            director.setId(resultSet.getInt("director_id"));
-            director.setName(resultSet.getString("name"));
-            director.setYear(resultSet.getString("year"));
-            directors.add(director);
-        }
-        return directors;
+
+    @Test
+    @Order(1)
+    void testFindAll() {
+        List<Director> directorsListTest = repository.findAll();
+
+
+        Assertions.assertEquals(directors.size(), directorsListTest.size());
+        Assertions.assertEquals(directors.get(0).getName(), directorsListTest.get(0).getName());
+        Assertions.assertEquals(directors.get(1).getName(), directorsListTest.get(1).getName());
+        Assertions.assertEquals(directors.get(2).getName(), directorsListTest.get(2).getName());
     }
 
     @Test
     @Order(2)
-    void testFindAll() throws SQLException {
-        List<Director> directorsListTest = repository.findAll();
-
-
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM director");
-        List<Director> directorsList = getDirectors(statement.executeQuery());
-
-        Assertions.assertEquals(directorsList.size(), directorsListTest.size());
-        Assertions.assertEquals(directorsList.get(0).getName(), directorsListTest.get(0).getName());
-        Assertions.assertEquals(directorsList.get(1).getName(), directorsListTest.get(1).getName());
-        Assertions.assertEquals(directorsList.get(2).getName(), directorsListTest.get(2).getName());
-    }
-
-    @Test
-    @Order(3)
-    void testFindById() throws SQLException {
+    void testFindById() {
         Director directorFindTest = repository.findById(1);
 
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM director WHERE director.director_id = 1");
-        Director director = getDirectors(statement.executeQuery()).get(0);
+        Director director = directors.stream().filter(actorsItem -> actorsItem.getId() == 1).findFirst().orElseGet(Director::new);
 
         Assertions.assertEquals(director.getId(), directorFindTest.getId());
         Assertions.assertEquals(director.getName(), directorFindTest.getName());
@@ -66,99 +59,98 @@ public class DirectorsRepositoryTest {
     }
 
     @Test
-    @Order(4)
-    void find() throws SQLException {
-        List<Director> directorsListTest = repository.find(List.of(0, 1, 2));
+    @Order(3)
+    void find() {
+        List<Integer> ids = List.of(0, 1, 2);
+        List<Director> directorsListTest = repository.find(ids);
 
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM director WHERE director.director_id IN (0, 1, 2)");
-        List<Director> directorsList = getDirectors(statement.executeQuery());
+        List<Director> directorList = directors.stream()
+                .filter(directorsItem ->
+                        ids.stream().anyMatch(id -> id == directorsItem.getId())
+                ).collect(Collectors.toList());
 
-        Assertions.assertEquals(directorsList.size(), directorsListTest.size());
-        Assertions.assertEquals(directorsList.get(0).getName(), directorsListTest.get(0).getName());
-        Assertions.assertEquals(directorsList.get(1).getName(), directorsListTest.get(1).getName());
+        Assertions.assertEquals(directorList.size(), directorsListTest.size());
+        Assertions.assertEquals(directorList.get(0).getName(), directorsListTest.get(0).getName());
+        Assertions.assertEquals(directorList.get(1).getName(), directorsListTest.get(1).getName());
     }
 
     @Test
-    @Order(1)
-    void testAdd() throws SQLException {
+    @Order(7)
+    void testAdd() {
         Director director = new Director("director4", "24");
 
         repository.add(director);
         Director directorAddTest = repository.findByName("director4").get(0);
 
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM director WHERE director.name = 'director4'");
-        Director directorAdd = getDirectors(statement.executeQuery()).get(0);
+        boolean hasDirector = directors.stream().anyMatch(directorsItem -> Objects.equals(directorsItem.getName(), "director4"));
 
-        Assertions.assertEquals(directorAdd.getId(), directorAddTest.getId());
-        Assertions.assertEquals(directorAdd.getName(), directorAddTest.getName());
+        Assertions.assertFalse(hasDirector);
+        Assertions.assertEquals("director4", directorAddTest.getName());
+        Assertions.assertEquals("24", directorAddTest.getYear());
     }
 
     @Test
     @Order(9)
-    void testDelete() throws SQLException {
+    void testDelete() {
         repository.delete(1);
-        Director actorDeleteTest = repository.findById(1);
+        Director directorDeleteTest = repository.findById(1);
 
-        PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM director WHERE director.director_id = 1");
-        ResultSet resultSet = statement.executeQuery();
-        resultSet.next();
-        int directorDelete = resultSet.getInt(1);
+        boolean hasDirector = directors.stream().anyMatch(directorsItem -> directorsItem.getId() == 1);
 
-        Assertions.assertNull(actorDeleteTest);
-        Assertions.assertEquals(0, directorDelete);
+        Assertions.assertTrue(hasDirector);
+        Assertions.assertNull(directorDeleteTest);
     }
 
     @Test
     @Order(8)
-    void testEdit() throws SQLException {
+    void testEdit() {
         Director director = repository.findById(1);
         director.setName("new name");
 
         repository.edit(director);
         Director directorEditTest = repository.findById(1);
 
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM director WHERE director.director_id = 1");
-        Director directorEdit = getDirectors(statement.executeQuery()).get(0);
+        boolean hasDirector = directors.stream().anyMatch(directorsItem -> Objects.equals(directorsItem.getName(), "new name"));
 
-        Assertions.assertEquals(directorEdit.getName(), directorEditTest.getName());
+        Assertions.assertFalse(hasDirector);
+        Assertions.assertNotNull(directorEditTest);
+        Assertions.assertEquals("new name", directorEditTest.getName());
+    }
+
+    @Test
+    @Order(4)
+    void testFindByName() {
+        List<Director> directorsListTest = repository.findByName("director1");
+
+        List<Director> directorList = directors.stream()
+                .filter(directorsItem -> Objects.equals(directorsItem.getName(), "director1"))
+                .collect(Collectors.toList());
+
+        Assertions.assertEquals(directorList.get(0).getName(), directorsListTest.get(0).getName());
     }
 
     @Test
     @Order(5)
-    void testFindByName() throws SQLException {
-        List<Director> directorsListTest = repository.findByName("director1");
-
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM director WHERE director.name = 'director1'");
-        List<Director> directorsList = getDirectors(statement.executeQuery());
-        Assertions.assertEquals(directorsList.get(0).getName(), directorsListTest.get(0).getName());
-    }
-
-    @Test
-    @Order(6)
-    void testSize() throws SQLException {
+    void testSize() {
         int sizeTest = repository.size();
-
-        PreparedStatement statement = connection.prepareStatement("SELECT COUNT(*) FROM director");
-        ResultSet resultSet = statement.executeQuery();
-        resultSet.next();
-        int size = resultSet.getInt(1);
+        int size = directors.size();
 
         Assertions.assertEquals(size, sizeTest);
     }
 
     @Test
-    @Order(7)
-    void testFindByContains() throws SQLException {
+    @Order(6)
+    void testFindByContains() {
         List<Director> directorsListTest = repository.findByContains("director");
 
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM director WHERE director.name LIKE '%director%'");
-        List<Director> directorsList = getDirectors(statement.executeQuery());
+        List<Director> directorList = directors.stream()
+                .filter(directorsItem -> directorsItem.getName().contains("director"))
+                .collect(Collectors.toList());
 
-        Assertions.assertFalse(directorsListTest.isEmpty());
-        Assertions.assertEquals(directorsList.size(), directorsListTest.size());
-        Assertions.assertEquals(directorsList.get(0).getName(), directorsListTest.get(0).getName());
-        Assertions.assertEquals(directorsList.get(1).getName(), directorsListTest.get(1).getName());
-        Assertions.assertEquals(directorsList.get(2).getName(), directorsListTest.get(2).getName());
+        Assertions.assertEquals(directorList.size(), directorsListTest.size());
+        Assertions.assertEquals(directorList.get(0).getName(), directorsListTest.get(0).getName());
+        Assertions.assertEquals(directorList.get(1).getName(), directorsListTest.get(1).getName());
+        Assertions.assertEquals(directorList.get(2).getName(), directorsListTest.get(2).getName());
     }
 
 }

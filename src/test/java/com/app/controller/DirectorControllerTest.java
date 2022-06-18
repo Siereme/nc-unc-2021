@@ -33,11 +33,15 @@ public class DirectorControllerTest {
     @MockBean
     private DirectorsRepository directorsRepository;
 
-    private List<Director> directors = new ArrayList<>();
+    private final List<Director> directors = new ArrayList<>();
 
     @BeforeAll
     void initDirectors() {
-        this.directors.addAll(List.of(new Director("director1", "21"), new Director("director2", "22"), new Director("director3", "23")));
+        this.directors.addAll(List.of(
+                new Director("director1", "21"),
+                new Director("director2", "22"),
+                new Director("director3", "23")
+        ));
         for (int i = 0; i < directors.size(); i++) {
             directors.get(i).setId(i);
         }

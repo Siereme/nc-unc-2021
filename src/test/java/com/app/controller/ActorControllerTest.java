@@ -32,11 +32,15 @@ public class ActorControllerTest {
     @MockBean
     private ActorsRepository actorsRepository;
 
-    private List<Actor> actors = new ArrayList<>();
+    private final List<Actor> actors = new ArrayList<>();
 
     @BeforeAll
     void initActors() {
-        this.actors.addAll(List.of(new Actor("actor1", "21"), new Actor("actor2", "22"), new Actor("actor3", "23")));
+        this.actors.addAll(List.of(
+                new Actor("actor1", "20"),
+                new Actor("actor2", "23"),
+                new Actor("actor3", "25")
+        ));
         for (int i = 0; i < actors.size(); i++) {
             actors.get(i).setId(i);
         }
